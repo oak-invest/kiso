@@ -7,4 +7,5 @@ context for AI agents.
 - `applications`: This directory contains all executable applications built from the Kiso codebase.
 - `documentation`: This directory contains all documentation for the Kiso codebase, including guides, tutorials, and reference materials.
 - `examples`: This directory contains example projects and code snippets demonstrating how to use Kiso.
+- `libraries`: This directory contains reusable internal libraries shared across Kiso applications.
 - `website`: This directory contains the source code for the Kiso website, which serves as a hub for all Kiso-related information and resources.
