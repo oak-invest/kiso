@@ -3,11 +3,11 @@ package com.oakinvest.kiso.cli.command;
 import picocli.CommandLine;
 
 /**
- * Build command - Generates a static website with HTML files created from the .md file (and the .md files along).
+ * Build: Generates a static website from .md files, outputting HTML files alongside the original Markdown files.
  */
 @CommandLine.Command(
         name = "build",
-        description = "Generate a static website from OKF Markdown files."
+        description = "Generates a static website from .md files, outputting HTML files alongside the original Markdown files"
 )
 public class BuildCommand implements Runnable {
 
