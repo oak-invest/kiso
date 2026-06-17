@@ -1,0 +1,2 @@
+run:
+    mvn exec:java -Dexec.mainClass=com.oakinvest.kiso.cli.Application
