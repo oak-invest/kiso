@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli;
+package com.oakinvest.kiso.cli.command;
 
 import picocli.CommandLine;
 

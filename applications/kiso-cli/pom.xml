@@ -43,6 +43,7 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <application.main.class>com.oakinvest.kiso.cli.Application</application.main.class>
 
         <!-- Main librairies -->
         <picocli.version>4.7.7</picocli.version>
@@ -59,6 +60,7 @@
         <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
         <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
         <maven.exec.plugin.version>3.6.3</maven.exec.plugin.version>
+        <maven.graalvm.native.plugin.version>1.1.2</maven.graalvm.native.plugin.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
     </properties>
 
@@ -86,6 +88,16 @@
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                     <proc>full</proc>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>info.picocli</groupId>
+                            <artifactId>picocli-codegen</artifactId>
+                            <version>${picocli.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                    <compilerArgs>
+                        <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -124,8 +136,28 @@
                 <version>${maven.exec.plugin.version}</version>
             </plugin>
 
-
         </plugins>
     </build>
+
+    <!-- Native build configuration ================================================================================= -->
+    <profiles>
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>${maven.graalvm.native.plugin.version}</version>
+                        <configuration>
+                            <imageName>kiso-cli</imageName>
+                            <mainClass>${application.main.class}</mainClass>
+                            <fallback>false</fallback>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
