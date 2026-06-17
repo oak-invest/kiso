@@ -1,6 +1,0 @@
-run:
-    mvn exec:java -Dexec.mainClass=com.oakinvest.kiso.cli.Application
-
-build_native:
-    # Native app is built as /applications/kiso-cli/target/kiso-cli
-    mvn -Pnative native:compile
