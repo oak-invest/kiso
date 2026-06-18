@@ -44,6 +44,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <!-- Test libraries -->
+        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <maven.puppycrawl.checkstyle.version>13.4.0</maven.puppycrawl.checkstyle.version>
@@ -64,6 +67,14 @@
     <dependencies>
 
         <!-- Main librairies -->
+
+        <!-- Test libraries -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

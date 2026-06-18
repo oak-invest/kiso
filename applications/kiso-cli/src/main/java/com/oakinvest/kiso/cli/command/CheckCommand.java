@@ -4,14 +4,14 @@ import com.oakinvest.kiso.cli.util.command.SourceOptions;
 import picocli.CommandLine;
 
 /**
- * Build: Generates a static website from .md files, outputting HTML files alongside the original Markdown files.
+ * Check: Validate Markdown files and report formatting or structural errors.
  */
 @CommandLine.Command(
-        name = "build",
+        name = "check",
         mixinStandardHelpOptions = true,
-        description = "Generates a static website from .md files"
+        description = "Validate Markdown files and report formatting or structural errors"
 )
-public class BuildCommand implements Runnable {
+public class CheckCommand implements Runnable {
 
     /** Command spec. */
     @CommandLine.Spec
@@ -26,7 +26,7 @@ public class BuildCommand implements Runnable {
      */
     @Override
     public void run() {
-        commandSpec.commandLine().getOut().println("Build command");
+        commandSpec.commandLine().getOut().println("Check command");
     }
 
 }

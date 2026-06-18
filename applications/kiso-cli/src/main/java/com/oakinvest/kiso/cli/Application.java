@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.cli;
 
 import com.oakinvest.kiso.cli.command.BuildCommand;
+import com.oakinvest.kiso.cli.command.CheckCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -8,7 +9,8 @@ import picocli.CommandLine;
         mixinStandardHelpOptions = true,
         version = "0.1",
         subcommands = {
-            BuildCommand.class
+                CheckCommand.class,
+                BuildCommand.class
         }
 )
 public class Application implements Runnable {
