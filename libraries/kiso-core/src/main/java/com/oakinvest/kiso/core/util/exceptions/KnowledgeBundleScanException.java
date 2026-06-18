@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.util.exceptions;
 
 /**
- * Knowledge bundle scan exception.
+ * Knowledge bundle loadKnowledgeBundle exception.
  */
 public class KnowledgeBundleScanException extends RuntimeException {
 
@@ -21,7 +21,7 @@ public class KnowledgeBundleScanException extends RuntimeException {
      * Constructor.
      *
      * @param message exception message
-     * @param cause exception cause
+     * @param cause   exception cause
      */
     public KnowledgeBundleScanException(final String message, final Throwable cause) {
         super(message, cause);

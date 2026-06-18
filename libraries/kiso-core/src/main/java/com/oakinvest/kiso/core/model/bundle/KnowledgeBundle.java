@@ -1,20 +1,22 @@
 package com.oakinvest.kiso.core.model.bundle;
 
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import lombok.Builder;
 
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * A knowledge bundle: A self-contained, hierarchical collection of knowledge documents.
  *
- * @param rootDirectory bundle root directory
- * @param directories   directories discovered inside the bundle
- * @param markdownFiles files discovered inside the bundle (only Markdown)
+ * @param rootBundlePath root bundle path
+ * @param rootBundle     root bundle
+ * @param title          knowledge bundle title
  */
+@Builder
+@SuppressWarnings("unused")
 public record KnowledgeBundle(
-        Path rootDirectory,
-        List<BundleDirectory> directories,
-        List<MarkdownFile> markdownFiles
+        Path rootBundlePath,
+        Bundle rootBundle,
+        // Kiso specific configuration (loaded in ./kiso files)
+        String title
 ) {
 }

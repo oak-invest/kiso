@@ -1,6 +1,8 @@
 package com.oakinvest.kiso.core.model.concept;
 
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.markdown.MarkdownLink;
+import lombok.Builder;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -8,13 +10,15 @@ import java.util.List;
 /**
  * A concept: A single unit of knowledge within a bundle. Represented as one Markdown document.
  *
- * @param conceptId the path of the concept's file within the bundle, with the .md suffix removed. For example, tables/users.md has concept ID tables/users
- * @param path absolute or execution-relative file path
- * @param relativePath path relative to the bundle root directory
- * @param frontmatter parsed frontmatter metadata
- * @param body body without frontmatter
- * @param links links found in the document body
+ * @param conceptId    the path of the concept's file within the bundle, with the .md suffix removed. For example, tables/users.md has concept ID tables/users
+ * @param path         absolute or execution-relative file path
+ * @param relativePath path relative to the bundle rootBundleDirectory directory
+ * @param frontmatter  parsed frontmatter metadata
+ * @param body         body without frontmatter
+ * @param links        links found in the document body
  */
+@Builder
+@SuppressWarnings("unused")
 public record Concept(
         String conceptId,
         Path path,

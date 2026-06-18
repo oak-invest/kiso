@@ -48,6 +48,10 @@
         <!-- Main librairies -->
         <picocli.version>4.7.7</picocli.version>
 
+        <!-- Boilerplate & Utils -->
+        <lombok.version>1.18.46</lombok.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
+
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <maven.puppycrawl.checkstyle.version>13.4.0</maven.puppycrawl.checkstyle.version>
@@ -72,6 +76,19 @@
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
             <version>${picocli.version}</version>
+        </dependency>
+
+        <!-- Boilerplate & Utils -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
 
     </dependencies>
