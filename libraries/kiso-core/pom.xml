@@ -44,8 +44,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <!-- Test libraries -->
-        <junit.jupiter.version>5.10.2</junit.jupiter.version>
+        <!-- Main librairies -->
+        <commonmark.version>0.28.0</commonmark.version>
+
+        <!-- Test dependencies  -->
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <junit-pionner.version>2.3.0</junit-pionner.version>
+        <assertj.version>3.27.7</assertj.version>
 
         <!-- Boilerplate & Utils -->
         <lombok.version>1.18.46</lombok.version>
@@ -71,13 +76,20 @@
     <dependencies>
 
         <!-- Main librairies -->
-
-        <!-- Test libraries -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit.jupiter.version}</version>
-            <scope>test</scope>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+            <version>${commonmark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-yaml-front-matter</artifactId>
+            <version>${commonmark.version}</version>
         </dependency>
 
         <!-- Boilerplate & Utils -->
@@ -93,6 +105,25 @@
             <version>${commons-lang3.version}</version>
         </dependency>
 
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit-pioneer</groupId>
+            <artifactId>junit-pioneer</artifactId>
+            <version>${junit-pionner.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <!-- Build configuration ======================================================================================= -->

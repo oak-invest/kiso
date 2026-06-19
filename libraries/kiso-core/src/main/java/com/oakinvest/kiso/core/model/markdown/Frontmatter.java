@@ -28,4 +28,23 @@ public record Frontmatter(
         OffsetDateTime timestamp,
         Map<String, Object> extraFields
 ) {
+
+    /** Frontmatter key for type. */
+    public static final String TYPE_KEY = "type";
+
+    /** Frontmatter key for title. */
+    public static final String TITLE_KEY = "title";
+
+    /** Frontmatter key for description. */
+    public static final String DESCRIPTION_KEY = "description";
+
+    /** Frontmatter key for resource. */
+    public static final String RESOURCE_KEY = "resource";
+
+    /** Frontmatter key for tags. */
+    public static final String TAGS_KEY = "tags";
+
+    /** Frontmatter key for timestamp. */
+    public static final String TIMESTAMP_KEY = "timestamp";
+
 }

@@ -9,13 +9,15 @@ import java.nio.file.Path;
  *
  * @param path         absolute or execution-relative file path
  * @param relativePath path relative to the bundle rootBundleDirectory directory
- * @param content      original Markdown content
+ * @param frontmatter  parsed frontmatter metadata
+ * @param content      original Markdown content (without frontmatter)
  */
 @Builder
 @SuppressWarnings("unused")
 public record MarkdownFile(
         Path path,
         Path relativePath,
+        Frontmatter frontmatter,
         String content
 ) {
 

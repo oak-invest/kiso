@@ -1,0 +1,30 @@
+package com.oakinvest.kiso.core.util;
+
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+/**
+ * Base test class.
+ */
+public class BaseTest {
+
+    /** Knowledge base Google example directory. */
+    public static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example";
+
+    /**
+     * Retrieves path from a resource name.
+     *
+     * @param resourceName resource name
+     * @return path
+     * @throws URISyntaxException syntax problem with URI
+     */
+    protected Path getResourcePath(final String resourceName) throws URISyntaxException {
+        URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceName);
+        assertNotNull(resource, "Missing test resource: " + resourceName);
+        return Path.of(resource.toURI());
+    }
+
+}

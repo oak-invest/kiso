@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.util.exceptions;
 
 /**
- * Knowledge bundle loadKnowledgeBundle exception.
+ * Knowledge bundle load exception.
  */
 public class KnowledgeBundleScanException extends RuntimeException {
 
