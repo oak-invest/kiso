@@ -17,31 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Loading a knowledge bundle from the Google example directory.
- * ├── datasets
- * │ ├── ga4_obfuscated_sample_ecommerce.md
- * │ └── index.md
- * ├── index.md
- * ├── references
- * │ ├── index.md
- * │ ├── joins
- * │ │ ├── events___ads_clickstats.md
- * │ │ └── index.md
- * │ └── metrics
- * │     ├── avg_pageviews.md
- * │     ├── avg_spend_per_purchase_session_by_user.md
- * │     ├── avg_transactions_per_purchaser.md
- * │     ├── day_count.md
- * │     ├── event_count.md
- * │     ├── index.md
- * │     ├── new_user_count.md
- * │     ├── overall_avg_spend_per_purchase_session.md
- * │     └── user_count.md
- * └── tables
- * ├── events_.md
- * └── index.md
  */
 class GoogleExampleLoaderTest extends BaseTest {
-
 
     @Test
     @DisplayName("Loading google example bundle")
@@ -52,6 +29,31 @@ class GoogleExampleLoaderTest extends BaseTest {
 
         // Testing root bundle =========================================================================================
         assertThat(bundle.rootBundle().childBundleDirectories()).hasSize(3);
+        assertThat(bundle.rootBundle().markdownFiles())
+                .hasSize(1)
+                // index ===============================================================================================
+                // /index
+                .satisfiesExactly(index -> {
+                    // Type.
+                    assertThat(index.kind()).isEqualTo(INDEX);
+
+                    // Path.
+                    assertThat(index.path()).isEqualTo(Path.of(resourcePath + "/index.md"));
+                    assertThat(index.relativePath()).isEqualTo(Path.of("index.md"));
+
+                    // Frontmatter.
+                    assertThat(index.frontmatter())
+                            .isNotNull()
+                            .returns(null, Frontmatter::type)
+                            .returns(null, Frontmatter::resource)
+                            .returns(null, Frontmatter::title)
+                            .returns(null, Frontmatter::description)
+                            .returns(List.of(), Frontmatter::tags)
+                            .returns(null, Frontmatter::timestamp);
+
+                    // Content.
+                    assertThat(index.content()).contains("# Subdirectories");
+                });
 
         // "datasets" bundle ===========================================================================================
         var datasetBundle = bundle.rootBundle().childBundleDirectories().getFirst();
@@ -60,8 +62,10 @@ class GoogleExampleLoaderTest extends BaseTest {
                 .returns(Path.of("datasets"), Bundle::relativePath)
                 .returns(List.of(), Bundle::childBundleDirectories);
 
-        assertThat(datasetBundle.markdownFiles()).hasSize(2)
+        assertThat(datasetBundle.markdownFiles())
+                .hasSize(2)
                 .satisfiesExactly(
+                        // ga4 =========================================================================================
                         // /datasets/ga4_obfuscated_sample_ecommerce.md
                         ga4 -> {
                             // Type.
@@ -85,6 +89,8 @@ class GoogleExampleLoaderTest extends BaseTest {
                             assertThat(ga4.content()).doesNotContain("BigQuery Dataset");
                             assertThat(ga4.content()).contains("The `ga4_obfuscated_sample_ecommerce` dataset");
                         },
+                        // index =======================================================================================
+                        // /datasets/index
                         index -> {
                             // Type.
                             assertThat(index.kind()).isEqualTo(INDEX);
@@ -108,86 +114,65 @@ class GoogleExampleLoaderTest extends BaseTest {
                         }
                 );
 
-
         // "references" bundle =========================================================================================
-        assertThat(bundle.rootBundle().childBundleDirectories().get(1))
-                .satisfies(references -> {
-                    assertThat(references.path()).isEqualTo(Path.of(resourcePath + "/references"));
-                    assertThat(references.relativePath()).isEqualTo(Path.of("references"));
-                    assertThat(references.childBundleDirectories()).hasSize(2);
-                    assertThat(references.markdownFiles()).hasSize(1);
-                });
+        // /references
+        var referencesBundle = bundle.rootBundle().childBundleDirectories().get(1);
+        assertThat(referencesBundle)
+                .returns(Path.of(resourcePath + "/references"), Bundle::path)
+                .returns(Path.of("references"), Bundle::relativePath);
 
-
-        assertThat(bundle.rootBundle().childBundleDirectories())
+        assertThat(referencesBundle.childBundleDirectories())
+                .hasSize(2)
                 .satisfiesExactly(
-                        // Datasets directory ==========================================================================
-                        datasets -> {
-                            assertThat(datasets.path()).isEqualTo(Path.of(resourcePath + "/datasets"));
-                            assertThat(datasets.relativePath()).isEqualTo(Path.of("datasets"));
-                            assertThat(datasets.childBundleDirectories()).isEmpty();
-                            assertThat(datasets.markdownFiles()).hasSize(2);
+                        // "joins" bundle ==============================================================================
+                        // /references/joins
+                        joins -> {
+                            assertThat(joins)
+                                    .returns(Path.of(resourcePath + "/references/joins"), Bundle::path)
+                                    .returns(Path.of("references/joins"), Bundle::relativePath);
 
+                            assertThat(joins.markdownFiles())
+                                    .hasSize(2)
+                                    .satisfiesExactly(
+                                            // events file =============================================================
+                                            events -> {
+                                                // Type.
+                                                assertThat(events.kind()).isEqualTo(CONCEPT);
+
+                                                // Path.
+                                                assertThat(events.path()).isEqualTo(Path.of(resourcePath + "/references/joins/events___ads_clickstats.md"));
+                                                assertThat(events.relativePath()).isEqualTo(Path.of("references/joins/events___ads_clickstats.md"));
+
+                                                // Frontmatter.
+                                                assertThat(events.frontmatter())
+                                                        .isNotNull()
+                                                        .returns("Reference", Frontmatter::type)
+                                                        .returns("https://developers.google.com/analytics/bigquery/basic-queries", Frontmatter::resource)
+                                                        .returns("Join Google Analytics Events to Google Ads Clicks", Frontmatter::title)
+                                                        .returns("Join Google Analytics event data with Google Ads click data.", Frontmatter::description)
+                                                        .returns(List.of("join", "Google Ads"), Frontmatter::tags)
+                                                        .returns(OffsetDateTime.parse("2026-05-28T22:51:46+00:00"), Frontmatter::timestamp);
+
+                                                // Content.
+                                                assertThat(events.content()).doesNotContain("Join Google Analytics Events to Google Ads Clicks");
+                                                assertThat(events.content()).contains("Join Google Analytics event data with Google Ads click data");
+                                            },
+                                            index -> {
+                                                // Type.
+                                                assertThat(index.kind()).isEqualTo(INDEX);
+                                            }
+                                    );
                         },
-                        // References directory ========================================================================
-                        references -> {
+                        // "metrics" bundle ============================================================================
+                        // /references/metrics
+                        metrics -> {
+                            assertThat(metrics)
+                                    .returns(Path.of(resourcePath + "/references/metrics"), Bundle::path)
+                                    .returns(Path.of("references/metrics"), Bundle::relativePath);
 
-                        },
-                        // Tables directory ============================================================================
-                        tables -> {
-
+                            assertThat(metrics.markdownFiles()).hasSize(9);
                         }
                 );
-//                .extracting(
-//                        Bundle::path,
-//                        Bundle::relativePath,
-//                        Bundle::childBundleDirectories,
-//                        Bundle::markdownFiles
-//                )
-//                .contains(
-//                        // Datasets
-//                        tuple(
-//                                Path.of(resourcePath + "/datasets"),
-//                                Path.of("datasets"),
-//
-//                        )
-//                );
-
-        assertThat(bundle.rootBundle().markdownFiles()).hasSize(1);
-
-
-        //Path sourceDirectory = ;
-
-
-        //
-//        KnowledgeBundle bundle = new KnowledgeBundleLoader().load(sourceDirectory);
-//
-//        assertEquals(sourceDirectory.toAbsolutePath().normalize(), bundle.rootBundlePath());
-//        assertEquals(6, allDirectories(bundle).size());
-//        Bundle rootDirectory = bundle.rootBundle();
-//        assertEquals(List.of(Path.of("datasets"), Path.of("references"), Path.of("tables")),
-//                rootDirectory.childBundleDirectories().stream()
-//                        .map(Bundle::relativePath)
-//                        .toList());
-//        assertEquals(List.of(Path.of("index.md")), rootDirectory.markdownFiles().stream()
-//                .map(MarkdownFile::relativePath)
-//                .toList());
-//
-//        Bundle tablesDirectory = findDirectory(bundle, "tables");
-//        assertEquals(List.of(), tablesDirectory.childBundleDirectories());
-//        assertEquals(List.of(Path.of("tables/events_.md"), Path.of("tables/index.md")),
-//                tablesDirectory.markdownFiles().stream()
-//                        .map(MarkdownFile::relativePath)
-//                        .toList());
-//
-//        MarkdownFile rootIndexFile = findMarkdownFile(bundle, "index.md");
-//        assertEquals(MarkdownFileKind.INDEX, rootIndexFile.kind());
-//        assertTrue(rootIndexFile.content().contains("# Subdirectories"));
-//
-//        MarkdownFile eventsFile = findMarkdownFile(bundle, "tables/events_.md");
-//        assertEquals(MarkdownFileKind.CONCEPT, eventsFile.kind());
-//        assertTrue(eventsFile.content().contains("type: BigQuery Table"));
-//        assertTrue(eventsFile.content().contains("# Schema"));
     }
 
 }
