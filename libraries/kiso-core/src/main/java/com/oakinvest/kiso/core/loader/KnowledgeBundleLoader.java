@@ -5,6 +5,7 @@ import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.exceptions.KnowledgeBundleScanException;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,9 +139,9 @@ public class KnowledgeBundleLoader {
                     .title(getFrontMatterValue(frontMatterData, TITLE_KEY))
                     .description(getFrontMatterValue(frontMatterData, DESCRIPTION_KEY))
                     .resource(getFrontMatterValue(frontMatterData, RESOURCE_KEY))
-                    .tags(frontMatterData.get(TAGS_KEY))
+                    .tags(ObjectUtils.defaultIfNull(frontMatterData.get(TAGS_KEY), List.of()))
                     .timestamp(getFrontMatterOffsetDateTimeValue(frontMatterData, TIMESTAMP_KEY))
-                    .extraFields(getFrontMatterExtraFields(frontMatterData))
+                    .extraFields(ObjectUtils.defaultIfNull(getFrontMatterExtraFields(frontMatterData), new HashMap<>()))
                     .build();
 
             // Return data =================================================================================================

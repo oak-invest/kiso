@@ -2,7 +2,6 @@ package com.oakinvest.kiso.core.loader;
 
 import com.oakinvest.kiso.core.model.bundle.Bundle;
 import com.oakinvest.kiso.core.model.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,8 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -64,7 +65,7 @@ class GoogleExampleLoaderTest extends BaseTest {
                         // /datasets/ga4_obfuscated_sample_ecommerce.md
                         ga4 -> {
                             // Type.
-                            assertThat(ga4.kind()).isEqualTo(MarkdownFileKind.CONCEPT);
+                            assertThat(ga4.kind()).isEqualTo(CONCEPT);
 
                             // Path.
                             assertThat(ga4.path()).isEqualTo(Path.of(resourcePath + "/datasets/ga4_obfuscated_sample_ecommerce.md"));
@@ -85,7 +86,25 @@ class GoogleExampleLoaderTest extends BaseTest {
                             assertThat(ga4.content()).contains("The `ga4_obfuscated_sample_ecommerce` dataset");
                         },
                         index -> {
+                            // Type.
+                            assertThat(index.kind()).isEqualTo(INDEX);
 
+                            // Path.
+                            assertThat(index.path()).isEqualTo(Path.of(resourcePath + "/datasets/index.md"));
+                            assertThat(index.relativePath()).isEqualTo(Path.of("datasets/index.md"));
+
+                            // Frontmatter.
+                            assertThat(index.frontmatter())
+                                    .isNotNull()
+                                    .returns(null, Frontmatter::type)
+                                    .returns(null, Frontmatter::resource)
+                                    .returns(null, Frontmatter::title)
+                                    .returns(null, Frontmatter::description)
+                                    .returns(List.of(), Frontmatter::tags)
+                                    .returns(null, Frontmatter::timestamp);
+
+                            // Content.
+                            assertThat(index.content()).contains("# BigQuery Dataset");
                         }
                 );
 
