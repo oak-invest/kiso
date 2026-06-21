@@ -15,14 +15,11 @@ import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Loading a knowledge bundle from the Google example directory.
- */
 class GoogleExampleLoaderTest extends BaseTest {
 
     @Test
     @DisplayName("Loading google example bundle")
-    void loadShouldReadDirectoriesAndMarkdownFiles() throws URISyntaxException {
+    void googleExamplesLoading() throws URISyntaxException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
         var bundle = new KnowledgeBundleLoader().load(resourcePath);
@@ -58,6 +55,7 @@ class GoogleExampleLoaderTest extends BaseTest {
         // "datasets" bundle ===========================================================================================
         var datasetBundle = bundle.rootBundle().childBundleDirectories().getFirst();
         assertThat(datasetBundle)
+                .returns("datasets", Bundle::name)
                 .returns(Path.of(resourcePath + "/datasets"), Bundle::path)
                 .returns(Path.of("datasets"), Bundle::relativePath)
                 .returns(List.of(), Bundle::childBundleDirectories);
@@ -128,6 +126,7 @@ class GoogleExampleLoaderTest extends BaseTest {
                         // /references/joins
                         joins -> {
                             assertThat(joins)
+                                    .returns("references/joins", Bundle::name)
                                     .returns(Path.of(resourcePath + "/references/joins"), Bundle::path)
                                     .returns(Path.of("references/joins"), Bundle::relativePath);
 

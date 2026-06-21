@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.model.markdown;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -52,7 +52,7 @@ public enum MarkdownFileKind {
         final String name = path.getFileName().toString();
 
         return Arrays.stream(values())
-                .filter(kind -> StringUtils.equalsIgnoreCase(kind.fileName, name))
+                .filter(kind -> Strings.CI.equals(kind.fileName, name))
                 .findFirst()
                 .orElse(CONCEPT);
     }

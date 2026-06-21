@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
-import com.oakinvest.kiso.cli.util.command.SourceOptions;
+import com.oakinvest.kiso.cli.util.command.SourceOption;
 import picocli.CommandLine;
 
 /**
@@ -13,13 +13,12 @@ import picocli.CommandLine;
 )
 public class CheckCommand implements Runnable {
 
+    /** Shared source directory option. */
+    @CommandLine.Mixin
+    private final SourceOption sourceOption = new SourceOption();
     /** Command spec. */
     @CommandLine.Spec
     private CommandLine.Model.CommandSpec commandSpec;
-
-    /** Shared source directory option. */
-    @CommandLine.Mixin
-    private final SourceOptions sourceOptions = new SourceOptions();
 
     /**
      * Run the build command.

@@ -7,6 +7,7 @@ import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.exceptions.KnowledgeBundleScanException;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -73,6 +74,7 @@ public class KnowledgeBundleLoader {
         Path normalizedDirectory = directory.toAbsolutePath().normalize();
 
         return Bundle.builder()
+                .name(toRelativePath(rootDirectory, normalizedDirectory).toString())
                 .path(normalizedDirectory)
                 .relativePath(toRelativePath(rootDirectory, normalizedDirectory))
                 // Directories.
@@ -111,7 +113,7 @@ public class KnowledgeBundleLoader {
     private List<MarkdownFile> loadDirectMarkdownFiles(final Path rootDirectory, final Path directory) {
         try (Stream<Path> paths = Files.list(directory)) {
             return paths.filter(Files::isRegularFile)
-                    .filter(path -> StringUtils.endsWithIgnoreCase(path.getFileName().toString(), ".md"))
+                    .filter(path -> Strings.CI.endsWith(path.getFileName().toString(), ".md"))
                     .sorted(Comparator.comparing(path -> path.getFileName().toString()))
                     .map(path -> getMarkdownFile(rootDirectory, path))
                     .toList();
@@ -139,9 +141,9 @@ public class KnowledgeBundleLoader {
                     .title(getFrontMatterValue(frontMatterData, TITLE_KEY))
                     .description(getFrontMatterValue(frontMatterData, DESCRIPTION_KEY))
                     .resource(getFrontMatterValue(frontMatterData, RESOURCE_KEY))
-                    .tags(ObjectUtils.defaultIfNull(frontMatterData.get(TAGS_KEY), List.of()))
+                    .tags(ObjectUtils.getIfNull(frontMatterData.get(TAGS_KEY), List.of()))
                     .timestamp(getFrontMatterOffsetDateTimeValue(frontMatterData, TIMESTAMP_KEY))
-                    .extraFields(ObjectUtils.defaultIfNull(getFrontMatterExtraFields(frontMatterData), new HashMap<>()))
+                    .extraFields(ObjectUtils.getIfNull(getFrontMatterExtraFields(frontMatterData), new HashMap<>()))
                     .build();
 
             // Return data =================================================================================================

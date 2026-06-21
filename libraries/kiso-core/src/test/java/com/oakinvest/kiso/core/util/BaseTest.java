@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class BaseTest {
 
     /** Knowledge base Google example directory. */
-    public static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example";
+    public static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example-v0.1";
 
     /**
      * Retrieves path from a resource name.

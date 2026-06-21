@@ -46,6 +46,7 @@
 
         <!-- Main librairies -->
         <commonmark.version>0.28.0</commonmark.version>
+        <jte.version>3.2.4</jte.version>
 
         <!-- Test dependencies  -->
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
@@ -55,7 +56,8 @@
 
         <!-- Boilerplate & Utils -->
         <lombok.version>1.18.46</lombok.version>
-        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <commons-io.version>2.17.0</commons-io.version>
 
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
@@ -83,6 +85,12 @@
             <version>${commonmark.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>gg.jte</groupId>
+            <artifactId>jte</artifactId>
+            <version>${jte.version}</version>
+        </dependency>
+
         <!-- Boilerplate & Utils -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -94,6 +102,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io.version}</version>
         </dependency>
 
         <!-- Test dependencies -->

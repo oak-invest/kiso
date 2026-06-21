@@ -1,12 +1,13 @@
 package com.oakinvest.kiso.cli.util.command;
 
-import java.nio.file.Path;
 import picocli.CommandLine;
+
+import java.nio.file.Path;
 
 /**
  * Shared source directory option for commands reading a bundle.
  */
-public class SourceOptions {
+public class SourceOption {
 
     /**
      * Source directory option.
