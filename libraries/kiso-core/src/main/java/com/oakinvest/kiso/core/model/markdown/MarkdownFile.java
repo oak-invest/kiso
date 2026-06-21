@@ -24,6 +24,11 @@ public record MarkdownFile(
         String content
 ) {
 
+    /**
+     * Returns the HTML file name corresponding to this Markdown file.
+     *
+     * @return HTML file name
+     */
     public String htmlFileName() {
         return Strings.CI.replace(fileName, ".md", ".html");
     }

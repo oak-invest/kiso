@@ -3,10 +3,6 @@
 **Generates a static website from .md files, outputting HTML files alongside the original Markdown files.**
 
 ## Next steps
-- Copy the directory structure of the source directory to the output directory (Using source and output parameters).
-- Load the knowledge bundle copied in the output directory.
-- Going throw all bundles recursively and generate HTML files for all .md files existing.
-- == GraalVM test ==
 - Using template files to generate HTML files for all .md files existing.
     - Add menu.
     - Add links to parent directory.
