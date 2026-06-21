@@ -148,6 +148,7 @@ public class KnowledgeBundleLoader {
 
             // Return data =================================================================================================
             return MarkdownFile.builder()
+                    .fileName(normalizedFile.getFileName().toString())
                     .path(normalizedFile)
                     .relativePath(toRelativePath(rootDirectory, normalizedFile))
                     .frontmatter(frontmatter)

@@ -15,9 +15,9 @@ public class BaseTest {
     public static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example-v0.1";
 
     /**
-     * Retrieves path from a resource name.
+     * Retrieves path from a resource fileName.
      *
-     * @param resourceName resource name
+     * @param resourceName resource fileName
      * @return path
      * @throws URISyntaxException syntax problem with URI
      */

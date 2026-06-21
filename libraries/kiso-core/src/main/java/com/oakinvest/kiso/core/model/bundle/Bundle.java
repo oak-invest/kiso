@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * A bundle is a directory tree of markdown files.
  *
- * @param name                   bundle name
+ * @param name                   bundle fileName
  * @param path                   absolute or execution-relative directory path
  * @param relativePath           path relative to the bundle rootBundleDirectory directory
  * @param childBundleDirectories direct child directories

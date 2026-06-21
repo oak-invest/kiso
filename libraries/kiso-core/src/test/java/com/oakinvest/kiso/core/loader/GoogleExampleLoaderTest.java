@@ -138,6 +138,10 @@ class GoogleExampleLoaderTest extends BaseTest {
                                                 // Type.
                                                 assertThat(events.kind()).isEqualTo(CONCEPT);
 
+                                                // Filename.
+                                                assertThat(events.fileName()).isEqualTo("events___ads_clickstats.md");
+                                                assertThat(events.htmlFileName()).isEqualTo("events___ads_clickstats.html");
+
                                                 // Path.
                                                 assertThat(events.path()).isEqualTo(Path.of(resourcePath + "/references/joins/events___ads_clickstats.md"));
                                                 assertThat(events.relativePath()).isEqualTo(Path.of("references/joins/events___ads_clickstats.md"));
