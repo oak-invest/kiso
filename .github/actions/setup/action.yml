@@ -13,5 +13,3 @@ runs:
       with:
         distribution: 'graalvm'
         java-version: '21'
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        native-image-job-reports: true
