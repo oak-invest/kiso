@@ -3,7 +3,7 @@ package com.oakinvest.kiso.cli.command;
 import com.oakinvest.kiso.cli.util.command.DestinationOption;
 import com.oakinvest.kiso.cli.util.command.SourceOption;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.renderer.Renderer;
+import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -51,6 +51,7 @@ public class BuildCommand implements Runnable {
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
 
             // Generating HTML =========================================================================================
+            final MarkdownToHtmlRenderer markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
             new KnowledgeBundleLoader().load(destinationDirectory.toPath()).bundles()
                     .forEach(bundle -> {
                         // We generate the HTML version of every Markdown file =========================================
@@ -58,7 +59,7 @@ public class BuildCommand implements Runnable {
                             try {
                                 FileUtils.writeStringToFile(
                                         new File(bundle.path().toString(), markdownFile.htmlFileName()),
-                                        Renderer.toHTML(markdownFile),
+                                        markdownToHtmlRenderer.render(markdownFile),
                                         StandardCharsets.UTF_8
                                 );
                                 commandSpec.commandLine().getOut().println("HTML Generated for " + markdownFile.relativePath());

@@ -16,18 +16,18 @@ public class KnowledgeBundleTest extends BaseTest {
     void bundles() throws URISyntaxException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
-        var bundle = new KnowledgeBundleLoader().load(resourcePath);
+        var rootBundle = new KnowledgeBundleLoader().load(resourcePath);
 
         // Testing .bundles() ==========================================================================================
-        assertThat(bundle.bundles())
+        assertThat(rootBundle.bundles())
                 .hasSize(6)
                 .satisfiesExactly(
-                        b -> assertThat(b.name()).isEqualTo(""),
-                        b -> assertThat(b.name()).isEqualTo("datasets"),
-                        b -> assertThat(b.name()).isEqualTo("references"),
-                        b -> assertThat(b.name()).isEqualTo("references/joins"),
-                        b -> assertThat(b.name()).isEqualTo("references/metrics"),
-                        b -> assertThat(b.name()).isEqualTo("tables")
+                        bundle -> assertThat(bundle.name()).isEqualTo(""),
+                        bundle -> assertThat(bundle.name()).isEqualTo("datasets"),
+                        bundle -> assertThat(bundle.name()).isEqualTo("references"),
+                        bundle -> assertThat(bundle.name()).isEqualTo("references/joins"),
+                        bundle -> assertThat(bundle.name()).isEqualTo("references/metrics"),
+                        bundle -> assertThat(bundle.name()).isEqualTo("tables")
                 );
     }
 

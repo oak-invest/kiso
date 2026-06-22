@@ -1,27 +1,34 @@
 package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
+import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.util.BaseTest;
+import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RendererTest extends BaseTest {
+public class MarkdownToHtmlRendererTest extends BaseTest {
 
     @Test
-    @DisplayName("Loading google example bundle")
-    void loadShouldReadDirectoriesAndMarkdownFiles() throws URISyntaxException {
+    @DisplayName("Mardown to html")
+    void markdownToHTML() throws URISyntaxException, IOException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
         var bundle = new KnowledgeBundleLoader().load(resourcePath);
+        var markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
 
         // Index file of the bundle ====================================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
-        var page = Jsoup.parse(Renderer.toHTML(markdownFiles.getFirst()));
+        var page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst()));
 
         // H1.
         assertThat(page.selectXpath("//h1").size()).isEqualTo(1);
@@ -50,10 +57,18 @@ public class RendererTest extends BaseTest {
 
         // datasets/ga4_obfuscated_sample_ecommerce.md =================================================================
         markdownFiles = bundle.rootBundle().childBundleDirectories().getFirst().markdownFiles();
-        page = Jsoup.parse(Renderer.toHTML(markdownFiles.getFirst()));
+        page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst()));
 
-        System.out.println(Renderer.toHTML(markdownFiles.getFirst()));
-        System.out.println();
+        // Writing the file (console & target directory) for debugging purposes ========================================
+        var targetDirectory = Path.of(MarkdownToHtmlRendererTest.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()).getParent();
+        FileUtils.writeStringToFile(targetDirectory.resolve("test.html").toFile(), page.html(), UTF_8);
+        System.out.println(page.html());
+
+        // Testing the content =========================================================================================
 
         // H1.
         assertThat(page.selectXpath("//h1").size()).isEqualTo(5);

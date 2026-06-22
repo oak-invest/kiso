@@ -50,7 +50,6 @@ public enum MarkdownFileKind {
      */
     public static MarkdownFileKind from(final Path path) {
         final String name = path.getFileName().toString();
-
         return Arrays.stream(values())
                 .filter(kind -> Strings.CI.equals(kind.fileName, name))
                 .findFirst()
