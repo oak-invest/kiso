@@ -93,8 +93,8 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(header).isNotNull();
         assertThat(header.select(".badge").eachText())
                 .containsExactly(
-                        "CONCEPT",
-                        "Last update May 28, 2026 at 10:49 PM UTC",
+                        "Concept",
+                        "BigQuery Dataset",
                         "ecommerce",
                         "web analytics",
                         "Google Analytics",
@@ -127,9 +127,16 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectXpath("//h1[text()='Pre-requisites']/following-sibling::*[1]").text())
                 .isEqualTo("To work with this dataset, you need access to a Google Cloud project with the BigQuery API enabled. You can use BigQuery Sandbox mode or the Free usage tier for exploration and sample queries.");
 
-        // Code block.
+        // Article source file.
         var article = page.selectFirst("article.kiso-content");
         assertThat(article).isNotNull();
+        assertThat(article.children().first().hasClass("kiso-source-file")).isTrue();
+        var sourceFile = article.selectFirst(".kiso-source-file");
+        assertThat(sourceFile.selectFirst(".kiso-source-file-label").text()).isEqualTo("Markdown file");
+        assertThat(sourceFile.selectFirst(".kiso-source-file-name").text())
+                .isEqualTo("ga4_obfuscated_sample_ecommerce.md");
+
+        // Code block.
         var codeBlock = article.selectFirst("pre > code.language-sql");
         assertThat(codeBlock).isNotNull();
         assertThat(codeBlock.text()).contains("COUNT(*) AS event_count");

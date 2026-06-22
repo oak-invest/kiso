@@ -2,7 +2,7 @@
 
 @param com.oakinvest.kiso.core.renderer.model.ConceptPage page
 
-@template.layout(
+@template.layouts.default(
 title = page.metadata().title(),
 description = page.metadata().description(),
 content = @`
@@ -22,21 +22,16 @@ content = @`
         <div class="border-b border-base-300 bg-base-300/30 px-6 py-6 sm:px-8">
 
             <!-- Type ============================================================================================== -->
-            @if(page.type() != null || page.timestamp() != null)
-                <!--
-                    Create a horizontal flex row with vertically centered items, automatically spaced by 0.5rem,
-                    wrapping to additional lines on smaller screens, and leaving 1rem of spacing below the row.
-                -->
-                <div class="mb-4 flex flex-wrap items-center gap-2">
-                    @if(page.type() != null)
-                        <span class="badge badge-primary badge-lg">${page.type()}</span>
-                    @endif
-
-                    @if(page.timestamp() != null)
-                        <span class="badge badge-outline badge-lg">Last update ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}</span>
-                    @endif
-                </div>
-            @endif
+            <!--
+                Create a horizontal flex row with vertically centered items, automatically spaced by 0.5rem,
+                wrapping to additional lines on smaller screens, and leaving 1rem of spacing below the row.
+            -->
+            <div class="mb-4 flex flex-wrap items-center gap-2">
+                <span class="badge badge-primary badge-lg">Concept</span>
+                @if(page.type() != null)
+                    <span class="badge badge-secondary badge-lg">${page.type()}</span>
+                @endif
+            </div>
 
             <!-- Title ============================================================================================= -->
             <!--
@@ -45,9 +40,11 @@ content = @`
                     leading-tight - Tight line-height. Without it, large titles often have too much vertical spacing.
                     tracking-normal - Normal letter spacing.
             -->
-            <div class="max-w-4xl text-4xl font-bold leading-tight tracking-normal sm:text-5xl">
-                ${page.metadata().title()}
-            </div>
+            @if(page.metadata().title() != null)
+                <div class="max-w-4xl text-4xl font-bold leading-tight tracking-normal sm:text-5xl">
+                    ${page.metadata().title()}
+                </div>
+            @endif
 
             <!-- Description ======================================================================================= -->
             <!--
@@ -64,7 +61,7 @@ content = @`
         </div>
 
         <!-- Resource & Tags ======================================================================================= -->
-        @if(page.resource() != null || page.tags() != null && !page.tags().isEmpty())
+        @if(page.resource() != null || page.tags() != null)
             <!--
             Create a responsive grid layout that stacks content vertically on mobile with horizontal separators, then
             switches to a two-column layout on medium screens and above, using a wide main column and a narrower sidebar
@@ -105,15 +102,23 @@ content = @`
 
     <!-- Content =================================================================================================== -->
     <article class="kiso-content">
+        <div class="kiso-source-file">
+            <span class="kiso-source-file-label">Markdown file</span>
+            <span class="kiso-source-file-name">
+                <a class="link link-hover font-mono" href="${page.metadata().markdownFileName()}">
+                    ${page.metadata().markdownFileName()}
+                </a>
+            </span>
+        </div>
         ${page.htmlContent()}
     </article>
 
     <!-- Footer ==================================================================================================== -->
-    <footer class="mt-6 flex justify-end text-sm text-base-content/60">
-        <a class="link link-hover font-mono" href="${page.metadata().markdownFileName()}">
-            ${page.metadata().markdownFileName()}
-        </a>
-    </footer>
+    @if(page.timestamp() != null)
+        <footer class="mt-6 flex justify-end text-sm text-base-content/60">
+            Last update: ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
+        </footer>
+    @endif
 
 `
 )

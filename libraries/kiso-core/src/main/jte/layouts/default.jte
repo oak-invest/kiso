@@ -1,6 +1,6 @@
 @param String title
 @param String description
-@param gg.jte.html.HtmlContent content
+@param gg.jte.Content content
 
 <!DOCTYPE html>
 <html lang="en">

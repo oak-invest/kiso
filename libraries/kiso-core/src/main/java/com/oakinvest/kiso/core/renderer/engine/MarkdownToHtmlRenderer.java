@@ -7,14 +7,12 @@ import com.oakinvest.kiso.core.renderer.util.PageMetadata;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
-import gg.jte.resolve.DirectoryCodeResolver;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
-import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -36,15 +34,7 @@ public final class MarkdownToHtmlRenderer {
             .build();
 
     /** JTE - Java Template engine. */
-    private TemplateEngine templateEngine;
-
-    /**
-     * Constructor.
-     */
-    public MarkdownToHtmlRenderer() {
-        DirectoryCodeResolver resolver = new DirectoryCodeResolver(Path.of("src/main/jte"));
-        templateEngine = TemplateEngine.create(resolver, ContentType.Html);
-    }
+    private final TemplateEngine templateEngine = TemplateEngine.createPrecompiled(ContentType.Html);
 
     /**
      * Render a markdownFile file to HTML.
@@ -64,7 +54,7 @@ public final class MarkdownToHtmlRenderer {
                         .description(markdownFile.frontmatter().description())
                         .path(markdownFile.path().toString())
                         .build())
-                .type(markdownFile.kind().name())
+                .type(markdownFile.frontmatter().type())
                 .resource(markdownFile.frontmatter().resource())
                 .tags(markdownFile.frontmatter().tags())
                 .timestamp(markdownFile.frontmatter().timestamp())

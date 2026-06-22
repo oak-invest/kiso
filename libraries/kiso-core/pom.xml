@@ -158,7 +158,7 @@
                 <version>${jte.version}</version>
                 <configuration>
                     <sourceDirectory>${project.basedir}/src/main/jte</sourceDirectory>
-                    <targetDirectory>${project.build.directory}/generated-sources/jte</targetDirectory>
+                    <targetDirectory>${project.build.outputDirectory}</targetDirectory>
                     <contentType>Html</contentType>
                 </configuration>
                 <executions>
@@ -170,7 +170,7 @@
                 </executions>
             </plugin>
 
-            <!-- Test assets ====================================================================================== -->
+            <!-- Test assets ======================================================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
