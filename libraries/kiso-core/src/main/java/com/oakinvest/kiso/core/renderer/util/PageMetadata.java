@@ -2,6 +2,8 @@ package com.oakinvest.kiso.core.renderer.util;
 
 import lombok.Builder;
 
+import java.nio.file.Path;
+
 /**
  * Page metadata.
  *
@@ -16,4 +18,22 @@ public record PageMetadata(
         String description,
         String path
 ) {
+
+    /**
+     * Returns Markdown filename.
+     *
+     * @return Markdown filename
+     */
+    public String markdownFileName() {
+        String fileName = Path.of(path)
+                .getFileName()
+                .toString();
+
+        int extensionIndex = fileName.lastIndexOf('.');
+        if (extensionIndex == -1) {
+            return fileName + ".md";
+        }
+        return fileName.substring(0, extensionIndex) + ".md";
+    }
+
 }

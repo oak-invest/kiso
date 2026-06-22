@@ -5,21 +5,28 @@ import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MarkdownToHtmlRendererTest extends BaseTest {
 
+    @BeforeEach
+    void setup() {
+        // Waiting to implement i18n.
+        Locale.setDefault(Locale.ENGLISH);
+    }
+
     @Test
-    @DisplayName("Mardown to html")
+    @DisplayName("Markdown to html")
     void markdownToHTML() throws URISyntaxException, IOException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
@@ -70,6 +77,40 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         // Testing the content =========================================================================================
 
+        // Document head.
+        assertThat(page.title()).isEqualTo("BigQuery sample dataset for Google Analytics ecommerce web implementation");
+        assertThat(page.selectFirst("meta[name=description]").attr("content")).startsWith("A sample of obfuscated Google Analytics");
+        assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .containsExactly(
+                        "assets/css/daisyui@5.css",
+                        "assets/css/themes.css",
+                        "assets/css/application.css"
+                );
+        assertThat(page.selectFirst("script[src]").attr("src")).isEqualTo("assets/js/browser@4.js");
+
+        // Concept header.
+        var header = page.selectFirst("main > section");
+        assertThat(header).isNotNull();
+        assertThat(header.select(".badge").eachText())
+                .containsExactly(
+                        "CONCEPT",
+                        "Last update May 28, 2026 at 10:49 PM UTC",
+                        "ecommerce",
+                        "web analytics",
+                        "Google Analytics",
+                        "BigQuery",
+                        "public dataset"
+                );
+
+        // Title.
+        assertThat(header.selectFirst("div.text-4xl").text()).isEqualTo("BigQuery sample dataset for Google Analytics ecommerce web implementation");
+        assertThat(header.selectFirst("p").text()).startsWith("A sample of obfuscated Google Analytics");
+
+        // Ressource
+        var resourceLink = header.selectFirst("a[href='https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce']");
+        assertThat(resourceLink).isNotNull();
+        assertThat(resourceLink.text()).isEqualTo("https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce");
+
         // H1.
         assertThat(page.selectXpath("//h1").size()).isEqualTo(5);
         assertThat(page.selectXpath("//h1").getFirst().text()).contains("Overview");
@@ -85,6 +126,21 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         // Text.
         assertThat(page.selectXpath("//h1[text()='Pre-requisites']/following-sibling::*[1]").text())
                 .isEqualTo("To work with this dataset, you need access to a Google Cloud project with the BigQuery API enabled. You can use BigQuery Sandbox mode or the Free usage tier for exploration and sample queries.");
+
+        // Code block.
+        var article = page.selectFirst("article.kiso-content");
+        assertThat(article).isNotNull();
+        var codeBlock = article.selectFirst("pre > code.language-sql");
+        assertThat(codeBlock).isNotNull();
+        assertThat(codeBlock.text()).contains("COUNT(*) AS event_count");
+        assertThat(codeBlock.text()).contains("bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*");
+
+        // Autolinks.
+        var citationLink = page.selectXpath("//h1[text()='Citations']/following-sibling::ul[1]/li[1]/a").getFirst();
+        assertThat(citationLink.attr("href"))
+                .isEqualTo("https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset");
+        assertThat(citationLink.text())
+                .isEqualTo("https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset");
     }
 
 }

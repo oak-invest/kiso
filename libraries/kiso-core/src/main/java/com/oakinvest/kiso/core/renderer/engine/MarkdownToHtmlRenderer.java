@@ -8,22 +8,32 @@ import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import gg.jte.resolve.DirectoryCodeResolver;
+import org.commonmark.Extension;
+import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * Markdown to HTML Renderer.
  */
 public final class MarkdownToHtmlRenderer {
 
+    /** Markdown extensions. */
+    private static final List<Extension> MARKDOWN_EXTENSIONS = List.of(AutolinkExtension.create());
+
     /** Markdown parser. */
-    private final Parser markdownParser = Parser.builder().build();
+    private final Parser markdownParser = Parser.builder()
+            .extensions(MARKDOWN_EXTENSIONS)
+            .build();
 
     /** CommonMark HTML renderer. */
-    private final HtmlRenderer htmlRenderer = HtmlRenderer.builder().build();
+    private final HtmlRenderer htmlRenderer = HtmlRenderer.builder()
+            .extensions(MARKDOWN_EXTENSIONS)
+            .build();
 
     /** JTE - Java Template engine. */
     private TemplateEngine templateEngine;
@@ -52,6 +62,7 @@ public final class MarkdownToHtmlRenderer {
                 .metadata(PageMetadata.builder()
                         .title(markdownFile.frontmatter().title())
                         .description(markdownFile.frontmatter().description())
+                        .path(markdownFile.path().toString())
                         .build())
                 .type(markdownFile.kind().name())
                 .resource(markdownFile.frontmatter().resource())

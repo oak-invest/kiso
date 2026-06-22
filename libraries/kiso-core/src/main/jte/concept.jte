@@ -1,3 +1,5 @@
+@import java.time.format.DateTimeFormatter
+
 @param com.oakinvest.kiso.core.renderer.model.ConceptPage page
 
 @template.layout(
@@ -31,7 +33,7 @@ content = @`
                     @endif
 
                     @if(page.timestamp() != null)
-                        <span class="badge badge-outline badge-lg">${page.timestamp().toString()}</span>
+                        <span class="badge badge-outline badge-lg">Last update ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}</span>
                     @endif
                 </div>
             @endif
@@ -58,6 +60,7 @@ content = @`
                     ${page.metadata().description()}
                 </p>
             @endif
+
         </div>
 
         <!-- Resource & Tags ======================================================================================= -->
@@ -95,14 +98,22 @@ content = @`
                         </div>
                     </div>
                 @endif
+
             </div>
         @endif
     </section>
 
-    <!-- Content --------------------------------------------------------------------------------------------------- -->
+    <!-- Content =================================================================================================== -->
     <article class="kiso-content">
         ${page.htmlContent()}
     </article>
+
+    <!-- Footer ==================================================================================================== -->
+    <footer class="mt-6 flex justify-end text-sm text-base-content/60">
+        <a class="link link-hover font-mono" href="${page.metadata().markdownFileName()}">
+            ${page.metadata().markdownFileName()}
+        </a>
+    </footer>
 
 `
 )
