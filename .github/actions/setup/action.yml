@@ -1,0 +1,17 @@
+name: "Environment setup"
+description: "Install tools (Java, Maven and Just)"
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Just Setup
+      uses: taiki-e/install-action@just
+
+    - name: Java Setup
+      uses: graalvm/setup-graalvm@v1
+      with:
+        distribution: 'graalvm'
+        java-version: '21'
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        native-image-job-reports: true
