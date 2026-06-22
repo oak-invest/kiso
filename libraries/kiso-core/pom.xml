@@ -49,8 +49,7 @@
         <jte.version>3.2.4</jte.version>
 
         <!-- Test dependencies  -->
-        <junit-jupiter.version>5.10.2</junit-jupiter.version>
-        <junit-pionner.version>2.3.0</junit-pionner.version>
+        <junit-jupiter.version>6.1.0</junit-jupiter.version>
         <assertj.version>3.27.7</assertj.version>
         <jsoup.version>1.22.2</jsoup.version>
 
@@ -117,14 +116,8 @@
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit-pioneer</groupId>
-            <artifactId>junit-pioneer</artifactId>
-            <version>${junit-pionner.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -153,6 +146,11 @@
                     <showDeprecation>true</showDeprecation>
                     <proc>full</proc>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
             </plugin>
             <plugin>
                 <groupId>gg.jte</groupId>
