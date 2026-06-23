@@ -23,7 +23,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      actions: write
+      pages: write
+      id-token: write
 
     environment:
       name: github-pages
