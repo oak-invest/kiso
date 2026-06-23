@@ -13,6 +13,7 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import java.nio.file.Path;
 import java.util.List;
 
 /**
@@ -58,6 +59,7 @@ public final class MarkdownToHtmlRenderer {
                 .resource(markdownFile.frontmatter().resource())
                 .tags(markdownFile.frontmatter().tags())
                 .timestamp(markdownFile.frontmatter().timestamp())
+                .assetBasePath(assetBasePath(markdownFile.relativePath()))
                 .htmlContent(output -> output.writeContent(htmlRenderer.render(document)))
                 .build();
 
@@ -67,6 +69,19 @@ public final class MarkdownToHtmlRenderer {
             return output.toString();
         }
         return htmlRenderer.render(document);
+    }
+
+    /**
+     * Returns the relative path from an HTML page to the generated site root.
+     *
+     * @param markdownRelativePath Markdown path relative to the site root
+     * @return asset base path
+     */
+    private String assetBasePath(final Path markdownRelativePath) {
+        if (markdownRelativePath == null || markdownRelativePath.getParent() == null) {
+            return "";
+        }
+        return "../".repeat(markdownRelativePath.getParent().getNameCount());
     }
 
 }

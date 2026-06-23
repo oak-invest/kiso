@@ -82,11 +82,11 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst("meta[name=description]").attr("content")).startsWith("A sample of obfuscated Google Analytics");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
                 .containsExactly(
-                        "assets/css/daisyui@5.css",
-                        "assets/css/themes.css",
-                        "assets/css/application.css"
+                        "../assets/css/daisyui@5.css",
+                        "../assets/css/themes.css",
+                        "../assets/css/application.css"
                 );
-        assertThat(page.selectFirst("script[src]").attr("src")).isEqualTo("assets/js/browser@4.js");
+        assertThat(page.selectFirst("script[src]").attr("src")).isEqualTo("../assets/js/browser@4.js");
 
         // Concept header.
         var header = page.selectFirst("main > section");

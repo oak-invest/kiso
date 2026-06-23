@@ -177,6 +177,21 @@
                 <version>${maven.resources.plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>copy-assets</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/assets</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/jte/assets</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>copy-test-assets</id>
                         <phase>process-test-resources</phase>
                         <goals>

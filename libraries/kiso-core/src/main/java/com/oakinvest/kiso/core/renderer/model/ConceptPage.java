@@ -14,8 +14,9 @@ import java.util.List;
  * @param type        the type of the page
  * @param resource    A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources.
  * @param tags        A YAML list of short strings for cross-cutting categorization.
- * @param timestamp   ISO 8601 datetime of last meaningful change.
- * @param htmlContent the HTML content of the page
+ * @param timestamp     ISO 8601 datetime of last meaningful change.
+ * @param assetBasePath relative path from this page to the generated site root
+ * @param htmlContent   the HTML content of the page
  */
 @Builder
 @SuppressWarnings("unused")
@@ -25,6 +26,7 @@ public record ConceptPage(
         String resource,
         List<String> tags,
         OffsetDateTime timestamp,
+        String assetBasePath,
         HtmlContent htmlContent
 ) {
 }

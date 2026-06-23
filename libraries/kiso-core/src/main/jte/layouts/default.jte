@@ -1,5 +1,6 @@
 @param String title
 @param String description
+@param String assetBasePath
 @param gg.jte.Content content
 
 <!DOCTYPE html>
@@ -15,13 +16,13 @@
         <meta name="description" content="${description}">
     @endif
 
-    <!-- CSS ======================================================================================================= -->
-    <link href="assets/css/daisyui@5.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/themes.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/application.css" rel="stylesheet" type="text/css"/>
+    <!-- CSS =========================💡============================================================================== -->
+    <link href="${assetBasePath}assets/css/daisyui@5.css" rel="stylesheet" type="text/css"/>
+    <link href="${assetBasePath}assets/css/themes.css" rel="stylesheet" type="text/css"/>
+    <link href="${assetBasePath}assets/css/application.css" rel="stylesheet" type="text/css"/>
 
     <!-- JS ======================================================================================================== -->
-    <script src="assets/js/browser@4.js"></script>
+    <script src="${assetBasePath}assets/js/browser@4.js"></script>
 
 </head>
 

@@ -9,6 +9,7 @@ import picocli.CommandLine;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -20,6 +21,14 @@ import java.nio.charset.StandardCharsets;
         description = "Generates a static website from .md files"
 )
 public class BuildCommand implements Runnable {
+
+    /** Static assets copied to the generated website root. */
+    private static final String[] ASSET_PATHS = {
+            "assets/css/daisyui@5.css",
+            "assets/css/themes.css",
+            "assets/css/application.css",
+            "assets/js/browser@4.js"
+    };
 
     /** Shared source directory option. */
     @CommandLine.Mixin
@@ -49,6 +58,7 @@ public class BuildCommand implements Runnable {
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
+            copyAssets(destinationDirectory);
 
             // Generating HTML =========================================================================================
             final MarkdownToHtmlRenderer markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
@@ -77,6 +87,24 @@ public class BuildCommand implements Runnable {
             commandSpec.exitCodeOnInvalidInput();
         }
 
+    }
+
+    /**
+     * Copies Kiso static assets to the generated website root.
+     *
+     * @param destinationDirectory generated website root
+     * @throws IOException if an asset cannot be copied
+     */
+    private void copyAssets(final File destinationDirectory) throws IOException {
+        ClassLoader classLoader = MarkdownToHtmlRenderer.class.getClassLoader();
+        for (String assetPath : ASSET_PATHS) {
+            try (InputStream inputStream = classLoader.getResourceAsStream(assetPath)) {
+                if (inputStream == null) {
+                    throw new IOException("Missing asset: " + assetPath);
+                }
+                FileUtils.copyInputStreamToFile(inputStream, new File(destinationDirectory, assetPath));
+            }
+        }
     }
 
 }

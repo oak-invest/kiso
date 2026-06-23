@@ -1,0 +1,22 @@
+[
+  {
+    "name": "gg.jte.generated.precompiled.JteindexGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.JteconceptGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.JteconceptGenerated$1",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.layouts.JtedefaultGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  }
+]

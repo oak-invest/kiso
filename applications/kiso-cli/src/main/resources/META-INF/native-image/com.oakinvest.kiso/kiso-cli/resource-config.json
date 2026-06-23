@@ -1,0 +1,18 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "assets/css/daisyui@5\\.css"
+      },
+      {
+        "pattern": "assets/css/themes\\.css"
+      },
+      {
+        "pattern": "assets/css/application\\.css"
+      },
+      {
+        "pattern": "assets/js/browser@4\\.js"
+      }
+    ]
+  }
+}
