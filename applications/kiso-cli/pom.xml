@@ -4,94 +4,41 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Parent ==================================================================================================== -->
+    <parent>
+        <groupId>com.oakinvest.kiso</groupId>
+        <artifactId>kiso</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
     <!-- Project information ======================================================================================= -->
-    <groupId>com.oakinvest.kiso</groupId>
     <artifactId>kiso-cli</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Kiso CLI</name>
     <description>Convert OKF files into navigable knowledge systems for humans and AI agents.</description>
-    <url>https://github.com/oak-invest/kiso</url>
-    <licenses>
-        <license>
-            <name>Apache License v2.0</name>
-            <url>https://github.com/oak-invest/kiso?tab=Apache-2.0-1-ov-file</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <!-- Source Code Management ==================================================================================== -->
-    <scm>
-        <url>https://github.com/oak-invest/kiso</url>
-        <connection>scm:git:git://github.com/oak-invest/kiso.git</connection>
-        <developerConnection>scm:git:git@github.com:oak-invest/kiso.git</developerConnection>
-    </scm>
-
-    <!-- Issue management ========================================================================================== -->
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/oak-invest/kiso/issues</url>
-    </issueManagement>
 
     <!-- Project configuration ===================================================================================== -->
     <properties>
-
-        <!-- Java build configuration -->
-        <java.version>21</java.version>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.release>21</maven.compiler.release>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <application.main.class>com.oakinvest.kiso.cli.Application</application.main.class>
-
-        <!-- Main librairies -->
-        <picocli.version>4.7.7</picocli.version>
-
-        <!-- Boilerplate & Utils -->
-        <lombok.version>1.18.46</lombok.version>
-
-        <!-- Test dependencies  -->
-        <junit-jupiter.version>6.1.0</junit-jupiter.version>
-        <junit-pionner.version>2.3.0</junit-pionner.version>
-        <assertj.version>3.27.7</assertj.version>
-
-        <!-- Maven -->
-        <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.puppycrawl.checkstyle.version>13.6.0</maven.puppycrawl.checkstyle.version>
-        <maven.resources.plugin.version>3.3.1</maven.resources.plugin.version>
-        <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>3.5.5</maven.surefire.plugin.version>
-        <maven.failsafe.plugin.version>3.5.5</maven.failsafe.plugin.version>
-        <maven.surefire-junit5-tree-reporter.plugin.version>1.5.1</maven.surefire-junit5-tree-reporter.plugin.version>
-        <maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
-        <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
-        <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
-        <maven.exec.plugin.version>3.6.3</maven.exec.plugin.version>
-        <maven.graalvm.native.plugin.version>1.1.2</maven.graalvm.native.plugin.version>
-        <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
     </properties>
 
     <!-- Dependencies ============================================================================================== -->
     <dependencies>
-
-        <!-- Main librairies -->
+        <!-- Main libraries -->
         <dependency>
             <groupId>com.oakinvest.kiso</groupId>
             <artifactId>kiso-core</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
-            <version>${picocli.version}</version>
         </dependency>
 
-        <!-- Boilerplate & Utils -->
+        <!-- Boilerplate and utils -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -99,19 +46,16 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit-pioneer</groupId>
             <artifactId>junit-pioneer</artifactId>
-            <version>${junit-pionner.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -119,15 +63,11 @@
     <!-- Build configuration ======================================================================================= -->
     <build>
         <plugins>
-            <!-- Maven compiler ==================================================================================== -->
+            <!-- Picocli annotation processing ===================================================================== -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <showWarnings>true</showWarnings>
-                    <showDeprecation>true</showDeprecation>
-                    <proc>full</proc>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>info.picocli</groupId>
@@ -141,41 +81,12 @@
                 </configuration>
             </plugin>
 
-            <!-- Checkstyle ======================================================================================== -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven.checkstyle.plugin.version}</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>${maven.puppycrawl.checkstyle.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <consoleOutput>true</consoleOutput>
-                    <configLocation>https://oak-invest.com/shared/checkstyle.xml</configLocation>
-                    <failOnViolation>true</failOnViolation>
-                    <violationSeverity>warning</violationSeverity>
-                </configuration>
-            </plugin>
-
             <!-- Application execution ============================================================================= -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>${maven.exec.plugin.version}</version>
             </plugin>
-
         </plugins>
     </build>
 

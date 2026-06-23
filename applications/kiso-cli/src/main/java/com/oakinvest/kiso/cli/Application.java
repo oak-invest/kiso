@@ -6,7 +6,7 @@ import picocli.CommandLine;
 @CommandLine.Command(
         name = "kiso-cli",
         mixinStandardHelpOptions = true,
-        version = "0.1",
+        version = "0.1.0",
         subcommands = {
                 BuildCommand.class
         }
