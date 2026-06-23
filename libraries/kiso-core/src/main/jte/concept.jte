@@ -5,6 +5,7 @@
 @template.layouts.default(
 title = page.metadata().title(),
 description = page.metadata().description(),
+markdownFileName = page.metadata().markdownFileName(),
 assetBasePath = page.metadata().assetBasePath(),
 packageTree = page.packageTree(),
 currentHtmlPath = page.metadata().htmlPath(),

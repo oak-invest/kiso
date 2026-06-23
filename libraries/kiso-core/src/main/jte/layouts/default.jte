@@ -1,5 +1,6 @@
 @param String title
 @param String description
+@param String markdownFileName
 @param String assetBasePath
 @param com.oakinvest.kiso.core.renderer.model.PackageTree packageTree
 @param String currentHtmlPath
@@ -25,6 +26,11 @@
 
     <!-- JS ======================================================================================================== -->
     <script src="${assetBasePath}assets/js/browser@4.js"></script>
+
+    <!-- AI Specific =============================================================================================== -->
+    @if(markdownFileName != null)
+        <link rel="alternate" type="text/plain" href="${markdownFileName}">
+    @endif
 
 </head>
 
