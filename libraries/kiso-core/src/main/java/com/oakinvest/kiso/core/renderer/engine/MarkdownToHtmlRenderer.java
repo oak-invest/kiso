@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.renderer.engine;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.renderer.model.ConceptPage;
 import com.oakinvest.kiso.core.renderer.model.IndexPage;
+import com.oakinvest.kiso.core.renderer.model.PackageTree;
 import com.oakinvest.kiso.core.renderer.util.PageMetadata;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
@@ -44,6 +45,17 @@ public final class MarkdownToHtmlRenderer {
      * @return content rendered
      */
     public String render(final MarkdownFile markdownFile) {
+        return render(markdownFile, null);
+    }
+
+    /**
+     * Render a markdownFile file to HTML.
+     *
+     * @param markdownFile markdownFile file
+     * @param packageTree  calculated package tree for navigation
+     * @return content rendered
+     */
+    public String render(final MarkdownFile markdownFile, final PackageTree packageTree) {
         if (markdownFile == null || markdownFile.content() == null) {
             return "";
         }
@@ -68,7 +80,9 @@ public final class MarkdownToHtmlRenderer {
                                 .title("Index")
                                 .path(markdownFile.path().toString())
                                 .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                                .htmlPath(htmlPath(markdownFile.relativePath()))
                                 .build())
+                        .packageTree(packageTree)
                         .htmlContent(output -> output.writeContent(html))
                         .build();
 
@@ -84,11 +98,13 @@ public final class MarkdownToHtmlRenderer {
                                 .description(markdownFile.frontmatter().description())
                                 .path(markdownFile.path().toString())
                                 .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                                .htmlPath(htmlPath(markdownFile.relativePath()))
                                 .build())
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())
                         .tags(markdownFile.frontmatter().tags())
                         .timestamp(markdownFile.frontmatter().timestamp())
+                        .packageTree(packageTree)
                         .htmlContent(output -> output.writeContent(html))
                         .build();
 
@@ -97,6 +113,23 @@ public final class MarkdownToHtmlRenderer {
                 return output.toString();
             }
         }
+    }
+
+    /**
+     * Returns the generated HTML path relative to the generated site root.
+     *
+     * @param markdownRelativePath Markdown path relative to the site root
+     * @return HTML path
+     */
+    private String htmlPath(final Path markdownRelativePath) {
+        if (markdownRelativePath == null) {
+            return null;
+        }
+        String path = markdownRelativePath.toString().replace('\\', '/');
+        if (path.endsWith(".md")) {
+            return path.substring(0, path.length() - ".md".length()) + ".html";
+        }
+        return path + ".html";
     }
 
     /**

@@ -1,3 +1,47 @@
+/* Layout ======================================================================================================= */
+.kiso-hamburger,
+.kiso-hamburger::before,
+.kiso-hamburger::after {
+    display: block;
+    width: 1.25rem;
+    height: 0.125rem;
+    border-radius: 999px;
+    background: currentColor;
+    content: "";
+}
+
+.kiso-hamburger {
+    position: relative;
+}
+
+.kiso-hamburger::before,
+.kiso-hamburger::after {
+    position: absolute;
+    left: 0;
+}
+
+.kiso-hamburger::before {
+    top: -0.375rem;
+}
+
+.kiso-hamburger::after {
+    top: 0.375rem;
+}
+
+.kiso-navigation-menu {
+    border-top: var(--border) solid var(--color-base-300);
+    padding-top: 1rem;
+}
+
+.kiso-navigation-menu .menu li > details > summary {
+    font-weight: 600;
+}
+
+.kiso-navigation-menu .menu li > a,
+.kiso-navigation-menu .menu li > details > summary {
+    border-radius: var(--radius-field);
+}
+
 /* Concept pages ================================================================================================ */
 .kiso-content {
     border: var(--border) solid var(--color-base-300);

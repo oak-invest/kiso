@@ -18,5 +18,15 @@
     "name": "gg.jte.generated.precompiled.layouts.JtedefaultGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.partials.JtepackageTreeMenuGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.partials.JtepackageTreeMenuNodeGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
   }
 ]

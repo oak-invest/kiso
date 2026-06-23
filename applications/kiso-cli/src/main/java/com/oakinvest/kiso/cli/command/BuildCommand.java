@@ -4,6 +4,7 @@ import com.oakinvest.kiso.cli.util.command.DestinationOption;
 import com.oakinvest.kiso.cli.util.command.SourceOption;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
+import com.oakinvest.kiso.core.renderer.model.PackageTree;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -58,18 +59,20 @@ public class BuildCommand implements Runnable {
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
-            copyAssets(destinationDirectory);
 
             // Generating HTML =========================================================================================
             final MarkdownToHtmlRenderer markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
-            new KnowledgeBundleLoader().load(destinationDirectory.toPath()).bundles()
+            final var knowledgeBundle = new KnowledgeBundleLoader().load(destinationDirectory.toPath());
+            final var packageTree = PackageTree.fromBundle(knowledgeBundle.rootBundle());
+            copyAssets(destinationDirectory);
+            knowledgeBundle.bundles()
                     .forEach(bundle -> {
                         // We generate the HTML version of every Markdown file =========================================
                         bundle.markdownFiles().forEach(markdownFile -> {
                             try {
                                 FileUtils.writeStringToFile(
                                         new File(bundle.path().toString(), markdownFile.htmlFileName()),
-                                        markdownToHtmlRenderer.render(markdownFile),
+                                        markdownToHtmlRenderer.render(markdownFile, packageTree),
                                         StandardCharsets.UTF_8
                                 );
                                 commandSpec.commandLine().getOut().println("HTML Generated for " + markdownFile.relativePath());

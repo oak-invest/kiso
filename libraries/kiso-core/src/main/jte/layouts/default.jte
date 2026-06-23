@@ -1,6 +1,8 @@
 @param String title
 @param String description
 @param String assetBasePath
+@param com.oakinvest.kiso.core.renderer.model.PackageTree packageTree
+@param String currentHtmlPath
 @param gg.jte.Content content
 
 <!DOCTYPE html>
@@ -33,22 +35,44 @@ current DaisyUI theme, and displays text using the default readable text color f
     min-h-screen - Set the minimum height of the element to the full height of the viewport
     text-base-content - Apply DaisyUI’s default text color for base surfaces
 -->
-<div class="min-h-screen bg-base-200 text-base-content">
+<div class="drawer min-h-screen bg-base-200 text-base-content">
+    <input id="kiso-navigation-drawer" type="checkbox" class="drawer-toggle"/>
 
-    <!--
-        Create a centered main container, limit its width to about 1152px, add horizontal padding so content never
-        touches screen edges, and increase spacing on larger screens for better readability.
-            container - Create a centered layout wrapper
-            mx-auto - Center a block element horizontally
-            max-w-6xl - Limit the maximum width of the container to 6xl (1152px)
-    -->
-    <main class="container mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
+    <div class="drawer-content min-h-screen">
+        <label for="kiso-navigation-drawer"
+               aria-label="Open navigation"
+               class="btn btn-square btn-ghost fixed left-3 top-3 z-40 bg-base-100/90 shadow-sm backdrop-blur sm:left-4 sm:top-4">
+            <span class="kiso-hamburger" aria-hidden="true"></span>
+        </label>
 
-        ${content}
+        <!--
+            Create a centered main container, limit its width to about 1152px, add horizontal padding so content never
+            touches screen edges, and increase spacing on larger screens for better readability.
+                container - Create a centered layout wrapper
+                mx-auto - Center a block element horizontally
+                max-w-6xl - Limit the maximum width of the container to 6xl (1152px)
+        -->
+        <main class="container mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
 
-    </main>
+            ${content}
 
+        </main>
+    </div>
+
+    <div class="drawer-side z-50">
+        <label for="kiso-navigation-drawer" aria-label="Close navigation" class="drawer-overlay"></label>
+        <aside class="min-h-full w-80 max-w-[85vw] bg-base-100 p-4 text-base-content">
+            <div class="mb-6 px-2 pt-2">
+                <%-- <div class="text-xs font-semibold uppercase text-base-content/50">Kiso</div> --%>
+                <div class="mt-1 text-lg font-semibold">Bundle content</div>
+            </div>
+            <nav class="kiso-navigation-menu">
+                @template.partials.packageTreeMenu(packageTree = packageTree, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
+            </nav>
+        </aside>
+    </div>
 </div>
+
 </body>
 
 </html>

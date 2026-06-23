@@ -2,6 +2,7 @@ package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
+import com.oakinvest.kiso.core.renderer.model.PackageTree;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -37,10 +38,11 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
         var bundle = new KnowledgeBundleLoader().load(resourcePath);
         var markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
+        var packageTree = PackageTree.fromBundle(bundle.rootBundle());
 
         // Index file of the bundle ====================================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
-        var page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst()));
+        var page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst(), packageTree));
 
         // Writing the file (console & target directory) for debugging purposes ========================================
         FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
@@ -55,6 +57,17 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 );
         assertThat(page.selectFirst("script[src]").attr("src")).isEqualTo("assets/js/browser@4.js");
 
+        // Drawer.
+        assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
+        assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
+        assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
+        assertThat(page.select(".drawer-side details[open]")).isEmpty();
+        assertThat(page.selectFirst(".drawer-side a[href='index.html']").text()).isEqualTo("Index");
+        assertThat(page.selectFirst(".drawer-side a[href='index.html']").hasClass("font-semibold")).isTrue();
+        assertThat(page.selectFirst(".drawer-side details summary").text()).isEqualTo("datasets");
+        assertThat(page.selectFirst(".drawer-side a[href='datasets/ga4_obfuscated_sample_ecommerce.html']").text())
+                .isEqualTo("BigQuery sample dataset for Google Analytics ecommerce web implementation");
+
         // Index header.
         var indexHeader = page.selectFirst("main > section");
         assertThat(indexHeader).isNotNull();
@@ -66,33 +79,33 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(indexArticle.selectFirst(".kiso-source-file-name").text()).isEqualTo("index.md");
 
         // H1.
-        assertThat(page.selectXpath("//h1").size()).isEqualTo(1);
-        assertThat(page.selectXpath("//h1").getFirst().text()).contains("Subdirectories");
+        assertThat(indexArticle.select("h1")).hasSize(1);
+        assertThat(indexArticle.selectFirst("h1").text()).contains("Subdirectories");
 
         // UL.
-        assertThat(page.selectXpath("//ul").size()).isEqualTo(1);
+        assertThat(indexArticle.select("ul")).hasSize(1);
 
         // IL.
-        assertThat(page.selectXpath("//ul/li").size()).isEqualTo(3);
-        assertThat(page.selectXpath("//ul/li").getFirst().text()).contains("datasets - A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
-        assertThat(page.selectXpath("//ul/li").get(1).text()).contains("references - This directory contains specifications for data joins and definitions for user activity and purchase metrics.");
-        assertThat(page.selectXpath("//ul/li").get(2).text()).contains("tables - Contains Google Analytics event export data from the ga4_obfuscated_sample_ecommerce dataset.");
+        assertThat(indexArticle.select("ul li")).hasSize(3);
+        assertThat(indexArticle.select("ul li").getFirst().text()).contains("datasets - A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
+        assertThat(indexArticle.select("ul li").get(1).text()).contains("references - This directory contains specifications for data joins and definitions for user activity and purchase metrics.");
+        assertThat(indexArticle.select("ul li").get(2).text()).contains("tables - Contains Google Analytics event export data from the ga4_obfuscated_sample_ecommerce dataset.");
 
         // Links.
-        assertThat(page.selectXpath("//ul/li/a").size()).isEqualTo(3);
-        var firstLink = page.selectXpath("//ul/li/a").getFirst();
+        assertThat(indexArticle.select("ul li a")).hasSize(3);
+        var firstLink = indexArticle.select("ul li a").getFirst();
         assertThat(firstLink.attr("href")).isEqualTo("datasets/index.html");
         assertThat(firstLink.text()).isEqualTo("datasets");
-        var secondLink = page.selectXpath("//ul/li/a").get(1);
+        var secondLink = indexArticle.select("ul li a").get(1);
         assertThat(secondLink.attr("href")).isEqualTo("references/index.html");
         assertThat(secondLink.text()).isEqualTo("references");
-        var thirdLink = page.selectXpath("//ul/li/a").get(2);
+        var thirdLink = indexArticle.select("ul li a").get(2);
         assertThat(thirdLink.attr("href")).isEqualTo("tables/index.html");
         assertThat(thirdLink.text()).isEqualTo("tables");
 
         // datasets/ga4_obfuscated_sample_ecommerce.md =================================================================
         markdownFiles = bundle.rootBundle().childBundleDirectories().getFirst().markdownFiles();
-        page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst()));
+        page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst(), packageTree));
 
         // Writing the file (console & target directory) for debugging purposes ========================================
         FileUtils.writeStringToFile(targetDirectory.resolve("datasets/test-concept.html").toFile(), page.html(), UTF_8);
@@ -109,6 +122,19 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/css/application.css"
                 );
         assertThat(page.selectFirst("script[src]").attr("src")).isEqualTo("../assets/js/browser@4.js");
+
+        // Drawer.
+        assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
+        assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
+        assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
+        assertThat(page.select(".drawer-side details[open]")).hasSize(1);
+        assertThat(page.selectFirst(".drawer-side details[open] > summary").text()).isEqualTo("datasets");
+        assertThat(page.selectFirst(".drawer-side a[href='../index.html']").text()).isEqualTo("Index");
+        assertThat(page.selectFirst(".drawer-side summary").hasClass("menu-active")).isTrue();
+        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").hasClass("font-semibold")).isTrue();
+        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").hasClass("menu-active")).isFalse();
+        assertThat(page.selectFirst(".drawer-side a[href='../references/metrics/avg_pageviews.html']").text())
+                .isEqualTo("Average Pageviews");
 
         // Concept header.
         var header = page.selectFirst("main > section");

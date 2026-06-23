@@ -11,6 +11,7 @@ import java.nio.file.Path;
  * @param description   the description of the page
  * @param path          the path of the page
  * @param assetBasePath relative path from this page to the generated site root
+ * @param htmlPath      HTML path relative to the generated site root
  */
 @Builder
 @SuppressWarnings("unused")
@@ -18,7 +19,8 @@ public record PageMetadata(
         String title,
         String description,
         String path,
-        String assetBasePath
+        String assetBasePath,
+        String htmlPath
 ) {
 
     /**

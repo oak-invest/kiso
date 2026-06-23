@@ -6,6 +6,8 @@
 title = page.metadata().title(),
 description = page.metadata().description(),
 assetBasePath = page.metadata().assetBasePath(),
+packageTree = page.packageTree(),
+currentHtmlPath = page.metadata().htmlPath(),
 content = @`
 
     <!-- Header ==================================================================================================== -->
