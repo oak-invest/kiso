@@ -5,7 +5,7 @@
 @template.layouts.default(
 title = page.metadata().title(),
 description = page.metadata().description(),
-assetBasePath = page.assetBasePath(),
+assetBasePath = page.metadata().assetBasePath(),
 content = @`
 
     <!-- Header ==================================================================================================== -->

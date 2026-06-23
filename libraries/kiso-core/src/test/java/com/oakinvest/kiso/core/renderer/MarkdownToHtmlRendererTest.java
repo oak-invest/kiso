@@ -29,6 +29,11 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
     @DisplayName("Markdown to html")
     void markdownToHTML() throws URISyntaxException, IOException {
         // What we are testing =========================================================================================
+        var targetDirectory = Path.of(MarkdownToHtmlRendererTest.class
+                .getProtectionDomain()
+                .getCodeSource()
+                .getLocation()
+                .toURI()).getParent();
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
         var bundle = new KnowledgeBundleLoader().load(resourcePath);
         var markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
@@ -36,6 +41,29 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         // Index file of the bundle ====================================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
         var page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst()));
+
+        // Writing the file (console & target directory) for debugging purposes ========================================
+        FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
+
+        // Document head.
+        assertThat(page.title()).isEqualTo("Index");
+        assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .containsExactly(
+                        "assets/css/daisyui@5.css",
+                        "assets/css/themes.css",
+                        "assets/css/application.css"
+                );
+        assertThat(page.selectFirst("script[src]").attr("src")).isEqualTo("assets/js/browser@4.js");
+
+        // Index header.
+        var indexHeader = page.selectFirst("main > section");
+        assertThat(indexHeader).isNotNull();
+        assertThat(indexHeader.select(".badge").eachText()).containsExactly("Index");
+
+        // Article source file.
+        var indexArticle = page.selectFirst("article.kiso-content");
+        assertThat(indexArticle).isNotNull();
+        assertThat(indexArticle.selectFirst(".kiso-source-file-name").text()).isEqualTo("index.md");
 
         // H1.
         assertThat(page.selectXpath("//h1").size()).isEqualTo(1);
@@ -53,13 +81,13 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         // Links.
         assertThat(page.selectXpath("//ul/li/a").size()).isEqualTo(3);
         var firstLink = page.selectXpath("//ul/li/a").getFirst();
-        assertThat(firstLink.attr("href")).isEqualTo("datasets/index.md");
+        assertThat(firstLink.attr("href")).isEqualTo("datasets/index.html");
         assertThat(firstLink.text()).isEqualTo("datasets");
         var secondLink = page.selectXpath("//ul/li/a").get(1);
-        assertThat(secondLink.attr("href")).isEqualTo("references/index.md");
+        assertThat(secondLink.attr("href")).isEqualTo("references/index.html");
         assertThat(secondLink.text()).isEqualTo("references");
         var thirdLink = page.selectXpath("//ul/li/a").get(2);
-        assertThat(thirdLink.attr("href")).isEqualTo("tables/index.md");
+        assertThat(thirdLink.attr("href")).isEqualTo("tables/index.html");
         assertThat(thirdLink.text()).isEqualTo("tables");
 
         // datasets/ga4_obfuscated_sample_ecommerce.md =================================================================
@@ -67,13 +95,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         page = Jsoup.parse(markdownToHtmlRenderer.render(markdownFiles.getFirst()));
 
         // Writing the file (console & target directory) for debugging purposes ========================================
-        var targetDirectory = Path.of(MarkdownToHtmlRendererTest.class
-                .getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .toURI()).getParent();
-        FileUtils.writeStringToFile(targetDirectory.resolve("test.html").toFile(), page.html(), UTF_8);
-        System.out.println(page.html());
+        FileUtils.writeStringToFile(targetDirectory.resolve("datasets/test-concept.html").toFile(), page.html(), UTF_8);
 
         // Testing the content =========================================================================================
 

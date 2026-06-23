@@ -7,16 +7,18 @@ import java.nio.file.Path;
 /**
  * Page metadata.
  *
- * @param title       the title of the page
- * @param description the description of the page
- * @param path        the path of the page
+ * @param title         the title of the page
+ * @param description   the description of the page
+ * @param path          the path of the page
+ * @param assetBasePath relative path from this page to the generated site root
  */
 @Builder
 @SuppressWarnings("unused")
 public record PageMetadata(
         String title,
         String description,
-        String path
+        String path,
+        String assetBasePath
 ) {
 
     /**

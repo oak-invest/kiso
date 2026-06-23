@@ -3,6 +3,7 @@
 /public-native/*
 /libraries/kiso-core/jte-classes/*
 /documentation/temp/*
+/dist/*
 
 # Idea files ===========================================================================================================
 

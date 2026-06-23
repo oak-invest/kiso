@@ -7,15 +7,18 @@ test:
 
 # Application run commandes ============================================================================================
 run:
+    mvn install -pl libraries/kiso-core -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application
 
 run_check:
+    mvn install -pl libraries/kiso-core -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="check"
 
 run_build:
+    mvn install -pl libraries/kiso-core -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="build --source=examples/kb-google-example"
@@ -24,7 +27,8 @@ run_build:
 
 build_native:
     # Native app is built as applications/kiso-cli/target/kiso-cli
-    mvn -pl applications/kiso-cli -Pnative native:compile
+    mvn install -pl libraries/kiso-core -DskipTests
+    mvn -pl applications/kiso-cli -Pnative package native:compile
 
 run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native

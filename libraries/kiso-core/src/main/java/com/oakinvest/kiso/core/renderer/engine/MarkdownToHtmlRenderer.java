@@ -1,8 +1,8 @@
 package com.oakinvest.kiso.core.renderer.engine;
 
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
 import com.oakinvest.kiso.core.renderer.model.ConceptPage;
+import com.oakinvest.kiso.core.renderer.model.IndexPage;
 import com.oakinvest.kiso.core.renderer.util.PageMetadata;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
@@ -47,28 +47,56 @@ public final class MarkdownToHtmlRenderer {
         if (markdownFile == null || markdownFile.content() == null) {
             return "";
         }
+
+        // Generating the HTML =========================================================================================
         final Node document = markdownParser.parse(markdownFile.content());
+        String html = htmlRenderer.render(document).replaceAll(
+                "href=\"(?!https?://|mailto:|#)([^\"]+)\\.md\"",
+                "href=\"$1.html\""
+        );
 
-        ConceptPage page = ConceptPage.builder()
-                .metadata(PageMetadata.builder()
-                        .title(markdownFile.frontmatter().title())
-                        .description(markdownFile.frontmatter().description())
-                        .path(markdownFile.path().toString())
-                        .build())
-                .type(markdownFile.frontmatter().type())
-                .resource(markdownFile.frontmatter().resource())
-                .tags(markdownFile.frontmatter().tags())
-                .timestamp(markdownFile.frontmatter().timestamp())
-                .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                .htmlContent(output -> output.writeContent(htmlRenderer.render(document)))
-                .build();
+        // Choose and render depending on the kind =====================================================================
+        switch (markdownFile.kind()) {
+            case LOG -> {
+                // Log - No treatment, just return the HTML content.
+                return "";
+            }
+            case INDEX -> {
+                // Index ===============================================================================================
+                IndexPage page = IndexPage.builder()
+                        .metadata(PageMetadata.builder()
+                                .title("Index")
+                                .path(markdownFile.path().toString())
+                                .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                                .build())
+                        .htmlContent(output -> output.writeContent(html))
+                        .build();
 
-        if (markdownFile.kind().equals(MarkdownFileKind.CONCEPT)) {
-            StringOutput output = new StringOutput();
-            templateEngine.render("concept.jte", page, output);
-            return output.toString();
+                StringOutput output = new StringOutput();
+                templateEngine.render("index.jte", page, output);
+                return output.toString();
+            }
+            default -> {
+                // Concept =============================================================================================
+                ConceptPage page = ConceptPage.builder()
+                        .metadata(PageMetadata.builder()
+                                .title(markdownFile.frontmatter().title())
+                                .description(markdownFile.frontmatter().description())
+                                .path(markdownFile.path().toString())
+                                .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                                .build())
+                        .type(markdownFile.frontmatter().type())
+                        .resource(markdownFile.frontmatter().resource())
+                        .tags(markdownFile.frontmatter().tags())
+                        .timestamp(markdownFile.frontmatter().timestamp())
+                        .htmlContent(output -> output.writeContent(html))
+                        .build();
+
+                StringOutput output = new StringOutput();
+                templateEngine.render("concept.jte", page, output);
+                return output.toString();
+            }
         }
-        return htmlRenderer.render(document);
     }
 
     /**
