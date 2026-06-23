@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180" role="img" aria-label="Kiso logo">
+  
+  <rect x="12" y="12" width="156" height="156" rx="32" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+  
+    <g transform="translate(38 45) scale(1.04)" fill="none" stroke="#3157F6" stroke-width="14" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M64 18 L34 18 L16 50 L34 82 L64 82"/>
+      <path d="M78 28 L52 50 L78 72"/>
+    </g>
+</svg>
