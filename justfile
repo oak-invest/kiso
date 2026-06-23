@@ -32,3 +32,11 @@ build_native:
 
 run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
+
+# Website ==============================================================================================================
+
+generate_website_demo:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-google-example --destination=website/examples/kb-google-example/"

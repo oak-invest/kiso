@@ -19,7 +19,11 @@ concurrency:
 
 jobs:
   deploy:
+    name: Deploy to GitHub Pages
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
 
     environment:
       name: github-pages
@@ -28,6 +32,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: build and run tests
+        run: |
+          just generate_website_demo
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6

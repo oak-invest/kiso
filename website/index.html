@@ -1,125 +1,205 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html data-theme="light" lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Kiso - Open Knowledge Format Publishing Engine</title>
-    <meta name="description" content="Kiso turns Open Knowledge Format Markdown files into navigable static knowledge websites for humans and AI agents."/>
-    <link rel="icon" href="assets/images/logo/kiso_favicon_light_32x32.svg" type="image/svg+xml"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>Kiso, a publishing engine for Open Knowledge Format (OKF).</title>
+    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
+  websites for humans and AI agents." name="description"/>
+
+    <meta content="website" property="og:type"/>
+    <meta content="Kiso, a publishing engine for Open Knowledge Format (OKF).e" property="og:title"/>
+    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
+  websites for humans and AI agents." property="og:description"/>
+    <meta content="assets/images/social/kiso-og.png" property="og:image"/>
+    <meta content="1200" property="og:image:width"/>
+    <meta content="630" property="og:image:height"/>
+    <meta content="summary_large_image" name="twitter:card"/>
+    <meta content="Kiso, a publishing engine for Open Knowledge Format (OKF)." name="twitter:title"/>
+    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
+  websites for humans and AI agents." name="twitter:description"/>
+    <meta content="assets/images/social/kiso-twitter.png" name="twitter:image"/>
+
+    <link href="assets/images/logo/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
+
     <link href="assets/css/daisyui@5.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/application.css" rel="stylesheet" type="text/css"/>
+
     <script src="assets/js/browser@4.js"></script>
 </head>
 <body class="min-h-screen bg-base-100 text-base-content">
-<header class="border-b border-base-300 bg-base-100/95">
-    <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 lg:px-8">
-        <a href="./" class="inline-flex items-center gap-3" aria-label="Kiso home">
-            <img src="assets/images/logo/kiso_logo_horizontal_light.svg" alt="Kiso" class="h-9 w-auto"/>
+
+<!-- Header ======================================================================================================== -->
+<header class="border-b border-base-300 bg-base-100">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
+        <a aria-label="Kiso home" class="inline-flex items-center" href="./">
+            <img alt="Kiso" class="h-14 w-auto sm:h-16" src="assets/images/logo/kiso_logo_horizontal_light.svg"/>
         </a>
-        <nav class="hidden items-center gap-6 text-sm font-medium md:flex">
-            <a class="link-hover" href="#project">Project</a>
-            <a class="link-hover" href="#build-command">Build command</a>
-            <a class="btn btn-primary btn-sm" href="examples/kb-google-example/">Google example</a>
+        <nav class="hidden items-center gap-5 text-sm font-medium md:flex">
+            <a class="link-hover" href="#okf">OKF</a>
+            <a class="link-hover" href="#build">Build command</a>
+            <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="demo">Demo</a>
+            <a class="btn btn-outline btn-sm" download href="https://github.com/oak-invest/kiso/releases">Download</a>
         </nav>
+        <div class="flex gap-2 md:hidden">
+            <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="demo">Demo</a>
+            <a class="btn btn-outline btn-sm" download href="https://github.com/oak-invest/kiso/releases">Download</a>
+        </div>
     </div>
 </header>
 
 <main>
-    <section class="bg-base-200">
-        <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
-            <div class="flex flex-col justify-center">
-                <p class="mb-4 text-sm font-semibold uppercase tracking-wide text-primary">Open Knowledge Format publishing</p>
-                <h1 class="max-w-4xl text-4xl font-bold leading-tight tracking-normal sm:text-5xl lg:text-6xl">
-                    Turn structured Markdown into navigable knowledge systems.
+    <section class="border-b border-base-300 bg-base-200">
+        <div class="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[minmax(0,1fr)_28rem] lg:px-8 lg:py-16">
+
+            <!-- Hero ============================================================================================== -->
+            <div class="max-w-4xl">
+                <div class="mb-5 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-semibold text-primary">
+                    Open Knowledge Format
+                </div>
+                <h1 class="text-4xl font-bold leading-tight tracking-normal sm:text-5xl lg:text-6xl">
+                    Publishing engine for Open Knowledge Format
                 </h1>
-                <p class="mt-6 max-w-2xl text-lg leading-8 text-base-content/75">
-                    Kiso is a publishing engine for OKF. It builds static HTML websites from Markdown knowledge bases while preserving the original files, making the same content practical for readers, maintainers, and AI agents.
+                <p class="mt-6 max-w-3xl text-lg leading-8 text-base-content/75">
+                    Kiso is a publishing engine that turns <a
+                        href="https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
+                        target="okf">Open Knowledge Format</a> (OKF)
+                    bundles into static websites for humans and AI agents.
                 </p>
                 <div class="mt-8 flex flex-wrap gap-3">
-                    <a class="btn btn-primary" href="examples/kb-google-example/">View the Google example</a>
-                    <a class="btn btn-outline" href="#build-command">Understand build</a>
+                    <a class="btn btn-primary" href="examples/kb-google-example/" target="demo">View an example</a>
+                    <a class="btn btn-outline" download href="https://github.com/oak-invest/kiso/releases">Download
+                        CLI</a>
                 </div>
             </div>
 
-            <div class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+            <!-- Example =========================================================================================== -->
+            <aside class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                <div class="mb-4 flex items-center justify-between gap-4">
+                    <h2 class="text-base font-semibold">Build a site</h2>
+                </div>
                 <div class="mockup-code bg-neutral text-neutral-content">
                     <pre data-prefix="$"><code>kiso-cli build \</code></pre>
                     <pre data-prefix=">"><code>  --source=examples/kb-google-example \</code></pre>
                     <pre data-prefix=">"><code>  --destination=public</code></pre>
-                    <pre data-prefix="ok" class="text-success"><code>Markdown rendered to HTML</code></pre>
-                    <pre data-prefix="ok" class="text-success"><code>Assets copied</code></pre>
-                    <pre data-prefix="ok" class="text-success"><code>Original files preserved</code></pre>
+                </div>
+                <p class="mt-4 text-sm leading-6 text-base-content/65">
+                    The generated directory can be opened locally or published on any HTTP server.<br>
+                    <br>
+                    The result with the Google examples can be seen <a class="link link-primary"
+                                                                       href="examples/kb-google-example/"
+                                                                       target="demo">here</a>.
+                </p>
+            </aside>
+        </div>
+    </section>
+
+    <!-- OKF ======================================================================================================= -->
+    <section class="mx-auto max-w-7xl px-5 py-12 lg:px-8" id="okf">
+        <div class="grid gap-10 lg:grid-cols-[22rem_minmax(0,1fr)]">
+            <div>
+                <p class="text-sm font-semibold uppercase tracking-wide text-primary">First principle</p>
+                <h2 class="mt-3 text-3xl font-bold tracking-normal">OKF is the source of truth.</h2>
+            </div>
+            <div class="grid gap-4 md:grid-cols-3">
+                <div class="border-l-4 border-primary bg-base-200 p-5">
+                    <h3 class="font-semibold">Structured Markdown</h3>
+                    <p class="mt-3 leading-7 text-base-content/70">Knowledge remains easy to edit, review, diff, and
+                        version in Git.</p>
+                </div>
+                <div class="border-l-4 border-secondary bg-base-200 p-5">
+                    <h3 class="font-semibold">Explicit metadata</h3>
+                    <p class="mt-3 leading-7 text-base-content/70">Pages keep enough context to be validated, linked,
+                        and rendered consistently.</p>
+                </div>
+                <div class="border-l-4 border-accent bg-base-200 p-5">
+                    <h3 class="font-semibold">Agent friendly</h3>
+                    <p class="mt-3 leading-7 text-base-content/70">Generated HTML keeps clear links back to the original
+                        Markdown files.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="project" class="mx-auto max-w-6xl px-5 py-14 lg:px-8">
-        <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-            <div>
-                <h2 class="text-3xl font-bold tracking-normal">What Kiso does</h2>
-                <p class="mt-4 leading-8 text-base-content/70">
-                    OKF, the Open Knowledge Format, is a way to organize Markdown files so knowledge can be described, validated, linked, and reused consistently. Kiso takes those OKF files and turns them into a website that is easy to browse without losing the source structure.
-                </p>
-            </div>
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                    <h3 class="text-lg font-semibold">For humans</h3>
-                    <p class="mt-3 leading-7 text-base-content/70">Readable pages, navigation, styles, and static files that can be opened locally or hosted on a standard HTTP server.</p>
+    <!-- Build command ============================================================================================= -->
+    <section class="border-y border-base-300 bg-base-200" id="build">
+        <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-wide text-primary">Command</p>
+                    <h2 class="mt-3 text-3xl font-bold tracking-normal">What build does</h2>
+                    <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
+                        The <code class="rounded bg-base-300 px-1.5 py-0.5">build</code> command transforms an OKF
+                        bundle into a ready-to-publish website. It renders Markdown, copies assets, creates navigation,
+                        and preserves source files next to the HTML output. It can be read by humans and by AI agents.
+                    </p>
                 </div>
-                <div class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                    <h3 class="text-lg font-semibold">For AI agents</h3>
-                    <p class="mt-3 leading-7 text-base-content/70">Preserved Markdown sources and predictable structure, so generated websites remain traceable to the knowledge base.</p>
-                </div>
-                <div class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                    <h3 class="text-lg font-semibold">Static output</h3>
-                    <p class="mt-3 leading-7 text-base-content/70">The generated site is made of HTML, CSS, JavaScript, assets, and Markdown files. It does not require a backend.</p>
-                </div>
-                <div class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                    <h3 class="text-lg font-semibold">OKF first</h3>
-                    <p class="mt-3 leading-7 text-base-content/70">The engine is designed around knowledge bundles rather than generic web pages, closer to Hugo but focused on OKF.</p>
+                <div class="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th class="w-36">source</th>
+                            <td>Any OKF bundle directory like <code>examples/kb-google-example</code></td>
+                        </tr>
+                        <tr>
+                            <th>destination</th>
+                            <td><code>public</code> or any static directory</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="build-command" class="border-y border-base-300 bg-base-200">
-        <div class="mx-auto grid max-w-6xl gap-8 px-5 py-14 lg:grid-cols-[1fr_1fr] lg:px-8">
-            <div>
-                <h2 class="text-3xl font-bold tracking-normal">The build command</h2>
-                <p class="mt-4 leading-8 text-base-content/70">
-                    The <code class="rounded bg-base-300 px-1.5 py-0.5">build</code> command reads an OKF source directory and writes a complete static website to a destination directory.
-                </p>
-                <ul class="mt-6 space-y-3 leading-7 text-base-content/75">
-                    <li><span class="font-semibold text-base-content">Source:</span> a folder containing OKF Markdown files.</li>
-                    <li><span class="font-semibold text-base-content">Destination:</span> a generated website ready to publish.</li>
-                    <li><span class="font-semibold text-base-content">Result:</span> HTML pages, copied assets, navigation, and original Markdown files.</li>
-                </ul>
+    <section class="mx-auto max-w-7xl px-5 py-12 lg:px-8" id="output">
+        <div class="grid gap-5 md:grid-cols-3">
+            <div class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
+                <div class="text-sm font-semibold uppercase tracking-wide text-base-content/50">01</div>
+                <h3 class="mt-3 text-xl font-semibold">Browse</h3>
+                <p class="mt-3 leading-7 text-base-content/70">Readers get a structured static website with navigation
+                    and readable pages.</p>
             </div>
-            <div class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
-                <h3 class="text-lg font-semibold">Example command</h3>
-                <div class="mockup-code mt-4 bg-neutral text-neutral-content">
-                    <pre data-prefix="$"><code>./applications/kiso-cli/target/kiso-cli build \</code></pre>
-                    <pre data-prefix=">"><code>  --source=examples/kb-google-example \</code></pre>
-                    <pre data-prefix=">"><code>  --destination=website/examples/kb-google-example</code></pre>
-                </div>
-                <p class="mt-4 leading-7 text-base-content/70">
-                    Once generated, the demo is available from this website through the prepared link below.
-                </p>
-                <a class="btn btn-primary mt-5" href="examples/kb-google-example/">Open the Google example</a>
+            <div class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
+                <div class="text-sm font-semibold uppercase tracking-wide text-base-content/50">02</div>
+                <h3 class="mt-3 text-xl font-semibold">Inspect</h3>
+                <p class="mt-3 leading-7 text-base-content/70">Each page can link back to its Markdown source for review
+                    and reuse.</p>
+            </div>
+            <div class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
+                <div class="text-sm font-semibold uppercase tracking-wide text-base-content/50">03</div>
+                <h3 class="mt-3 text-xl font-semibold">Publish</h3>
+                <p class="mt-3 leading-7 text-base-content/70">The result is plain static output that can be hosted
+                    locally or over HTTP.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-neutral text-neutral-content">
+        <div class="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+            <div>
+                <h2 class="text-2xl font-bold tracking-normal">Try Kiso on the Google Analytics sample knowledge
+                    base.</h2>
+                <p class="mt-2 max-w-3xl text-neutral-content/70">The example shows how an OKF bundle
+                    becomes a navigable site for Humans and AI agents.</p>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <a class="btn btn-primary" href="examples/kb-google-example/">View our example</a>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="bg-neutral text-neutral-content">
-    <div class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between lg:px-8">
-        <div>
-            <img src="assets/images/logo/kiso_logo_horizontal_dark.svg" alt="Kiso" class="h-8 w-auto"/>
-            <p class="mt-3 text-sm text-neutral-content/70">Open Knowledge Format publishing engine.</p>
+<!-- Footer ======================================================================================================== -->
+<footer class="border-t border-base-300 bg-base-100">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between lg:px-8">
+        <a aria-label="Kiso home" class="inline-flex items-center" href="./">
+            <img alt="Kiso" class="h-14 w-auto sm:h-16" src="assets/images/logo/kiso_logo_horizontal_light.svg"/>
+        </a>
+        <div class="flex flex-wrap gap-4 text-sm text-base-content/65">
+            <a class="link-hover" href="mailto:stephane.traumat@oak-invest.com">stephane.traumat@oak-invest.com</a>
         </div>
-        <a class="btn btn-outline btn-sm border-neutral-content/40 text-neutral-content hover:border-neutral-content" href="examples/kb-google-example/">Google example</a>
     </div>
 </footer>
+
 </body>
 </html>
