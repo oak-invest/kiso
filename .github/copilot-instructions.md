@@ -3,20 +3,11 @@
 ## Project description
 
 - **Kiso short description**: Kiso is a publishing engine for Open Knowledge Format (OKF).
-- **Kiso longer description**: Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
-  websites for humans and AI agents.
-- **Kiso complete description**: Kiso is a publishing engine for the Open Knowledge Format (OKF). The project turns a
-  folder of organized Markdown files into a navigable knowledge system. In the same way that Hugo turns Markdown
-  files into a static website, Kiso aims to turn an OKF knowledge base into a structured, browsable, and usable
-  documentation site. Kiso is also designed with AI usage in mind. Because the source remains structured Markdown,
-  the knowledge base stays readable, versionable with Git, easy to review, and usable by AI agents. Kiso sits
-  between two needs: simple text files for maintaining knowledge, and generated navigation for humans and tools to
-  explore it.
+- **Kiso longer description**: Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static websites for humans and AI agents.
+- **Kiso complete description**: Kiso is a publishing engine for the Open Knowledge Format (OKF). The project turns a folder of organized Markdown files into a navigable knowledge system. In the same way that Hugo turns Markdown files into a static website, Kiso aims to turn an OKF knowledge base into a structured, browsable, and usable documentation site. Kiso is also designed with AI usage in mind. Because the source remains structured Markdown, the knowledge base stays readable, versionable with Git, easy to review, and usable by AI agents. Kiso sits between two needs: simple text files for maintaining knowledge, and generated navigation for humans and tools to explore it.
 - **Product analogy**: Kiso is positioned as Hugo for Open Knowledge Format (OKF).
 
-- **Open Knowledge Format description**: Open Knowledge Format (OKF) is a way to structure knowledge using Markdown
-  files enriched with metadata. The goal is to keep knowledge easy for humans to write and read, while making it
-  structured enough for software tools and AI agents to understand, validate, connect, and reuse.
+- **Open Knowledge Format description**: Open Knowledge Format (OKF) is a way to structure knowledge using Markdown files enriched with metadata. The goal is to keep knowledge easy for humans to write and read, while making it structured enough for software tools and AI agents to understand, validate, connect, and reuse.
 - **Open Knowledge Format (OKF) specification**:  /documentation/specs/okf_spec_version_0.1.md
 
 ## Information
