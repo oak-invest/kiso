@@ -3,6 +3,7 @@ package com.oakinvest.kiso.cli.command;
 import com.oakinvest.kiso.cli.util.command.DestinationOption;
 import com.oakinvest.kiso.cli.util.command.SourceOption;
 import com.oakinvest.kiso.core.generator.LlmsTxtGenerator;
+import com.oakinvest.kiso.core.generator.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.model.PackageTree;
@@ -61,7 +62,7 @@ public class BuildCommand implements Runnable {
             FileUtils.deleteDirectory(destinationDirectory);
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
 
-            // Generating HTML =========================================================================================
+            // HTML generation =========================================================================================
             final MarkdownToHtmlRenderer markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
             final var knowledgeBundle = new KnowledgeBundleLoader().load(destinationDirectory.toPath());
             final var packageTree = PackageTree.fromBundle(knowledgeBundle.rootBundle());
@@ -84,13 +85,21 @@ public class BuildCommand implements Runnable {
 
                     });
 
-            // Generating llms.txt =====================================================================================
+            // llms.txt generation =====================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().path().toString(), "llms.txt"),
                     new LlmsTxtGenerator().generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
             commandSpec.commandLine().getOut().println("File llms.txt generated");
+
+            // sitemap.xml generation ==================================================================================
+            FileUtils.writeStringToFile(
+                    new File(knowledgeBundle.rootBundle().path().toString(), "sitemap.xml"),
+                    new SitemapXmlGenerator().generate(knowledgeBundle),
+                    StandardCharsets.UTF_8
+            );
+            commandSpec.commandLine().getOut().println("File sitemap.xml generated");
 
             // Job done!
             commandSpec.commandLine().getOut().println("Done!");
