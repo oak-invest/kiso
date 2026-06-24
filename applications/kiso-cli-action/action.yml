@@ -18,13 +18,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Download Kiso CLI
+    - name: Download Kiso cli
       shell: bash
       run: |
         curl -L -o kiso-cli https://github.com/oak-invest/kiso/releases/download/v0.1.0/kiso-cli-linux-x64
         chmod +x kiso-cli
 
-    - name: Run Kiso
+    - name: Run Kiso cli
       shell: bash
       run: |
         ./kiso-cli ${{ inputs.command }} \
