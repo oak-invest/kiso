@@ -1,3 +1,5 @@
+@import org.apache.commons.lang3.StringUtils
+
 @param com.oakinvest.kiso.core.renderer.model.IndexPage page
 
 @template.layouts.default(
@@ -39,7 +41,7 @@ content = @`
                     leading-tight - Tight line-height. Without it, large titles often have too much vertical spacing.
                     tracking-normal - Normal letter spacing.
             -->
-            @if(page.metadata().title() != null)
+            @if(StringUtils.isNotBlank(page.metadata().title()))
                 <div class="max-w-4xl text-4xl font-bold leading-tight tracking-normal sm:text-5xl">
                     ${page.metadata().title()}
                 </div>

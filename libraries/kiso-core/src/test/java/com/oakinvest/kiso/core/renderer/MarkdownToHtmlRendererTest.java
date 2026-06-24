@@ -48,7 +48,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
 
         // Document head.
-        assertThat(page.title()).isEqualTo("Index");
+        assertThat(page.title()).isEqualTo("index.md");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
                 .containsExactly(
                         "assets/css/daisyui@5.css",

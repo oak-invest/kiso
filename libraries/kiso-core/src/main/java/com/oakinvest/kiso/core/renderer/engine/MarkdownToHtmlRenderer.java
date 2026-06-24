@@ -77,7 +77,7 @@ public final class MarkdownToHtmlRenderer {
                 // Index ===============================================================================================
                 IndexPage page = IndexPage.builder()
                         .metadata(PageMetadata.builder()
-                                .title("Index")
+                                .title(markdownFile.relativePath().toString())
                                 .path(markdownFile.path().toString())
                                 .assetBasePath(assetBasePath(markdownFile.relativePath()))
                                 .htmlPath(htmlPath(markdownFile.relativePath()))

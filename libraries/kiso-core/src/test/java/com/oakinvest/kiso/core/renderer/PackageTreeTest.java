@@ -1,7 +1,9 @@
-package com.oakinvest.kiso.core.renderer.model;
+package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.renderer.model.PackageTree;
+import com.oakinvest.kiso.core.renderer.model.PackageTreePage;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
