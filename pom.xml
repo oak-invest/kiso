@@ -224,6 +224,7 @@
                         <releaseFinishMessage>Update for next development version</releaseFinishMessage>
                         <tagHotfixMessage>Tag hotfix</tagHotfixMessage>
                         <tagReleaseMessage>Tag release</tagReleaseMessage>
+                        <versionTagPrefix>v</versionTagPrefix>
                     </commitMessages>
                 </configuration>
             </plugin>

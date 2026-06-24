@@ -1,0 +1,32 @@
+name: "Kiso"
+description: "Validate and build an OKF knowledge bundle with Kiso"
+
+inputs:
+  command:
+    description: "Kiso command: build"
+    required: false
+    default: "build"
+  source:
+    description: "Directory containing the Markdown files to read. Defaults to the current directory."
+    required: false
+    default: "."
+  destination:
+    description: "Directory where generated files are created. Defaults to the public directory."
+    required: false
+    default: "public"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download Kiso CLI
+      shell: bash
+      run: |
+        curl -L -o kiso-cli https://github.com/oakinvest/kiso/releases/download/v0.1.0/kiso-cli-linux-x64
+        chmod +x kiso-cli
+
+    - name: Run Kiso
+      shell: bash
+      run: |
+        ./kiso-cli ${{ inputs.command }} \
+          --source "${{ inputs.source }}" \
+          --destination "${{ inputs.destination }}"

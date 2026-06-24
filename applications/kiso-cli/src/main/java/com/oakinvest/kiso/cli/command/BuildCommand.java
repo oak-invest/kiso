@@ -2,6 +2,7 @@ package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.util.command.DestinationOption;
 import com.oakinvest.kiso.cli.util.command.SourceOption;
+import com.oakinvest.kiso.core.generator.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.model.PackageTree;
@@ -82,6 +83,14 @@ public class BuildCommand implements Runnable {
                         });
 
                     });
+
+            // Generating llms.txt =====================================================================================
+            FileUtils.writeStringToFile(
+                    new File(knowledgeBundle.rootBundle().path().toString(), "llms.txt"),
+                    new LlmsTxtGenerator().generate(knowledgeBundle),
+                    StandardCharsets.UTF_8
+            );
+            commandSpec.commandLine().getOut().println("File llms.txt generated");
 
             // Job done!
             commandSpec.commandLine().getOut().println("Done!");
