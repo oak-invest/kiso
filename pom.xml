@@ -220,6 +220,7 @@
                     <gitFlowConfig>
                         <productionBranch>production</productionBranch>
                         <developmentBranch>development</developmentBranch>
+                        <versionTagPrefix>v</versionTagPrefix>
                     </gitFlowConfig>
                     <commitMessages>
                         <featureStartMessage>Update versions for feature branch</featureStartMessage>
@@ -230,7 +231,6 @@
                         <releaseFinishMessage>Update for next development version</releaseFinishMessage>
                         <tagHotfixMessage>Tag hotfix</tagHotfixMessage>
                         <tagReleaseMessage>Tag release</tagReleaseMessage>
-                        <versionTagPrefix>v</versionTagPrefix>
                     </commitMessages>
                 </configuration>
             </plugin>
