@@ -1,4 +1,3 @@
-@import com.oakinvest.kiso.core.rendering.model.page.ConceptPage
 @import java.time.format.DateTimeFormatter
 
 @param com.oakinvest.kiso.core.rendering.model.page.ConceptPage page

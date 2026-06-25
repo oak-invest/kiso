@@ -38,4 +38,16 @@ public record Bundle(
         );
     }
 
+    /**
+     * Returns all Markdown files in this knowledge bundle as a flat stream.
+     *
+     * @return a flat stream of all Markdown files in this knowledge bundle
+     */
+    public Stream<MarkdownFile> flattenMarkdownFiles() {
+        return Stream.concat(
+                markdownFiles.stream(),
+                childBundles.stream().flatMap(Bundle::flattenMarkdownFiles)
+        );
+    }
+
 }

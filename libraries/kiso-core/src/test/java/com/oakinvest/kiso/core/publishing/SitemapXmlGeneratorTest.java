@@ -23,49 +23,27 @@ class SitemapXmlGeneratorTest extends BaseTest {
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
         String content = SitemapXmlGenerator.generate(knowledgeBundle);
         Document document = parseXml(content);
-
         // Testing structure ==========================================================================================
         assertThat(content)
                 .startsWith("""
                         <?xml version="1.0" encoding="UTF-8"?>
                         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
                         """.stripIndent())
-                .contains("""
-                          <url>
-                            <loc>index.html</loc>
-                          </url>
-                        """.stripIndent())
-                .contains("""
-                          <url>
-                            <loc>datasets/index.html</loc>
-                          </url>
-                          <url>
-                            <loc>datasets/ga4_obfuscated_sample_ecommerce.html</loc>
-                            <lastmod>2026-05-28T22:49:59Z</lastmod>
-                          </url>
-                        """.stripIndent())
-                .contains("""
-                          <url>
-                            <loc>references/joins/index.html</loc>
-                          </url>
-                          <url>
-                            <loc>references/joins/events___ads_clickstats.html</loc>
-                            <lastmod>2026-05-28T22:51:46Z</lastmod>
-                          </url>
-                        """.stripIndent())
-                .contains("""
-                          <url>
-                            <loc>tables/index.html</loc>
-                          </url>
-                          <url>
-                            <loc>tables/events_.html</loc>
-                            <lastmod>2026-05-28T22:53:05Z</lastmod>
-                          </url>
-                        """.stripIndent())
+                .contains("<lastmod>2026-05-28T22:49:59Z</lastmod>")
+                .contains("<lastmod>2026-05-28T22:51:46Z</lastmod>")
+                .contains("<lastmod>2026-05-28T22:53:05Z</lastmod>")
                 .endsWith("</urlset>\n");
         assertThat(document.getDocumentElement().getNodeName()).isEqualTo("urlset");
         assertThat(document.getElementsByTagName("url").getLength()).isEqualTo(17);
-        assertThat(document.getElementsByTagName("loc").item(0).getTextContent()).isEqualTo("index.html");
+        var locations = document.getElementsByTagName("loc");
+        assertThat(locations.getLength()).isEqualTo(17);
+        assertThat(locations.item(0).getTextContent()).isEqualTo("index.html");
+        assertThat(locations.item(1).getTextContent()).isEqualTo("datasets/index.html");
+        assertThat(locations.item(2).getTextContent()).isEqualTo("datasets/ga4_obfuscated_sample_ecommerce.html");
+        assertThat(locations.item(4).getTextContent()).isEqualTo("references/joins/index.html");
+        assertThat(locations.item(5).getTextContent()).isEqualTo("references/joins/events___ads_clickstats.html");
+        assertThat(locations.item(15).getTextContent()).isEqualTo("tables/index.html");
+        assertThat(locations.item(16).getTextContent()).isEqualTo("tables/events_.html");
     }
 
     @Test

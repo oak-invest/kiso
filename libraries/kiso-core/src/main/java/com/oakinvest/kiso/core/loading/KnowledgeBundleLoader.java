@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.util.FileExtensions.MARKDOWN_EXTENSION;
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.DESCRIPTION_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.FRONTMATTER_DELIMITER;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.RESOURCE_KEY;

@@ -15,7 +15,4 @@ public class OKFConstants {
     /** Default title used when the knowledge bundle does not provide a readable name. */
     public static final String DEFAULT_TITLE = "Knowledge Bundle";
 
-    /** Root section title. */
-    public static final String ROOT_SECTION_TITLE = "Index";
-
 }

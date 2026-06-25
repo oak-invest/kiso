@@ -1,4 +1,3 @@
-@import com.oakinvest.kiso.core.rendering.model.page.IndexPage
 @import org.apache.commons.lang3.StringUtils
 
 @param com.oakinvest.kiso.core.rendering.model.page.IndexPage page

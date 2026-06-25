@@ -7,10 +7,10 @@ import picocli.CommandLine;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BuildCommandTest {
@@ -58,16 +58,18 @@ class BuildCommandTest {
         assertThat(destinationDirectory.resolve("topics/index.html")).exists();
         assertThat(destinationDirectory.resolve("topics/first-topic.html")).exists();
         assertThat(destinationDirectory.resolve("assets/css/application.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/daisyui@5.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
 
-        String indexHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), StandardCharsets.UTF_8);
+        String indexHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
         assertThat(indexHtml)
                 .contains("First Topic")
                 .contains("A first test topic.")
                 .contains("Hello from the first topic.");
 
         // Testing generated agent files ==============================================================================
-        String llmsTxt = Files.readString(destinationDirectory.resolve("llms.txt"), StandardCharsets.UTF_8);
+        String llmsTxt = Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8);
         assertThat(llmsTxt)
                 .contains("# Knowledge Bundle")
                 .contains("## Index")
@@ -76,7 +78,7 @@ class BuildCommandTest {
                 .contains("- [index.md](topics/index.md): Index of topics")
                 .contains("- [First Topic](topics/first-topic.md): A first test topic.");
 
-        String sitemapXml = Files.readString(destinationDirectory.resolve("sitemap.xml"), StandardCharsets.UTF_8);
+        String sitemapXml = Files.readString(destinationDirectory.resolve("sitemap.xml"), UTF_8);
         assertThat(sitemapXml)
                 .contains("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">")
                 .contains("<loc>index.html</loc>")
@@ -100,7 +102,7 @@ class BuildCommandTest {
                         
                         - [topics](topics/index.md)
                         """.stripIndent(),
-                StandardCharsets.UTF_8
+                UTF_8
         );
         Files.writeString(
                 sourceDirectory.resolve("topics/index.md"),
@@ -109,7 +111,7 @@ class BuildCommandTest {
                         
                         - [First Topic](first-topic.md)
                         """.stripIndent(),
-                StandardCharsets.UTF_8
+                UTF_8
         );
         Files.writeString(
                 sourceDirectory.resolve("topics/first-topic.md"),
@@ -125,7 +127,7 @@ class BuildCommandTest {
                         
                         Hello from the first topic.
                         """.stripIndent(),
-                StandardCharsets.UTF_8
+                UTF_8
         );
     }
 

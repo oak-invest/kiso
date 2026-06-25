@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.model.bundle;
 
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.Builder;
 
 import java.util.stream.Stream;
@@ -22,6 +23,15 @@ public record KnowledgeBundle(
      */
     public Stream<Bundle> bundles() {
         return rootBundle.flatten();
+    }
+
+    /**
+     * Returns all Markdown files.
+     *
+     * @return all Markdown files
+     */
+    public Stream<MarkdownFile> markdownFiles() {
+        return rootBundle.flattenMarkdownFiles();
     }
 
 }

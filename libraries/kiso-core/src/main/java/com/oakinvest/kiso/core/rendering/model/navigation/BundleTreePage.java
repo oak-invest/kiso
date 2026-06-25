@@ -7,9 +7,6 @@ import lombok.Builder;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.FileExtensions.HTML_EXTENSION;
-import static com.oakinvest.kiso.core.util.FileExtensions.MARKDOWN_EXTENSION;
-
 /**
  * A direct Markdown page inside a bundle tree node.
  *
@@ -42,23 +39,9 @@ public record BundleTreePage(
                 .title(markdownFile.title())
                 .fileName(markdownFile.fileName())
                 .relativePath(markdownFile.relativePath())
-                .href(toHtmlPath(markdownFile.relativePath()))
+                .href(markdownFile.htmlFilePath())
                 .kind(markdownFile.kind())
                 .build();
-    }
-
-    /**
-     * Converts a Markdown absolutePath to its generated HTML absolutePath.
-     *
-     * @param markdownPath Markdown absolutePath relative to the generated site isRoot
-     * @return HTML absolutePath
-     */
-    private static String toHtmlPath(final Path markdownPath) {
-        String path = markdownPath.toString().replace('\\', '/');
-        if (path.endsWith(MARKDOWN_EXTENSION)) {
-            return path.substring(0, path.length() - MARKDOWN_EXTENSION.length()) + HTML_EXTENSION;
-        }
-        return path + HTML_EXTENSION;
     }
 
 }

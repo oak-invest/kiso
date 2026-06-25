@@ -4,7 +4,6 @@
 
 @if(bundleTree != null)
     <ul class="menu menu-sm w-full gap-1 p-0">
-        <%--        <li class="menu-title px-2">Pages</li>--%>
         <li>
             <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
                href="${assetBasePath}${bundleTree.indexHtmlPath()}">

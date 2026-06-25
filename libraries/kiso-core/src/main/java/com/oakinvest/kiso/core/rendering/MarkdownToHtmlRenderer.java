@@ -103,16 +103,6 @@ public final class MarkdownToHtmlRenderer {
      * Render a markdownFile file to HTML.
      *
      * @param markdownFile markdownFile file
-     * @return content rendered
-     */
-    public static String render(final MarkdownFile markdownFile) {
-        return render(markdownFile, null);
-    }
-
-    /**
-     * Render a markdownFile file to HTML.
-     *
-     * @param markdownFile markdownFile file
      * @param bundleTree   calculated bundle tree for navigation
      * @return content rendered
      */
@@ -123,7 +113,7 @@ public final class MarkdownToHtmlRenderer {
 
         // Generating the HTML =========================================================================================
         final Node document = MARKDOWN_PARSER.parse(markdownFile.content());
-        String html = HTML_RENDERER.render(document).replaceAll(
+        String htmlContent = HTML_RENDERER.render(document).replaceAll(
                 "href=\"(?!https?://|mailto:|#)([^\"]+)\\.md\"",
                 "href=\"$1.html\""
         );
@@ -141,10 +131,10 @@ public final class MarkdownToHtmlRenderer {
                                 .title(markdownFile.relativePath().toString())
                                 .absolutePath(markdownFile.absolutePath().toString())
                                 .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                                .htmlPath(htmlPath(markdownFile.relativePath()))
+                                .htmlPath(markdownFile.htmlFilePath())
                                 .build())
                         .bundleTree(bundleTree)
-                        .htmlContent(output -> output.writeContent(html))
+                        .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
 
                 StringOutput output = new StringOutput();
@@ -159,14 +149,14 @@ public final class MarkdownToHtmlRenderer {
                                 .description(markdownFile.frontmatter().description())
                                 .absolutePath(markdownFile.absolutePath().toString())
                                 .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                                .htmlPath(htmlPath(markdownFile.relativePath()))
+                                .htmlPath(markdownFile.htmlFilePath())
                                 .build())
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())
                         .tags(markdownFile.frontmatter().tags())
                         .timestamp(markdownFile.frontmatter().timestamp())
                         .bundleTree(bundleTree)
-                        .htmlContent(output -> output.writeContent(html))
+                        .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
 
                 StringOutput output = new StringOutput();
@@ -177,27 +167,10 @@ public final class MarkdownToHtmlRenderer {
     }
 
     /**
-     * Returns the generated HTML absolutePath relative to the generated site isRoot.
+     * Returns the relative absolutePath from an HTML page to the generated site root.
      *
-     * @param markdownRelativePath Markdown absolutePath relative to the site isRoot
-     * @return HTML absolutePath
-     */
-    private static String htmlPath(final Path markdownRelativePath) {
-        if (markdownRelativePath == null) {
-            return null;
-        }
-        String path = markdownRelativePath.toString().replace('\\', '/');
-        if (path.endsWith(".md")) {
-            return path.substring(0, path.length() - ".md".length()) + ".html";
-        }
-        return path + ".html";
-    }
-
-    /**
-     * Returns the relative absolutePath from an HTML page to the generated site isRoot.
-     *
-     * @param markdownRelativePath Markdown absolutePath relative to the site isRoot
-     * @return asset base absolutePath
+     * @param markdownRelativePath Markdown absolutePath relative to the site root
+     * @return asset base absolute base path
      */
     private static String assetBasePath(final Path markdownRelativePath) {
         if (markdownRelativePath == null || markdownRelativePath.getParent() == null) {

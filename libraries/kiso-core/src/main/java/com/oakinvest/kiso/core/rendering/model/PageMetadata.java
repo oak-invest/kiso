@@ -4,7 +4,7 @@ import lombok.Builder;
 
 import java.nio.file.Path;
 
-import static com.oakinvest.kiso.core.util.FileExtensions.MARKDOWN_EXTENSION;
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 
 /**
  * Page metadata.

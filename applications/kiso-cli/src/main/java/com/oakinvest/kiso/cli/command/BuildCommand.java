@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import static com.oakinvest.kiso.core.util.FileNamesConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.FileNamesConstants.SITEMAP_XML_FILENAME;
+
 /**
  * Build: Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml.
  */
@@ -88,7 +91,7 @@ public class BuildCommand implements Runnable {
 
             // llms.txt generation =====================================================================================
             FileUtils.writeStringToFile(
-                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), "llms.txt"),
+                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), LLMS_TXT_FILENAME),
                     LlmsTxtGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
@@ -96,7 +99,7 @@ public class BuildCommand implements Runnable {
 
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
-                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), "sitemap.xml"),
+                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), SITEMAP_XML_FILENAME),
                     SitemapXmlGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
