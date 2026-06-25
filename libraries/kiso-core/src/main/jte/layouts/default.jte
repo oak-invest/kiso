@@ -67,13 +67,19 @@ current DaisyUI theme, and displays text using the default readable text color f
 
     <div class="drawer-side z-50">
         <label for="kiso-navigation-drawer" aria-label="Close navigation" class="drawer-overlay"></label>
-        <aside class="min-h-full w-80 max-w-[85vw] bg-base-100 p-4 text-base-content">
+        <aside class="flex min-h-full w-80 max-w-[85vw] flex-col bg-base-100 p-4 text-base-content">
             <div class="mb-6 px-2 pt-2">
                 <div class="mt-1 text-lg font-semibold">Bundle content</div>
             </div>
-            <nav class="kiso-navigation-menu">
+            <nav class="kiso-navigation-menu flex-1">
                 @template.partials.bundleTreeMenu(bundleTree = bundleTree, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
             </nav>
+            <div class="mt-6 border-t border-base-300 px-2 pt-4 text-xs text-base-content/60">
+                Generated with
+                <a class="link link-hover font-semibold" href="https://oak-invest.github.io/kiso">
+                    Kiso
+                </a>
+            </div>
         </aside>
     </div>
 </div>

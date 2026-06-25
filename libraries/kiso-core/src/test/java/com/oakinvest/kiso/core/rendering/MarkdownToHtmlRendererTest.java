@@ -65,6 +65,9 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst(".drawer-side details summary").text()).isEqualTo("datasets");
         assertThat(page.selectFirst(".drawer-side a[href='datasets/ga4_obfuscated_sample_ecommerce.html']").text())
                 .isEqualTo("BigQuery sample dataset for Google Analytics ecommerce web implementation");
+        var kisoLink = page.selectFirst(".drawer-side a[href='https://oak-invest.github.io/kiso']");
+        assertThat(kisoLink).isNotNull();
+        assertThat(kisoLink.text()).isEqualTo("Kiso");
 
         // Index header.
         var indexHeader = page.selectFirst("main > section");
