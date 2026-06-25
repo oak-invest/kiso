@@ -76,7 +76,9 @@ current DaisyUI theme, and displays text using the default readable text color f
             </nav>
             <div class="mt-6 border-t border-base-300 px-2 pt-4 text-xs text-base-content/60">
                 Generated with
-                <a class="link link-hover font-semibold" href="https://oak-invest.github.io/kiso">
+                <a class="link link-hover font-semibold"
+                   href="https://oak-invest.github.io/kiso"
+                   target="kiso">
                     Kiso
                 </a>
             </div>

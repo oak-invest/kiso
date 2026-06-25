@@ -108,9 +108,6 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         markdownFiles = bundle.rootBundle().childBundles().getFirst().markdownFiles();
         page = Jsoup.parse(MarkdownToHtmlRenderer.render(markdownFiles.getFirst(), bundleTree));
 
-        // Writing the file (console & target directory) for debugging purposes ========================================
-        FileUtils.writeStringToFile(targetDirectory.resolve("datasets/test-concept.html").toFile(), page.html(), UTF_8);
-
         // Testing the content =========================================================================================
 
         // Document head.
@@ -132,8 +129,10 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst(".drawer-side details[open] > summary").text()).isEqualTo("datasets");
         assertThat(page.selectFirst(".drawer-side a[href='../index.html']").text()).isEqualTo("Index");
         assertThat(page.selectFirst(".drawer-side summary").hasClass("menu-active")).isTrue();
-        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").hasClass("font-semibold")).isTrue();
-        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").hasClass("menu-active")).isFalse();
+        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']")
+                .hasClass("font-semibold")).isTrue();
+        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']")
+                .hasClass("menu-active")).isFalse();
         assertThat(page.selectFirst(".drawer-side a[href='../references/metrics/avg_pageviews.html']").text())
                 .isEqualTo("Average Pageviews");
 

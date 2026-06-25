@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BundleTreeTest extends BaseTest {
 
     @Test
-    @DisplayName("Create bundle tree from bundle")
+    @DisplayName("Create a bundle tree from bundle")
     void fromBundle() throws URISyntaxException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);

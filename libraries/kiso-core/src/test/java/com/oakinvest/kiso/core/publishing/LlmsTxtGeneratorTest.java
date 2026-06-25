@@ -20,8 +20,7 @@ class LlmsTxtGeneratorTest extends BaseTest {
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
         String content = LlmsTxtGenerator.generate(knowledgeBundle);
 
-
-        // Testing structure ==========================================================================================
+        // Testing structure ===========================================================================================
         assertThat(content)
                 .startsWith("""
                         # Knowledge Bundle

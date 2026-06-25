@@ -23,6 +23,7 @@ class SitemapXmlGeneratorTest extends BaseTest {
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
         String content = SitemapXmlGenerator.generate(knowledgeBundle);
         Document document = parseXml(content);
+
         // Testing structure ==========================================================================================
         assertThat(content)
                 .startsWith("""
@@ -35,6 +36,7 @@ class SitemapXmlGeneratorTest extends BaseTest {
                 .endsWith("</urlset>\n");
         assertThat(document.getDocumentElement().getNodeName()).isEqualTo("urlset");
         assertThat(document.getElementsByTagName("url").getLength()).isEqualTo(17);
+
         var locations = document.getElementsByTagName("loc");
         assertThat(locations.getLength()).isEqualTo(17);
         assertThat(locations.item(0).getTextContent()).isEqualTo("index.html");

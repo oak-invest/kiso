@@ -15,7 +15,7 @@ import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class GoogleExampleLoaderTest extends BaseTest {
+class GoogleExampleLoadingTest extends BaseTest {
 
     @Test
     @DisplayName("Loading google example bundle")
@@ -29,14 +29,18 @@ class GoogleExampleLoaderTest extends BaseTest {
         assertThat(bundle.rootBundle().markdownFiles())
                 .hasSize(1)
                 // index ===============================================================================================
-                // /index
                 .satisfiesExactly(index -> {
-                    // Type.
+                    // File information.
+                    assertThat(index.fileName()).isEqualTo("index.md");
                     assertThat(index.kind()).isEqualTo(INDEX);
 
                     // Path.
                     assertThat(index.absolutePath()).isEqualTo(Path.of(resourcePath + "/index.md"));
                     assertThat(index.relativePath()).isEqualTo(Path.of("index.md"));
+
+                    // HTML.
+                    assertThat(index.htmlFileName()).isEqualTo("index.html");
+                    assertThat(index.htmlFilePath()).isEqualTo("index.html");
 
                     // Frontmatter.
                     assertThat(index.frontmatter())
@@ -66,12 +70,17 @@ class GoogleExampleLoaderTest extends BaseTest {
                         // ga4 =========================================================================================
                         // /datasets/ga4_obfuscated_sample_ecommerce.md
                         ga4 -> {
-                            // Type.
+                            // File information.
+                            assertThat(ga4.fileName()).isEqualTo("ga4_obfuscated_sample_ecommerce.md");
                             assertThat(ga4.kind()).isEqualTo(CONCEPT);
 
                             // Path.
                             assertThat(ga4.absolutePath()).isEqualTo(Path.of(resourcePath + "/datasets/ga4_obfuscated_sample_ecommerce.md"));
                             assertThat(ga4.relativePath()).isEqualTo(Path.of("datasets/ga4_obfuscated_sample_ecommerce.md"));
+
+                            // HTML.
+                            assertThat(ga4.htmlFileName()).isEqualTo("ga4_obfuscated_sample_ecommerce.html");
+                            assertThat(ga4.htmlFilePath()).isEqualTo("datasets/ga4_obfuscated_sample_ecommerce.html");
 
                             // Frontmatter.
                             assertThat(ga4.frontmatter())
@@ -90,12 +99,17 @@ class GoogleExampleLoaderTest extends BaseTest {
                         // index =======================================================================================
                         // /datasets/index
                         index -> {
-                            // Type.
+                            // File information.
+                            assertThat(index.fileName()).isEqualTo("index.md");
                             assertThat(index.kind()).isEqualTo(INDEX);
 
                             // Path.
                             assertThat(index.absolutePath()).isEqualTo(Path.of(resourcePath + "/datasets/index.md"));
                             assertThat(index.relativePath()).isEqualTo(Path.of("datasets/index.md"));
+
+                            // HTML.
+                            assertThat(index.htmlFileName()).isEqualTo("index.html");
+                            assertThat(index.htmlFilePath()).isEqualTo("datasets/index.html");
 
                             // Frontmatter.
                             assertThat(index.frontmatter())
@@ -135,7 +149,8 @@ class GoogleExampleLoaderTest extends BaseTest {
                                     .satisfiesExactly(
                                             // events file =============================================================
                                             events -> {
-                                                // Type.
+                                                // File information.
+                                                assertThat(events.fileName()).isEqualTo("events___ads_clickstats.md");
                                                 assertThat(events.kind()).isEqualTo(CONCEPT);
 
                                                 // Filename.
@@ -145,6 +160,10 @@ class GoogleExampleLoaderTest extends BaseTest {
                                                 // Path.
                                                 assertThat(events.absolutePath()).isEqualTo(Path.of(resourcePath + "/references/joins/events___ads_clickstats.md"));
                                                 assertThat(events.relativePath()).isEqualTo(Path.of("references/joins/events___ads_clickstats.md"));
+
+                                                // HTML.
+                                                assertThat(events.htmlFileName()).isEqualTo("events___ads_clickstats.html");
+                                                assertThat(events.htmlFilePath()).isEqualTo("references/joins/events___ads_clickstats.html");
 
                                                 // Frontmatter.
                                                 assertThat(events.frontmatter())

@@ -29,6 +29,46 @@ public class KnowledgeBundleTest extends BaseTest {
                         bundle -> assertThat(bundle.name()).isEqualTo("references/metrics"),
                         bundle -> assertThat(bundle.name()).isEqualTo("tables")
                 );
+
+        // Testing .markdownFiles() ====================================================================================
+        assertThat(rootBundle.markdownFiles())
+                .hasSize(17)
+                .satisfiesExactly(
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("index.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("datasets/ga4_obfuscated_sample_ecommerce.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("datasets/index.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/index.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/joins/events___ads_clickstats.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/joins/index.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/avg_pageviews.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/avg_spend_per_purchase_session_by_user.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/avg_transactions_per_purchaser.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/day_count.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/event_count.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/index.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/new_user_count.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/overall_avg_spend_per_purchase_session.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("references/metrics/user_count.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("tables/events_.md"),
+                        markdownFile -> assertThat(markdownFile.relativePath().toString())
+                                .isEqualTo("tables/index.md")
+                );
     }
 
 }
