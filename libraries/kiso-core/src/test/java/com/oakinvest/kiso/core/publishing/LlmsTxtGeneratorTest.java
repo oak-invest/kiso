@@ -53,6 +53,11 @@ class LlmsTxtGeneratorTest extends BaseTest {
                 .endsWith("\n");
         assertThat(content).containsOnlyOnce("# Knowledge Bundle");
         assertThat(content.lines().filter(line -> line.startsWith("- [")).count()).isEqualTo(17);
+
+        // We should not have the assets ===============================================================================
+        assertThat(content).doesNotContain("## assets")
+                .doesNotContain("## assets/css")
+                .doesNotContain("## assets/js");
     }
 
     @Test

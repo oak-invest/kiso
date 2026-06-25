@@ -78,6 +78,11 @@ class BuildCommandTest {
                 .contains("- [index.md](topics/index.md): Index of topics")
                 .contains("- [First Topic](topics/first-topic.md): A first test topic.");
 
+        // We should not have the HTML assets directories in the llms.txt file.
+        assertThat(llmsTxt).doesNotContain("## assets")
+                .doesNotContain("## assets/css")
+                .doesNotContain("## assets/js");
+
         String sitemapXml = Files.readString(destinationDirectory.resolve("sitemap.xml"), UTF_8);
         assertThat(sitemapXml)
                 .contains("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">")

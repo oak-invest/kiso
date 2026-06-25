@@ -67,7 +67,6 @@ public class BuildCommand implements Runnable {
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
-            copyKisoAssets(destinationDirectory);
 
             // HTML generation =========================================================================================
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
@@ -105,6 +104,9 @@ public class BuildCommand implements Runnable {
                     StandardCharsets.UTF_8
             );
             print("File sitemap.xml generated");
+
+            // Add HTML assets =========================================================================================
+            copyKisoAssets(destinationDirectory);
 
             // Job done ================================================================================================
             print("Done!");
