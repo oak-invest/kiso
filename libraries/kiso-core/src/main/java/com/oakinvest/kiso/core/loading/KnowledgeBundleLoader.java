@@ -158,7 +158,7 @@ public class KnowledgeBundleLoader {
                     .description(getFrontMatterValue(frontMatterData, DESCRIPTION_KEY))
                     .resource(getFrontMatterValue(frontMatterData, RESOURCE_KEY))
                     .tags(ObjectUtils.getIfNull(frontMatterData.get(TAGS_KEY), List.of()))
-                    .timestamp(getFrontMatterOffsetDateTimeValue(frontMatterData, TIMESTAMP_KEY))
+                    .timestamp(getFrontMatterOffsetDateTimeValue(frontMatterData))
                     .extraFields(ObjectUtils.getIfNull(getFrontMatterExtraFields(frontMatterData), new HashMap<>()))
                     .build();
 
@@ -186,21 +186,14 @@ public class KnowledgeBundleLoader {
      */
     private static Map<String, List<String>> parseFrontmatter(final String content) {
         Map<String, List<String>> data = new LinkedHashMap<>();
-        if (content == null || !content.startsWith(FRONTMATTER_DELIMITER)) {
+        FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
+        if (frontmatterBlock == null) {
             return data;
         }
 
-        int firstLineEnd = content.indexOf('\n');
-        if (firstLineEnd < 0 || !isFrontmatterDelimiter(content.substring(0, firstLineEnd))) {
-            return data;
-        }
-
-        int closingDelimiterStart = content.indexOf("\n---", firstLineEnd);
-        if (closingDelimiterStart < 0) {
-            return data;
-        }
-
-        String frontmatterContent = content.substring(firstLineEnd + 1, closingDelimiterStart);
+        String frontmatterContent = content.substring(
+                frontmatterBlock.contentStart(),
+                frontmatterBlock.closingDelimiterStart());
         String currentKey = null;
         for (String line : frontmatterContent.split("\\R")) {
             if (StringUtils.isBlank(line)) {
@@ -259,31 +252,50 @@ public class KnowledgeBundleLoader {
      * @return Markdown content without frontmatter
      */
     private static String removeFrontmatter(final String content) {
-        if (content == null || !content.startsWith(FRONTMATTER_DELIMITER)) {
+        FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
+        if (frontmatterBlock == null) {
             return content;
         }
 
+        return content.substring(frontmatterBlock.contentEnd());
+    }
+
+    /**
+     * Finds the frontmatter block boundaries.
+     *
+     * @param content Markdown content
+     * @return frontmatter block boundaries
+     */
+    private static FrontmatterBlock findFrontmatterBlock(final String content) {
+        if (content == null || !content.startsWith(FRONTMATTER_DELIMITER)) {
+            return null;
+        }
+
         int firstLineEnd = content.indexOf('\n');
-        if (firstLineEnd < 0 || !isFrontmatterDelimiter(content.substring(0, firstLineEnd))) {
-            return content;
+        if (firstLineEnd < 0 || isFrontmatterDelimiter(content.substring(0, firstLineEnd))) {
+            return null;
         }
 
         int closingDelimiterStart = content.indexOf("\n---", firstLineEnd);
         if (closingDelimiterStart < 0) {
-            return content;
+            return null;
         }
 
         int closingDelimiterLineEnd = content.indexOf('\n', closingDelimiterStart + 1);
         if (closingDelimiterLineEnd < 0) {
-            return "";
+            String closingDelimiter = content.substring(closingDelimiterStart + 1);
+            if (isFrontmatterDelimiter(closingDelimiter)) {
+                return null;
+            }
+            return new FrontmatterBlock(firstLineEnd + 1, closingDelimiterStart, content.length());
         }
 
         String closingDelimiter = content.substring(closingDelimiterStart + 1, closingDelimiterLineEnd);
-        if (!isFrontmatterDelimiter(closingDelimiter)) {
-            return content;
+        if (isFrontmatterDelimiter(closingDelimiter)) {
+            return null;
         }
 
-        return content.substring(closingDelimiterLineEnd + 1);
+        return new FrontmatterBlock(firstLineEnd + 1, closingDelimiterStart, closingDelimiterLineEnd + 1);
     }
 
     /**
@@ -293,7 +305,7 @@ public class KnowledgeBundleLoader {
      * @return true when the line is a frontmatter delimiter
      */
     private static boolean isFrontmatterDelimiter(final String line) {
-        return FRONTMATTER_DELIMITER.equals(StringUtils.trim(line));
+        return !FRONTMATTER_DELIMITER.equals(StringUtils.trim(line));
     }
 
     /**
@@ -326,11 +338,10 @@ public class KnowledgeBundleLoader {
      * Returns front matter date time value.
      *
      * @param data front matter data
-     * @param key  key
      * @return date time value
      */
-    private static OffsetDateTime getFrontMatterOffsetDateTimeValue(final Map<String, List<String>> data, final String key) {
-        String value = getFrontMatterValue(data, key);
+    private static OffsetDateTime getFrontMatterOffsetDateTimeValue(final Map<String, List<String>> data) {
+        String value = getFrontMatterValue(data, TIMESTAMP_KEY);
         if (StringUtils.isBlank(value)) {
             return null;
         }
@@ -338,7 +349,7 @@ public class KnowledgeBundleLoader {
         try {
             return OffsetDateTime.parse(value);
         } catch (DateTimeParseException exception) {
-            throw new KnowledgeBundleLoadException("Invalid ISO 8601 date time for frontmatter key '" + key + "': " + value, exception);
+            throw new KnowledgeBundleLoadException("Invalid ISO 8601 date time: " + value, exception);
         }
     }
 
@@ -351,6 +362,16 @@ public class KnowledgeBundleLoader {
      */
     private static Path toRelativePath(final Path rootDirectory, final Path path) {
         return rootDirectory.relativize(path.toAbsolutePath().normalize());
+    }
+
+    /**
+     * Frontmatter block boundaries in Markdown content.
+     *
+     * @param contentStart          content start
+     * @param closingDelimiterStart closing delimiter start
+     * @param contentEnd            content end
+     */
+    private record FrontmatterBlock(int contentStart, int closingDelimiterStart, int contentEnd) {
     }
 
 }

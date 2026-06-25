@@ -18,6 +18,7 @@ public class SourceOption {
             paramLabel = "DIRECTORY",
             description = "Directory containing the Markdown files to read. Defaults to the current directory."
     )
+    @SuppressWarnings("unused")
     private Path sourceDirectory;
 
     /**

@@ -47,6 +47,7 @@ public class BuildCommand implements Runnable {
 
     /** Command spec. */
     @CommandLine.Spec
+    @SuppressWarnings("unused")
     private CommandLine.Model.CommandSpec commandSpec;
 
     /**

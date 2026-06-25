@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
 public class SitemapConstants {
 
     /** Sitemap XML namespace. */
+    @SuppressWarnings("HttpUrlsUsage")
     public static final String SITEMAP_NAMESPACE = "http://www.sitemaps.org/schemas/sitemap/0.9";
 
 }
