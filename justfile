@@ -28,14 +28,14 @@ run_build:
 build_native:
     # Native app is built as applications/kiso-cli/target/kiso-cli
     mvn clean install -pl libraries/kiso-core -am -DskipTests
-    mvn -pl applications/kiso-cli -Pnative package native:compile
+    mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
 
 run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
 
 # Release ==============================================================================================================
 start_release:
-    git remote set-url origin git@github.com:mogami-tech/x402-commons.git
+    git remote set-url origin git@github.com:oak-invest/kiso.git
     git checkout development
     git pull
     git status
