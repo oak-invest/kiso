@@ -28,7 +28,7 @@ run_build:
 build_native:
     # Native app is built as applications/kiso-cli/target/kiso-cli
     mvn clean install -pl libraries/kiso-core -am -DskipTests
-    mvn -pl applications/kiso-cli -Pnative package native:compile -DskipTests
+    mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
 
 run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
