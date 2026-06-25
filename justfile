@@ -33,6 +33,17 @@ build_native:
 run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
 
+# Release ==============================================================================================================
+start_release:
+    git remote set-url origin git@github.com:mogami-tech/x402-commons.git
+    git checkout development
+    git pull
+    git status
+    mvn gitflow:release-start
+
+finish_release:
+    mvn gitflow:release-finish -DskipTests
+
 # Website ==============================================================================================================
 
 generate_website_demo:
