@@ -35,7 +35,7 @@ run_build_native:
 
 # Release ==============================================================================================================
 start_release:
-    git remote set-url origin git@github.com:mogami-tech/x402-commons.git
+    git remote set-url origin git@github.com:oak-invest/kiso.git
     git checkout development
     git pull
     git status
