@@ -1,13 +1,14 @@
+@import com.oakinvest.kiso.core.rendering.model.page.IndexPage
 @import org.apache.commons.lang3.StringUtils
 
-@param com.oakinvest.kiso.core.renderer.model.IndexPage page
+@param com.oakinvest.kiso.core.rendering.model.page.IndexPage page
 
 @template.layouts.default(
 title = page.metadata().title(),
 description = page.metadata().description(),
 markdownFileName = page.metadata().markdownFileName(),
 assetBasePath = page.metadata().assetBasePath(),
-packageTree = page.packageTree(),
+bundleTree = page.bundleTree(),
 currentHtmlPath = page.metadata().htmlPath(),
 content = @`
 

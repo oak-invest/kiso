@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.model;
 
-import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
+import com.oakinvest.kiso.core.loading.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,13 @@ public class KnowledgeBundleTest extends BaseTest {
     void bundles() throws URISyntaxException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
-        var rootBundle = new KnowledgeBundleLoader().load(resourcePath);
+        var rootBundle = KnowledgeBundleLoader.load(resourcePath);
 
         // Testing .bundles() ==========================================================================================
         assertThat(rootBundle.bundles())
                 .hasSize(6)
                 .satisfiesExactly(
-                        bundle -> assertThat(bundle.name()).isEqualTo(""),
+                        bundle -> assertThat(bundle.name()).isEqualTo("Index"),
                         bundle -> assertThat(bundle.name()).isEqualTo("datasets"),
                         bundle -> assertThat(bundle.name()).isEqualTo("references"),
                         bundle -> assertThat(bundle.name()).isEqualTo("references/joins"),

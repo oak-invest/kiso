@@ -2,7 +2,7 @@
 @param String description
 @param String markdownFileName
 @param String assetBasePath
-@param com.oakinvest.kiso.core.renderer.model.PackageTree packageTree
+@param com.oakinvest.kiso.core.rendering.model.navigation.BundleTree bundleTree
 @param String currentHtmlPath
 @param gg.jte.Content content
 
@@ -73,7 +73,7 @@ current DaisyUI theme, and displays text using the default readable text color f
                 <div class="mt-1 text-lg font-semibold">Bundle content</div>
             </div>
             <nav class="kiso-navigation-menu">
-                @template.partials.packageTreeMenu(packageTree = packageTree, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
+                @template.partials.bundleTreeMenu(bundleTree = bundleTree, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
             </nav>
         </aside>
     </div>

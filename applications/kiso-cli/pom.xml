@@ -15,8 +15,8 @@
     <!-- Project information ======================================================================================= -->
     <artifactId>kiso-cli</artifactId>
     <packaging>jar</packaging>
-    <name>Kiso CLI</name>
-    <description>Convert OKF files into navigable knowledge systems for humans and AI agents.</description>
+    <name>Kiso cli</name>
+    <description>Kiso cli is a publishing engine for Open Knowledge Format (OKF).</description>
 
     <!-- Project configuration ===================================================================================== -->
     <properties>
@@ -45,12 +45,7 @@
         <!-- Test dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit-pioneer</groupId>
-            <artifactId>junit-pioneer</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

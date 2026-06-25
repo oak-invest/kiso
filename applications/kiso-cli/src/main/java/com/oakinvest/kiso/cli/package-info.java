@@ -1,4 +1,4 @@
 /**
- * Kiso CLI application.
+ * Kiso cli.
  */
 package com.oakinvest.kiso.cli;

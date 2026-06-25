@@ -10,19 +10,19 @@ import java.util.stream.Stream;
 /**
  * A bundle is a directory tree of markdown files.
  *
- * @param name                   bundle fileName
- * @param path                   absolute or execution-relative directory path
- * @param relativePath           path relative to the bundle rootBundleDirectory directory
- * @param childBundleDirectories direct child directories
- * @param markdownFiles          direct Markdown files
+ * @param name          bundle name
+ * @param absolutePath  absolute path
+ * @param relativePath  relative path to the root bundle
+ * @param childBundles  child bundles
+ * @param markdownFiles direct Markdown files
  */
 @Builder
 @SuppressWarnings("unused")
 public record Bundle(
         String name,
-        Path path,
+        Path absolutePath,
         Path relativePath,
-        List<Bundle> childBundleDirectories,
+        List<Bundle> childBundles,
         List<MarkdownFile> markdownFiles
 ) {
 
@@ -34,7 +34,7 @@ public record Bundle(
     public Stream<Bundle> flatten() {
         return Stream.concat(
                 Stream.of(this),
-                childBundleDirectories.stream().flatMap(Bundle::flatten)
+                childBundles.stream().flatMap(Bundle::flatten)
         );
     }
 

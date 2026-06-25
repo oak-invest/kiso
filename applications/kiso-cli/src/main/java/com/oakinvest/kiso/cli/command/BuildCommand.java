@@ -1,12 +1,13 @@
 package com.oakinvest.kiso.cli.command;
 
-import com.oakinvest.kiso.cli.util.command.DestinationOption;
-import com.oakinvest.kiso.cli.util.command.SourceOption;
-import com.oakinvest.kiso.core.generator.LlmsTxtGenerator;
-import com.oakinvest.kiso.core.generator.SitemapXmlGenerator;
-import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.renderer.engine.MarkdownToHtmlRenderer;
-import com.oakinvest.kiso.core.renderer.model.PackageTree;
+import com.oakinvest.kiso.cli.options.DestinationOption;
+import com.oakinvest.kiso.cli.options.SourceOption;
+import com.oakinvest.kiso.core.loading.KnowledgeBundleLoader;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.publishing.LlmsTxtGenerator;
+import com.oakinvest.kiso.core.publishing.SitemapXmlGenerator;
+import com.oakinvest.kiso.core.rendering.MarkdownToHtmlRenderer;
+import com.oakinvest.kiso.core.rendering.model.navigation.BundleTree;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -16,16 +17,16 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 /**
- * Build: Generates a static website from .md files, outputting HTML files alongside the original Markdown files.
+ * Build: Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml.
  */
 @CommandLine.Command(
         name = "build",
         mixinStandardHelpOptions = true,
-        description = "Generates a static website from .md files"
+        description = "Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml"
 )
 public class BuildCommand implements Runnable {
 
-    /** Static assets copied to the generated website root. */
+    /** Static assets copied to the generated website isRoot. */
     private static final String[] ASSET_PATHS = {
             "assets/css/daisyui@5.css",
             "assets/css/themes.css",
@@ -33,11 +34,11 @@ public class BuildCommand implements Runnable {
             "assets/js/browser@4.js"
     };
 
-    /** Shared source directory option. */
+    /** Source directory. */
     @CommandLine.Mixin
     private final SourceOption sourceOption = new SourceOption();
 
-    /** Shared destination directory option. */
+    /** Destination directory. */
     @CommandLine.Mixin
     private final DestinationOption destinationOption = new DestinationOption();
 
@@ -54,32 +55,32 @@ public class BuildCommand implements Runnable {
             // Displaying information about the process ================================================================
             final File sourceDirectory = sourceOption.sourceDirectory().toFile();
             final File destinationDirectory = destinationOption.destinationDirectory().toFile();
-            commandSpec.commandLine().getOut().println("Kiso-cli - Build command");
-            commandSpec.commandLine().getOut().println("Using sources in " + sourceDirectory.getAbsolutePath());
-            commandSpec.commandLine().getOut().println("Building website in " + destinationDirectory.getAbsolutePath());
+            print("Kiso-cli - Running build command");
+            print("Sources in " + sourceDirectory.getAbsolutePath());
+            print("Building in " + destinationDirectory.getAbsolutePath());
+            blankLine();
 
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
+            copyKisoAssets(destinationDirectory);
 
             // HTML generation =========================================================================================
-            final MarkdownToHtmlRenderer markdownToHtmlRenderer = new MarkdownToHtmlRenderer();
-            final var knowledgeBundle = new KnowledgeBundleLoader().load(destinationDirectory.toPath());
-            final var packageTree = PackageTree.fromBundle(knowledgeBundle.rootBundle());
-            copyAssets(destinationDirectory);
+            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
+            final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
                         // We generate the HTML version of every Markdown file =========================================
                         bundle.markdownFiles().forEach(markdownFile -> {
                             try {
                                 FileUtils.writeStringToFile(
-                                        new File(bundle.path().toString(), markdownFile.htmlFileName()),
-                                        markdownToHtmlRenderer.render(markdownFile, packageTree),
+                                        new File(bundle.absolutePath().toString(), markdownFile.htmlFileName()),
+                                        MarkdownToHtmlRenderer.render(markdownFile, bundleTree),
                                         StandardCharsets.UTF_8
                                 );
-                                commandSpec.commandLine().getOut().println("HTML Generated for " + markdownFile.relativePath());
+                                print("HTML Generated for " + markdownFile.relativePath());
                             } catch (IOException e) {
-                                commandSpec.commandLine().getErr().println("Error generating HTML for " + markdownFile.path() + ": " + e.getMessage());
+                                printError("Error generating HTML for " + markdownFile.absolutePath() + ": " + e.getMessage());
                             }
                         });
 
@@ -87,36 +88,60 @@ public class BuildCommand implements Runnable {
 
             // llms.txt generation =====================================================================================
             FileUtils.writeStringToFile(
-                    new File(knowledgeBundle.rootBundle().path().toString(), "llms.txt"),
-                    new LlmsTxtGenerator().generate(knowledgeBundle),
+                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), "llms.txt"),
+                    LlmsTxtGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
-            commandSpec.commandLine().getOut().println("File llms.txt generated");
+            print("File llms.txt generated");
 
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
-                    new File(knowledgeBundle.rootBundle().path().toString(), "sitemap.xml"),
-                    new SitemapXmlGenerator().generate(knowledgeBundle),
+                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), "sitemap.xml"),
+                    SitemapXmlGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
-            commandSpec.commandLine().getOut().println("File sitemap.xml generated");
+            print("File sitemap.xml generated");
 
-            // Job done!
-            commandSpec.commandLine().getOut().println("Done!");
+            // Job done ================================================================================================
+            print("Done!");
         } catch (IOException e) {
-            commandSpec.commandLine().getErr().println("Error: " + e.getMessage());
+            printError("Error: " + e.getMessage());
             commandSpec.exitCodeOnInvalidInput();
         }
-
     }
 
     /**
-     * Copies Kiso static assets to the generated website root.
+     * Print message in console.
      *
-     * @param destinationDirectory generated website root
+     * @param message message to print
+     */
+    private void print(final String message) {
+        commandSpec.commandLine().getOut().println(message);
+    }
+
+    /**
+     * Blank line in console.
+     */
+    private void blankLine() {
+        commandSpec.commandLine().getOut().println();
+    }
+
+    /**
+     * Print error message in console.
+     *
+     * @param message message to print
+     */
+    private void printError(final String message) {
+        commandSpec.commandLine().getErr().println(message);
+    }
+
+    /**
+     * Copies Kiso static assets to the generated website isRoot.
+     *
+     * @param destinationDirectory generated website isRoot
      * @throws IOException if an asset cannot be copied
      */
-    private void copyAssets(final File destinationDirectory) throws IOException {
+    private void copyKisoAssets(final File destinationDirectory) throws IOException {
         ClassLoader classLoader = MarkdownToHtmlRenderer.class.getClassLoader();
         for (String assetPath : ASSET_PATHS) {
             try (InputStream inputStream = classLoader.getResourceAsStream(assetPath)) {

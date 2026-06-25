@@ -20,12 +20,12 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "gg.jte.generated.precompiled.partials.JtepackageTreeMenuGenerated",
+    "name": "gg.jte.generated.precompiled.partials.JtebundleTreeMenuGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "gg.jte.generated.precompiled.partials.JtepackageTreeMenuNodeGenerated",
+    "name": "gg.jte.generated.precompiled.partials.JtebundleTreeMenuNodeGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
   }

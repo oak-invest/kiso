@@ -1,36 +1,36 @@
 package com.oakinvest.kiso.core.model.markdown;
 
+import lombok.Getter;
 import org.apache.commons.lang3.Strings;
 
 import java.nio.file.Path;
 import java.util.Arrays;
 
 /**
- * Semantic kind of Markdown file inside an OKF bundle.
+ * Semantic kind of Markdown file inside an Open Knowledge Format bundle.
  */
 @SuppressWarnings("unused")
 public enum MarkdownFileKind {
 
-    /** Standard OKF concept document. */
+    /** Standard Open Knowledge Format concept document. */
     CONCEPT(null),
 
     /**
      * Directory index document (index.md).
      * An index.md file MAY appear in any directory, including the bundle rootBundleDirectory. It enumerates the directory's contents
-     * to support progressive disclosure — letting a human or agent see what is available before opening individual
+     * to support progressive disclosure - letting a human or agent see what is available before opening individual
      * documents.
-     *
      */
     INDEX("index.md"),
 
     /**
      * Directory update log document (log.md).
      * A log.md file MAY appear at any level of the hierarchy to record the history of changes to that scope.
-     *
      */
     LOG("log.md");
 
     /** Filename corresponding for the Markdown file kind. */
+    @Getter
     private final String fileName;
 
     /**
@@ -43,7 +43,7 @@ public enum MarkdownFileKind {
     }
 
     /**
-     * Returns the Markdown kind from the path.
+     * Returns the Markdown kind from a path.
      *
      * @param path file path
      * @return Markdown kind
