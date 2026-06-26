@@ -3,7 +3,7 @@ install:
     mvn install
 
 test:
-    mvn test
+    mvn clean test
 
 # Application run commandes ============================================================================================
 run:
@@ -24,7 +24,6 @@ run_build:
       -Dexec.args="build --source=examples/kb-google-example"
 
 # Native build commands ================================================================================================
-
 build_native:
     # Native app is built as applications/kiso-cli/target/kiso-cli
     mvn clean install -pl libraries/kiso-core -am -DskipTests
@@ -34,6 +33,8 @@ run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
 
 # Release ==============================================================================================================
+# ! Change the release number in applications/kiso-cli-action/action.yml
+
 start_release:
     git remote set-url origin git@github.com:oak-invest/kiso.git
     git checkout development
@@ -45,7 +46,6 @@ finish_release:
     mvn gitflow:release-finish -DskipTests
 
 # Website ==============================================================================================================
-
 generate_website_demo:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \

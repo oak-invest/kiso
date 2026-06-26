@@ -2,6 +2,10 @@ name: "Kiso"
 description: "Validate and build an OKF knowledge bundle with Kiso"
 
 inputs:
+  version:
+    description: "Kiso CLI version to use, for example v0.1.2"
+    required: false
+    default: "v0.1.2"
   command:
     description: "Kiso command: build"
     required: false
@@ -21,7 +25,7 @@ runs:
     - name: Download Kiso cli
       shell: bash
       run: |
-        curl -L -o kiso-cli https://github.com/oak-invest/kiso/releases/download/v0.1.0/kiso-cli-linux-x64
+        curl -L -o kiso-cli https://github.com/oak-invest/kiso/releases/download/${{ inputs.version }}/kiso-cli-linux-x64
         chmod +x kiso-cli
 
     - name: Run Kiso cli
