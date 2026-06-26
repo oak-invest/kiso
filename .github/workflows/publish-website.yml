@@ -34,7 +34,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # Generate the website demo with the actual code of Kiso cli =====================================================
+      # Generate the knowledge bundle demo with the actual code of Kiso cli ============================================
 
       - name: Set up environment
         uses: ./.github/actions/setup
@@ -43,7 +43,7 @@ jobs:
         run: |
           just generate_website_demo
 
-      # Generate another website demo with the latest release of Kiso cli ==============================================
+      # Generate the knowledge bundle demo with the latest release of Kiso cli =========================================
 
       - name: Build with Kiso
         uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.1

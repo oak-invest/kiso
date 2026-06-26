@@ -21,7 +21,7 @@ runs:
     - name: Download Kiso cli
       shell: bash
       run: |
-        curl -L -o kiso-cli https://github.com/oak-invest/kiso/releases/download/v0.1.0/kiso-cli-linux-x64
+        curl -L -o kiso-cli https://github.com/oak-invest/kiso/releases/download/v0.1.1/kiso-cli-linux-x64
         chmod +x kiso-cli
 
     - name: Run Kiso cli
