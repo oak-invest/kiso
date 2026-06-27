@@ -1,6 +1,6 @@
 # Maven commands =======================================================================================================
 install:
-    mvn install
+    mvn clean install
 
 test:
     mvn clean test
@@ -34,7 +34,6 @@ run_build_native:
 
 # Release ==============================================================================================================
 # ! Change the release number in applications/kiso-cli-action/action.yml
-
 start_release:
     git remote set-url origin git@github.com:oak-invest/kiso.git
     git checkout development
