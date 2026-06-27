@@ -206,7 +206,7 @@
                 </executions>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>https://oak-invest.github.io/kiso/shared/checkstyle.xml</configLocation>
+                    <configLocation>https://oak-invest.com/shared/checkstyle.xml</configLocation>
                     <failOnViolation>true</failOnViolation>
                     <violationSeverity>warning</violationSeverity>
                 </configuration>
