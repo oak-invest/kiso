@@ -30,9 +30,10 @@
 
 <!-- Header ======================================================================================================== -->
 <header class="border-b border-base-300 bg-base-100">
-    <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 lg:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col items-stretch gap-3 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4 lg:px-8">
         <a aria-label="Kiso home" class="inline-flex items-center" href="./">
-            <img alt="Kiso" class="h-14 w-auto sm:h-16" src="assets/images/logo/kiso_logo_horizontal_light.svg"/>
+            <img alt="Kiso" class="h-12 w-auto self-start sm:h-16"
+                 src="assets/images/logo/kiso_logo_horizontal_light.svg"/>
         </a>
         <nav class="hidden items-center gap-5 text-sm font-medium md:flex">
             <a class="link-hover" href="#okf">OKF</a>
@@ -41,7 +42,7 @@
             <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="demo">Demo</a>
             <a class="btn btn-outline btn-sm" href="https://github.com/oak-invest/kiso/releases" target="download">Download</a>
         </nav>
-        <div class="flex gap-2 md:hidden">
+        <div class="grid grid-cols-2 gap-2 sm:flex md:hidden">
             <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="demo">Demo</a>
             <a class="btn btn-outline btn-sm" href="https://github.com/oak-invest/kiso/releases" target="download">Download</a>
         </div>
@@ -74,11 +75,11 @@
             </div>
 
             <!-- Example =========================================================================================== -->
-            <aside class="rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+            <aside class="min-w-0 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
                 <div class="mb-4 flex items-center justify-between gap-4">
                     <h2 class="text-base font-semibold">Build a site</h2>
                 </div>
-                <div class="mockup-code bg-neutral text-neutral-content">
+                <div class="mockup-code max-w-full overflow-x-auto bg-neutral text-neutral-content">
                     <pre data-prefix="$"><code>kiso-cli build \</code></pre>
                     <pre data-prefix=">"><code>  --source=examples/kb-google-example \</code></pre>
                     <pre data-prefix=">"><code>  --destination=public</code></pre>
@@ -134,7 +135,7 @@
                         llms.txt, and sitemap.xml.
                     </p>
                 </div>
-                <div class="overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm">
+                <div class="min-w-0 overflow-x-auto rounded-box border border-base-300 bg-base-100 shadow-sm">
                     <table class="table">
                         <tbody>
                         <tr>
@@ -164,17 +165,13 @@
                         Pages or any other static hosting service.
                     </p>
                 </div>
-                <div class="mockup-code bg-neutral text-neutral-content">
-                    <pre>
-                        <code>
- - name: Build with Kiso
+                <div class="mockup-code min-w-0 max-w-full overflow-x-auto bg-neutral text-neutral-content">
+                    <pre><code> - name: Build with Kiso
    uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.2
    with:
     command: build
     source: examples/kb-google-example
-    destination: website/examples/kb-google-example-latest
-                        </code>
-                    </pre>
+    destination: website/examples/kb-google-example-latest</code></pre>
                 </div>
             </div>
         </div>
@@ -230,8 +227,8 @@
     </div>
 </footer>
 
-<!-- GitHub link on right corner -->
-<a href="https://github.com/oak-invest/kiso" target="github">
+<!-- FiGitHub link on right corner -->
+<a class="hidden lg:block" href="https://github.com/oak-invest/kiso" target="github">
     <svg height="80" style="fill:#337ab7; color:#fff; position: absolute; top: 0; border: 0; right: 0;"
          viewBox="0 0 250 250"
          width="80">
