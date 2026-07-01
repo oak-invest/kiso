@@ -2,12 +2,12 @@ package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.options.DestinationOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
-import com.oakinvest.kiso.core.loading.KnowledgeBundleLoader;
+import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.publishing.LlmsTxtGenerator;
-import com.oakinvest.kiso.core.publishing.SitemapXmlGenerator;
-import com.oakinvest.kiso.core.rendering.MarkdownToHtmlRenderer;
-import com.oakinvest.kiso.core.rendering.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
+import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
+import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
+import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Callable;
 
 import static com.oakinvest.kiso.core.util.FileNamesConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileNamesConstants.SITEMAP_XML_FILENAME;
@@ -27,7 +28,7 @@ import static com.oakinvest.kiso.core.util.FileNamesConstants.SITEMAP_XML_FILENA
         mixinStandardHelpOptions = true,
         description = "Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml"
 )
-public class BuildCommand implements Runnable {
+public class BuildCommand implements Callable<Integer> {
 
     /** Static assets copied to the generated website isRoot. */
     private static final String[] ASSET_PATHS = {
@@ -54,7 +55,7 @@ public class BuildCommand implements Runnable {
      * Run the build command.
      */
     @Override
-    public void run() {
+    public Integer call() {
         try {
             // Displaying information about the process ================================================================
             final File sourceDirectory = sourceOption.sourceDirectory().toFile();
@@ -110,9 +111,10 @@ public class BuildCommand implements Runnable {
 
             // Job done ================================================================================================
             print("Done!");
+            return CommandLine.ExitCode.OK;
         } catch (IOException e) {
             printError("Error: " + e.getMessage());
-            commandSpec.exitCodeOnInvalidInput();
+            return CommandLine.ExitCode.SOFTWARE;
         }
     }
 

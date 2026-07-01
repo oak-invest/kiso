@@ -1,6 +1,6 @@
 @import java.time.format.DateTimeFormatter
 
-@param com.oakinvest.kiso.core.rendering.model.page.ConceptPage page
+@param com.oakinvest.kiso.core.renderer.model.page.ConceptPage page
 
 @template.layouts.default(
 title = page.metadata().title(),

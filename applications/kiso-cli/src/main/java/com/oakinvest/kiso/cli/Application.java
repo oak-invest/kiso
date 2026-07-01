@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.cli;
 
 import com.oakinvest.kiso.cli.command.BuildCommand;
+import com.oakinvest.kiso.cli.command.CheckCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -8,6 +9,7 @@ import picocli.CommandLine;
         mixinStandardHelpOptions = true,
         version = "0.1.0",
         subcommands = {
+                CheckCommand.class,
                 BuildCommand.class
         }
 )

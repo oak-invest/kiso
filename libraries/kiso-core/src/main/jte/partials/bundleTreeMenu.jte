@@ -1,4 +1,4 @@
-@param com.oakinvest.kiso.core.rendering.model.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.renderer.model.navigation.BundleTree bundleTree
 @param String assetBasePath
 @param String currentHtmlPath
 

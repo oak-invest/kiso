@@ -15,7 +15,7 @@ run_check:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-      -Dexec.args="check"
+      -Dexec.args="check --source=examples/kb-google-example"
 
 run_build:
     mvn install -pl libraries/kiso-core -am -DskipTests
@@ -23,11 +23,14 @@ run_build:
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="build --source=examples/kb-google-example"
 
-# Native build commands ================================================================================================
+# Native commands ======================================================================================================
 build_native:
     # Native app is built as applications/kiso-cli/target/kiso-cli
     mvn clean install -pl libraries/kiso-core -am -DskipTests
     mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
+
+run_check_native:
+    ./applications/kiso-cli/target/kiso-cli check --source=examples/kb-google-example
 
 run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
@@ -44,7 +47,7 @@ start_release:
 finish_release:
     mvn gitflow:release-finish -DskipTests
 
-# Website ==============================================================================================================
+# Website utils ========================================================================================================
 generate_website_demo:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \

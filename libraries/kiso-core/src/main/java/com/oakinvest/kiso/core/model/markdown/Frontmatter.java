@@ -28,4 +28,22 @@ public record Frontmatter(
         OffsetDateTime timestamp,
         Map<String, Object> extraFields
 ) {
+
+    /**
+     * Empty Frontmatter.
+     *
+     * @return empty frontmatter
+     */
+    public static Frontmatter empty() {
+        return new Frontmatter(
+                null,
+                null,
+                null,
+                null,
+                List.of(),
+                null,
+                Map.of()
+        );
+    }
+
 }
