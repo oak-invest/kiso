@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.model.markdown;
 
 import lombok.Builder;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.jspecify.annotations.Nullable;
@@ -8,6 +9,7 @@ import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
 
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.HTML_EXTENSION;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
@@ -40,6 +42,22 @@ public record MarkdownFile(
      */
     public boolean hasFrontmatter() {
         return frontmatter != null;
+    }
+
+    /**
+     * Returns the concept id.
+     * The path of the concept's file within the bundle, with the .md suffix removed.
+     * For example, tables/users.md has concept ID tables/users.
+     *
+     * @return concept id
+     */
+    public String conceptId() {
+        if (kind.equals(CONCEPT)) {
+            String path = relativePath.toString().replace('\\', '/');
+            return FilenameUtils.removeExtension(path);
+        } else {
+            return null;
+        }
     }
 
     /**

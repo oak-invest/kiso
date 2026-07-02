@@ -66,6 +66,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                             // File information.
                             assertThat(ga4.fileName()).isEqualTo("ga4_obfuscated_sample_ecommerce.md");
                             assertThat(ga4.kind()).isEqualTo(CONCEPT);
+                            assertThat(ga4.conceptId()).isEqualTo("datasets/ga4_obfuscated_sample_ecommerce");
 
                             // Path.
                             assertThat(ga4.absolutePath()).isEqualTo(Path.of(resourcePath + "/datasets/ga4_obfuscated_sample_ecommerce.md"));
