@@ -13,6 +13,7 @@ import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
+import static com.oakinvest.kiso.core.validation.ValidationCode.UNEXPECTED_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 
 /**
@@ -65,6 +66,16 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                 }
             }
 
+        } else {
+            // Non CONCEPT file should not contain frontmatter =========================================================
+            if (markdownFile.hasFrontmatter()) {
+                return List.of(ValidationIssue.builder()
+                        .severity(ERROR)
+                        .code(UNEXPECTED_FRONTMATTER)
+                        .message("File " + markdownFile.relativePath() + " is not a concept file and should not contain frontmatter")
+                        .path(markdownFile.relativePath())
+                        .build());
+            }
         }
         return List.of();
     }

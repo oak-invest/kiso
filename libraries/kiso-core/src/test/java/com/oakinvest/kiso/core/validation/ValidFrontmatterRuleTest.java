@@ -11,9 +11,11 @@ import java.nio.file.Path;
 
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
+import static com.oakinvest.kiso.core.validation.ValidationCode.UNEXPECTED_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -81,6 +83,39 @@ class ValidFrontmatterRuleTest extends BaseTest {
             assertThat(issue.code()).isEqualTo(INVALID_TIMESTAMP);
             assertThat(issue.message()).isEqualTo("File concept-with-invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format");
             assertThat(issue.path()).isEqualTo(markdownFilePath);
+        });
+    }
+
+    @Test
+    @DisplayName("Non concept files should not have frontmatter")
+    void unexpectedFrontmatter() {
+        // We create a concept file with frontmatter but with an invalid timestamp =====================================
+
+        // index.md
+        Path indexFilePath = Path.of(INDEX.getFileName());
+        Frontmatter frontmatter = Frontmatter.builder()
+                .type("Concept")
+                .timestamp("02-07-2026T14:30:00Z")
+                .build();
+        MarkdownFile indexFile = markdownFile(indexFilePath, INDEX, frontmatter);
+
+        // log.md
+        Path logFilePath = Path.of(LOG.getFileName());
+        MarkdownFile logFile = markdownFile(logFilePath, LOG, frontmatter);
+
+        // Run validation to check an unexpected frontmatter ============================================================
+        assertThat(rule.validate(bundleWith(indexFile), indexFile)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
+            assertThat(issue.message()).isEqualTo("File index.md is not a concept file and should not contain frontmatter");
+            assertThat(issue.path()).isEqualTo(indexFilePath);
+        });
+
+        assertThat(rule.validate(bundleWith(logFile), logFile)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
+            assertThat(issue.message()).isEqualTo("File log.md is not a concept file and should not contain frontmatter");
+            assertThat(issue.path()).isEqualTo(logFilePath);
         });
     }
 

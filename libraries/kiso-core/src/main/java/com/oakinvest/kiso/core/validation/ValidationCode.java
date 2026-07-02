@@ -11,6 +11,9 @@ public enum ValidationCode {
     /** Missing frontmatter. */
     MISSING_FRONTMATTER,
 
+    /** Unexpected frontmatter. */
+    UNEXPECTED_FRONTMATTER,
+
     /** Missing type field in frontmatter. */
     MISSING_FRONTMATTER_TYPE,
 

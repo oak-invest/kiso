@@ -86,15 +86,29 @@ public class CheckCommandTest {
                 ---
                 This file has frontmatter but an invalid timestamp.""");
 
+        // index.md with frontmatter.
+        Path file6 = testDirectory.resolve("index.md");
+        Files.writeString(file6, """
+                ---
+                type: Index
+                ---
+                This index file has frontmatter, which is not allowed.""");
+
+        // log.md with frontmatter
+        Path file7 = testDirectory.resolve("log.md");
+        Files.writeString(file7, """
+                ---
+                type: Log
+                ---
+                This index file has frontmatter, which is not allowed.""");
+
         // Executing the check command =================================================================================
         StringWriter output = new StringWriter();
         StringWriter error = new StringWriter();
         int exitCode = new CommandLine(new CheckCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
-                .execute(
-                        "--source", sourceDirectory.toAbsolutePath().toString()
-                );
+                .execute("--source", sourceDirectory.toAbsolutePath().toString());
 
         // Checking the results ========================================================================================
         assertThat(exitCode).isNotZero();
@@ -113,12 +127,16 @@ public class CheckCommandTest {
                 // missing-frontmatter-type.md
                 .contains("ERROR - MISSING_FRONTMATTER_TYPE - File missing-frontmatter-type.md is missing mandatory 'type' in frontmatter")
                 // test/invalid-timestamp.md
-                .contains("ERROR - INVALID_TIMESTAMP - File test/invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format");
+                .contains("ERROR - INVALID_TIMESTAMP - File test/invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format")
+                // test/index.md
+                .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/index.md is not a concept file and should not contain frontmatter")
+                // test/log.md
+                .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/log.md is not a concept file and should not contain frontmatter");
 
-//        System.out.println("STDOUT:");
-//        System.out.println(output);
-//        System.err.println("STDERR:");
-//        System.err.println(error);
+        // System.out.println("STDOUT:");
+        // System.out.println(output);
+        // System.err.println("STDERR:");
+        // System.err.println(error);
     }
 
 
