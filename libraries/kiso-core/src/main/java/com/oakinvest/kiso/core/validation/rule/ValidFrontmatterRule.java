@@ -1,0 +1,61 @@
+package com.oakinvest.kiso.core.validation.rule;
+
+import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.validation.ValidationIssue;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.Objects;
+
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
+import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
+import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
+
+/**
+ * Valid frontmatter rule.
+ * <a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md">OKF Spec</a>
+ * 4. Concept Documents
+ * Every concept has two parts:
+ * - A YAML frontmatter block.
+ * - A markdown body.
+ * type: <Type name> # REQUIRED
+ */
+public class ValidFrontmatterRule implements MarkdownFileRule {
+
+    @Override
+    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(bundle, "bundle must not be null");
+        Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
+        // Only on concept files =======================================================================================
+        if (markdownFile.kind().equals(CONCEPT)) {
+            Frontmatter frontmatter = markdownFile.frontmatter();
+
+            // If there is not frontmatter =============================================================================
+            if (frontmatter == null) {
+                return List.of(ValidationIssue.builder()
+                        .severity(ERROR)
+                        .code(MISSING_FRONTMATTER)
+                        .message("File " + markdownFile.relativePath() + " is missing mandatory frontmatter")
+                        .path(markdownFile.relativePath())
+                        .build());
+            } else {
+                // If there is a frontmatter and type is missing =======================================================
+                if (StringUtils.isBlank(frontmatter.type())) {
+                    return List.of(ValidationIssue.builder()
+                            .severity(ERROR)
+                            .code(MISSING_FRONTMATTER_TYPE)
+                            .message("File " + markdownFile.relativePath() + " is missing mandatory 'type' in frontmatter")
+                            .path(markdownFile.relativePath())
+                            .build());
+                }
+            }
+
+        }
+        return List.of();
+    }
+
+}

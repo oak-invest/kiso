@@ -6,6 +6,12 @@ package com.oakinvest.kiso.core.validation;
 public enum ValidationCode {
 
     /** Invalid encoding. */
-    INVALID_ENCODING
+    INVALID_ENCODING,
+
+    /** Missing frontmatter. */
+    MISSING_FRONTMATTER,
+
+    /** Missing type field in frontmatter. */
+    MISSING_FRONTMATTER_TYPE
 
 }

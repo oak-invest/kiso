@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
@@ -154,20 +155,10 @@ public class KnowledgeBundleLoader {
         byte[] bytes = {};
 
         try {
+            // Getting the markdown and the frontmatter ================================================================
             bytes = Files.readAllBytes(normalizedFile);
-
-            // Exploring the markdown ==================================================================================
             final String content = decodeUtf8Strict(bytes);
-            Map<String, List<String>> frontMatterData = parseFrontmatter(content);
-            Frontmatter frontmatter = Frontmatter.builder()
-                    .type(getFrontMatterValue(frontMatterData, TYPE_KEY))
-                    .title(getFrontMatterValue(frontMatterData, TITLE_KEY))
-                    .description(getFrontMatterValue(frontMatterData, DESCRIPTION_KEY))
-                    .resource(getFrontMatterValue(frontMatterData, RESOURCE_KEY))
-                    .tags(ObjectUtils.getIfNull(frontMatterData.get(TAGS_KEY), List.of()))
-                    .timestamp(getFrontMatterOffsetDateTimeValue(frontMatterData))
-                    .extraFields(ObjectUtils.getIfNull(getFrontMatterExtraFields(frontMatterData), new HashMap<>()))
-                    .build();
+            final Optional<Frontmatter> frontmatter = loadFrontmatter(content);
 
             // Return data =============================================================================================
             return MarkdownFile.builder()
@@ -175,7 +166,7 @@ public class KnowledgeBundleLoader {
                     .kind(MarkdownFileKind.from(normalizedFile))
                     .absolutePath(normalizedFile)
                     .relativePath(toRelativePath(rootBundle, normalizedFile))
-                    .frontmatter(frontmatter)
+                    .frontmatter(frontmatter.orElse(null))
                     .content(removeFrontmatter(content))
                     .build();
         } catch (CharacterCodingException exception) {
@@ -194,6 +185,28 @@ public class KnowledgeBundleLoader {
     }
 
     // Frontmatter utils ===============================================================================================
+
+    /**
+     * Loads a frontmatter from a content.
+     *
+     * @param content content
+     * @return frontmatter
+     */
+    private static Optional<Frontmatter> loadFrontmatter(final String content) {
+        if (findFrontmatterBlock(content) == null) {
+            return Optional.empty();
+        }
+        Map<String, List<String>> data = parseFrontmatter(content);
+        return Optional.of(Frontmatter.builder()
+                .type(getFrontMatterValue(data, TYPE_KEY))
+                .title(getFrontMatterValue(data, TITLE_KEY))
+                .description(getFrontMatterValue(data, DESCRIPTION_KEY))
+                .resource(getFrontMatterValue(data, RESOURCE_KEY))
+                .tags(ObjectUtils.getIfNull(data.get(TAGS_KEY), List.of()))
+                .timestamp(getFrontMatterOffsetDateTimeValue(data))
+                .extraFields(ObjectUtils.getIfNull(getFrontMatterExtraFields(data), new HashMap<>()))
+                .build());
+    }
 
     /**
      * Parses the YAML frontmatter subset used by OKF documents.

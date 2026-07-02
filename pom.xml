@@ -53,6 +53,7 @@
         <picocli.version>4.7.7</picocli.version>
 
         <!-- Boilerplate and utils -->
+        <jspecify.version>1.0.0</jspecify.version>
         <lombok.version>1.18.46</lombok.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
@@ -112,6 +113,11 @@
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli-codegen</artifactId>
                 <version>${picocli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jspecify</groupId>
+                <artifactId>jspecify</artifactId>
+                <version>${jspecify.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>

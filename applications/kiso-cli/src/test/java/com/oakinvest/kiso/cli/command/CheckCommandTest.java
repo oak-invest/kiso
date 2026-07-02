@@ -58,12 +58,22 @@ public class CheckCommandTest {
         Path testDirectory = sourceDirectory.resolve("test");
         Files.createDirectories(testDirectory);
 
-        // Invalid encoding for two files.
-        Path invalidMarkdownFilePath1 = sourceDirectory.resolve("invalid-encoding-1.md");
-        Files.write(invalidMarkdownFilePath1, new byte[]{(byte) 0xC3, (byte) 0x28});
+        // Invalid encoding for two files
+        Path file1 = sourceDirectory.resolve("invalid-encoding-1.md");
+        Files.write(file1, new byte[]{(byte) 0xC3, (byte) 0x28});
+        Path file2 = testDirectory.resolve("invalid-encoding-2.md");
+        Files.write(file2, new byte[]{(byte) 0xC3, (byte) 0x28});
 
-        Path invalidMarkdownFilePath2 = testDirectory.resolve("invalid-encoding-2.md");
-        Files.write(invalidMarkdownFilePath2, new byte[]{(byte) 0xC3, (byte) 0x28});
+        // Files with missing frontmatter or missing type field in frontmatter field
+        Path file3 = sourceDirectory.resolve("missing-frontmatter.md");
+        Files.writeString(file3, "This file has no frontmatter.");
+        Path file4 = sourceDirectory.resolve("missing-frontmatter-type.md");
+        Files.writeString(file4, """
+                ---
+                title: Missing frontmatter type
+                description: This file has frontmatter but is missing the type field.
+                ---
+                This file has frontmatter but is missing the type field.""");
 
         // Executing the check command =================================================================================
         StringWriter output = new StringWriter();
@@ -81,13 +91,21 @@ public class CheckCommandTest {
                 .contains("Kiso-cli - Running check command")
                 .doesNotContain("No errors found.");
         assertThat(error.toString())
+                // invalid-encoding-1.md
                 .contains("ERROR - INVALID_ENCODING - File invalid-encoding-1.md is not valid UTF-8 encoded")
-                .contains("ERROR - INVALID_ENCODING - File test/invalid-encoding-2.md is not valid UTF-8 encoded");
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File invalid-encoding-1.md is missing mandatory 'type' in frontmatter - invalid-encoding-1.md")
+                // test/invalid-encoding-2.md
+                .contains("ERROR - INVALID_ENCODING - File test/invalid-encoding-2.md is not valid UTF-8 encoded")
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File test/invalid-encoding-2.md is missing mandatory 'type' in frontmatter - test/invalid-encoding-2.md")
+                // missing-frontmatter.md
+                .contains("ERROR - MISSING_FRONTMATTER - File missing-frontmatter.md is missing mandatory frontmatter")
+                // missing-frontmatter-type.md
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File missing-frontmatter-type.md is missing mandatory 'type' in frontmatter - missing-frontmatter-type.md");
 
 //        System.out.println("STDOUT:");
 //        System.out.println(output);
 //        System.err.println("STDERR:");
-//        System.err.println(error);
+        System.err.println(error);
     }
 
 

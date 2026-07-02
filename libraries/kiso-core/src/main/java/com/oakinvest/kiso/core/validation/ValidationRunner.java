@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.validation;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
+import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,8 @@ public class ValidationRunner {
     public ValidationRunner() {
         // Markdown file rules.
         this.markdownFileRules = List.of(
-                new EncodingRule()
+                new EncodingRule(),
+                new ValidFrontmatterRule()
         );
     }
 

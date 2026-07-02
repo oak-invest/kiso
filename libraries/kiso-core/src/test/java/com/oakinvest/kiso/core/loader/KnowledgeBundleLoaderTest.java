@@ -36,7 +36,7 @@ class KnowledgeBundleLoaderTest {
         var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
 
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
-        assertThat(markdownFile.frontmatter().title()).isNull();
+        assertThat(markdownFile.hasFrontmatter()).isFalse();
         assertThat(markdownFile.content()).isEqualTo(content);
     }
 

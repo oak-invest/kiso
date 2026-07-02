@@ -1,8 +1,9 @@
 package com.oakinvest.kiso.core.validation;
 
 import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -17,7 +18,9 @@ import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_ENCODING
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EncodingRuleTest {
+class EncodingRuleTest extends BaseTest {
+
+    EncodingRule rule = new EncodingRule();
 
     @TempDir
     private Path temporaryDirectory;
@@ -50,31 +53,22 @@ class EncodingRuleTest {
                 .absolutePath(invalidMarkdownFilePath2)
                 .relativePath(invalidMarkdownFilePath2)
                 .build();
-        Bundle rootBundle = Bundle.builder()
-                .childBundles(List.of())
-                .markdownFiles(List.of(invalidMarkdownFile1, invalidMarkdownFile2))
-                .build();
-        KnowledgeBundle knowledgeBundle = KnowledgeBundle.builder()
-                .rootBundle(rootBundle)
-                .build();
+        Bundle rootBundle = bundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
 
         // Run validation and check that the invalid file is reported ==================================================
-        ValidationReport report = new ValidationRunner().runValidation(knowledgeBundle);
-        assertThat(report.hasErrors()).isTrue();
-        assertThat(report.issues()).hasSize(2);
-        assertThat(report.issues()).satisfiesExactly(
-                issue1 -> {
-                    assertThat(issue1.severity()).isEqualTo(ERROR);
-                    assertThat(issue1.code()).isEqualTo(INVALID_ENCODING);
-                    assertThat(issue1.message()).endsWith("invalid-encoding-1.md is not valid UTF-8 encoded");
-                    assertThat(issue1.path()).isEqualTo(invalidMarkdownFilePath1);
-                },
-                issue2 -> {
-                    assertThat(issue2.severity()).isEqualTo(ERROR);
-                    assertThat(issue2.code()).isEqualTo(INVALID_ENCODING);
-                    assertThat(issue2.message()).endsWith("test/invalid-encoding-2.md is not valid UTF-8 encoded");
-                    assertThat(issue2.path()).isEqualTo(invalidMarkdownFilePath2);
-                });
+        assertThat(rule.validate(rootBundle, invalidMarkdownFile1)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(INVALID_ENCODING);
+            assertThat(issue.message()).endsWith("invalid-encoding-1.md is not valid UTF-8 encoded");
+            assertThat(issue.path()).isEqualTo(invalidMarkdownFilePath1);
+        });
+
+        assertThat(rule.validate(rootBundle, invalidMarkdownFile2)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(INVALID_ENCODING);
+            assertThat(issue.message()).endsWith("test/invalid-encoding-2.md is not valid UTF-8 encoded");
+            assertThat(issue.path()).isEqualTo(invalidMarkdownFilePath2);
+        });
     }
 
 }

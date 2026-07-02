@@ -43,14 +43,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                     assertThat(index.htmlFilePath()).isEqualTo("index.html");
 
                     // Frontmatter.
-                    assertThat(index.frontmatter())
-                            .isNotNull()
-                            .returns(null, Frontmatter::type)
-                            .returns(null, Frontmatter::resource)
-                            .returns(null, Frontmatter::title)
-                            .returns(null, Frontmatter::description)
-                            .returns(List.of(), Frontmatter::tags)
-                            .returns(null, Frontmatter::timestamp);
+                    assertThat(index.hasFrontmatter()).isFalse();
 
                     // Content.
                     assertThat(index.content()).contains("# Subdirectories");
@@ -112,14 +105,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(index.htmlFilePath()).isEqualTo("datasets/index.html");
 
                             // Frontmatter.
-                            assertThat(index.frontmatter())
-                                    .isNotNull()
-                                    .returns(null, Frontmatter::type)
-                                    .returns(null, Frontmatter::resource)
-                                    .returns(null, Frontmatter::title)
-                                    .returns(null, Frontmatter::description)
-                                    .returns(List.of(), Frontmatter::tags)
-                                    .returns(null, Frontmatter::timestamp);
+                            assertThat(index.hasFrontmatter()).isFalse();
 
                             // Content.
                             assertThat(index.content()).contains("# BigQuery Dataset");
