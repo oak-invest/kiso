@@ -83,7 +83,7 @@ public record MarkdownFile(
      */
     public OffsetDateTime timestamp() {
         if (hasFrontmatter()) {
-            return frontmatter.timestamp();
+            return frontmatter.parsedTimestamp();
         }
         return null;
     }

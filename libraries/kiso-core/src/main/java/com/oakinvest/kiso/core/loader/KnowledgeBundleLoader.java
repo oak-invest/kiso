@@ -19,8 +19,6 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -203,7 +201,7 @@ public class KnowledgeBundleLoader {
                 .description(getFrontMatterValue(data, DESCRIPTION_KEY))
                 .resource(getFrontMatterValue(data, RESOURCE_KEY))
                 .tags(ObjectUtils.getIfNull(data.get(TAGS_KEY), List.of()))
-                .timestamp(getFrontMatterOffsetDateTimeValue(data))
+                .timestamp(getFrontMatterValue(data, TIMESTAMP_KEY))
                 .extraFields(ObjectUtils.getIfNull(getFrontMatterExtraFields(data), new HashMap<>()))
                 .build());
     }
@@ -362,25 +360,6 @@ public class KnowledgeBundleLoader {
      */
     private static Map<String, Object> getFrontMatterExtraFields(final Map<String, List<String>> data) {
         return new LinkedHashMap<>(data);
-    }
-
-    /**
-     * Returns front matter date time value.
-     *
-     * @param data front matter data
-     * @return date time value
-     */
-    private static OffsetDateTime getFrontMatterOffsetDateTimeValue(final Map<String, List<String>> data) {
-        String value = getFrontMatterValue(data, TIMESTAMP_KEY);
-        if (StringUtils.isBlank(value)) {
-            return null;
-        }
-
-        try {
-            return OffsetDateTime.parse(value);
-        } catch (DateTimeParseException exception) {
-            throw new KnowledgeBundleLoadingException("Invalid ISO 8601 date time: " + value, exception);
-        }
     }
 
     /**

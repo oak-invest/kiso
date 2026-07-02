@@ -51,7 +51,7 @@ public class CheckCommand implements Callable<Integer> {
             } else {
                 // Errors were found ===================================================================================
                 report.issues().forEach(issue -> {
-                    printError(issue.severity() + " - " + issue.code() + " - " + issue.message() + " - " + issue.path());
+                    printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
                     blankLine();
                 });
                 return CommandLine.ExitCode.SOFTWARE;

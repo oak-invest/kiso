@@ -142,19 +142,33 @@ public final class MarkdownToHtmlRenderer {
                 return output.toString();
             }
             default -> {
+                // Building the metadata ===============================================================================
+                PageMetadata metadata;
+                if (markdownFile.frontmatter() != null) {
+                    metadata = PageMetadata.builder()
+                            .title(markdownFile.frontmatter().title())
+                            .description(markdownFile.frontmatter().description())
+                            .absolutePath(markdownFile.absolutePath().toString())
+                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .htmlPath(markdownFile.htmlFilePath())
+                            .build();
+                } else {
+                    metadata = PageMetadata.builder()
+                            .title(markdownFile.title())
+                            .description(markdownFile.description())
+                            .absolutePath(markdownFile.absolutePath().toString())
+                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .htmlPath(markdownFile.htmlFilePath())
+                            .build();
+                }
+
                 // Concept =============================================================================================
                 ConceptPage page = ConceptPage.builder()
-                        .metadata(PageMetadata.builder()
-                                .title(markdownFile.frontmatter().title())
-                                .description(markdownFile.frontmatter().description())
-                                .absolutePath(markdownFile.absolutePath().toString())
-                                .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                                .htmlPath(markdownFile.htmlFilePath())
-                                .build())
+                        .metadata(metadata)
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())
                         .tags(markdownFile.frontmatter().tags())
-                        .timestamp(markdownFile.frontmatter().timestamp())
+                        .timestamp(markdownFile.frontmatter().parsedTimestamp())
                         .bundleTree(bundleTree)
                         .htmlContent(output -> output.writeContent(htmlContent))
                         .build();

@@ -83,7 +83,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns("BigQuery sample dataset for Google Analytics ecommerce web implementation", Frontmatter::title)
                                     .returns("A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.", Frontmatter::description)
                                     .returns(List.of("ecommerce", "web analytics", "Google Analytics", "BigQuery", "public dataset"), Frontmatter::tags)
-                                    .returns(OffsetDateTime.parse("2026-05-28T22:49:59+00:00"), Frontmatter::timestamp);
+                                    .returns(OffsetDateTime.parse("2026-05-28T22:49:59+00:00"), Frontmatter::parsedTimestamp);
 
                             // Content.
                             assertThat(ga4.content()).doesNotContain("BigQuery Dataset");
@@ -159,7 +159,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                                                         .returns("Join Google Analytics Events to Google Ads Clicks", Frontmatter::title)
                                                         .returns("Join Google Analytics event data with Google Ads click data.", Frontmatter::description)
                                                         .returns(List.of("join", "Google Ads"), Frontmatter::tags)
-                                                        .returns(OffsetDateTime.parse("2026-05-28T22:51:46+00:00"), Frontmatter::timestamp);
+                                                        .returns(OffsetDateTime.parse("2026-05-28T22:51:46+00:00"), Frontmatter::parsedTimestamp);
 
                                                 // Content.
                                                 assertThat(events.content()).doesNotContain("Join Google Analytics Events to Google Ads Clicks");

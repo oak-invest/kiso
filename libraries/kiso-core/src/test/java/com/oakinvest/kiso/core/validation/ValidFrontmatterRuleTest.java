@@ -11,6 +11,7 @@ import java.nio.file.Path;
 
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
@@ -61,6 +62,26 @@ class ValidFrontmatterRuleTest extends BaseTest {
 
         // We check that there was no error at all =====================================================================
         assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
+    }
+
+    @Test
+    @DisplayName("Timestamp is present but doesn't respect ISO 8601 datetime format")
+    void invalidTimestamp() {
+        // We create a concept file with frontmatter but with an invalid timestamp =====================================
+        Path markdownFilePath = Path.of("concept-with-invalid-timestamp.md");
+        Frontmatter frontmatter = Frontmatter.builder()
+                .type("Concept")
+                .timestamp("02-07-2026T14:30:00Z")
+                .build();
+        MarkdownFile markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+
+        // Run validation to check an invalid timestamp ================================================================
+        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(INVALID_TIMESTAMP);
+            assertThat(issue.message()).isEqualTo("File concept-with-invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format");
+            assertThat(issue.path()).isEqualTo(markdownFilePath);
+        });
     }
 
 }

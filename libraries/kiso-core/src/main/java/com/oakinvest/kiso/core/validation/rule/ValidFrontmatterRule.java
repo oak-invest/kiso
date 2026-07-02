@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
@@ -49,6 +50,16 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                             .severity(ERROR)
                             .code(MISSING_FRONTMATTER_TYPE)
                             .message("File " + markdownFile.relativePath() + " is missing mandatory 'type' in frontmatter")
+                            .path(markdownFile.relativePath())
+                            .build());
+                }
+
+                // If there is a frontmatter and timestamp is not ISO 8601 datetime format =============================
+                if (StringUtils.isNotBlank(frontmatter.timestamp()) && frontmatter.parsedTimestamp() == null) {
+                    return List.of(ValidationIssue.builder()
+                            .severity(ERROR)
+                            .code(INVALID_TIMESTAMP)
+                            .message("File " + markdownFile.relativePath() + " has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format")
                             .path(markdownFile.relativePath())
                             .build());
                 }

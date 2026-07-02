@@ -75,6 +75,17 @@ public class CheckCommandTest {
                 ---
                 This file has frontmatter but is missing the type field.""");
 
+        // File with invalid date.
+        Path file5 = testDirectory.resolve("invalid-timestamp.md");
+        Files.writeString(file5, """
+                ---
+                type: Test
+                title: Invalid timestamp
+                description: This file has frontmatter but an invalid timestamp.
+                timestamp: 2026/07/02 14:30:00
+                ---
+                This file has frontmatter but an invalid timestamp.""");
+
         // Executing the check command =================================================================================
         StringWriter output = new StringWriter();
         StringWriter error = new StringWriter();
@@ -93,19 +104,21 @@ public class CheckCommandTest {
         assertThat(error.toString())
                 // invalid-encoding-1.md
                 .contains("ERROR - INVALID_ENCODING - File invalid-encoding-1.md is not valid UTF-8 encoded")
-                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File invalid-encoding-1.md is missing mandatory 'type' in frontmatter - invalid-encoding-1.md")
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File invalid-encoding-1.md is missing mandatory 'type' in frontmatter")
                 // test/invalid-encoding-2.md
                 .contains("ERROR - INVALID_ENCODING - File test/invalid-encoding-2.md is not valid UTF-8 encoded")
-                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File test/invalid-encoding-2.md is missing mandatory 'type' in frontmatter - test/invalid-encoding-2.md")
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File test/invalid-encoding-2.md is missing mandatory 'type' in frontmatter")
                 // missing-frontmatter.md
                 .contains("ERROR - MISSING_FRONTMATTER - File missing-frontmatter.md is missing mandatory frontmatter")
                 // missing-frontmatter-type.md
-                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File missing-frontmatter-type.md is missing mandatory 'type' in frontmatter - missing-frontmatter-type.md");
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File missing-frontmatter-type.md is missing mandatory 'type' in frontmatter")
+                // test/invalid-timestamp.md
+                .contains("ERROR - INVALID_TIMESTAMP - File test/invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format");
 
 //        System.out.println("STDOUT:");
 //        System.out.println(output);
 //        System.err.println("STDERR:");
-        System.err.println(error);
+//        System.err.println(error);
     }
 
 

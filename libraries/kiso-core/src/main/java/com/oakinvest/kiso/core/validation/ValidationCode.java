@@ -12,6 +12,9 @@ public enum ValidationCode {
     MISSING_FRONTMATTER,
 
     /** Missing type field in frontmatter. */
-    MISSING_FRONTMATTER_TYPE
+    MISSING_FRONTMATTER_TYPE,
+
+    /** Invalid timestamp field in frontmatter - Not a ISO 8601 datetime format. */
+    INVALID_TIMESTAMP
 
 }
