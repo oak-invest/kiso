@@ -26,10 +26,34 @@ class BuildCommandTest extends BaseTest {
         // What we are testing =========================================================================================
         Path sourceDirectory = temporaryDirectory.resolve("source");
         Path destinationDirectory = temporaryDirectory.resolve("public");
-        createKnowledgeBundle(sourceDirectory);
+        Files.createDirectories(sourceDirectory.resolve("topics"));
+
+        Files.writeString(sourceDirectory.resolve("index.md"), """
+                        # Test bundle
+                
+                        - [topics](topics/index.md)
+                """.stripIndent(), UTF_8);
+        Files.writeString(sourceDirectory.resolve("topics/index.md"), """   
+                        # Topics
+                
+                        - [First Topic](first-topic.md)
+                """.stripIndent(), UTF_8);
+        Files.writeString(sourceDirectory.resolve("topics/first-topic.md"), """
+                ---
+                type: Reference
+                title: First Topic
+                description: A first test topic.
+                timestamp: '2026-06-24T10:00:00+00:00'
+                ---
+                
+                # First Topic
+                
+                Hello from the first topic.
+                """.stripIndent(), UTF_8);
 
         StringWriter output = new StringWriter();
         StringWriter error = new StringWriter();
+
         int exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
@@ -38,7 +62,7 @@ class BuildCommandTest extends BaseTest {
                         "--destination", destinationDirectory.toString()
                 );
 
-        // Testing command result =====================================================================================
+        // Testing command result ======================================================================================
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
@@ -50,12 +74,12 @@ class BuildCommandTest extends BaseTest {
                 .contains("File sitemap.xml generated")
                 .contains("Done!");
 
-        // Testing copied source files ================================================================================
+        // Testing copied source files =================================================================================
         assertThat(destinationDirectory.resolve("index.md")).exists();
         assertThat(destinationDirectory.resolve("topics/index.md")).exists();
         assertThat(destinationDirectory.resolve("topics/first-topic.md")).exists();
 
-        // Testing generated website files ============================================================================
+        // Testing generated website files =============================================================================
         assertThat(destinationDirectory.resolve("index.html")).exists();
         assertThat(destinationDirectory.resolve("topics/index.html")).exists();
         assertThat(destinationDirectory.resolve("topics/first-topic.html")).exists();
@@ -70,7 +94,7 @@ class BuildCommandTest extends BaseTest {
                 .contains("A first test topic.")
                 .contains("Hello from the first topic.");
 
-        // Testing generated agent files ==============================================================================
+        // Testing generated agent files ===============================================================================
         String llmsTxt = Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8);
         assertThat(llmsTxt)
                 .contains("# Knowledge Bundle")
@@ -112,7 +136,7 @@ class BuildCommandTest extends BaseTest {
                         "--destination", destinationDirectory.toString()
                 );
 
-        // Testing command result =====================================================================================
+        // Testing command result ======================================================================================
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
@@ -122,7 +146,7 @@ class BuildCommandTest extends BaseTest {
                 .contains("File sitemap.xml generated")
                 .contains("Done!");
 
-        // Testing copied source files ================================================================================
+        // Testing copied source files =================================================================================
         assertThat(destinationDirectory.resolve("index.html")).exists();
         assertThat(destinationDirectory.resolve("assets/css/application.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/daisyui@5.css")).exists();
@@ -131,50 +155,6 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/images/test.jpg")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
-    }
-
-    /**
-     * Creates a minimal OKF bundle for build tests.
-     *
-     * @param sourceDirectory source directory
-     * @throws Exception if files cannot be created
-     */
-    private void createKnowledgeBundle(final Path sourceDirectory) throws Exception {
-        Files.createDirectories(sourceDirectory.resolve("topics"));
-        Files.writeString(
-                sourceDirectory.resolve("index.md"),
-                """
-                        # Test bundle
-                        
-                        - [topics](topics/index.md)
-                        """.stripIndent(),
-                UTF_8
-        );
-        Files.writeString(
-                sourceDirectory.resolve("topics/index.md"),
-                """
-                        # Topics
-                        
-                        - [First Topic](first-topic.md)
-                        """.stripIndent(),
-                UTF_8
-        );
-        Files.writeString(
-                sourceDirectory.resolve("topics/first-topic.md"),
-                """
-                        ---
-                        type: Reference
-                        title: First Topic
-                        description: A first test topic.
-                        timestamp: '2026-06-24T10:00:00+00:00'
-                        ---
-                        
-                        # First Topic
-                        
-                        Hello from the first topic.
-                        """.stripIndent(),
-                UTF_8
-        );
     }
 
 }
