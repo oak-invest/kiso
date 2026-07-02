@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
-import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
+import com.oakinvest.kiso.cli.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -8,18 +8,12 @@ import picocli.CommandLine;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class CheckCommandTest {
-
-    /** Knowledge base Google example directory. */
-    public static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example-v0.1";
+public class CheckCommandTest extends BaseTest {
 
     @TempDir
     private Path temporaryDirectory;
@@ -27,9 +21,8 @@ public class CheckCommandTest {
     @Test
     @DisplayName("Check a valid OKF bundle")
     void checkValidBundle() throws Exception {
-        // What we are testing - The google example ====================================================================
+        // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
-        var bundle = KnowledgeBundleLoader.load(resourcePath);
 
         // Executing the check command =================================================================================
         StringWriter output = new StringWriter();
@@ -137,21 +130,6 @@ public class CheckCommandTest {
         // System.out.println(output);
         // System.err.println("STDERR:");
         // System.err.println(error);
-    }
-
-
-    /**
-     * Retrieves absolutePath from a resource fileName.
-     *
-     * @param resourceName resource fileName
-     * @return absolutePath
-     * @throws URISyntaxException syntax problem with URI
-     */
-    @SuppressWarnings("SameParameterValue")
-    private Path getResourcePath(final String resourceName) throws URISyntaxException {
-        URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceName);
-        assertNotNull(resource, "Missing test resource: " + resourceName);
-        return Path.of(resource.toURI());
     }
 
 }

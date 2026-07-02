@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
+import com.oakinvest.kiso.cli.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -9,11 +10,12 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BuildCommandTest {
+class BuildCommandTest extends BaseTest {
 
     @TempDir
     private Path temporaryDirectory;
@@ -90,6 +92,45 @@ class BuildCommandTest {
                 .contains("<loc>topics/index.html</loc>")
                 .contains("<loc>topics/first-topic.html</loc>")
                 .contains("<lastmod>2026-06-24T10:00Z</lastmod>");
+    }
+
+    @Test
+    @DisplayName("Building an OKF bundle with assets")
+    void buildWithAssets() throws Exception {
+        // What we are testing =========================================================================================
+        Path sourceDirectory = Paths.get(ClassLoader.getSystemResource("kb-with-assets").toURI());
+        Path destinationDirectory = Path.of("target", "test-kb-with-assets");
+        Files.createDirectories(destinationDirectory);
+
+        StringWriter output = new StringWriter();
+        StringWriter error = new StringWriter();
+        int exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", sourceDirectory.toString(),
+                        "--destination", destinationDirectory.toString()
+                );
+
+        // Testing command result =====================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("Kiso-cli - Running build command")
+                .contains("HTML Generated for index.md")
+                .contains("File llms.txt generated")
+                .contains("File sitemap.xml generated")
+                .contains("Done!");
+
+        // Testing copied source files ================================================================================
+        assertThat(destinationDirectory.resolve("index.html")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/application.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/daisyui@5.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/test.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/images/test.jpg")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
     }
 
     /**
