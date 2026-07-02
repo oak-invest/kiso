@@ -107,12 +107,12 @@ public final class MarkdownToHtmlRenderer {
      * @return content rendered
      */
     public static String render(final MarkdownFile markdownFile, final BundleTree bundleTree) {
-        if (markdownFile == null || markdownFile.content() == null) {
+        if (markdownFile == null || markdownFile.body() == null) {
             return "";
         }
 
         // Generating the HTML =========================================================================================
-        final Node document = MARKDOWN_PARSER.parse(markdownFile.content());
+        final Node document = MARKDOWN_PARSER.parse(markdownFile.body());
         String htmlContent = HTML_RENDERER.render(document).replaceAll(
                 "href=\"(?!https?://|mailto:|#)([^\"]+)\\.md\"",
                 "href=\"$1.html\""

@@ -20,7 +20,7 @@ import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTE
  * @param absolutePath absolute path (with the file name)
  * @param relativePath relative path to the root bundle (with the file name)
  * @param frontmatter  frontmatter metadata
- * @param content      original Markdown content (without frontmatter)
+ * @param body         original Markdown content without frontmatter
  */
 @Builder
 @SuppressWarnings("unused")
@@ -30,7 +30,7 @@ public record MarkdownFile(
         Path absolutePath,
         Path relativePath,
         @Nullable Frontmatter frontmatter,
-        String content
+        String body
 ) {
 
     /**

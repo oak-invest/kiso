@@ -46,7 +46,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                     assertThat(index.hasFrontmatter()).isFalse();
 
                     // Content.
-                    assertThat(index.content()).contains("# Subdirectories");
+                    assertThat(index.body()).contains("# Subdirectories");
                 });
 
         // "datasets" bundle ===========================================================================================
@@ -86,8 +86,8 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns(OffsetDateTime.parse("2026-05-28T22:49:59+00:00"), Frontmatter::parsedTimestamp);
 
                             // Content.
-                            assertThat(ga4.content()).doesNotContain("BigQuery Dataset");
-                            assertThat(ga4.content()).contains("The `ga4_obfuscated_sample_ecommerce` dataset");
+                            assertThat(ga4.body()).doesNotContain("BigQuery Dataset");
+                            assertThat(ga4.body()).contains("The `ga4_obfuscated_sample_ecommerce` dataset");
                         },
                         // index =======================================================================================
                         // /datasets/index
@@ -108,7 +108,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(index.hasFrontmatter()).isFalse();
 
                             // Content.
-                            assertThat(index.content()).contains("# BigQuery Dataset");
+                            assertThat(index.body()).contains("# BigQuery Dataset");
                         }
                 );
 
@@ -162,8 +162,8 @@ class GoogleExampleLoadingTest extends BaseTest {
                                                         .returns(OffsetDateTime.parse("2026-05-28T22:51:46+00:00"), Frontmatter::parsedTimestamp);
 
                                                 // Content.
-                                                assertThat(events.content()).doesNotContain("Join Google Analytics Events to Google Ads Clicks");
-                                                assertThat(events.content()).contains("Join Google Analytics event data with Google Ads click data");
+                                                assertThat(events.body()).doesNotContain("Join Google Analytics Events to Google Ads Clicks");
+                                                assertThat(events.body()).contains("Join Google Analytics event data with Google Ads click data");
                                             },
                                             index -> {
                                                 // Type.

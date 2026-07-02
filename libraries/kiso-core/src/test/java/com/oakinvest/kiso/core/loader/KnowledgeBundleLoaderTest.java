@@ -24,7 +24,7 @@ class KnowledgeBundleLoaderTest {
 
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
         assertThat(markdownFile.frontmatter().title()).isEqualTo("Example");
-        assertThat(markdownFile.content()).isEmpty();
+        assertThat(markdownFile.body()).isEmpty();
     }
 
     @Test
@@ -37,7 +37,7 @@ class KnowledgeBundleLoaderTest {
 
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
         assertThat(markdownFile.hasFrontmatter()).isFalse();
-        assertThat(markdownFile.content()).isEqualTo(content);
+        assertThat(markdownFile.body()).isEqualTo(content);
     }
 
 }

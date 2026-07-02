@@ -165,7 +165,7 @@ public class KnowledgeBundleLoader {
                     .absolutePath(normalizedFile)
                     .relativePath(toRelativePath(rootBundle, normalizedFile))
                     .frontmatter(frontmatter.orElse(null))
-                    .content(removeFrontmatter(content))
+                    .body(removeFrontmatter(content))
                     .build();
         } catch (CharacterCodingException exception) {
             final String content = decodeUtf8ReplacingInvalidCharacters(bytes);
@@ -175,7 +175,7 @@ public class KnowledgeBundleLoader {
                     .absolutePath(normalizedFile)
                     .relativePath(toRelativePath(rootBundle, normalizedFile))
                     .frontmatter(Frontmatter.empty())
-                    .content(content)
+                    .body(content)
                     .build();
         } catch (IOException exception) {
             throw new KnowledgeBundleLoadingException("Unable to read Markdown file: " + normalizedFile, exception);
