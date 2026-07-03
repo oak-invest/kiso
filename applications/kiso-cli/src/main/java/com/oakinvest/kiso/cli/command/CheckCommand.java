@@ -4,6 +4,7 @@ import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.validation.ValidationIssue;
 import com.oakinvest.kiso.core.validation.ValidationRunner;
 import picocli.CommandLine;
 
@@ -41,6 +42,7 @@ public class CheckCommand implements Callable<Integer> {
 
         // Running the validation ======================================================================================
         try {
+
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath());
             final ValidationRunner validationRunner = new ValidationRunner();
 
@@ -50,12 +52,10 @@ public class CheckCommand implements Callable<Integer> {
                 return CommandLine.ExitCode.OK;
             } else {
                 // Errors were found ===================================================================================
-                report.issues().forEach(issue -> {
-                    printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
-                    blankLine();
-                });
+                report.issues().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
             }
+
         } catch (KnowledgeBundleLoadingException e) {
             printError(e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
@@ -79,6 +79,15 @@ public class CheckCommand implements Callable<Integer> {
      */
     private void blankLine() {
         commandSpec.commandLine().getOut().println();
+    }
+
+    /**
+     * Print an issue.
+     *
+     * @param issue issue to print
+     */
+    private void printError(final ValidationIssue issue) {
+        printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
     }
 
     /**

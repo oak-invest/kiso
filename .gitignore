@@ -1,11 +1,11 @@
 # Kiso specific ========================================================================================================/
 
-/public/*
-/public-native/*
-/libraries/kiso-core/jte-classes/*
-/documentation/temp/*
-/website/examples/
 /dist/*
+/documentation/temp/*
+/examples/kb-stephane-traumat/*
+/libraries/kiso-core/jte-classes/*
+/public/*
+/website/examples/
 
 # Idea files ===========================================================================================================
 
@@ -42,3 +42,4 @@ target/
 hs_err_pid*
 replay_pid*
 
+/examples/kb-stephane-traumat/

@@ -21,7 +21,7 @@ run_build:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-      -Dexec.args="build --source=examples/kb-google-example"
+      -Dexec.args="build --source=examples/kb-google-example --destination=public/kb-google-example"
 
 # Native commands ======================================================================================================
 build_native:
@@ -33,7 +33,7 @@ run_check_native:
     ./applications/kiso-cli/target/kiso-cli check --source=examples/kb-google-example
 
 run_build_native:
-    ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public-native
+    ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public/kb-google-example-native
 
 # Release ==============================================================================================================
 # ! Change the release number in applications/kiso-cli-action/action.yml
@@ -53,3 +53,16 @@ generate_website_demo:
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="build --source=examples/kb-google-example --destination=website/examples/kb-google-example/"
+
+# Stéphane Traumat's stuffs ============================================================================================
+straumat_run_check:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="check --source=examples/kb-stephane-traumat"
+
+straumat_run_build:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-stephane-traumat --destination=public/kb-stephane-traumat"
