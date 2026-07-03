@@ -249,12 +249,44 @@ public class KnowledgeBundleLoader {
             String value = StringUtils.trim(line.substring(separatorIndex + 1));
             List<String> values = new java.util.ArrayList<>();
             if (StringUtils.isNotBlank(value)) {
-                values.add(cleanFrontMatterValue(value));
+                if (TAGS_KEY.equals(currentKey) && isInlineList(value)) {
+                    values.addAll(parseInlineList(value));
+                } else {
+                    values.add(cleanFrontMatterValue(value));
+                }
             }
             data.put(currentKey, values);
         }
 
         return data;
+    }
+
+    /**
+     * Returns true when a frontmatter value is an inline YAML list.
+     *
+     * @param value frontmatter value
+     * @return true for an inline list
+     */
+    private static boolean isInlineList(final String value) {
+        String trimmedValue = StringUtils.trim(value);
+        return trimmedValue.startsWith("[") && trimmedValue.endsWith("]");
+    }
+
+    /**
+     * Parses a comma-separated inline YAML list.
+     *
+     * @param value inline list
+     * @return list values
+     */
+    private static List<String> parseInlineList(final String value) {
+        String listContent = StringUtils.trim(value).substring(1, StringUtils.trim(value).length() - 1);
+        if (StringUtils.isBlank(listContent)) {
+            return List.of();
+        }
+
+        return Stream.of(listContent.split(","))
+                .map(KnowledgeBundleLoader::cleanFrontMatterValue)
+                .toList();
     }
 
     /**
