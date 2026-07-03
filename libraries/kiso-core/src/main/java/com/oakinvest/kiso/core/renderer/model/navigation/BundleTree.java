@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.renderer.model.navigation;
 
 import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 
@@ -90,6 +91,15 @@ public record BundleTree(
      */
     public boolean hasContent() {
         return !pages.isEmpty() || !childBundles.isEmpty();
+    }
+
+    /**
+     * Returns true when this bundle contains an index page.
+     *
+     * @return true when an index page exists
+     */
+    public boolean hasIndexPage() {
+        return pages.stream().anyMatch(page -> page.kind() == MarkdownFileKind.INDEX);
     }
 
     /**

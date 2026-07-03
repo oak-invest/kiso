@@ -8,9 +8,11 @@ import org.jsoup.Jsoup;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
@@ -18,6 +20,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MarkdownToHtmlRendererTest extends BaseTest {
+
+    @TempDir
+    private Path temporaryDirectory;
 
     @BeforeEach
     void setup() {
@@ -196,6 +201,28 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .isEqualTo("https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset");
         assertThat(citationLink.text())
                 .isEqualTo("https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset");
+    }
+
+    @Test
+    @DisplayName("Do not display a bundle index link when index.md does not exist")
+    void doNotDisplayMissingBundleIndexInNavigation() throws IOException {
+        Files.writeString(temporaryDirectory.resolve("concept.md"), """
+                ---
+                type: Concept
+                title: Example
+                ---
+                # Example
+                """);
+        var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
+        var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
+
+        var page = Jsoup.parse(MarkdownToHtmlRenderer.render(
+                bundle.rootBundle().markdownFiles().getFirst(),
+                bundleTree));
+
+        assertThat(bundleTree.hasIndexPage()).isFalse();
+        assertThat(page.select(".drawer-side a[href='index.html']")).isEmpty();
+        assertThat(page.selectFirst(".drawer-side a[href='concept.html']").text()).isEqualTo("Example");
     }
 
 }
