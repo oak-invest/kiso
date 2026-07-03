@@ -36,7 +36,8 @@ run_build_native:
     ./applications/kiso-cli/target/kiso-cli build --source=examples/kb-google-example --destination=public/kb-google-example-native
 
 # Release ==============================================================================================================
-# ! Change the release number in applications/kiso-cli-action/action.yml
+# Change the release number in applications/kiso-cli-action/action.yml
+# Change the release number in applications/kiso-cli/src/main/java/com/oakinvest/kiso/cli/Application.java
 start_release:
     git remote set-url origin git@github.com:oak-invest/kiso.git
     git checkout development
