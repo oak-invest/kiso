@@ -119,6 +119,39 @@ class BuildCommandTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Building with error in the bundle")
+    void buildWithErrorInTheBundle() throws Exception {
+        // What we are testing =========================================================================================
+        Path sourceDirectory = temporaryDirectory.resolve("source");
+        Path destinationDirectory = temporaryDirectory.resolve("public");
+        Files.createDirectories(sourceDirectory);
+        Files.createDirectories(destinationDirectory);
+
+        // A file with error!
+        Path file1 = sourceDirectory.resolve("missing-frontmatter.md");
+        Files.writeString(file1, "This file has no frontmatter.");
+
+        // Executing the build command =================================================================================
+        StringWriter output = new StringWriter();
+        StringWriter error = new StringWriter();
+        int exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", sourceDirectory.toString(),
+                        "--destination", destinationDirectory.toString()
+                );
+
+        // Testing command result ======================================================================================
+        assertThat(exitCode).isNotZero();
+        assertThat(output.toString())
+                .contains("Kiso-cli - Running build command")
+                .doesNotContain("Done!");
+        assertThat(error.toString())
+                .contains("ERROR - MISSING_FRONTMATTER - File missing-frontmatter.md is missing mandatory frontmatter");
+    }
+
+    @Test
     @DisplayName("Building an OKF bundle with assets")
     void buildWithAssets() throws Exception {
         // What we are testing =========================================================================================

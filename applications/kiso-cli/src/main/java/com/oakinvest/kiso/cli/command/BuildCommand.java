@@ -8,6 +8,9 @@ import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.validation.ValidationIssue;
+import com.oakinvest.kiso.core.validation.ValidationReport;
+import com.oakinvest.kiso.core.validation.ValidationRunner;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -64,6 +67,14 @@ public class BuildCommand implements Callable<Integer> {
             print("Sources in " + sourceDirectory.getAbsolutePath());
             print("Building in " + destinationDirectory.getAbsolutePath());
             blankLine();
+
+            // We run the validation first =============================================================================
+            final KnowledgeBundle sourceKnowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath());
+            final ValidationReport validationReport = new ValidationRunner().runValidation(sourceKnowledgeBundle);
+            if (validationReport.hasErrors()) {
+                validationReport.issues().forEach(this::printError);
+                return CommandLine.ExitCode.SOFTWARE;
+            }
 
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
@@ -132,6 +143,15 @@ public class BuildCommand implements Callable<Integer> {
      */
     private void blankLine() {
         commandSpec.commandLine().getOut().println();
+    }
+
+    /**
+     * Print an issue.
+     *
+     * @param issue issue to print
+     */
+    private void printError(final ValidationIssue issue) {
+        printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
     }
 
     /**
