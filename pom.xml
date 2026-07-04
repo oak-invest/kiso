@@ -101,6 +101,11 @@
                 <version>${commonmark.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.commonmark</groupId>
+                <artifactId>commonmark-ext-gfm-tables</artifactId>
+                <version>${commonmark.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>gg.jte</groupId>
                 <artifactId>jte</artifactId>
                 <version>${jte.version}</version>

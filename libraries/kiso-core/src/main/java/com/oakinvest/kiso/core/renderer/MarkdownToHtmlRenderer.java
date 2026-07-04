@@ -14,6 +14,7 @@ import gg.jte.resolve.DirectoryCodeResolver;
 import lombok.experimental.UtilityClass;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
+import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -30,7 +31,10 @@ import java.util.List;
 public final class MarkdownToHtmlRenderer {
 
     /** Markdown extensions. */
-    private static final List<Extension> MARKDOWN_EXTENSIONS = List.of(AutolinkExtension.create());
+    private static final List<Extension> MARKDOWN_EXTENSIONS = List.of(
+            AutolinkExtension.create(),
+            TablesExtension.create()
+    );
 
     /** Markdown parser. */
     private static final Parser MARKDOWN_PARSER = Parser.builder()
