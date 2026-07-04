@@ -1,3 +1,4 @@
+@param String dataTheme
 @param String language
 @param String title
 @param String description
@@ -8,7 +9,7 @@
 @param gg.jte.Content content
 
 <!DOCTYPE html>
-<html lang="${language}">
+<html data-theme="${dataTheme}" lang="${language}">
 
 <head>
 

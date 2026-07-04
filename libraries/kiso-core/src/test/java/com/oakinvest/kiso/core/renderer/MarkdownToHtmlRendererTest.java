@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
@@ -46,7 +47,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         // Index file of the bundle ====================================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
-        var page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
+        var page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
 
         // Writing the file (console & target directory) for debugging purposes ========================================
         FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
@@ -56,6 +57,8 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .isNotNull();
         assertThat(page.selectFirst("html").attr("lang"))
                 .isEqualTo("en");
+        assertThat(page.selectFirst("html").attr("data-theme"))
+                .isEqualTo("light");
 
         assertThat(page.title()).isEqualTo("index.md");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
@@ -117,7 +120,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         // datasets/ga4_obfuscated_sample_ecommerce.md =================================================================
         markdownFiles = bundle.rootBundle().childBundles().getFirst().markdownFiles();
-        page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
+        page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
 
         // Testing the content =========================================================================================
 
@@ -224,6 +227,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         var page = Jsoup.parse(MarkdownToHtmlRenderer.render(
                 SiteConfiguration.empty(),
+                ThemeConfiguration.empty(),
                 bundle.rootBundle().markdownFiles().getFirst(),
                 bundleTree));
 

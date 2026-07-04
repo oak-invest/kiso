@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
@@ -48,10 +49,12 @@ public class RendererConfigurationTest extends BaseTest {
                 Locale.FRENCH,
                 "Titre du site",
                 "Description du site");
+        ThemeConfiguration themeConfiguration = new ThemeConfiguration(
+                "corporate");
 
         // Index file of the bundle ====================================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
-        var page = Jsoup.parse(MarkdownToHtmlRenderer.render(siteConfiguration, markdownFiles.getFirst(), bundleTree));
+        var page = Jsoup.parse(MarkdownToHtmlRenderer.render(siteConfiguration, themeConfiguration, markdownFiles.getFirst(), bundleTree));
 
         // Writing the file (console & target directory) for debugging purposes ========================================
         FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
@@ -59,6 +62,8 @@ public class RendererConfigurationTest extends BaseTest {
         // Assertions ==================================================================================================
         assertThat(page.selectFirst("html")).isNotNull();
         assertThat(page.selectFirst("html").attr("lang")).isEqualTo("fr");
+        assertThat(page.selectFirst("html").attr("data-theme"))
+                .isEqualTo("corporate");
 
         assertThat(page.title()).isEqualTo("Titre du site");
 

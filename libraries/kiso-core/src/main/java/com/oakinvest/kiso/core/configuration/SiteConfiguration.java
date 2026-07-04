@@ -15,6 +15,9 @@ public record SiteConfiguration(
         String description
 ) {
 
+    /** Default language. */
+    public static final Locale DEFAULT_LANGUAGE = Locale.ENGLISH;
+
     /**
      * Returns an empty site configuration.
      *
@@ -24,9 +27,14 @@ public record SiteConfiguration(
         return new SiteConfiguration(null, null, null);
     }
 
+    /**
+     * Returns the language tag.
+     *
+     * @return language tag
+     */
     public String languageTag() {
         if (language == null) {
-            return "en";
+            return DEFAULT_LANGUAGE.toLanguageTag();
         } else {
             return language.toLanguageTag();
         }

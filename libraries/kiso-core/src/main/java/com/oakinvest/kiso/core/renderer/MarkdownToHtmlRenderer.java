@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.renderer.model.PageMetadata;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
@@ -103,12 +104,14 @@ public final class MarkdownToHtmlRenderer {
     /**
      * Render a markdownFile file to HTML.
      *
-     * @param siteConfiguration site configuration
-     * @param markdownFile      markdownFile file
-     * @param bundleTree        calculated bundle tree for navigation
+     * @param siteConfiguration  site configuration
+     * @param themeConfiguration theme configuration
+     * @param markdownFile       markdownFile file
+     * @param bundleTree         calculated bundle tree for navigation
      * @return content rendered
      */
     public static String render(final SiteConfiguration siteConfiguration,
+                                final ThemeConfiguration themeConfiguration,
                                 final MarkdownFile markdownFile,
                                 final BundleTree bundleTree) {
         if (markdownFile == null || markdownFile.body() == null) {
@@ -151,6 +154,7 @@ public final class MarkdownToHtmlRenderer {
                 // Index ===============================================================================================
                 IndexPage page = IndexPage.builder()
                         .siteConfiguration(siteConfiguration)
+                        .themeConfiguration(themeConfiguration)
                         .metadata(metadata)
                         .bundleTree(bundleTree)
                         .htmlContent(output -> output.writeContent(htmlContent))
@@ -184,6 +188,7 @@ public final class MarkdownToHtmlRenderer {
                 // Concept =============================================================================================
                 ConceptPage page = ConceptPage.builder()
                         .siteConfiguration(siteConfiguration)
+                        .themeConfiguration(themeConfiguration)
                         .metadata(metadata)
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())
@@ -195,6 +200,7 @@ public final class MarkdownToHtmlRenderer {
 
                 StringOutput output = new StringOutput();
                 TEMPLATE_ENGINE.render("concept.jte", page, output);
+
                 return output.toString();
             }
         }
