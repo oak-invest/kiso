@@ -1,6 +1,6 @@
 # Maven commands =======================================================================================================
 install:
-    mvn clean install
+    mvn clean install -DskipTests
 
 test:
     mvn clean test

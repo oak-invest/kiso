@@ -125,6 +125,5 @@ content = @`
             Last update: ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
         </footer>
     @endif
-
 `
 )
