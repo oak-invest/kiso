@@ -152,6 +152,18 @@ class BuildCommandTest extends BaseTest {
                 .doesNotContain("HTML Generated for references/metrics/day_count.md")
                 .contains("HTML Generated for references/metrics/event_count.md")
                 .contains("Done!");
+
+        // Checking that configuration is applied to the generated HTML files ==========================================
+        assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
+                .contains("data-theme=\"corporate\"")
+                .contains("lang=\"fr\"")
+                .contains("<title>My Knowledge Base</title>")
+                .contains("<meta name=\"description\" content=\"My knowledge base description\">");
+        assertThat(Files.readString(destinationDirectory.resolve("references/metrics/event_count.html"), UTF_8))
+                .contains("data-theme=\"corporate\"")
+                .contains("lang=\"fr\"")
+                .contains("<title>Event Count</title>")
+                .contains("<meta name=\"description\" content=\"Total number of events.\">");
     }
 
     @Test
