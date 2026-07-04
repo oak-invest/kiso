@@ -5,6 +5,7 @@ import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
 import com.oakinvest.kiso.cli.options.DestinationOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
+import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
@@ -18,10 +19,11 @@ import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import static com.oakinvest.kiso.core.util.FileNamesConstants.LLMS_TXT_FILENAME;
@@ -37,7 +39,7 @@ import static com.oakinvest.kiso.core.util.FileNamesConstants.SITEMAP_XML_FILENA
 )
 public class BuildCommand implements Callable<Integer> {
 
-    /** Static assets copied to the generated website isRoot. */
+    /** Static assets copied to the generated website root. */
     private static final String[] ASSET_PATHS = {
             "assets/css/daisyui@5.css",
             "assets/css/themes.css",
@@ -73,11 +75,17 @@ public class BuildCommand implements Callable<Integer> {
             blankLine();
 
             // Loading configuration ===================================================================================
-            final Optional<Configuration> configuration = ConfigurationLoader.load(sourceDirectory.toPath());
+            final Configuration configuration = ConfigurationLoader.load(sourceDirectory.toPath())
+                    .orElse(Configuration.empty());
 
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
-            FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
+            IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
+            FileFilter fileFilter = file -> {
+                Path relativePath = sourceDirectory.toPath().relativize(file.toPath());
+                return !ignorePatternMatcher.matches(relativePath);
+            };
+            FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
             // Loading and checking the bundle =========================================================================
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());

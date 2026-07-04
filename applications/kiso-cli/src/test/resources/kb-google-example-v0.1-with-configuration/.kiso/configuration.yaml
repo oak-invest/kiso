@@ -1,0 +1,12 @@
+site:
+  language: fr
+  title: My Knowledge Base
+  description: My knowledge base description
+
+theme:
+  name: corporate
+
+content:
+  ignorePatterns:
+    - references/joins
+    - references/metrics/day_count.md
