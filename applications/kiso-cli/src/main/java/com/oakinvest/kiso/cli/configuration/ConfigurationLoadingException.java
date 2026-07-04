@@ -3,14 +3,14 @@ package com.oakinvest.kiso.cli.configuration;
 /**
  * Kiso-cli configuration loading exception.
  */
-public final class KisoCliConfigurationLoadingException extends RuntimeException {
+public final class ConfigurationLoadingException extends RuntimeException {
 
     /**
      * Constructor.
      *
      * @param message message
      */
-    public KisoCliConfigurationLoadingException(final String message) {
+    public ConfigurationLoadingException(final String message) {
         super(message);
     }
 
@@ -20,7 +20,7 @@ public final class KisoCliConfigurationLoadingException extends RuntimeException
      * @param message exception message
      * @param cause   exception cause
      */
-    public KisoCliConfigurationLoadingException(final String message, final Throwable cause) {
+    public ConfigurationLoadingException(final String message, final Throwable cause) {
         super(message, cause);
     }
 

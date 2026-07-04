@@ -1,5 +1,8 @@
 package com.oakinvest.kiso.cli.command;
 
+import com.oakinvest.kiso.cli.configuration.Configuration;
+import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
+import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
 import com.oakinvest.kiso.cli.options.DestinationOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
@@ -18,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.concurrent.Callable;
 
 import static com.oakinvest.kiso.core.util.FileNamesConstants.LLMS_TXT_FILENAME;
@@ -68,20 +72,22 @@ public class BuildCommand implements Callable<Integer> {
             print("Building in " + destinationDirectory.getAbsolutePath());
             blankLine();
 
-            // We run the validation first =============================================================================
-            final KnowledgeBundle sourceKnowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath());
-            final ValidationReport validationReport = new ValidationRunner().runValidation(sourceKnowledgeBundle);
-            if (validationReport.hasErrors()) {
-                validationReport.issues().forEach(this::printError);
-                return CommandLine.ExitCode.SOFTWARE;
-            }
+            // Loading configuration ===================================================================================
+            final Optional<Configuration> configuration = ConfigurationLoader.load(sourceDirectory.toPath());
 
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory);
 
-            // HTML generation =========================================================================================
+            // Loading and checking the bundle =========================================================================
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
+            final ValidationReport validationReport = new ValidationRunner().runValidation(knowledgeBundle);
+            if (validationReport.hasErrors()) {
+                validationReport.issues().forEach(this::printError);
+                return CommandLine.ExitCode.SOFTWARE;
+            }
+
+            // HTML generation =========================================================================================
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
@@ -123,6 +129,10 @@ public class BuildCommand implements Callable<Integer> {
             // Job done ================================================================================================
             print("Done!");
             return CommandLine.ExitCode.OK;
+
+        } catch (ConfigurationLoadingException e) {
+            printError("Error loading configuration: " + e.getMessage());
+            return CommandLine.ExitCode.SOFTWARE;
         } catch (IOException e) {
             printError("Error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;

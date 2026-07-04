@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
-public class KisoCliConfigurationLoader {
+public class ConfigurationLoader {
 
     /** Configuration file. */
     private static final Path CONFIGURATION_FILE = Path.of(".kiso", "configuration.yaml");
@@ -33,7 +33,7 @@ public class KisoCliConfigurationLoader {
      * @param bundlePath bundle path
      * @return Kiso-cli configuration
      */
-    public static Optional<KisoCliConfiguration> load(final Path bundlePath) {
+    public static Optional<Configuration> load(final Path bundlePath) {
         // We check if we have the file ================================================================================
         Objects.requireNonNull(bundlePath, "Bundle path must not be null");
         final Path configurationFilePath = bundlePath.resolve(CONFIGURATION_FILE);
@@ -41,23 +41,23 @@ public class KisoCliConfigurationLoader {
             return Optional.empty();
         }
         if (!Files.isRegularFile(configurationFilePath)) {
-            throw new KisoCliConfigurationLoadingException("Configuration path is not a regular file: " + configurationFilePath);
+            throw new ConfigurationLoadingException("Configuration path is not a regular file: " + configurationFilePath);
         }
 
         // We get the content ==========================================================================================
         try {
             String yaml = Files.readString(configurationFilePath);
             if (yaml.isBlank()) {
-                return Optional.of(KisoCliConfiguration.empty());
+                return Optional.of(Configuration.empty());
             }
 
-            KisoCliConfiguration configuration = OBJECT_MAPPER.readValue(yaml, KisoCliConfiguration.class);
+            Configuration configuration = OBJECT_MAPPER.readValue(yaml, Configuration.class);
             if (configuration == null) {
-                configuration = KisoCliConfiguration.empty();
+                configuration = Configuration.empty();
             }
             return Optional.of(configuration);
         } catch (Exception exception) {
-            throw new KisoCliConfigurationLoadingException(
+            throw new ConfigurationLoadingException(
                     "Unable to load configuration file " + configurationFilePath + ": " + exception.getMessage(),
                     exception);
         }

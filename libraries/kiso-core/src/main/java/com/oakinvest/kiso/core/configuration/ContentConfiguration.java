@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.configuration;
+package com.oakinvest.kiso.core.configuration;
 
 import java.util.List;
 

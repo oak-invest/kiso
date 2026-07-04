@@ -14,7 +14,7 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class KisoCliConfigurationLoaderTest extends BaseTest {
+public class ConfigurationLoaderTest extends BaseTest {
 
     @TempDir
     private Path temporaryDirectory;
@@ -22,7 +22,7 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
     @Test
     @DisplayName("Test loading Kiso-cli configuration from a bundle path")
     public void testLoadConfiguration() throws URISyntaxException {
-        assertThat(KisoCliConfigurationLoader.load(getResourcePath("kb-configuration-valid")))
+        assertThat(ConfigurationLoader.load(getResourcePath("kb-configuration-valid")))
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     // Site ============================================================================================
@@ -42,7 +42,7 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
     @Test
     @DisplayName("Test loading empty Kiso-cli configuration from a bundle path")
     public void testLoadEmptyConfiguration() throws URISyntaxException {
-        assertThat(KisoCliConfigurationLoader.load(getResourcePath("kb-configuration-empty")))
+        assertThat(ConfigurationLoader.load(getResourcePath("kb-configuration-empty")))
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     assertThat(configuration.site()).isNotNull();
@@ -55,7 +55,7 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
     @Test
     @DisplayName("Test loading Kiso-cli configuration from a bundle path when configuration file does not exist")
     public void testLoadConfigurationFileNotExist() throws URISyntaxException {
-        assertThat(KisoCliConfigurationLoader.load(getResourcePath("kb-configuration-absent"))).isEmpty();
+        assertThat(ConfigurationLoader.load(getResourcePath("kb-configuration-absent"))).isEmpty();
     }
 
     @Test
@@ -66,7 +66,7 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
                   title: Example
                 """);
 
-        assertThat(KisoCliConfigurationLoader.load(temporaryDirectory))
+        assertThat(ConfigurationLoader.load(temporaryDirectory))
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     assertThat(configuration.site()).isNotNull();
@@ -82,8 +82,8 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
     public void testRejectMalformedConfiguration() throws IOException {
         Path configurationFile = writeConfiguration("site: [invalid]");
 
-        assertThatThrownBy(() -> KisoCliConfigurationLoader.load(temporaryDirectory))
-                .isInstanceOf(KisoCliConfigurationLoadingException.class)
+        assertThatThrownBy(() -> ConfigurationLoader.load(temporaryDirectory))
+                .isInstanceOf(ConfigurationLoadingException.class)
                 .hasMessageContaining(configurationFile.toString());
     }
 
@@ -92,8 +92,8 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
     public void testRejectUnknownConfigurationProperty() throws IOException {
         writeConfiguration("unknownProperty: value");
 
-        assertThatThrownBy(() -> KisoCliConfigurationLoader.load(temporaryDirectory))
-                .isInstanceOf(KisoCliConfigurationLoadingException.class)
+        assertThatThrownBy(() -> ConfigurationLoader.load(temporaryDirectory))
+                .isInstanceOf(ConfigurationLoadingException.class)
                 .hasMessageContaining("unknownProperty");
     }
 
@@ -106,8 +106,8 @@ public class KisoCliConfigurationLoaderTest extends BaseTest {
                   name: dark
                 """);
 
-        assertThatThrownBy(() -> KisoCliConfigurationLoader.load(temporaryDirectory))
-                .isInstanceOf(KisoCliConfigurationLoadingException.class)
+        assertThatThrownBy(() -> ConfigurationLoader.load(temporaryDirectory))
+                .isInstanceOf(ConfigurationLoadingException.class)
                 .hasMessageContaining("Duplicate field");
     }
 
