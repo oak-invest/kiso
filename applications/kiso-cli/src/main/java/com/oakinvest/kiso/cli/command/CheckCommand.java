@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.options.SourceOption;
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
@@ -43,7 +44,7 @@ public class CheckCommand implements Callable<Integer> {
         // Running the validation ======================================================================================
         try {
 
-            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath());
+            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath(), SiteConfiguration.empty());
             final ValidationRunner validationRunner = new ValidationRunner();
 
             final var report = validationRunner.runValidation(knowledgeBundle);

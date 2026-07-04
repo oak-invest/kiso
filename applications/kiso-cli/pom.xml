@@ -85,9 +85,6 @@
                                     <version>${picocli.version}</version>
                                 </path>
                             </annotationProcessorPaths>
-                            <compilerArgs>
-                                <arg>-Aproject=${project.groupId}/${project.artifactId}</arg>
-                            </compilerArgs>
                         </configuration>
                     </execution>
                 </executions>

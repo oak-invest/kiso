@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.renderer;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.renderer.model.PageMetadata;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
@@ -102,11 +103,14 @@ public final class MarkdownToHtmlRenderer {
     /**
      * Render a markdownFile file to HTML.
      *
-     * @param markdownFile markdownFile file
-     * @param bundleTree   calculated bundle tree for navigation
+     * @param siteConfiguration site configuration
+     * @param markdownFile      markdownFile file
+     * @param bundleTree        calculated bundle tree for navigation
      * @return content rendered
      */
-    public static String render(final MarkdownFile markdownFile, final BundleTree bundleTree) {
+    public static String render(final SiteConfiguration siteConfiguration,
+                                final MarkdownFile markdownFile,
+                                final BundleTree bundleTree) {
         if (markdownFile == null || markdownFile.body() == null) {
             return "";
         }
@@ -125,14 +129,29 @@ public final class MarkdownToHtmlRenderer {
                 return "";
             }
             case INDEX -> {
+                // Meta data ===========================================================================================
+                PageMetadata metadata;
+                if (siteConfiguration.title() != null && markdownFile.fileName().equals("index.md")) {
+                    metadata = PageMetadata.builder()
+                            .title(siteConfiguration.title())
+                            .description(siteConfiguration.description())
+                            .absolutePath(markdownFile.absolutePath().toString())
+                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .htmlPath(markdownFile.htmlFilePath())
+                            .build();
+                } else {
+                    metadata = PageMetadata.builder()
+                            .title(markdownFile.relativePath().toString())
+                            .absolutePath(markdownFile.absolutePath().toString())
+                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .htmlPath(markdownFile.htmlFilePath())
+                            .build();
+                }
+
                 // Index ===============================================================================================
                 IndexPage page = IndexPage.builder()
-                        .metadata(PageMetadata.builder()
-                                .title(markdownFile.relativePath().toString())
-                                .absolutePath(markdownFile.absolutePath().toString())
-                                .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                                .htmlPath(markdownFile.htmlFilePath())
-                                .build())
+                        .siteConfiguration(siteConfiguration)
+                        .metadata(metadata)
                         .bundleTree(bundleTree)
                         .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
@@ -164,6 +183,7 @@ public final class MarkdownToHtmlRenderer {
 
                 // Concept =============================================================================================
                 ConceptPage page = ConceptPage.builder()
+                        .siteConfiguration(siteConfiguration)
                         .metadata(metadata)
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())

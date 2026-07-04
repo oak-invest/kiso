@@ -1,3 +1,4 @@
+@param String language
 @param String title
 @param String description
 @param String markdownFileName
@@ -7,7 +8,7 @@
 @param gg.jte.Content content
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="${language}">
 
 <head>
 

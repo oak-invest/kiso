@@ -104,7 +104,7 @@ public class BuildCommand implements Callable<Integer> {
                             try {
                                 FileUtils.writeStringToFile(
                                         new File(bundle.absolutePath().toString(), markdownFile.htmlFileName()),
-                                        MarkdownToHtmlRenderer.render(markdownFile, bundleTree),
+                                        MarkdownToHtmlRenderer.render(configuration.site(), markdownFile, bundleTree),
                                         StandardCharsets.UTF_8
                                 );
                                 print("HTML Generated for " + markdownFile.relativePath());

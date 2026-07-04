@@ -24,4 +24,12 @@ public record SiteConfiguration(
         return new SiteConfiguration(null, null, null);
     }
 
+    public String languageTag() {
+        if (language == null) {
+            return "en";
+        } else {
+            return language.toLanguageTag();
+        }
+    }
+
 }

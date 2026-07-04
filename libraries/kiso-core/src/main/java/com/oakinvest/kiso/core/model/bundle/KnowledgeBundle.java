@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.model.bundle;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.Builder;
 
@@ -8,12 +9,14 @@ import java.util.stream.Stream;
 /**
  * A knowledge bundle: A self-contained, hierarchical collection of knowledge documents.
  *
- * @param rootBundle root bundle
+ * @param rootBundle        root bundle
+ * @param siteConfiguration site configuration
  */
 @Builder
 @SuppressWarnings("unused")
 public record KnowledgeBundle(
-        Bundle rootBundle
+        Bundle rootBundle,
+        SiteConfiguration siteConfiguration
 ) {
 
     /**
