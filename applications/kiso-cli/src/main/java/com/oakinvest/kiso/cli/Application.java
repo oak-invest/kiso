@@ -1,13 +1,15 @@
 package com.oakinvest.kiso.cli;
 
 import com.oakinvest.kiso.cli.command.BuildCommand;
+import com.oakinvest.kiso.cli.command.CheckCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(
         name = "kiso-cli",
         mixinStandardHelpOptions = true,
-        version = "0.1.0",
+        version = "0.1.3",
         subcommands = {
+                CheckCommand.class,
                 BuildCommand.class
         }
 )

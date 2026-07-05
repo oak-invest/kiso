@@ -1,4 +1,4 @@
-@param com.oakinvest.kiso.core.rendering.model.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.renderer.model.navigation.BundleTree bundleTree
 @param String assetBasePath
 @param String currentHtmlPath
 
@@ -7,12 +7,14 @@
         <summary
                 class="@if(bundleTree.containsHtmlPath(currentHtmlPath))menu-active@endif">${bundleTree.name()}</summary>
         <ul>
-            <li>
-                <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
-                   href="${assetBasePath}${bundleTree.indexHtmlPath()}">
-                    Index
-                </a>
-            </li>
+            @if(bundleTree.hasIndexPage())
+                <li>
+                    <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
+                       href="${assetBasePath}${bundleTree.indexHtmlPath()}">
+                        Index
+                    </a>
+                </li>
+            @endif
             @for(var childBundle : bundleTree.childBundles())
                 @template.partials.bundleTreeMenuNode(bundleTree = childBundle, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
             @endfor

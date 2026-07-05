@@ -1,13 +1,15 @@
+@param String dataTheme
+@param String language
 @param String title
 @param String description
 @param String markdownFileName
 @param String assetBasePath
-@param com.oakinvest.kiso.core.rendering.model.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.renderer.model.navigation.BundleTree bundleTree
 @param String currentHtmlPath
 @param gg.jte.Content content
 
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="${dataTheme}" lang="${language}">
 
 <head>
 

@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.model;
 
-import com.oakinvest.kiso.core.loading.KnowledgeBundleLoader;
+import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,15 +1,17 @@
-@param com.oakinvest.kiso.core.rendering.model.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.renderer.model.navigation.BundleTree bundleTree
 @param String assetBasePath
 @param String currentHtmlPath
 
 @if(bundleTree != null)
     <ul class="menu menu-sm w-full gap-1 p-0">
-        <li>
-            <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
-               href="${assetBasePath}${bundleTree.indexHtmlPath()}">
-                ${bundleTree.name()}
-            </a>
-        </li>
+        @if(bundleTree.hasIndexPage())
+            <li>
+                <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
+                   href="${assetBasePath}${bundleTree.indexHtmlPath()}">
+                    ${bundleTree.name()}
+                </a>
+            </li>
+        @endif
         @for(var childBundle : bundleTree.childBundles())
             @template.partials.bundleTreeMenuNode(bundleTree = childBundle, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
         @endfor

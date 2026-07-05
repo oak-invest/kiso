@@ -1,8 +1,10 @@
 @import org.apache.commons.lang3.StringUtils
 
-@param com.oakinvest.kiso.core.rendering.model.page.IndexPage page
+@param com.oakinvest.kiso.core.renderer.model.page.IndexPage page
 
 @template.layouts.default(
+dataTheme  = page.themeConfiguration().effectiveName(),
+language = page.siteConfiguration().languageTag(),
 title = page.metadata().title(),
 description = page.metadata().description(),
 markdownFileName = page.metadata().markdownFileName(),

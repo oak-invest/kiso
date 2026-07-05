@@ -60,9 +60,36 @@ jobs:
           name: ${{ matrix.artifact }}
           path: dist/${{ matrix.artifact }}
 
+  build-java:
+    name: Build Java archive
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+
+    steps:
+
+      - name: Retrieve the sources
+        uses: actions/checkout@v7
+
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: Build executable Java archive
+        run: |
+          just install
+          mvn package -pl applications/kiso-cli -am -DskipTests
+          mkdir -p dist
+          cp applications/kiso-cli/target/kiso-cli-*-executable.jar dist/kiso-cli.jar
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: kiso-cli.jar
+          path: dist/kiso-cli.jar
+
   release:
     name: Publish GitHub Release
-    needs: build
+    needs: [ build, build-java ]
     runs-on: ubuntu-latest
 
     steps:
@@ -74,4 +101,4 @@ jobs:
       - uses: softprops/action-gh-release@v3
         with:
           files: dist/*
-          generate_release_notes: true
+          generate_release_notes: false

@@ -16,7 +16,7 @@ public enum MarkdownFileKind {
     CONCEPT(null),
 
     /**
-     * Directory index document (index.md).
+     * Directory listing document (index.md).
      * An index.md file MAY appear in any directory, including the bundle rootBundleDirectory. It enumerates the directory's contents
      * to support progressive disclosure - letting a human or agent see what is available before opening individual
      * documents.
@@ -24,7 +24,7 @@ public enum MarkdownFileKind {
     INDEX("index.md"),
 
     /**
-     * Directory update log document (log.md).
+     * Update history document (log.md).
      * A log.md file MAY appear at any level of the hierarchy to record the history of changes to that scope.
      */
     LOG("log.md");

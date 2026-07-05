@@ -1,8 +1,10 @@
 @import java.time.format.DateTimeFormatter
 
-@param com.oakinvest.kiso.core.rendering.model.page.ConceptPage page
+@param com.oakinvest.kiso.core.renderer.model.page.ConceptPage page
 
 @template.layouts.default(
+dataTheme  = page.themeConfiguration().effectiveName(),
+language = page.siteConfiguration().languageTag(),
 title = page.metadata().title(),
 description = page.metadata().description(),
 markdownFileName = page.metadata().markdownFileName(),
@@ -123,6 +125,5 @@ content = @`
             Last update: ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
         </footer>
     @endif
-
 `
 )

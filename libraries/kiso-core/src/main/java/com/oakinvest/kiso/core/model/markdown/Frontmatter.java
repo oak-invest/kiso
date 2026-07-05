@@ -1,8 +1,11 @@
 package com.oakinvest.kiso.core.model.markdown;
 
 import lombok.Builder;
+import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +28,42 @@ public record Frontmatter(
         String description,
         String resource,
         List<String> tags,
-        OffsetDateTime timestamp,
+        String timestamp,
         Map<String, Object> extraFields
 ) {
+
+    /**
+     * Empty Frontmatter.
+     *
+     * @return empty frontmatter
+     */
+    public static Frontmatter empty() {
+        return new Frontmatter(
+                null,
+                null,
+                null,
+                null,
+                List.of(),
+                null,
+                Map.of()
+        );
+    }
+
+    /**
+     * Returns parsed timestamp.
+     *
+     * @return timestamp as OffsetDateTime or null if timestamp is blank or not parsable
+     */
+    public @Nullable OffsetDateTime parsedTimestamp() {
+        if (StringUtils.isBlank(timestamp)) {
+            return null;
+        }
+
+        try {
+            return OffsetDateTime.parse(timestamp);
+        } catch (DateTimeParseException exception) {
+            return null;
+        }
+    }
+
 }

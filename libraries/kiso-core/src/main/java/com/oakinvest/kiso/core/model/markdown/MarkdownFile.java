@@ -1,12 +1,15 @@
 package com.oakinvest.kiso.core.model.markdown;
 
 import lombok.Builder;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
 
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.HTML_EXTENSION;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
@@ -19,7 +22,7 @@ import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTE
  * @param absolutePath absolute path (with the file name)
  * @param relativePath relative path to the root bundle (with the file name)
  * @param frontmatter  frontmatter metadata
- * @param content      original Markdown content (without frontmatter)
+ * @param body         original Markdown content without frontmatter
  */
 @Builder
 @SuppressWarnings("unused")
@@ -28,9 +31,34 @@ public record MarkdownFile(
         MarkdownFileKind kind,
         Path absolutePath,
         Path relativePath,
-        Frontmatter frontmatter,
-        String content
+        @Nullable Frontmatter frontmatter,
+        String body
 ) {
+
+    /**
+     * Returns true if the frontmatter exists in the Markdown file.
+     *
+     * @return true if a frontmatter exists
+     */
+    public boolean hasFrontmatter() {
+        return frontmatter != null;
+    }
+
+    /**
+     * Returns the concept id.
+     * The path of the concept's file within the bundle, with the .md suffix removed.
+     * For example, tables/users.md has concept ID tables/users.
+     *
+     * @return concept id
+     */
+    public String conceptId() {
+        if (kind.equals(CONCEPT)) {
+            String path = relativePath.toString().replace('\\', '/');
+            return FilenameUtils.removeExtension(path);
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Returns the page title.
@@ -38,7 +66,7 @@ public record MarkdownFile(
      * @return page title
      */
     public String title() {
-        if (frontmatter != null && frontmatter.title() != null) {
+        if (hasFrontmatter() && StringUtils.isNotBlank(frontmatter.title())) {
             return frontmatter.title();
         }
         return fileName;
@@ -59,7 +87,10 @@ public record MarkdownFile(
             }
         } else {
             // Concept file ============================================================================================
-            return StringUtils.normalizeSpace(frontmatter.description());
+            if (hasFrontmatter() && StringUtils.isNotBlank(frontmatter.description())) {
+                return frontmatter.description();
+            }
+            return relativePath().toString();
         }
     }
 
@@ -69,10 +100,10 @@ public record MarkdownFile(
      * @return timestamp
      */
     public OffsetDateTime timestamp() {
-        if (frontmatter == null) {
-            return null;
+        if (hasFrontmatter()) {
+            return frontmatter.parsedTimestamp();
         }
-        return frontmatter.timestamp();
+        return null;
     }
 
     /**

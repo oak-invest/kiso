@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.oakinvest.kiso</groupId>
         <artifactId>kiso</artifactId>
-        <version>0.1.2</version>
+        <version>0.1.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -30,11 +30,19 @@
             <artifactId>commonmark-ext-autolink</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.commonmark</groupId>
+            <artifactId>commonmark-ext-gfm-tables</artifactId>
+        </dependency>
+        <dependency>
             <groupId>gg.jte</groupId>
             <artifactId>jte</artifactId>
         </dependency>
 
         <!-- Boilerplate and utils -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

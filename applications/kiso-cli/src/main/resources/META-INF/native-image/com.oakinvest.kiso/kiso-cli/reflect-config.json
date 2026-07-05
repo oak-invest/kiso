@@ -1,5 +1,25 @@
 [
   {
+    "name": "com.oakinvest.kiso.cli.configuration.Configuration",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.oakinvest.kiso.core.configuration.SiteConfiguration",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.oakinvest.kiso.core.configuration.ThemeConfiguration",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.oakinvest.kiso.core.configuration.ContentConfiguration",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
     "name": "gg.jte.generated.precompiled.JteindexGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
