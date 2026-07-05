@@ -7,6 +7,12 @@ _If you need an OKF bundle to test Kiso, you can download our sample OKF bundle 
 Download the latest release of Kiso for your operating system from the [releases page](https://github.com/oak-invest/kiso/releases), then run:
 
 ```bash
+./kiso-cli check --source=examples/kb-google-example
+```
+
+The `check` command validates the Markdown files in the OKF bundle and reports formatting or structural errors. Once the bundle is valid, build the static website:
+
+```bash
 ./kiso-cli build --source=examples/kb-google-example --destination=public
 ```
 
@@ -24,10 +30,16 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
     destination: website/examples/kb-google-example-latest
 ```
 
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `check` | Validates the Markdown files in an OKF bundle and reports formatting or structural errors. |
+| `build` | Generates a static website, including the original Markdown files, HTML pages, `llms.txt`, and `sitemap.xml`. |
+
 ## Configuration
 
-| Variable      | Default  | Description |
-|---------------|----------|-------------|
-| `source`      | `.`      | Directory containing the Markdown files to read. Defaults to the current directory. |
-| `destination` | `public` | Directory where generated files are created. Defaults to the `public` directory. |
-
+| Variable      | Command          | Default  | Description |
+|---------------|------------------|----------|-------------|
+| `source`      | `check`, `build` | `.`      | Directory containing the Markdown files to read. Defaults to the current directory. |
+| `destination` | `build`          | `public` | Directory where generated files are created. Defaults to the `public` directory. |
