@@ -184,4 +184,15 @@ class GoogleExampleLoadingTest extends BaseTest {
                 );
     }
 
+    @Test
+    @DisplayName("Loading google example bundle with configuration")
+    void googleExamplesLoadingWithConfiguration() throws URISyntaxException {
+        // What we are testing =========================================================================================
+        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var bundle = KnowledgeBundleLoader.load(resourcePath);
+
+        // Testing isRoot bundle =========================================================================================
+        assertThat(bundle.rootBundle().childBundles()).hasSize(3);
+    }
+
 }

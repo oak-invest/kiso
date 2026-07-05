@@ -11,15 +11,14 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE;
+
 /**
  * Kiso-cli configuration loader.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class ConfigurationLoader {
-
-    /** Configuration file. */
-    private static final Path CONFIGURATION_FILE = Path.of(".kiso", "configuration.yaml");
 
     /** Mapper. */
     private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder(YAMLFactory.builder()

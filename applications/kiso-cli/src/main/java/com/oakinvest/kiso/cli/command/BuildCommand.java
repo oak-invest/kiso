@@ -26,8 +26,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
-import static com.oakinvest.kiso.core.util.FileNamesConstants.LLMS_TXT_FILENAME;
-import static com.oakinvest.kiso.core.util.FileNamesConstants.SITEMAP_XML_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
 
 /**
  * Build: Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml.

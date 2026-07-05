@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.OKFConstants.DEFAULT_TITLE;
@@ -43,20 +44,28 @@ public class LlmsTxtGenerator {
         llmsTxt.appendChild(heading(HEADING_LEVEL_1, DEFAULT_TITLE));
 
         // Each bundle section =========================================================================================
-        knowledgeBundle.bundles().forEach(bundle -> {
+        knowledgeBundle.bundles()
+                // Remove "/assets"
+                .filter(bundle -> {
+                    Path path = bundle.relativePath();
+                    return path.getNameCount() == 0 || !path.getName(0).toString().equals(ASSETS_DIRECTORY);
+                })
+                // Do not add bundle without child and whitout files
+                .filter(bundle -> !bundle.childBundles().isEmpty() || !bundle.markdownFiles().isEmpty())
+                .forEach(bundle -> {
 
-            // Bundle name =============================================================================================
-            llmsTxt.appendChild(heading(HEADING_LEVEL_2, bundle.name()));
+                    // Bundle name =============================================================================================
+                    llmsTxt.appendChild(heading(HEADING_LEVEL_2, bundle.name()));
 
-            // Pages inside the bundle =================================================================================
-            BulletList list = new BulletList();
-            list.setMarker("-");
-            list.setTight(true);
-            bundle.markdownFiles().stream()
-                    .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
-                    .forEach(markdownFile -> list.appendChild(markdownFileListItem(markdownFile)));
-            llmsTxt.appendChild(list);
-        });
+                    // Pages inside the bundle =================================================================================
+                    BulletList list = new BulletList();
+                    list.setMarker("-");
+                    list.setTight(true);
+                    bundle.markdownFiles().stream()
+                            .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
+                            .forEach(markdownFile -> list.appendChild(markdownFileListItem(markdownFile)));
+                    llmsTxt.appendChild(list);
+                });
 
         return MarkdownRenderer.builder()
                 .build()

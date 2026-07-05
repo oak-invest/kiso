@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.DESCRIPTION_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.FRONTMATTER_DELIMITER;
@@ -124,6 +125,7 @@ public class KnowledgeBundleLoader {
         try (Stream<Path> childDirectories = Files.list(bundleToLoad)) {
             return childDirectories
                     .filter(Files::isDirectory)
+                    .filter(path -> !Strings.CI.endsWith(path.toString(), CONFIGURATION_DIRECTORY_NAME))
                     .sorted(Comparator.comparing(path -> path.getFileName().toString()))
                     // Recursive.
                     .map(childDirectory -> loadBundle(rootBundle, childDirectory))
