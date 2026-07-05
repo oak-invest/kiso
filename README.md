@@ -69,7 +69,7 @@ content:
 | `site.language` | `en` | Language used by the generated HTML pages. |
 | `site.title` | Page title | Title used for the root index page. |
 | `site.description` | Page description | Description used for the root index page. |
-| `theme.name` | `light` | [DaisyUI theme](https://daisyui.com/docs/themes/) used by the generated website. |
+| `theme.name` | `light` | [DaisyUI theme](https://daisyui.com/docs/themes/#list-of-themes) used by the generated website. |
 | `content.ignorePatterns` | `[]` | Glob patterns identifying files and directories that must not be copied or published. |
 
 Ignore patterns are evaluated against paths relative to the bundle root. For example, `README.md` excludes only the root README, while `drafts/**` excludes the contents of the `drafts` directory. The source bundle is never modified: Kiso applies these exclusions while copying files to the destination directory, before loading, validating, and publishing the resulting bundle.
