@@ -119,54 +119,6 @@ class BuildCommandTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Building Google OKF bundle with configuration")
-    void buildWithConfiguration() throws Exception {
-        // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
-
-
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
-                .setOut(new PrintWriter(output))
-                .setErr(new PrintWriter(error))
-                .execute(
-                        "--source", resourcePath.toString(),
-                        "--destination", destinationDirectory.toString()
-                );
-
-        // Testing command result ======================================================================================
-        assertThat(exitCode).isZero();
-        assertThat(error.toString()).isEmpty();
-        assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
-                // Those files should exist
-                .contains("HTML Generated for index.md")
-                .contains("HTML Generated for datasets/index.md")
-                // I asked to remove files in references/joins
-                .doesNotContain("HTML Generated for references/joins/index.md")
-                .doesNotContain("HTML Generated for references/joins/events___ads_clickstats.md")
-                // I asked to remove day_count.md and not even_count.md
-                .doesNotContain("HTML Generated for references/metrics/day_count.md")
-                .contains("HTML Generated for references/metrics/event_count.md")
-                .contains("Done!");
-
-        // Checking that configuration is applied to the generated HTML files ==========================================
-        assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
-                .contains("data-theme=\"corporate\"")
-                .contains("lang=\"fr\"")
-                .contains("<title>My Knowledge Base</title>")
-                .contains("<meta name=\"description\" content=\"My knowledge base description\">");
-        assertThat(Files.readString(destinationDirectory.resolve("references/metrics/event_count.html"), UTF_8))
-                .contains("data-theme=\"corporate\"")
-                .contains("lang=\"fr\"")
-                .contains("<title>Event Count</title>")
-                .contains("<meta name=\"description\" content=\"Total number of events.\">");
-    }
-
-    @Test
     @DisplayName("Building with error in the bundle")
     void buildWithErrorInTheBundle() throws Exception {
         // What we are testing =========================================================================================

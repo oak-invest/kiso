@@ -43,6 +43,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 |---------------|------------------|----------|-------------|
 | `source`      | `check`, `build` | `.`      | Directory containing the Markdown files to read. Defaults to the current directory. |
 | `destination` | `build`          | `public` | Directory where generated files are created. Defaults to the `public` directory. |
+| `profile`     | `build`          |          | Publishing profile loaded from `.kiso/<name>/configuration.yaml`. |
 
 ## Configuration file
 
@@ -73,3 +74,15 @@ content:
 | `content.ignorePatterns` | `[]` | Glob patterns identifying files and directories that must not be copied or published. |
 
 Ignore patterns are evaluated against paths relative to the bundle root. For example, `README.md` excludes only the root README, while `drafts/**` excludes the contents of the `drafts` directory. The source bundle is never modified: Kiso applies these exclusions while copying files to the destination directory, before loading, validating, and publishing the resulting bundle.
+
+### Publishing profiles
+
+Publishing profiles allow the same OKF bundle to be published in different ways without changing its source content. Store profiles in `.kiso/<profile-name>/configuration.yaml` and select one with `--profile`:
+
+```shell
+kiso build
+kiso build --profile public
+kiso build --profile internal
+```
+
+When no profile is selected, Kiso loads `.kiso/configuration.yaml`. When a profile is selected, Kiso loads only that profile's configuration; the default configuration is not read or merged.

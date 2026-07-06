@@ -11,7 +11,9 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE;
+import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE_NAME;
 
 /**
  * Kiso-cli configuration loader.
@@ -44,6 +46,48 @@ public class ConfigurationLoader {
         }
 
         // We get the content ==========================================================================================
+        return getConfiguration(configurationFilePath);
+    }
+
+    /**
+     * Loads Kiso-cli configuration from the given bundle path and profile.
+     *
+     * @param bundlePath  bundle path
+     * @param profileName profile name
+     * @return Kiso-cli configuration
+     */
+    public static Optional<Configuration> load(final Path bundlePath, final String profileName) {
+        // We check if we have the bundle ==============================================================================
+        Objects.requireNonNull(bundlePath, "Bundle path must not be null");
+        if (profileName.isBlank()) {
+            throw new ConfigurationLoadingException("Profile name must not be blank");
+        }
+
+        // We treath the profile name ==================================================================================
+        final Path configurationDirectory = bundlePath.resolve(CONFIGURATION_DIRECTORY).normalize();
+        final Path profileDirectory = configurationDirectory.resolve(profileName).normalize();
+        final Path profileFilePath = profileDirectory.resolve(CONFIGURATION_FILE_NAME);
+        if (!configurationDirectory.equals(profileDirectory.getParent())) {
+            throw new ConfigurationLoadingException("Invalid profile name: " + profileName);
+        }
+        if (Files.notExists(profileFilePath)) {
+            throw new ConfigurationLoadingException("Profile does not exist: " + profileFilePath);
+        }
+        if (!Files.isRegularFile(profileFilePath)) {
+            throw new ConfigurationLoadingException("Profile path is not a regular file: " + profileFilePath);
+        }
+
+        // We get the content ==========================================================================================
+        return getConfiguration(profileFilePath);
+    }
+
+    /**
+     * Retrieve configuration.
+     *
+     * @param configurationFilePath configuration file path
+     * @return configuration
+     */
+    private static Optional<Configuration> getConfiguration(final Path configurationFilePath) {
         try {
             String yaml = Files.readString(configurationFilePath);
             if (yaml.isBlank()) {

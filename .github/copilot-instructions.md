@@ -99,3 +99,6 @@ When changing code in this repository:
 - cover edge cases for shared utility code
 
 Tests should be simple, direct, and readable.
+
+## Other rules
+- Never use tertiary operators (e.g., `condition ? trueValue : falseValue`) in this repository.

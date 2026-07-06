@@ -55,6 +55,10 @@ public class BuildCommand implements Callable<Integer> {
     @CommandLine.Mixin
     private final DestinationOption destinationOption = new DestinationOption();
 
+    /** Publishing profile. */
+    @CommandLine.Option(names = "--profile", description = "Publishing profile from .kiso/<name>/configuration.yaml")
+    private String profile;
+
     /** Command spec. */
     @CommandLine.Spec
     @SuppressWarnings("unused")
@@ -75,8 +79,12 @@ public class BuildCommand implements Callable<Integer> {
             blankLine();
 
             // Loading configuration ===================================================================================
-            final Configuration configuration = ConfigurationLoader.load(sourceDirectory.toPath())
-                    .orElse(Configuration.empty());
+            final Configuration configuration;
+            if (profile == null) {
+                configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
+            } else {
+                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());
+            }
 
             // Copying files ===========================================================================================
             FileUtils.deleteDirectory(destinationDirectory);

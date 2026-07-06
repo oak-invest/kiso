@@ -9,7 +9,7 @@ permissions:
 
 jobs:
 
-  build:
+  build-native:
     name: Build ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     permissions:
@@ -89,7 +89,7 @@ jobs:
 
   release:
     name: Publish GitHub Release
-    needs: [ build, build-java ]
+    needs: [ build-native, build-java ]
     runs-on: ubuntu-latest
 
     steps:
