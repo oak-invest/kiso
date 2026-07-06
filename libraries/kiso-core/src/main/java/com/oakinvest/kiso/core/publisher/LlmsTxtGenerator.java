@@ -50,8 +50,8 @@ public class LlmsTxtGenerator {
                     Path path = bundle.relativePath();
                     return path.getNameCount() == 0 || !path.getName(0).toString().equals(ASSETS_DIRECTORY);
                 })
-                // Do not add bundle without child and whitout files
-                .filter(bundle -> !bundle.childBundles().isEmpty() || !bundle.markdownFiles().isEmpty())
+                // Do not add bundle without child and without files
+                .filter(bundle -> !bundle.isEmpty())
                 .forEach(bundle -> {
 
                     // Bundle name =============================================================================================

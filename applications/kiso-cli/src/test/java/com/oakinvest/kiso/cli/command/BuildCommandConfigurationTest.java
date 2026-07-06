@@ -156,7 +156,7 @@ class BuildCommandConfigurationTest extends BaseTest {
                 .execute(
                         "--source", resourcePath.toString(),
                         "--destination", destinationDirectory.toString(),
-                        "--profile", "unknown-profile"
+                        "--profile", "empty-profile"
                 );
 
         // Testing command result ======================================================================================

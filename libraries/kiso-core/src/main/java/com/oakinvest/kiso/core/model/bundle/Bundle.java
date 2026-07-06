@@ -50,4 +50,13 @@ public record Bundle(
         );
     }
 
+    /**
+     * Returns true if the bundle has no child bundles and no markdown files.
+     *
+     * @return true if empty
+     */
+    public boolean isEmpty() {
+        return childBundles.isEmpty() && markdownFiles.isEmpty();
+    }
+
 }
