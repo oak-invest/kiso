@@ -5,6 +5,7 @@ import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
 import com.oakinvest.kiso.cli.options.DestinationOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
+import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
@@ -12,9 +13,6 @@ import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
-import com.oakinvest.kiso.core.validation.ValidationIssue;
-import com.oakinvest.kiso.core.validation.ValidationReport;
-import com.oakinvest.kiso.core.validation.ValidationRunner;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -37,7 +35,7 @@ import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
         mixinStandardHelpOptions = true,
         description = "Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml"
 )
-public class BuildCommand implements Callable<Integer> {
+public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
     /** Static assets copied to the generated website root. */
     private static final String[] ASSET_PATHS = {
@@ -56,27 +54,37 @@ public class BuildCommand implements Callable<Integer> {
     private final DestinationOption destinationOption = new DestinationOption();
 
     /** Publishing profile. */
-    @CommandLine.Option(names = "--profile", description = "Publishing profile from .kiso/<name>/configuration.yaml")
+    @CommandLine.Option(names = "--profile", description = "Publishing profile from .kiso/<profile>/configuration.yaml")
     private String profile;
 
-    /** Command spec. */
+    /** Command specification. */
     @CommandLine.Spec
-    @SuppressWarnings("unused")
     private CommandLine.Model.CommandSpec commandSpec;
+
+    /**
+     * Get the command specification.
+     *
+     * @return command specification
+     */
+    @Override
+    protected CommandLine.Model.CommandSpec commandSpec() {
+        return commandSpec;
+    }
 
     /**
      * Run the build command.
      */
     @Override
     public Integer call() {
+        // Displaying information about the process ====================================================================
+        final File sourceDirectory = sourceOption.sourceDirectory().toFile();
+        final File destinationDirectory = destinationOption.destinationDirectory().toFile();
+        print("Kiso-cli - Running build command");
+        print("Sources in " + sourceDirectory.getAbsolutePath());
+        print("Building in " + destinationDirectory.getAbsolutePath());
+        blankLine();
+
         try {
-            // Displaying information about the process ================================================================
-            final File sourceDirectory = sourceOption.sourceDirectory().toFile();
-            final File destinationDirectory = destinationOption.destinationDirectory().toFile();
-            print("Kiso-cli - Running build command");
-            print("Sources in " + sourceDirectory.getAbsolutePath());
-            print("Building in " + destinationDirectory.getAbsolutePath());
-            blankLine();
 
             // Loading configuration ===================================================================================
             final Configuration configuration;
@@ -97,9 +105,7 @@ public class BuildCommand implements Callable<Integer> {
 
             // Loading and checking the bundle =========================================================================
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
-            final ValidationReport validationReport = new ValidationRunner().runValidation(knowledgeBundle);
-            if (validationReport.hasErrors()) {
-                validationReport.issues().forEach(this::printError);
+            if (!isValid(knowledgeBundle)) {
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
@@ -153,40 +159,6 @@ public class BuildCommand implements Callable<Integer> {
             printError("Error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
         }
-    }
-
-    /**
-     * Print message in console.
-     *
-     * @param message message to print
-     */
-    private void print(final String message) {
-        commandSpec.commandLine().getOut().println(message);
-    }
-
-    /**
-     * Blank line in console.
-     */
-    private void blankLine() {
-        commandSpec.commandLine().getOut().println();
-    }
-
-    /**
-     * Print an issue.
-     *
-     * @param issue issue to print
-     */
-    private void printError(final ValidationIssue issue) {
-        printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
-    }
-
-    /**
-     * Print error message in console.
-     *
-     * @param message message to print
-     */
-    private void printError(final String message) {
-        commandSpec.commandLine().getErr().println(message);
     }
 
     /**
