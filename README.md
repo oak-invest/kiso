@@ -51,6 +51,7 @@ The `build` command can be configured with an optional `.kiso/configuration.yaml
 
 ```yaml
 site:
+  baseUrl: https://knowledge.example.com/
   language: en
   title: My knowledge base
   description: Documentation for humans and AI agents
@@ -67,6 +68,7 @@ content:
 
 | Property | Default | Description |
 |----------|---------|-------------|
+| `site.baseUrl` | | Public base URL prepended to generated site links and sitemap entries. |
 | `site.language` | `en` | Language used by the generated HTML pages. |
 | `site.title` | Page title | Title used for the root index page. |
 | `site.description` | Page description | Description used for the root index page. |

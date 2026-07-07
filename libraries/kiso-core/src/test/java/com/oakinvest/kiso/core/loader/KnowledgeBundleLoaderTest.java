@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.loader;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -15,6 +17,20 @@ class KnowledgeBundleLoaderTest {
 
     @TempDir
     private Path temporaryDirectory;
+
+    @Test
+    @DisplayName("Load the site configuration into the knowledge bundle")
+    void loadSiteConfiguration() {
+        SiteConfiguration siteConfiguration = new SiteConfiguration(
+                "https://knowledge.angara.finance/",
+                Locale.FRENCH,
+                "Knowledge",
+                "Description");
+
+        var bundle = KnowledgeBundleLoader.load(temporaryDirectory, siteConfiguration);
+
+        assertThat(bundle.siteConfiguration()).isSameAs(siteConfiguration);
+    }
 
     @Test
     @DisplayName("Load tags from an inline YAML list")

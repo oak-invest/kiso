@@ -88,11 +88,15 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
 
-        String indexHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
-        assertThat(indexHtml)
+        String topicHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
+        assertThat(topicHtml)
                 .contains("First Topic")
                 .contains("A first test topic.")
-                .contains("Hello from the first topic.");
+                .contains("Hello from the first topic.")
+                // Without a base URL, generated links must remain relative.
+                .contains("href=\"../assets/css/application.css\"")
+                .contains("href=\"../index.html\"")
+                .doesNotContain("https://knowledge.angara.finance");
 
         // Testing generated agent files ===============================================================================
         String llmsTxt = Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8);

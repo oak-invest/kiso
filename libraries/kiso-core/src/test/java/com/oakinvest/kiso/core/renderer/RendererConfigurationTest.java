@@ -46,6 +46,7 @@ public class RendererConfigurationTest extends BaseTest {
 
         // Configuration ===============================================================================================
         SiteConfiguration siteConfiguration = new SiteConfiguration(
+                null,
                 Locale.FRENCH,
                 "Titre du site",
                 "Description du site");

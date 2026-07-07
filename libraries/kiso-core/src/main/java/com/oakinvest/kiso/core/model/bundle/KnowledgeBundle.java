@@ -20,6 +20,15 @@ public record KnowledgeBundle(
 ) {
 
     /**
+     * Creates a knowledge bundle with safe default values.
+     */
+    public KnowledgeBundle {
+        if (siteConfiguration == null) {
+            siteConfiguration = SiteConfiguration.empty();
+        }
+    }
+
+    /**
      * Returns all bundles.
      *
      * @return all bundles

@@ -26,6 +26,7 @@ public class ConfigurationLoaderTest extends BaseTest {
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     // Site ============================================================================================
+                    assertThat(configuration.site().baseUrl()).isEqualTo("https://knowledge.angara.finance/");
                     assertThat(configuration.site().language()).isEqualTo(Locale.FRENCH);
                     assertThat(configuration.site().title()).isEqualTo("My Knowledge Base");
                     assertThat(configuration.site().description()).isEqualTo("My knowledge base description");
@@ -46,6 +47,8 @@ public class ConfigurationLoaderTest extends BaseTest {
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     assertThat(configuration.site()).isNotNull();
+                    assertThat(configuration.site().baseUrl()).isNull();
+                    assertThat(configuration.site().normalizedBaseUrl()).isEmpty();
                     assertThat(configuration.theme()).isNotNull();
                     assertThat(configuration.content()).isNotNull();
                     assertThat(configuration.content().ignorePatterns()).isEmpty();

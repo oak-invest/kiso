@@ -143,14 +143,14 @@ public final class MarkdownToHtmlRenderer {
                             .title(siteConfiguration.title())
                             .description(siteConfiguration.description())
                             .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
                             .htmlPath(markdownFile.htmlFilePath())
                             .build();
                 } else {
                     metadata = PageMetadata.builder()
                             .title(markdownFile.relativePath().toString())
                             .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
                             .htmlPath(markdownFile.htmlFilePath())
                             .build();
                 }
@@ -169,14 +169,14 @@ public final class MarkdownToHtmlRenderer {
                 return output.toString();
             }
             default -> {
-                // Building the metadata ===============================================================================
+                // Meta data ===========================================================================================
                 PageMetadata metadata;
                 if (markdownFile.frontmatter() != null) {
                     metadata = PageMetadata.builder()
                             .title(markdownFile.frontmatter().title())
                             .description(markdownFile.frontmatter().description())
                             .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
                             .htmlPath(markdownFile.htmlFilePath())
                             .build();
                 } else {
@@ -184,7 +184,7 @@ public final class MarkdownToHtmlRenderer {
                             .title(markdownFile.title())
                             .description(markdownFile.description())
                             .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
+                            .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
                             .htmlPath(markdownFile.htmlFilePath())
                             .build();
                 }
@@ -213,10 +213,14 @@ public final class MarkdownToHtmlRenderer {
     /**
      * Returns the relative absolutePath from an HTML page to the generated site root.
      *
+     * @param siteConfiguration    site configuration
      * @param markdownRelativePath Markdown absolutePath relative to the site root
      * @return asset base absolute base path
      */
-    private static String assetBasePath(final Path markdownRelativePath) {
+    private static String assetBasePath(final SiteConfiguration siteConfiguration, final Path markdownRelativePath) {
+        if (!siteConfiguration.normalizedBaseUrl().isEmpty()) {
+            return siteConfiguration.normalizedBaseUrl();
+        }
         if (markdownRelativePath == null || markdownRelativePath.getParent() == null) {
             return "";
         }

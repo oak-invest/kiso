@@ -63,7 +63,9 @@ public class LlmsTxtGenerator {
                     list.setTight(true);
                     bundle.markdownFiles().stream()
                             .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
-                            .forEach(markdownFile -> list.appendChild(markdownFileListItem(markdownFile)));
+                            .forEach(markdownFile -> list.appendChild(markdownFileListItem(
+                                    knowledgeBundle.siteConfiguration().normalizedBaseUrl(),
+                                    markdownFile)));
                     llmsTxt.appendChild(list);
                 });
 
@@ -89,13 +91,14 @@ public class LlmsTxtGenerator {
     /**
      * Creates one Markdown file list item.
      *
+     * @param baseUrl      public base URL of the generated site
      * @param markdownFile Markdown file
      * @return list item
      */
-    private static ListItem markdownFileListItem(final MarkdownFile markdownFile) {
+    private static ListItem markdownFileListItem(final String baseUrl, final MarkdownFile markdownFile) {
         ListItem listItem = new ListItem();
         Paragraph paragraph = new Paragraph();
-        Link link = new Link(markdownPath(markdownFile.relativePath()), null);
+        Link link = new Link(baseUrl + markdownPath(markdownFile.relativePath()), null);
         link.appendChild(new Text(markdownFile.title()));
         paragraph.appendChild(link);
 

@@ -56,6 +56,19 @@ class SitemapXmlGeneratorTest extends BaseTest {
                 .withMessage("knowledgeBundle must not be null");
     }
 
+    @Test
+    @DisplayName("Generating sitemap.xml with a base URL")
+    void generateWithBaseUrl() throws Exception {
+        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
+
+        String content = SitemapXmlGenerator.generate(knowledgeBundle, "https://knowledge.angara.finance/");
+
+        assertThat(content)
+                .contains("<loc>https://knowledge.angara.finance/index.html</loc>")
+                .contains("<loc>https://knowledge.angara.finance/datasets/index.html</loc>");
+    }
+
     /**
      * Parses XML content.
      *

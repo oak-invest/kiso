@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.publisher;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
@@ -66,6 +67,26 @@ class LlmsTxtGeneratorTest extends BaseTest {
         assertThatNullPointerException()
                 .isThrownBy(() -> LlmsTxtGenerator.generate(null))
                 .withMessage("knowledgeBundle must not be null");
+    }
+
+    @Test
+    @DisplayName("Generating llms.txt with a base URL")
+    void generateWithBaseUrl() throws URISyntaxException {
+        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var siteConfiguration = new SiteConfiguration(
+                "https://knowledge.angara.finance",
+                null,
+                null,
+                null);
+        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
+
+        String content = LlmsTxtGenerator.generate(knowledgeBundle);
+
+        assertThat(content)
+                .contains("[index.md](https://knowledge.angara.finance/index.md)")
+                .contains("[index.md](https://knowledge.angara.finance/datasets/index.md)")
+                .contains("[Join Google Analytics Events to Google Ads Clicks]"
+                        + "(https://knowledge.angara.finance/references/joins/events___ads_clickstats.md)");
     }
 
 }

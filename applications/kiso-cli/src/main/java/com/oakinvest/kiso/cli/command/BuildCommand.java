@@ -104,7 +104,9 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
             // Loading and checking the bundle =========================================================================
-            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
+            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(
+                    destinationDirectory.toPath(),
+                    configuration.site());
             if (!isValid(knowledgeBundle)) {
                 return CommandLine.ExitCode.SOFTWARE;
             }
@@ -140,7 +142,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), SITEMAP_XML_FILENAME),
-                    SitemapXmlGenerator.generate(knowledgeBundle),
+                    SitemapXmlGenerator.generate(knowledgeBundle, configuration.site().normalizedBaseUrl()),
                     StandardCharsets.UTF_8
             );
             print("File sitemap.xml generated");

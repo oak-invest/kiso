@@ -56,14 +56,23 @@ class BuildCommandConfigurationTest extends BaseTest {
         // Checking that configuration is applied to the generated HTML files ==========================================
         assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
                 .contains("data-theme=\"corporate\"")
+                .contains("href=\"https://knowledge.angara.finance/assets/css/application.css\"")
+                .contains("href=\"https://knowledge.angara.finance/datasets/index.html\"")
                 .contains("lang=\"fr\"")
                 .contains("<title>My Knowledge Base</title>")
                 .contains("<meta name=\"description\" content=\"My knowledge base description\">");
         assertThat(Files.readString(destinationDirectory.resolve("references/metrics/event_count.html"), UTF_8))
                 .contains("data-theme=\"corporate\"")
+                .contains("href=\"https://knowledge.angara.finance/index.html\"")
                 .contains("lang=\"fr\"")
                 .contains("<title>Event Count</title>")
                 .contains("<meta name=\"description\" content=\"Total number of events.\">");
+        assertThat(Files.readString(destinationDirectory.resolve("sitemap.xml"), UTF_8))
+                .contains("<loc>https://knowledge.angara.finance/index.html</loc>")
+                .contains("<loc>https://knowledge.angara.finance/references/metrics/event_count.html</loc>");
+        assertThat(Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8))
+                .contains("[index.md](https://knowledge.angara.finance/index.md)")
+                .contains("[Event Count](https://knowledge.angara.finance/references/metrics/event_count.md)");
     }
 
     @Test

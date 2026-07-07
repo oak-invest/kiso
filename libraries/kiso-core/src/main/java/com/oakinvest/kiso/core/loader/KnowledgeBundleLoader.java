@@ -82,6 +82,7 @@ public class KnowledgeBundleLoader {
         // We now return the knowledge bundle ==========================================================================
         return KnowledgeBundle.builder()
                 .rootBundle(loadBundle(rootBundleAbsolutePath, rootBundleAbsolutePath))
+                .siteConfiguration(siteConfiguration)
                 .build();
     }
 
