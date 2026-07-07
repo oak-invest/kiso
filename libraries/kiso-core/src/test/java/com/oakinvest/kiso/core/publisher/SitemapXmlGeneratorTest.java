@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.publisher;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
@@ -9,6 +10,7 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.StringReader;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
@@ -59,10 +61,15 @@ class SitemapXmlGeneratorTest extends BaseTest {
     @Test
     @DisplayName("Generating sitemap.xml with a base URL")
     void generateWithBaseUrl() throws Exception {
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
-        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
+        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        SiteConfiguration siteConfiguration = new SiteConfiguration(
+                "https://knowledge.angara.finance/",
+                Locale.FRENCH,
+                "Knowledge",
+                "Description");
+        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
 
-        String content = SitemapXmlGenerator.generate(knowledgeBundle, "https://knowledge.angara.finance/");
+        String content = SitemapXmlGenerator.generate(knowledgeBundle);
 
         assertThat(content)
                 .contains("<loc>https://knowledge.angara.finance/index.html</loc>")

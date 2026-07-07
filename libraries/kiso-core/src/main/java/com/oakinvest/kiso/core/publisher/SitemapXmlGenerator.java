@@ -26,17 +26,6 @@ public final class SitemapXmlGenerator {
      * @return sitemap.xml content
      */
     public static String generate(final KnowledgeBundle knowledgeBundle) {
-        return generate(knowledgeBundle, "");
-    }
-
-    /**
-     * Generates sitemap.xml content for a knowledge bundle.
-     *
-     * @param knowledgeBundle knowledge bundle
-     * @param baseUrl         public base URL of the generated site
-     * @return sitemap.xml content
-     */
-    public static String generate(final KnowledgeBundle knowledgeBundle, final String baseUrl) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
 
         // Building the sitemap ========================================================================================
@@ -46,7 +35,7 @@ public final class SitemapXmlGenerator {
         knowledgeBundle.bundles()
                 .forEach(bundle -> bundle.markdownFiles().stream()
                         .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
-                        .forEach(markdownFile -> appendUrl(content, baseUrl, markdownFile)));
+                        .forEach(markdownFile -> appendUrl(content, knowledgeBundle.siteConfiguration().normalizedBaseUrl(), markdownFile)));
         content.append("</urlset>\n");
         return content.toString();
     }
@@ -63,7 +52,7 @@ public final class SitemapXmlGenerator {
 
         // Location ====================================================================================================
         content.append("<loc>")
-                .append(StringEscapeUtils.escapeXml11(baseUrl))
+                .append(StringEscapeUtils.escapeXml11(Objects.requireNonNullElse(baseUrl, "")))
                 .append(StringEscapeUtils.unescapeXml(markdownFile.htmlFilePath()))
                 .append("</loc>\n");
 

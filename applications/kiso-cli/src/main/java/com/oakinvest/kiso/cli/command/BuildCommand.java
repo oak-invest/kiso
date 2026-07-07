@@ -142,7 +142,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), SITEMAP_XML_FILENAME),
-                    SitemapXmlGenerator.generate(knowledgeBundle, configuration.site().normalizedBaseUrl()),
+                    SitemapXmlGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
             print("File sitemap.xml generated");

@@ -34,7 +34,7 @@ public record KnowledgeBundle(
      * @return all bundles
      */
     public Stream<Bundle> bundles() {
-        return rootBundle.flatten();
+        return rootBundle.flattenBundles();
     }
 
     /**

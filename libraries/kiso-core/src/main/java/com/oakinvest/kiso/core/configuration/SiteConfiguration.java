@@ -1,5 +1,8 @@
 package com.oakinvest.kiso.core.configuration;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
+
 import java.util.Locale;
 
 /**
@@ -35,10 +38,10 @@ public record SiteConfiguration(
      * @return normalized base URL, or an empty string when none is configured
      */
     public String normalizedBaseUrl() {
-        if (baseUrl == null || baseUrl.isBlank()) {
+        if (StringUtils.isBlank(baseUrl)) {
             return "";
         }
-        if (baseUrl.endsWith("/")) {
+        if (Strings.CI.endsWith(baseUrl, "/")) {
             return baseUrl;
         }
         return baseUrl + "/";

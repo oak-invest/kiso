@@ -31,10 +31,10 @@ public record Bundle(
      *
      * @return a flat stream of all bundles in this knowledge bundle
      */
-    public Stream<Bundle> flatten() {
+    public Stream<Bundle> flattenBundles() {
         return Stream.concat(
                 Stream.of(this),
-                childBundles.stream().flatMap(Bundle::flatten)
+                childBundles.stream().flatMap(Bundle::flattenBundles)
         );
     }
 
