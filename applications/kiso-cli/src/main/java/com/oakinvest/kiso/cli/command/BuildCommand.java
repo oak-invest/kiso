@@ -4,6 +4,7 @@ import com.oakinvest.kiso.cli.configuration.Configuration;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
 import com.oakinvest.kiso.cli.options.DestinationOption;
+import com.oakinvest.kiso.cli.options.ProfileOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
@@ -49,16 +50,18 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
     @CommandLine.Mixin
     private final SourceOption sourceOption = new SourceOption();
 
+    /** Profile option. */
+    @CommandLine.Mixin
+    private final ProfileOption profileOption = new ProfileOption();
+
     /** Destination directory. */
     @CommandLine.Mixin
     private final DestinationOption destinationOption = new DestinationOption();
 
-    /** Publishing profile. */
-    @CommandLine.Option(names = "--profile", description = "Publishing profile from .kiso/<profile>/configuration.yaml")
-    private String profile;
 
     /** Command specification. */
     @CommandLine.Spec
+    @SuppressWarnings("unused")
     private CommandLine.Model.CommandSpec commandSpec;
 
     /**
@@ -88,10 +91,10 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Loading configuration ===================================================================================
             final Configuration configuration;
-            if (profile == null) {
+            if (profileOption.profile() == null) {
                 configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
             } else {
-                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());
+                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profileOption.profile()).orElse(Configuration.empty());
             }
 
             // Copying files ===========================================================================================

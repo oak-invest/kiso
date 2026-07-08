@@ -6,6 +6,7 @@ import com.oakinvest.kiso.core.renderer.model.PageMetadata;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Log page.
@@ -23,6 +24,22 @@ public record LogPage(
         ThemeConfiguration themeConfiguration,
         PageMetadata metadata,
         BundleTree bundleTree,
-        HtmlContent htmlContent
+        @Nullable HtmlContent htmlContent
 ) {
+
+    /**
+     * Creates a log page with safe default values.
+     */
+    public LogPage {
+        if (siteConfiguration == null) {
+            siteConfiguration = SiteConfiguration.empty();
+        }
+        if (themeConfiguration == null) {
+            themeConfiguration = ThemeConfiguration.empty();
+        }
+        if (metadata == null) {
+            metadata = PageMetadata.empty();
+        }
+    }
+
 }

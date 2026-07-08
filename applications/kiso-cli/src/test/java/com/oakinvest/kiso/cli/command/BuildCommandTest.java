@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
@@ -21,8 +22,9 @@ class BuildCommandTest extends BaseTest {
     private Path temporaryDirectory;
 
     @Test
+    @SuppressWarnings("HttpUrlsUsage")
     @DisplayName("Building a simple OKF bundle")
-    void build() throws Exception {
+    void build() throws IOException {
         // What we are testing =========================================================================================
         Path sourceDirectory = temporaryDirectory.resolve("source");
         Path destinationDirectory = temporaryDirectory.resolve("public");
@@ -156,8 +158,8 @@ class BuildCommandTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Building an OKF bundle with assets")
-    void buildWithAssets() throws Exception {
+    @DisplayName("Building an OKF bundle with existing assets")
+    void buildWithExistingAssets() throws Exception {
         // What we are testing =========================================================================================
         Path sourceDirectory = Paths.get(ClassLoader.getSystemResource("kb-with-assets").toURI());
         Path destinationDirectory = Path.of("target", "test-kb-with-assets");

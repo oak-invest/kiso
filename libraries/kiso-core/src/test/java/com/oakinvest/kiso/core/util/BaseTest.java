@@ -17,21 +17,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 public class BaseTest {
 
-    /** Knowledge base Google example directory. */
-    public static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example-v0.1";
+    /** Google example knowledge base. */
+    public static final String KB_GOOGLE = "kb-google-example-v0.1";
 
-    /**
-     * Retrieves absolutePath from a resource fileName.
-     *
-     * @param resourceName resource fileName
-     * @return absolutePath
-     * @throws URISyntaxException syntax problem with URI
-     */
-    @SuppressWarnings("SameParameterValue")
-    protected Path getResourcePath(final String resourceName) throws URISyntaxException {
+    /** Google example knowledge base with configuration. */
+    public static final String KB_GOOGLE_WITH_CONFIGURATION = "kb-google-example-v0.1-with-configuration";
+
+    protected Path getResourcePath(final String resourceName) {
         URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceName);
         assertNotNull(resource, "Missing test resource: " + resourceName);
-        return Path.of(resource.toURI());
+        try {
+            return Path.of(resource.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected MarkdownFile markdownFile(
@@ -45,6 +44,7 @@ public class BaseTest {
                 .absolutePath(markdownFilePath)
                 .relativePath(markdownFilePath)
                 .frontmatter(frontmatter)
+                .frontmatterPresent(frontmatter != null)
                 .build();
     }
 

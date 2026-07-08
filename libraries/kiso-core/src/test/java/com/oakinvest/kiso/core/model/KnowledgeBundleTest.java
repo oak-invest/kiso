@@ -7,8 +7,6 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class KnowledgeBundleTest extends BaseTest {
@@ -16,7 +14,7 @@ public class KnowledgeBundleTest extends BaseTest {
     @Test
     @DisplayName("Using an empty site configuration when none is provided")
     void emptySiteConfigurationByDefault() {
-        KnowledgeBundle knowledgeBundle = KnowledgeBundle.builder().build();
+        var knowledgeBundle = KnowledgeBundle.builder().build();
 
         assertThat(knowledgeBundle.siteConfiguration())
                 .isNotNull()
@@ -25,9 +23,9 @@ public class KnowledgeBundleTest extends BaseTest {
 
     @Test
     @DisplayName("Testing KnowledgeBundle.bundles()")
-    void bundles() throws URISyntaxException {
+    void bundles() {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var resourcePath = getResourcePath(KB_GOOGLE);
         var rootBundle = KnowledgeBundleLoader.load(resourcePath);
 
         // Testing .bundles() ==========================================================================================

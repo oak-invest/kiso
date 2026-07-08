@@ -9,9 +9,7 @@ import java.nio.file.Path;
  */
 public class SourceOption {
 
-    /**
-     * Source directory option.
-     */
+    /** Source directory option. */
     @CommandLine.Option(
             names = {"-s", "--source"},
             defaultValue = ".",

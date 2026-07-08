@@ -34,6 +34,7 @@ public final class SitemapXmlGenerator {
         content.append("<urlset xmlns=\"").append(SITEMAP_NAMESPACE).append("\">\n");
         knowledgeBundle.bundles()
                 .forEach(bundle -> bundle.markdownFiles().stream()
+                        // Index first.
                         .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
                         .forEach(markdownFile -> appendUrl(content, knowledgeBundle.siteConfiguration().normalizedBaseUrl(), markdownFile)));
         content.append("</urlset>\n");

@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.loader;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -38,7 +39,7 @@ class KnowledgeBundleLoaderTest {
         Files.writeString(temporaryDirectory.resolve("concept.md"), """
                 ---
                 type: Presentation
-                tags: [company, scub, presentation, fr]
+                tags: [company, Scub, presentation, fr]
                 ---
                 """);
 
@@ -46,7 +47,7 @@ class KnowledgeBundleLoaderTest {
 
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
         assertThat(markdownFile.frontmatter().tags())
-                .isEqualTo(List.of("company", "scub", "presentation", "fr"));
+                .isEqualTo(List.of("company", "Scub", "presentation", "fr"));
     }
 
     @Test
@@ -57,7 +58,7 @@ class KnowledgeBundleLoaderTest {
                 type: Presentation
                 tags:
                 - company
-                - scub
+                - Scub
                 - presentation
                 - fr
                 ---
@@ -67,7 +68,7 @@ class KnowledgeBundleLoaderTest {
 
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
         assertThat(markdownFile.frontmatter().tags())
-                .isEqualTo(List.of("company", "scub", "presentation", "fr"));
+                .isEqualTo(List.of("company", "Scub", "presentation", "fr"));
     }
 
     @Test
@@ -91,7 +92,8 @@ class KnowledgeBundleLoaderTest {
         var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
 
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
-        assertThat(markdownFile.hasFrontmatter()).isFalse();
+        assertThat(markdownFile.frontmatterPresent()).isFalse();
+        assertThat(markdownFile.frontmatter()).isEqualTo(Frontmatter.empty());
         assertThat(markdownFile.body()).isEqualTo(content);
     }
 

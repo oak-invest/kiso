@@ -1,4 +1,4 @@
 /**
- * A bundle is a directory tree of Markdown files.
+ * Knowledge bundle.
  */
 package com.oakinvest.kiso.core.model.bundle;

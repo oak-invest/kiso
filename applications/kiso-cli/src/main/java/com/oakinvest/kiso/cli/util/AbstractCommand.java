@@ -23,7 +23,7 @@ public abstract class AbstractCommand {
      * @return {@code true} when the bundle contains no validation errors
      */
     protected boolean isValid(final KnowledgeBundle knowledgeBundle) {
-        final ValidationReport validationReport = new ValidationRunner().runValidation(knowledgeBundle);
+        final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
         if (validationReport.hasErrors()) {
             validationReport.issues().forEach(this::printError);
             return false;
@@ -62,4 +62,5 @@ public abstract class AbstractCommand {
     protected void printError(final String message) {
         commandSpec().commandLine().getErr().println(message);
     }
+
 }

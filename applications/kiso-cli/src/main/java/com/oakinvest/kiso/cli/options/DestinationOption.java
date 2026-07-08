@@ -9,14 +9,12 @@ import java.nio.file.Path;
  */
 public class DestinationOption {
 
-    /**
-     * Destination directory option.
-     */
+    /** Destination directory option. */
     @CommandLine.Option(
             names = {"-d", "--destination"},
             defaultValue = "public",
             paramLabel = "DIRECTORY",
-            description = "Directory where generated files are created. Defaults to the public directory."
+            description = "Directory where generated files are created. Defaults to 'public' directory."
     )
     @SuppressWarnings("unused")
     private Path destinationDirectory;

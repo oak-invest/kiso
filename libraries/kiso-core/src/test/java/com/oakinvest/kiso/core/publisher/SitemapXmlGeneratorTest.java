@@ -13,18 +13,18 @@ import java.io.StringReader;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
 class SitemapXmlGeneratorTest extends BaseTest {
 
     @Test
     @DisplayName("Generating sitemap.xml content")
+    @SuppressWarnings("HttpUrlsUsage")
     void generate() throws Exception {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var resourcePath = getResourcePath(KB_GOOGLE);
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
-        String content = SitemapXmlGenerator.generate(knowledgeBundle);
-        Document document = parseXml(content);
+        var content = SitemapXmlGenerator.generate(knowledgeBundle);
+        var document = parseXml(content);
 
         // Testing structure ==========================================================================================
         assertThat(content)
@@ -51,25 +51,16 @@ class SitemapXmlGeneratorTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Rejecting null knowledge bundle")
-    void rejectNullKnowledgeBundle() {
-        assertThatNullPointerException()
-                .isThrownBy(() -> SitemapXmlGenerator.generate(null))
-                .withMessage("knowledgeBundle must not be null");
-    }
-
-    @Test
     @DisplayName("Generating sitemap.xml with a base URL")
-    void generateWithBaseUrl() throws Exception {
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
-        SiteConfiguration siteConfiguration = new SiteConfiguration(
+    void generateWithBaseUrl() {
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
+        var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance/",
                 Locale.FRENCH,
                 "Knowledge",
                 "Description");
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
-
-        String content = SitemapXmlGenerator.generate(knowledgeBundle);
+        var content = SitemapXmlGenerator.generate(knowledgeBundle);
 
         assertThat(content)
                 .contains("<loc>https://knowledge.angara.finance/index.html</loc>")

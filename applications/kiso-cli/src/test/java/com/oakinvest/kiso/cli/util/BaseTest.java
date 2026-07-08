@@ -8,8 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BaseTest {
 
-    /** Knowledge base Google example directory. */
-    protected static final String KB_GOOGLE_EXAMPLE_DIRECTORY = "kb-google-example-v0.1";
+    /** Google example knowledge base. */
+    public static final String KB_GOOGLE = "kb-google-example-v0.1";
+
+    /** Google example knowledge base with configuration. */
+    public static final String KB_GOOGLE_WITH_CONFIGURATION = "kb-google-example-v0.1-with-configuration";
 
     /**
      * Retrieves absolutePath from a resource fileName.

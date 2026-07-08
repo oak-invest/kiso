@@ -16,7 +16,9 @@
                 </li>
             @endif
             @for(var childBundle : bundleTree.childBundles())
-                @template.partials.bundleTreeMenuNode(bundleTree = childBundle, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
+                @if(childBundle != null)
+                    @template.partials.bundleTreeMenuNode(bundleTree = childBundle, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
+                @endif
             @endfor
             @for(var page : bundleTree.pages())
                 @if(page.kind() != com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX)

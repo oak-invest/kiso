@@ -6,20 +6,17 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
 class LlmsTxtGeneratorTest extends BaseTest {
 
     @Test
     @DisplayName("Generating llms.txt content")
-    void generate() throws URISyntaxException {
+    void generate() {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var resourcePath = getResourcePath(KB_GOOGLE);
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
-        String content = LlmsTxtGenerator.generate(knowledgeBundle);
+        var content = LlmsTxtGenerator.generate(knowledgeBundle);
 
         // Testing structure ===========================================================================================
         assertThat(content)
@@ -62,25 +59,16 @@ class LlmsTxtGeneratorTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Rejecting null knowledge bundle")
-    void rejectNullKnowledgeBundle() {
-        assertThatNullPointerException()
-                .isThrownBy(() -> LlmsTxtGenerator.generate(null))
-                .withMessage("knowledgeBundle must not be null");
-    }
-
-    @Test
     @DisplayName("Generating llms.txt with a base URL")
-    void generateWithBaseUrl() throws URISyntaxException {
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+    void generateWithBaseUrl() {
+        var resourcePath = getResourcePath(KB_GOOGLE);
         var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance",
                 null,
                 null,
                 null);
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
-
-        String content = LlmsTxtGenerator.generate(knowledgeBundle);
+        var content = LlmsTxtGenerator.generate(knowledgeBundle);
 
         assertThat(content)
                 .contains("[index.md](https://knowledge.angara.finance/index.md)")

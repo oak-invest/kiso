@@ -1,5 +1,9 @@
 package com.oakinvest.kiso.cli.configuration;
 
+import com.oakinvest.kiso.core.configuration.ContentConfiguration;
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
+
 /**
  * Kiso-cli configuration.
  *
@@ -8,9 +12,9 @@ package com.oakinvest.kiso.cli.configuration;
  * @param content content configuration
  */
 public record Configuration(
-        com.oakinvest.kiso.core.configuration.SiteConfiguration site,
-        com.oakinvest.kiso.core.configuration.ThemeConfiguration theme,
-        com.oakinvest.kiso.core.configuration.ContentConfiguration content
+        SiteConfiguration site,
+        ThemeConfiguration theme,
+        ContentConfiguration content
 ) {
 
     /**
@@ -18,13 +22,13 @@ public record Configuration(
      */
     public Configuration {
         if (site == null) {
-            site = com.oakinvest.kiso.core.configuration.SiteConfiguration.empty();
+            site = SiteConfiguration.empty();
         }
         if (theme == null) {
-            theme = com.oakinvest.kiso.core.configuration.ThemeConfiguration.empty();
+            theme = ThemeConfiguration.empty();
         }
         if (content == null) {
-            content = com.oakinvest.kiso.core.configuration.ContentConfiguration.empty();
+            content = ContentConfiguration.empty();
         }
     }
 
@@ -34,7 +38,11 @@ public record Configuration(
      * @return empty configuration
      */
     public static Configuration empty() {
-        return new Configuration(null, null, null);
+        return new Configuration(
+                SiteConfiguration.empty(),
+                ThemeConfiguration.empty(),
+                ContentConfiguration.empty()
+        );
     }
 
 }

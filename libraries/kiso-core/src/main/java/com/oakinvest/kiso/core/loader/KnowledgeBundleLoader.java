@@ -69,7 +69,7 @@ public class KnowledgeBundleLoader {
             throw new KnowledgeBundleLoadingException("Source directory is null");
         }
 
-        // Getting the isRoot bundle absolute path.
+        // Getting the root bundle absolute path.
         // example: /home/straumat/kiso/libraries/kiso-core/target/test-classes/kb-google-example
         Path rootBundleAbsolutePath = sourceDirectory.toAbsolutePath().normalize();
         if (!Files.exists(rootBundleAbsolutePath)) {
@@ -89,7 +89,7 @@ public class KnowledgeBundleLoader {
     /**
      * Load bundle.
      *
-     * @param rootBundle   isRoot bundle (absolute path)
+     * @param rootBundle   root bundle (absolute path)
      * @param bundleToLoad bundle to load (absolute path)
      * @return bundle
      */
@@ -99,8 +99,10 @@ public class KnowledgeBundleLoader {
         // Choosing bundle name.
         String bundleName;
         if (Strings.CI.equals(toRelativePath(rootBundle, normalizedPath).toString(), "")) {
+            // The root directory has no relative path, so it receives a stable display name.
             bundleName = ROOT_BUNDLE_NAME;
         } else {
+            // Child bundles use their full path relative to the root to preserve their hierarchy in the name.
             bundleName = toRelativePath(rootBundle, normalizedPath).toString();
         }
 
@@ -108,9 +110,9 @@ public class KnowledgeBundleLoader {
                 .name(bundleName)
                 .absolutePath(normalizedPath)
                 .relativePath(toRelativePath(rootBundle, normalizedPath))
-                // Directories.
+                // Bundles.
                 .childBundles(loadChildBundles(rootBundle, normalizedPath))
-                // Files.
+                // Markdown files.
                 .markdownFiles(loadMarkdownFiles(rootBundle, normalizedPath))
                 .build();
     }
@@ -118,15 +120,18 @@ public class KnowledgeBundleLoader {
     /**
      * Load child bundles.
      *
-     * @param rootBundle   isRoot bundle (absolute path)
+     * @param rootBundle   root bundle (absolute path)
      * @param bundleToLoad bundle to load (absolute path)
      * @return bundle list
      */
     private static List<Bundle> loadChildBundles(final Path rootBundle, final Path bundleToLoad) {
         try (Stream<Path> childDirectories = Files.list(bundleToLoad)) {
             return childDirectories
+                    // Only directories.
                     .filter(Files::isDirectory)
+                    // We don't take the .kiso directory where is the configuration.
                     .filter(path -> !Strings.CI.endsWith(path.toString(), CONFIGURATION_DIRECTORY_NAME))
+                    // Order by filename.
                     .sorted(Comparator.comparing(path -> path.getFileName().toString()))
                     // Recursive.
                     .map(childDirectory -> loadBundle(rootBundle, childDirectory))
@@ -146,8 +151,11 @@ public class KnowledgeBundleLoader {
     private static List<MarkdownFile> loadMarkdownFiles(final Path rootBundle, final Path bundleToLoad) {
         try (Stream<Path> bundleEntries = Files.list(bundleToLoad)) {
             return bundleEntries
+                    // Only files.
                     .filter(Files::isRegularFile)
+                    // Only markdown files.
                     .filter(path -> path.getFileName().toString().endsWith(MARKDOWN_EXTENSION))
+                    // Order by filename.
                     .sorted(Comparator.comparing(path -> path.getFileName().toString()))
                     .map(markdownPath -> loadMarkdownFile(rootBundle, markdownPath))
                     .toList();
@@ -179,10 +187,12 @@ public class KnowledgeBundleLoader {
                     .kind(MarkdownFileKind.from(normalizedFile))
                     .absolutePath(normalizedFile)
                     .relativePath(toRelativePath(rootBundle, normalizedFile))
-                    .frontmatter(frontmatter.orElse(null))
+                    .frontmatter(frontmatter.orElseGet(Frontmatter::empty))
+                    .frontmatterPresent(frontmatter.isPresent())
                     .body(removeFrontmatter(content))
                     .build();
         } catch (CharacterCodingException exception) {
+            // The file is not a UTF-8 file.
             final String content = decodeUtf8ReplacingInvalidCharacters(bytes);
             return MarkdownFile.builder()
                     .fileName(normalizedFile.getFileName().toString())
@@ -190,6 +200,7 @@ public class KnowledgeBundleLoader {
                     .absolutePath(normalizedFile)
                     .relativePath(toRelativePath(rootBundle, normalizedFile))
                     .frontmatter(Frontmatter.empty())
+                    .frontmatterPresent(true)
                     .body(content)
                     .build();
         } catch (IOException exception) {
@@ -200,7 +211,7 @@ public class KnowledgeBundleLoader {
     // Frontmatter utils ===============================================================================================
 
     /**
-     * Loads a frontmatter from a content.
+     * Loads a frontmatter from content.
      *
      * @param content content
      * @return frontmatter

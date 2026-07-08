@@ -23,7 +23,7 @@ class BuildCommandConfigurationTest extends BaseTest {
     @DisplayName("Building Google OKF bundle with configuration")
     void buildWithConfiguration() throws Exception {
         // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         Path destinationDirectory = temporaryDirectory.resolve("public");
 
         StringWriter output = new StringWriter();
@@ -79,7 +79,7 @@ class BuildCommandConfigurationTest extends BaseTest {
     @DisplayName("Building Google OKF bundle with configuration profile")
     void buildWithConfigurationProfile() throws Exception {
         // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         Path destinationDirectory = temporaryDirectory.resolve("public");
 
         StringWriter output = new StringWriter();
@@ -128,7 +128,7 @@ class BuildCommandConfigurationTest extends BaseTest {
     @DisplayName("Building Google OKF bundle with unknown profile")
     void buildWithUnknownProfile() throws Exception {
         // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         Path destinationDirectory = temporaryDirectory.resolve("public");
 
         // We execute code =============================================================================================
@@ -145,15 +145,14 @@ class BuildCommandConfigurationTest extends BaseTest {
 
         // Testing command result ======================================================================================
         assertThat(exitCode).isNotZero();
-        assertThat(error.toString())
-                .contains("Error loading configuration: Profile does not exist");
+        assertThat(error.toString()).contains("Error loading configuration: Profile does not exist");
     }
 
     @Test
     @DisplayName("Building Google OKF bundle with empty profile")
     void buildWithEmptyProfile() throws Exception {
         // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         Path destinationDirectory = temporaryDirectory.resolve("empty-profile");
 
         // We execute code =============================================================================================
@@ -170,8 +169,7 @@ class BuildCommandConfigurationTest extends BaseTest {
 
         // Testing command result ======================================================================================
         assertThat(exitCode).isNotZero();
-        assertThat(error.toString())
-                .contains("Error loading configuration: Profile does not exist");
+        assertThat(error.toString()).contains("Error loading configuration: Profile does not exist");
     }
 
 }

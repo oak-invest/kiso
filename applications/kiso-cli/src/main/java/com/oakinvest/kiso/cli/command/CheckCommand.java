@@ -2,7 +2,6 @@ package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
-import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
@@ -27,6 +26,7 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
 
     /** Command specification. */
     @CommandLine.Spec
+    @SuppressWarnings("unused")
     private CommandLine.Model.CommandSpec commandSpec;
 
     /**
@@ -53,7 +53,7 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
         // Running the validation ======================================================================================
         try {
 
-            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath(), SiteConfiguration.empty());
+            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath());
             if (isValid(knowledgeBundle)) {
                 print("No errors found.");
                 return CommandLine.ExitCode.OK;

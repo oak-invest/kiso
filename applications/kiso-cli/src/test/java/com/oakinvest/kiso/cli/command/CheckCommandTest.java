@@ -22,7 +22,7 @@ public class CheckCommandTest extends BaseTest {
     @DisplayName("Check a valid OKF bundle")
     void checkValidBundle() throws Exception {
         // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var resourcePath = getResourcePath(KB_GOOGLE);
 
         // Executing the check command =================================================================================
         StringWriter output = new StringWriter();
@@ -125,11 +125,6 @@ public class CheckCommandTest extends BaseTest {
                 .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/index.md is not a concept file and should not contain frontmatter")
                 // test/log.md
                 .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/log.md is not a concept file and should not contain frontmatter");
-
-        // System.out.println("STDOUT:");
-        // System.out.println(output);
-        // System.err.println("STDERR:");
-        // System.err.println(error);
     }
 
 }

@@ -6,6 +6,7 @@ import com.oakinvest.kiso.core.renderer.model.PageMetadata;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Index page.
@@ -23,6 +24,22 @@ public record IndexPage(
         ThemeConfiguration themeConfiguration,
         PageMetadata metadata,
         BundleTree bundleTree,
-        HtmlContent htmlContent
+        @Nullable HtmlContent htmlContent
 ) {
+
+    /**
+     * Creates an index page with safe default values.
+     */
+    public IndexPage {
+        if (siteConfiguration == null) {
+            siteConfiguration = SiteConfiguration.empty();
+        }
+        if (themeConfiguration == null) {
+            themeConfiguration = ThemeConfiguration.empty();
+        }
+        if (metadata == null) {
+            metadata = PageMetadata.empty();
+        }
+    }
+
 }

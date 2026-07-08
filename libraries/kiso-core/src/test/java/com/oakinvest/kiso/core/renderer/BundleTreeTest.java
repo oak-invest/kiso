@@ -8,7 +8,6 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,9 +16,9 @@ public class BundleTreeTest extends BaseTest {
 
     @Test
     @DisplayName("Create a bundle tree from bundle")
-    void fromBundle() throws URISyntaxException {
+    void fromBundle() {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var resourcePath = getResourcePath(KB_GOOGLE);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
         var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
 
