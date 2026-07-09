@@ -127,6 +127,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                         joins -> {
                             assertThat(joins)
                                     .returns("references/joins", Bundle::name)
+
                                     .returns(Path.of(resourcePath + "/references/joins"), Bundle::absolutePath)
                                     .returns(Path.of("references/joins"), Bundle::relativePath);
 

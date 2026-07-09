@@ -19,13 +19,15 @@ public class BaseTest {
      *
      * @param resourceName resource fileName
      * @return absolutePath
-     * @throws URISyntaxException syntax problem with URI
      */
     @SuppressWarnings("SameParameterValue")
-    protected Path getResourcePath(final String resourceName) throws URISyntaxException {
+    protected Path getResourcePath(final String resourceName) {
         URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceName);
         assertNotNull(resource, "Missing test resource: " + resourceName);
-        return Path.of(resource.toURI());
+        try {
+            return Path.of(resource.toURI());
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }

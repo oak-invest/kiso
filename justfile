@@ -70,6 +70,12 @@ release_run_build_straumat:
       --source=examples/kb-stephane-traumat \
       --destination=public/kb-stephane-traumat
 
+run_tmp:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-stephane-traumat --destination=public/kb-stephane-traumat"
+
 # Website utils ========================================================================================================
 generate_website_demo:
     mvn install -pl libraries/kiso-core -am -DskipTests

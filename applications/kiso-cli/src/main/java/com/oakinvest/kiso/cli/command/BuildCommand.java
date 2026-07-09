@@ -10,6 +10,7 @@ import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.publisher.IndexMarkdownGenerator;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
@@ -107,17 +108,35 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
             // Loading and checking the bundle =========================================================================
-            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(
-                    destinationDirectory.toPath(),
-                    configuration.site());
+            KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
             if (!isValid(knowledgeBundle)) {
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
+            // Adding missing index.md files to bundles without index ==================================================
+            knowledgeBundle.bundles()
+                    .filter(bundle -> bundle.getIndexFile().isEmpty())
+                    .forEach(bundle -> {
+                        try {
+                            FileUtils.writeStringToFile(
+                                    new File(bundle.absolutePath().toString(), "index.md"),
+                                    IndexMarkdownGenerator.generate(bundle),
+                                    StandardCharsets.UTF_8
+                            );
+                            print("index.md generated for " + bundle.absolutePath());
+                        } catch (IOException e) {
+                            printError("Error generating index.md for " + bundle.absolutePath() + ": " + e.getMessage());
+                        }
+                    });
+
             // HTML generation =========================================================================================
+            knowledgeBundle = KnowledgeBundleLoader.load(
+                    destinationDirectory.toPath(),
+                    configuration.site());
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
+
                         // We generate the HTML version of every Markdown file =========================================
                         bundle.markdownFiles().forEach(markdownFile -> {
                             try {

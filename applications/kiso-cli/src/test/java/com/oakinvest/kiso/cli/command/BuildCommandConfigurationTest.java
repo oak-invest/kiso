@@ -126,7 +126,7 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with unknown profile")
-    void buildWithUnknownProfile() throws Exception {
+    void buildWithUnknownProfile() {
         // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         Path destinationDirectory = temporaryDirectory.resolve("public");
@@ -150,7 +150,7 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with empty profile")
-    void buildWithEmptyProfile() throws Exception {
+    void buildWithEmptyProfile() {
         // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         Path destinationDirectory = temporaryDirectory.resolve("empty-profile");

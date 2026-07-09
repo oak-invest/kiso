@@ -20,7 +20,7 @@ public class CheckCommandTest extends BaseTest {
 
     @Test
     @DisplayName("Check a valid OKF bundle")
-    void checkValidBundle() throws Exception {
+    void checkValidBundle() {
         // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
 
