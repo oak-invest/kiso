@@ -108,6 +108,7 @@ content = @`
 
     <!-- Content =================================================================================================== -->
     <article class="kiso-content">
+        ${page.htmlContent()}
         <div class="kiso-source-file">
             <span class="kiso-source-file-label">Markdown file</span>
             <span class="kiso-source-file-name">
@@ -116,7 +117,6 @@ content = @`
                 </a>
             </span>
         </div>
-        ${page.htmlContent()}
     </article>
 
     <!-- Footer ==================================================================================================== -->

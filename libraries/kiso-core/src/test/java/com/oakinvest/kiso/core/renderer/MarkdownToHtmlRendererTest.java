@@ -70,6 +70,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         // Drawer.
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
+        assertThat(page.selectFirst("a[aria-label='Home'][href='index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
         assertThat(page.select(".drawer-side details[open]")).isEmpty();
@@ -148,6 +149,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         // Drawer.
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
+        assertThat(page.selectFirst("a[aria-label='Home'][href='../index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
         assertThat(page.select(".drawer-side details[open]")).hasSize(1);

@@ -47,11 +47,18 @@ current DaisyUI theme, and displays text using the default readable text color f
     <input id="kiso-navigation-drawer" type="checkbox" class="drawer-toggle"/>
 
     <div class="drawer-content min-h-screen">
-        <label for="kiso-navigation-drawer"
-               aria-label="Open navigation"
-               class="btn btn-square btn-ghost fixed left-3 top-3 z-40 bg-base-100/90 shadow-sm backdrop-blur sm:left-4 sm:top-4">
-            <span class="kiso-hamburger" aria-hidden="true"></span>
-        </label>
+        <div class="fixed left-3 top-3 z-40 flex gap-2 sm:left-4 sm:top-4">
+            <a href="${assetBasePath}index.html"
+               aria-label="Home"
+               class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
+                <span class="kiso-home-icon" aria-hidden="true"></span>
+            </a>
+            <label for="kiso-navigation-drawer"
+                   aria-label="Open navigation"
+                   class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
+                <span class="kiso-hamburger" aria-hidden="true"></span>
+            </label>
+        </div>
 
         <!--
             Create a centered main container, limit its width to about 1152px, add horizontal padding so content never
