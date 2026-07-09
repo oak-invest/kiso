@@ -16,6 +16,7 @@ import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -26,6 +27,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
+import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
 
@@ -89,13 +92,14 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         blankLine();
 
         try {
+            final String profile = profileOption.profile();
 
             // Loading configuration ===================================================================================
             final Configuration configuration;
-            if (profileOption.profile() == null) {
+            if (profile == null) {
                 configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
             } else {
-                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profileOption.profile()).orElse(Configuration.empty());
+                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());
             }
 
             // Copying files ===========================================================================================
@@ -106,6 +110,18 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                 return !ignorePatternMatcher.matches(relativePath);
             };
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
+
+            // Copy the profile file.
+            if (StringUtils.isNotBlank(profile)) {
+                final File sourceFile = sourceDirectory.toPath()
+                        .resolve(CONFIGURATION_DIRECTORY_NAME)
+                        .resolve(profile)
+                        .resolve(INDEX.getFileName())
+                        .toFile();
+                if (sourceFile.isFile()) {
+                    FileUtils.copyFile(sourceFile, destinationDirectory.toPath().resolve(INDEX.getFileName()).toFile());
+                }
+            }
 
             // Loading and checking the bundle =========================================================================
             KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());

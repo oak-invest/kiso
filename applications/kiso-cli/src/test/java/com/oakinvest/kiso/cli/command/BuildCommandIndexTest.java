@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BuildWithoutIndexTest extends BaseTest {
+public class BuildCommandIndexTest extends BaseTest {
 
     @TempDir
     private Path temporaryDirectory;
@@ -38,8 +38,6 @@ public class BuildWithoutIndexTest extends BaseTest {
                         "--source", resourcePath.toString(),
                         "--destination", destinationDirectory.toString()
                 );
-
-        System.out.println(error);
 
         // Testing command result ======================================================================================
         assertThat(exitCode).isZero();
@@ -96,6 +94,83 @@ public class BuildWithoutIndexTest extends BaseTest {
                 .contains("- [test22.md](test22.md): directory2/subdirectory2/test22.md")
                 // no subdirectories.
                 .doesNotContain("## Subdirectories");
+    }
+
+    @Test
+    @DisplayName("Index with profile without Index")
+    void indexWithProfileWithoutIndex() throws IOException {
+        // What we are testing =========================================================================================
+        var resourcePath = getResourcePath("kb-without-index");
+        Path destinationDirectory = temporaryDirectory.resolve("public");
+
+        // We run generation ===========================================================================================
+        StringWriter output = new StringWriter();
+        StringWriter error = new StringWriter();
+
+        int exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toString(),
+                        "--destination", destinationDirectory.toString(),
+                        "--profile", "profile-without-index"
+                );
+
+        // Testing command result ======================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("Kiso-cli - Running build command")
+                .contains("Done!");
+
+        // index.md.
+        assertThat(Files.readString(destinationDirectory.resolve("index.md"), UTF_8))
+                .contains("## Content")
+                .contains("- [test1.md](test1.md): test1.md")
+                .contains("- [test2.md](test2.md): test2.md")
+                // Subdirectories.
+                .contains("## Subdirectories")
+                .contains("[directory1](directory1/index.md)")
+                .contains("[directory2](directory2/index.md)");
+    }
+
+    @Test
+    @DisplayName("Index with profile with Index")
+    void indexWithProfileWithIndex() throws IOException {
+        // What we are testing =========================================================================================
+        var resourcePath = getResourcePath("kb-without-index");
+        Path destinationDirectory = temporaryDirectory.resolve("public");
+
+        // We run generation ===========================================================================================
+        StringWriter output = new StringWriter();
+        StringWriter error = new StringWriter();
+
+        int exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toString(),
+                        "--destination", destinationDirectory.toString(),
+                        "--profile", "profile-with-index"
+                );
+
+        // Testing command result ======================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("Kiso-cli - Running build command")
+                .contains("Done!");
+
+        // index.md.
+        assertThat(Files.readString(destinationDirectory.resolve("index.md"), UTF_8))
+                .contains("This is the specific index!")
+                .doesNotContain("## Content")
+                .doesNotContain("- [test1.md](test1.md): test1.md")
+                .doesNotContain("- [test2.md](test2.md): test2.md")
+                // Subdirectories.
+                .doesNotContain("## Subdirectories")
+                .doesNotContain("[directory1](directory1/index.md)")
+                .doesNotContain("[directory2](directory2/index.md)");
     }
 
 }
