@@ -1,5 +1,7 @@
 package com.oakinvest.kiso.cli.util;
 
+import org.apache.commons.lang3.Strings;
+
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
@@ -8,6 +10,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.FileConstants.RECURSIVE_DIRECTORY_PATTERN;
 
 /**
  * Ignore pattern matcher.
@@ -28,17 +31,20 @@ public class IgnorePatternMatcher {
 
         this.pathMatchers = Stream.concat(
                         ignorePatterns.stream().flatMap(pattern -> {
-                            if (pattern.endsWith("/**")) {
+                            if (pattern.endsWith(RECURSIVE_DIRECTORY_PATTERN)) {
                                 return Stream.of(
                                         pattern,
-                                        pattern.substring(0, pattern.length() - 3)
+                                        Strings.CI.removeEnd(pattern, RECURSIVE_DIRECTORY_PATTERN)
                                 );
                             }
                             return Stream.of(pattern);
                         }),
                         Stream.of(
+                                // List of static files we should not integrate.
                                 CONFIGURATION_DIRECTORY_NAME,
-                                CONFIGURATION_DIRECTORY_NAME + "/**"
+                                CONFIGURATION_DIRECTORY_NAME + "/**",
+                                "AGENTS.md",
+                                "CLAUDE.md"
                         )
                 )
                 .distinct()
