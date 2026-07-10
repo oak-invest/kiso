@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.RECURSIVE_DIRECTORY_PATTERN;
 
 /**
@@ -40,9 +39,10 @@ public class IgnorePatternMatcher {
                             return Stream.of(pattern);
                         }),
                         Stream.of(
-                                // List of static files we should not integrate.
-                                CONFIGURATION_DIRECTORY_NAME,
-                                CONFIGURATION_DIRECTORY_NAME + "/**",
+                                ".*",
+                                "**/.*",
+                                ".*/**",
+                                "**/.*/**",
                                 "AGENTS.md",
                                 "CLAUDE.md"
                         )
