@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.oakinvest.kiso</groupId>
         <artifactId>kiso</artifactId>
-        <version>0.1.4-SNAPSHOT</version>
+        <version>0.1.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
