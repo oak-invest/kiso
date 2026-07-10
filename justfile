@@ -23,6 +23,12 @@ run_build:
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="build --source=examples/kb-google-example --destination=public/kb-google-example"
 
+run_build_straumat:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-stephane-traumat --destination=public/kb-stephane-traumat"
+
 # Native commands ======================================================================================================
 build_native:
     # Native app is built as applications/kiso-cli/target/kiso-cli
@@ -40,6 +46,7 @@ run_build_native:
 # Change the release number in applications/kiso-cli-action/action.yml
 # Change the release number in applications/kiso-cli/src/main/java/com/oakinvest/kiso/cli/Application.java
 # Post release steps:
+# Add a release note.
 # Change the release number in .github/workflows/publish-website.yml
 start_release:
     git remote set-url origin git@github.com:oak-invest/kiso.git
@@ -69,12 +76,6 @@ release_run_build_straumat:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-stephane-traumat \
       --destination=public/kb-stephane-traumat
-
-run_tmp:
-    mvn install -pl libraries/kiso-core -am -DskipTests
-    mvn compile -pl applications/kiso-cli exec:java \
-      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-      -Dexec.args="build --source=examples/kb-stephane-traumat --destination=public/kb-stephane-traumat"
 
 # Website utils ========================================================================================================
 generate_website_demo:

@@ -12,6 +12,9 @@
       },
       {
         "pattern": "assets/js/browser@4\\.js"
+      },
+      {
+        "pattern": "assets/favicon/.*\\.svg"
       }
     ]
   }

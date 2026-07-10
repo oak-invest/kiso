@@ -21,13 +21,32 @@
         <meta name="description" content="${description}">
     @endif
 
-    <!-- CSS =========================💡============================================================================== -->
+    <!-- CSS ======================================================================================================= -->
     <link href="${assetBasePath}assets/css/daisyui@5.css" rel="stylesheet" type="text/css"/>
     <link href="${assetBasePath}assets/css/themes.css" rel="stylesheet" type="text/css"/>
     <link href="${assetBasePath}assets/css/application.css" rel="stylesheet" type="text/css"/>
 
     <!-- JS ======================================================================================================== -->
     <script src="${assetBasePath}assets/js/browser@4.js"></script>
+
+    <!-- Favicons ================================================================================================== -->
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" media="(prefers-color-scheme: light)"
+          rel="icon"
+          sizes="32x32" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_16x16.svg" media="(prefers-color-scheme: light)"
+          rel="icon"
+          sizes="16x16" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_180x180.svg" rel="apple-touch-icon" sizes="180x180">
+
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_32x32.svg" media="(prefers-color-scheme: dark)"
+          rel="icon"
+          sizes="32x32" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_16x16.svg" media="(prefers-color-scheme: dark)"
+          rel="icon"
+          sizes="16x16" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_180x180.svg" rel="apple-touch-icon" sizes="180x180">
 
     <!-- AI Specific =============================================================================================== -->
     @if(markdownFileName != null)

@@ -44,9 +44,15 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
     /** Static assets copied to the generated website root. */
     private static final String[] ASSET_PATHS = {
+            "assets/css/application.css",
             "assets/css/daisyui@5.css",
             "assets/css/themes.css",
-            "assets/css/application.css",
+            "assets/favicon/kiso_favicon_dark_16x16.svg",
+            "assets/favicon/kiso_favicon_dark_32x32.svg",
+            "assets/favicon/kiso_favicon_dark_180x180.svg",
+            "assets/favicon/kiso_favicon_light_16x16.svg",
+            "assets/favicon/kiso_favicon_light_32x32.svg",
+            "assets/favicon/kiso_favicon_light_180x180.svg",
             "assets/js/browser@4.js"
     };
 
