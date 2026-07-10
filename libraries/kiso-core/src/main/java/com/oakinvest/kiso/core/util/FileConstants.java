@@ -12,6 +12,9 @@ import java.nio.file.Path;
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public final class FileConstants {
 
+    /** Recursive directory pattern. */
+    public static final String RECURSIVE_DIRECTORY_PATTERN = "/**";
+
     /** Assets directory. */
     public static final String ASSETS_DIRECTORY = "assets";
 

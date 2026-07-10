@@ -12,6 +12,7 @@ import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
 import gg.jte.resolve.DirectoryCodeResolver;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.ObjectUtils;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -22,6 +23,12 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+
+import static com.oakinvest.kiso.core.util.TemplateConstants.CONCEPT_TEMPLATE_PAGE;
+import static com.oakinvest.kiso.core.util.TemplateConstants.INDEX_TEMPLATE_PAGE;
+import static com.oakinvest.kiso.core.util.TemplateConstants.MODULE_SOURCE_TEMPLATES_DIRECTORY;
+import static com.oakinvest.kiso.core.util.TemplateConstants.PRECOMPILED_INDEX_TEMPLATE_CLASS;
+import static com.oakinvest.kiso.core.util.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
 
 /**
  * Markdown to HTML Renderer.
@@ -45,15 +52,6 @@ public final class MarkdownToHtmlRenderer {
     private static final HtmlRenderer HTML_RENDERER = HtmlRenderer.builder()
             .extensions(MARKDOWN_EXTENSIONS)
             .build();
-
-    /** JTE precompiled index template class. */
-    private static final String PRECOMPILED_INDEX_TEMPLATE_CLASS = "gg.jte.generated.precompiled.JteindexGenerated";
-
-    /** JTE source templates directory when tests are launched directly from the repository isRoot. */
-    private static final Path ROOT_SOURCE_TEMPLATES_DIRECTORY = Path.of("libraries/kiso-core/src/main/jte");
-
-    /** JTE source templates directory when tests are launched directly from the module directory. */
-    private static final Path MODULE_SOURCE_TEMPLATES_DIRECTORY = Path.of("src/main/jte");
 
     /** JTE - Java Template engine. */
     private static final TemplateEngine TEMPLATE_ENGINE = createTemplateEngine();
@@ -124,76 +122,52 @@ public final class MarkdownToHtmlRenderer {
 
         // Generating the HTML =========================================================================================
         final Node document = MARKDOWN_PARSER.parse(markdownFile.body());
+
+        // Transforming .md file links to .html links ==================================================================
+        // Matches HTML href attributes that reference a local Markdown file (.md), while excluding absolute HTTP/HTTPS
+        // URLs, mailto: links, and anchor (#) links.
         String htmlContent = HTML_RENDERER.render(document).replaceAll(
                 "href=\"(?!https?://|mailto:|#)([^\"]+)\\.md\"",
                 "href=\"$1.html\""
         );
 
         // Choose and render depending on the kind =====================================================================
+        StringOutput htmlOutput = new StringOutput();
         switch (markdownFile.kind()) {
             case LOG -> {
-                // Log - No treatment, just return the HTML content.
+                // Log - No treatment for now, just return the HTML content ============================================
                 return "";
             }
             case INDEX -> {
-                // Meta data ===========================================================================================
-                PageMetadata metadata;
-                if (siteConfiguration.title() != null && markdownFile.fileName().equals("index.md")) {
-                    metadata = PageMetadata.builder()
-                            .title(siteConfiguration.title())
-                            .description(siteConfiguration.description())
-                            .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                            .htmlPath(markdownFile.htmlFilePath())
-                            .build();
-                } else {
-                    metadata = PageMetadata.builder()
-                            .title(markdownFile.relativePath().toString())
-                            .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                            .htmlPath(markdownFile.htmlFilePath())
-                            .build();
-                }
-
                 // Index ===============================================================================================
                 IndexPage page = IndexPage.builder()
                         .siteConfiguration(siteConfiguration)
                         .themeConfiguration(themeConfiguration)
-                        .metadata(metadata)
+                        .metadata(PageMetadata.builder()
+                                .title(ObjectUtils.firstNonNull(siteConfiguration.title(), markdownFile.relativePath().toString()))
+                                .description(siteConfiguration.description())
+                                .absolutePath(markdownFile.absolutePath().toString())
+                                .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
+                                .htmlPath(markdownFile.htmlFilePath())
+                                .build())
                         .bundleTree(bundleTree)
                         .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
 
-                StringOutput output = new StringOutput();
-                TEMPLATE_ENGINE.render("index.jte", page, output);
-                return output.toString();
+                TEMPLATE_ENGINE.render(INDEX_TEMPLATE_PAGE, page, htmlOutput);
             }
             default -> {
-                // Building the metadata ===============================================================================
-                PageMetadata metadata;
-                if (markdownFile.frontmatter() != null) {
-                    metadata = PageMetadata.builder()
-                            .title(markdownFile.frontmatter().title())
-                            .description(markdownFile.frontmatter().description())
-                            .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                            .htmlPath(markdownFile.htmlFilePath())
-                            .build();
-                } else {
-                    metadata = PageMetadata.builder()
-                            .title(markdownFile.title())
-                            .description(markdownFile.description())
-                            .absolutePath(markdownFile.absolutePath().toString())
-                            .assetBasePath(assetBasePath(markdownFile.relativePath()))
-                            .htmlPath(markdownFile.htmlFilePath())
-                            .build();
-                }
-
                 // Concept =============================================================================================
                 ConceptPage page = ConceptPage.builder()
                         .siteConfiguration(siteConfiguration)
                         .themeConfiguration(themeConfiguration)
-                        .metadata(metadata)
+                        .metadata(PageMetadata.builder()
+                                .title(markdownFile.title())
+                                .description(markdownFile.description())
+                                .absolutePath(markdownFile.absolutePath().toString())
+                                .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
+                                .htmlPath(markdownFile.htmlFilePath())
+                                .build())
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())
                         .tags(markdownFile.frontmatter().tags())
@@ -202,21 +176,23 @@ public final class MarkdownToHtmlRenderer {
                         .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
 
-                StringOutput output = new StringOutput();
-                TEMPLATE_ENGINE.render("concept.jte", page, output);
-
-                return output.toString();
+                TEMPLATE_ENGINE.render(CONCEPT_TEMPLATE_PAGE, page, htmlOutput);
             }
         }
+        return htmlOutput.toString();
     }
 
     /**
      * Returns the relative absolutePath from an HTML page to the generated site root.
      *
+     * @param siteConfiguration    site configuration
      * @param markdownRelativePath Markdown absolutePath relative to the site root
      * @return asset base absolute base path
      */
-    private static String assetBasePath(final Path markdownRelativePath) {
+    private static String assetBasePath(final SiteConfiguration siteConfiguration, final Path markdownRelativePath) {
+        if (!siteConfiguration.normalizedBaseUrl().isEmpty()) {
+            return siteConfiguration.normalizedBaseUrl();
+        }
         if (markdownRelativePath == null || markdownRelativePath.getParent() == null) {
             return "";
         }

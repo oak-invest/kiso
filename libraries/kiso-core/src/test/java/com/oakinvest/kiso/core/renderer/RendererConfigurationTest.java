@@ -7,10 +7,9 @@ import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
-import org.junit.jupiter.api.BeforeEach;
+import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -22,15 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class RendererConfigurationTest extends BaseTest {
 
-    @TempDir
-    private Path temporaryDirectory;
-
-    @BeforeEach
-    void setup() {
-        // Waiting to implement i18n.
-        Locale.setDefault(Locale.ENGLISH);
-    }
-
     @Test
     @DisplayName("Markdown to html with configuration")
     void markdownToHTML() throws URISyntaxException, IOException {
@@ -40,16 +30,17 @@ public class RendererConfigurationTest extends BaseTest {
                 .getCodeSource()
                 .getLocation()
                 .toURI()).getParent();
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
         var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
 
         // Configuration ===============================================================================================
-        SiteConfiguration siteConfiguration = new SiteConfiguration(
+        var siteConfiguration = new SiteConfiguration(
+                "https://knowledge.angara.finance/",
                 Locale.FRENCH,
                 "Titre du site",
                 "Description du site");
-        ThemeConfiguration themeConfiguration = new ThemeConfiguration(
+        var themeConfiguration = new ThemeConfiguration(
                 "corporate");
 
         // Index file of the bundle ====================================================================================
@@ -60,16 +51,22 @@ public class RendererConfigurationTest extends BaseTest {
         FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
 
         // Assertions ==================================================================================================
-        assertThat(page.selectFirst("html")).isNotNull();
-        assertThat(page.selectFirst("html").attr("lang")).isEqualTo("fr");
-        assertThat(page.selectFirst("html").attr("data-theme"))
-                .isEqualTo("corporate");
+        Element html = page.selectFirst("html");
+        assertThat(html).isNotNull();
+        assertThat(html.attr("lang")).isEqualTo("fr");
+        assertThat(html.attr("data-theme")).isEqualTo("corporate");
 
         assertThat(page.title()).isEqualTo("Titre du site");
+        assertThat(page.select("meta[name=description]").eachAttr("content"))
+                .isNotNull()
+                .containsExactly("Description du site");
 
-        assertThat(page.selectFirst("meta[name=description]")).isNotNull();
-        assertThat(page.selectFirst("meta[name=description]").attr("content"))
-                .isEqualTo("Description du site");
+        assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .containsExactly(
+                        "https://knowledge.angara.finance/assets/css/daisyui@5.css",
+                        "https://knowledge.angara.finance/assets/css/themes.css",
+                        "https://knowledge.angara.finance/assets/css/application.css"
+                );
     }
 
 }

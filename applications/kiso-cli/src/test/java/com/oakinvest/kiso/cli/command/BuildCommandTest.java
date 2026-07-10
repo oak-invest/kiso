@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import picocli.CommandLine;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Files;
@@ -21,8 +22,9 @@ class BuildCommandTest extends BaseTest {
     private Path temporaryDirectory;
 
     @Test
+    @SuppressWarnings("HttpUrlsUsage")
     @DisplayName("Building a simple OKF bundle")
-    void build() throws Exception {
+    void build() throws IOException {
         // What we are testing =========================================================================================
         Path sourceDirectory = temporaryDirectory.resolve("source");
         Path destinationDirectory = temporaryDirectory.resolve("public");
@@ -88,11 +90,15 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
 
-        String indexHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
-        assertThat(indexHtml)
+        String topicHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
+        assertThat(topicHtml)
                 .contains("First Topic")
                 .contains("A first test topic.")
-                .contains("Hello from the first topic.");
+                .contains("Hello from the first topic.")
+                // Without a base URL, generated links must remain relative.
+                .contains("href=\"../assets/css/application.css\"")
+                .contains("href=\"../index.html\"")
+                .doesNotContain("https://knowledge.angara.finance");
 
         // Testing generated agent files ===============================================================================
         String llmsTxt = Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8);
@@ -116,54 +122,6 @@ class BuildCommandTest extends BaseTest {
                 .contains("<loc>topics/index.html</loc>")
                 .contains("<loc>topics/first-topic.html</loc>")
                 .contains("<lastmod>2026-06-24T10:00Z</lastmod>");
-    }
-
-    @Test
-    @DisplayName("Building Google OKF bundle with configuration")
-    void buildWithConfiguration() throws Exception {
-        // What we are testing - The Google example ====================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
-
-
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
-                .setOut(new PrintWriter(output))
-                .setErr(new PrintWriter(error))
-                .execute(
-                        "--source", resourcePath.toString(),
-                        "--destination", destinationDirectory.toString()
-                );
-
-        // Testing command result ======================================================================================
-        assertThat(exitCode).isZero();
-        assertThat(error.toString()).isEmpty();
-        assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
-                // Those files should exist
-                .contains("HTML Generated for index.md")
-                .contains("HTML Generated for datasets/index.md")
-                // I asked to remove files in references/joins
-                .doesNotContain("HTML Generated for references/joins/index.md")
-                .doesNotContain("HTML Generated for references/joins/events___ads_clickstats.md")
-                // I asked to remove day_count.md and not even_count.md
-                .doesNotContain("HTML Generated for references/metrics/day_count.md")
-                .contains("HTML Generated for references/metrics/event_count.md")
-                .contains("Done!");
-
-        // Checking that configuration is applied to the generated HTML files ==========================================
-        assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
-                .contains("data-theme=\"corporate\"")
-                .contains("lang=\"fr\"")
-                .contains("<title>My Knowledge Base</title>")
-                .contains("<meta name=\"description\" content=\"My knowledge base description\">");
-        assertThat(Files.readString(destinationDirectory.resolve("references/metrics/event_count.html"), UTF_8))
-                .contains("data-theme=\"corporate\"")
-                .contains("lang=\"fr\"")
-                .contains("<title>Event Count</title>")
-                .contains("<meta name=\"description\" content=\"Total number of events.\">");
     }
 
     @Test
@@ -200,8 +158,8 @@ class BuildCommandTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Building an OKF bundle with assets")
-    void buildWithAssets() throws Exception {
+    @DisplayName("Building an OKF bundle with existing assets")
+    void buildWithExistingAssets() throws Exception {
         // What we are testing =========================================================================================
         Path sourceDirectory = Paths.get(ClassLoader.getSystemResource("kb-with-assets").toURI());
         Path destinationDirectory = Path.of("target", "test-kb-with-assets");

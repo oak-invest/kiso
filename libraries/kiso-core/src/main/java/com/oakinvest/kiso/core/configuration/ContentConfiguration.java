@@ -4,12 +4,6 @@ import java.util.List;
 
 /**
  * Content configuration.
- * <p>
- * Example:
- * content:
- * ignore:
- * - ".git/**"
- * - "drafts/**"
  *
  * @param ignorePatterns list of patterns to ignore
  */
@@ -18,12 +12,13 @@ public record ContentConfiguration(
 ) {
 
     /**
-     * Ensures ignore patterns are never null or mutable.
+     * Constructor.
      */
     public ContentConfiguration {
         if (ignorePatterns == null) {
             ignorePatterns = List.of();
         } else {
+            // Ensures ignore patterns are never null or mutable.
             ignorePatterns = List.copyOf(ignorePatterns);
         }
     }

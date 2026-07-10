@@ -1,22 +1,28 @@
 package com.oakinvest.kiso.core.configuration;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
+import org.jspecify.annotations.Nullable;
+
 import java.util.Locale;
+import java.util.Objects;
+
+import static com.oakinvest.kiso.core.util.InternationalizationConstants.DEFAULT_LANGUAGE;
 
 /**
  * Site configuration.
  *
- * @param language    language selected (en, fr, de...)
- * @param title       Index page title
- * @param description Index page description
+ * @param baseUrl     base URL of the generated site
+ * @param language    language selected (en, de...)
+ * @param title       Index pages title
+ * @param description Index pages description
  */
 public record SiteConfiguration(
+        @Nullable String baseUrl,
         Locale language,
-        String title,
-        String description
+        @Nullable String title,
+        @Nullable String description
 ) {
-
-    /** Default language. */
-    public static final Locale DEFAULT_LANGUAGE = Locale.ENGLISH;
 
     /**
      * Returns an empty site configuration.
@@ -24,7 +30,22 @@ public record SiteConfiguration(
      * @return empty site configuration
      */
     public static SiteConfiguration empty() {
-        return new SiteConfiguration(null, null, null);
+        return new SiteConfiguration(null, DEFAULT_LANGUAGE, null, null);
+    }
+
+    /**
+     * Returns the base URL with a trailing slash.
+     *
+     * @return normalized base URL, or an empty string when none is configured
+     */
+    public String normalizedBaseUrl() {
+        if (StringUtils.isBlank(baseUrl)) {
+            return "";
+        }
+        if (Strings.CI.endsWith(baseUrl, "/")) {
+            return baseUrl;
+        }
+        return baseUrl + "/";
     }
 
     /**
@@ -33,11 +54,7 @@ public record SiteConfiguration(
      * @return language tag
      */
     public String languageTag() {
-        if (language == null) {
-            return DEFAULT_LANGUAGE.toLanguageTag();
-        } else {
-            return language.toLanguageTag();
-        }
+        return Objects.requireNonNullElse(language, DEFAULT_LANGUAGE).toLanguageTag();
     }
 
 }

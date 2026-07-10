@@ -45,26 +45,30 @@ public class LlmsTxtGenerator {
 
         // Each bundle section =========================================================================================
         knowledgeBundle.bundles()
-                // Remove "/assets"
+                // Remove "/assets".
                 .filter(bundle -> {
                     Path path = bundle.relativePath();
                     return path.getNameCount() == 0 || !path.getName(0).toString().equals(ASSETS_DIRECTORY);
                 })
-                // Do not add bundle without child and whitout files
-                .filter(bundle -> !bundle.childBundles().isEmpty() || !bundle.markdownFiles().isEmpty())
+                // Do not add a bundle with no child and no file.
+                .filter(bundle -> !bundle.isEmpty())
+                // Each bundle
                 .forEach(bundle -> {
 
-                    // Bundle name =============================================================================================
+                    // Bundle name =====================================================================================
                     llmsTxt.appendChild(heading(HEADING_LEVEL_2, bundle.name()));
 
-                    // Pages inside the bundle =================================================================================
+                    // Pages inside the bundle =========================================================================
                     BulletList list = new BulletList();
                     list.setMarker("-");
                     list.setTight(true);
                     bundle.markdownFiles().stream()
                             .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
-                            .forEach(markdownFile -> list.appendChild(markdownFileListItem(markdownFile)));
+                            .forEach(markdownFile -> list.appendChild(markdownFileListItem(
+                                    knowledgeBundle.siteConfiguration().normalizedBaseUrl(),
+                                    markdownFile)));
                     llmsTxt.appendChild(list);
+
                 });
 
         return MarkdownRenderer.builder()
@@ -89,16 +93,20 @@ public class LlmsTxtGenerator {
     /**
      * Creates one Markdown file list item.
      *
+     * @param baseUrl      public base URL of the generated site
      * @param markdownFile Markdown file
      * @return list item
      */
-    private static ListItem markdownFileListItem(final MarkdownFile markdownFile) {
+    private static ListItem markdownFileListItem(final String baseUrl, final MarkdownFile markdownFile) {
         ListItem listItem = new ListItem();
         Paragraph paragraph = new Paragraph();
-        Link link = new Link(markdownPath(markdownFile.relativePath()), null);
+
+        // Link + filename.
+        Link link = new Link(baseUrl + markdownPath(markdownFile.relativePath()), null);
         link.appendChild(new Text(markdownFile.title()));
         paragraph.appendChild(link);
 
+        // Description.
         String description = markdownFile.description();
         if (StringUtils.isNotBlank(description)) {
             paragraph.appendChild(new Text(": " + description));

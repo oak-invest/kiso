@@ -1,11 +1,11 @@
 name: "Kiso"
-description: "Validate and build an OKF knowledge bundle with Kiso"
+description: "Check and build an OKF knowledge bundle with Kiso"
 
 inputs:
   version:
-    description: "Kiso CLI version to use, for example v0.1.3"
+    description: "Kiso CLI version to use, for example v0.1.4"
     required: false
-    default: "v0.1.3"
+    default: "v0.1.4"
   command:
     description: "Kiso command: build"
     required: false
@@ -18,6 +18,10 @@ inputs:
     description: "Directory where generated files are created. Defaults to the public directory."
     required: false
     default: "public"
+  profile:
+    description: "Kiso profile to use for building the knowledge bundle."
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -33,4 +37,5 @@ runs:
       run: |
         ./kiso-cli ${{ inputs.command }} \
           --source "${{ inputs.source }}" \
-          --destination "${{ inputs.destination }}"
+          --destination "${{ inputs.destination }}" \
+          --profile "${{ inputs.profile }}"

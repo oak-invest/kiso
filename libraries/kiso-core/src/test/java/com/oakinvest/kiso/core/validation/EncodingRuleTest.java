@@ -1,6 +1,5 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
@@ -20,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class EncodingRuleTest extends BaseTest {
 
-    EncodingRule rule = new EncodingRule();
+    final EncodingRule rule = new EncodingRule();
 
     @TempDir
     private Path temporaryDirectory;
@@ -41,19 +40,19 @@ class EncodingRuleTest extends BaseTest {
         Files.write(invalidMarkdownFilePath2, new byte[]{(byte) 0xC3, (byte) 0x28});
 
         // Create a knowledge bundle with the invalid file =============================================================
-        MarkdownFile invalidMarkdownFile1 = MarkdownFile.builder()
+        var invalidMarkdownFile1 = MarkdownFile.builder()
                 .fileName(invalidMarkdownFilePath1.getFileName().toString())
                 .kind(CONCEPT)
                 .absolutePath(invalidMarkdownFilePath1)
                 .relativePath(invalidMarkdownFilePath1)
                 .build();
-        MarkdownFile invalidMarkdownFile2 = MarkdownFile.builder()
+        var invalidMarkdownFile2 = MarkdownFile.builder()
                 .fileName(invalidMarkdownFilePath2.getFileName().toString())
                 .kind(CONCEPT)
                 .absolutePath(invalidMarkdownFilePath2)
                 .relativePath(invalidMarkdownFilePath2)
                 .build();
-        Bundle rootBundle = bundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
+        var rootBundle = bundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
 
         // Run validation and check that the invalid file is reported ==================================================
         assertThat(rule.validate(rootBundle, invalidMarkdownFile1)).satisfiesOnlyOnce(issue -> {

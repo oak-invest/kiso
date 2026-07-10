@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -21,11 +20,12 @@ public class ConfigurationLoaderTest extends BaseTest {
 
     @Test
     @DisplayName("Test loading Kiso-cli configuration from a bundle path")
-    public void testLoadConfiguration() throws URISyntaxException {
+    public void testLoadConfiguration() {
         assertThat(ConfigurationLoader.load(getResourcePath("kb-configuration-valid")))
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     // Site ============================================================================================
+                    assertThat(configuration.site().baseUrl()).isEqualTo("https://knowledge.angara.finance/");
                     assertThat(configuration.site().language()).isEqualTo(Locale.FRENCH);
                     assertThat(configuration.site().title()).isEqualTo("My Knowledge Base");
                     assertThat(configuration.site().description()).isEqualTo("My knowledge base description");
@@ -41,11 +41,13 @@ public class ConfigurationLoaderTest extends BaseTest {
 
     @Test
     @DisplayName("Test loading empty Kiso-cli configuration from a bundle path")
-    public void testLoadEmptyConfiguration() throws URISyntaxException {
+    public void testLoadEmptyConfiguration() {
         assertThat(ConfigurationLoader.load(getResourcePath("kb-configuration-empty")))
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     assertThat(configuration.site()).isNotNull();
+                    assertThat(configuration.site().baseUrl()).isNull();
+                    assertThat(configuration.site().normalizedBaseUrl()).isEmpty();
                     assertThat(configuration.theme()).isNotNull();
                     assertThat(configuration.content()).isNotNull();
                     assertThat(configuration.content().ignorePatterns()).isEmpty();
@@ -54,7 +56,7 @@ public class ConfigurationLoaderTest extends BaseTest {
 
     @Test
     @DisplayName("Test loading Kiso-cli configuration from a bundle path when configuration file does not exist")
-    public void testLoadConfigurationFileNotExist() throws URISyntaxException {
+    public void testLoadConfigurationFileNotExist() {
         assertThat(ConfigurationLoader.load(getResourcePath("kb-configuration-absent"))).isEmpty();
     }
 

@@ -6,7 +6,6 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,9 +18,9 @@ class GoogleExampleLoadingTest extends BaseTest {
 
     @Test
     @DisplayName("Loading google example bundle")
-    void googleExamplesLoading() throws URISyntaxException {
+    void googleExamplesLoading() {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE_EXAMPLE_DIRECTORY);
+        var resourcePath = getResourcePath(KB_GOOGLE);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
         // Testing isRoot bundle =========================================================================================
@@ -43,7 +42,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                     assertThat(index.htmlFilePath()).isEqualTo("index.html");
 
                     // Frontmatter.
-                    assertThat(index.hasFrontmatter()).isFalse();
+                    assertThat(index.frontmatterPresent()).isFalse();
 
                     // Content.
                     assertThat(index.body()).contains("# Subdirectories");
@@ -106,7 +105,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(index.htmlFilePath()).isEqualTo("datasets/index.html");
 
                             // Frontmatter.
-                            assertThat(index.hasFrontmatter()).isFalse();
+                            assertThat(index.frontmatterPresent()).isFalse();
 
                             // Content.
                             assertThat(index.body()).contains("# BigQuery Dataset");
@@ -128,6 +127,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                         joins -> {
                             assertThat(joins)
                                     .returns("references/joins", Bundle::name)
+
                                     .returns(Path.of(resourcePath + "/references/joins"), Bundle::absolutePath)
                                     .returns(Path.of("references/joins"), Bundle::relativePath);
 
@@ -186,12 +186,12 @@ class GoogleExampleLoadingTest extends BaseTest {
 
     @Test
     @DisplayName("Loading google example bundle with configuration")
-    void googleExamplesLoadingWithConfiguration() throws URISyntaxException {
+    void googleExamplesLoadingWithConfiguration() {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath("kb-google-example-v0.1-with-configuration");
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
-        // Testing isRoot bundle =========================================================================================
+        // Testing root bundle =========================================================================================
         assertThat(bundle.rootBundle().childBundles()).hasSize(3);
     }
 

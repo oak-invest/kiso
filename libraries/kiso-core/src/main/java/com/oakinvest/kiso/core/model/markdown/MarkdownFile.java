@@ -17,12 +17,13 @@ import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTE
 /**
  * Markdown file discovered inside a knowledge bundle.
  *
- * @param fileName     file name
- * @param kind         file kind
- * @param absolutePath absolute path (with the file name)
- * @param relativePath relative path to the root bundle (with the file name)
- * @param frontmatter  frontmatter metadata
- * @param body         original Markdown content without frontmatter
+ * @param fileName           file name
+ * @param kind               file kind
+ * @param absolutePath       absolute path (with the file name)
+ * @param relativePath       relative path to the root bundle (with the file name)
+ * @param frontmatter        frontmatter metadata
+ * @param frontmatterPresent whether a frontmatter block exists in the source file
+ * @param body               original Markdown content without frontmatter
  */
 @Builder
 @SuppressWarnings("unused")
@@ -31,17 +32,18 @@ public record MarkdownFile(
         MarkdownFileKind kind,
         Path absolutePath,
         Path relativePath,
-        @Nullable Frontmatter frontmatter,
-        String body
+        Frontmatter frontmatter,
+        boolean frontmatterPresent,
+        @Nullable String body
 ) {
 
     /**
-     * Returns true if the frontmatter exists in the Markdown file.
-     *
-     * @return true if a frontmatter exists
+     * Creates a Markdown file with safe default values.
      */
-    public boolean hasFrontmatter() {
-        return frontmatter != null;
+    public MarkdownFile {
+        if (frontmatter == null) {
+            frontmatter = Frontmatter.empty();
+        }
     }
 
     /**
@@ -66,7 +68,7 @@ public record MarkdownFile(
      * @return page title
      */
     public String title() {
-        if (hasFrontmatter() && StringUtils.isNotBlank(frontmatter.title())) {
+        if (StringUtils.isNotBlank(frontmatter.title())) {
             return frontmatter.title();
         }
         return fileName;
@@ -87,7 +89,7 @@ public record MarkdownFile(
             }
         } else {
             // Concept file ============================================================================================
-            if (hasFrontmatter() && StringUtils.isNotBlank(frontmatter.description())) {
+            if (StringUtils.isNotBlank(frontmatter.description())) {
                 return frontmatter.description();
             }
             return relativePath().toString();
@@ -100,10 +102,7 @@ public record MarkdownFile(
      * @return timestamp
      */
     public OffsetDateTime timestamp() {
-        if (hasFrontmatter()) {
-            return frontmatter.parsedTimestamp();
-        }
-        return null;
+        return frontmatter.parsedTimestamp();
     }
 
     /**

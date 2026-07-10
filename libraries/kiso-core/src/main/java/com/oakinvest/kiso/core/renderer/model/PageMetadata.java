@@ -2,6 +2,7 @@ package com.oakinvest.kiso.core.renderer.model;
 
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
+import org.jspecify.annotations.Nullable;
 
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 
@@ -17,12 +18,21 @@ import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTE
 @Builder
 @SuppressWarnings("unused")
 public record PageMetadata(
-        String title,
-        String description,
+        @Nullable String title,
+        @Nullable String description,
         String absolutePath,
         String htmlPath,
         String assetBasePath
 ) {
+
+    /**
+     * Returns empty page metadata.
+     *
+     * @return empty page metadata
+     */
+    public static PageMetadata empty() {
+        return new PageMetadata(null, null, null, null, null);
+    }
 
     /**
      * Returns Markdown filename.
@@ -30,8 +40,7 @@ public record PageMetadata(
      * @return Markdown filename
      */
     public String markdownFileName() {
-        final String fileName = FilenameUtils.getName(absolutePath);
-        return FilenameUtils.removeExtension(fileName) + MARKDOWN_EXTENSION;
+        return FilenameUtils.removeExtension(FilenameUtils.getName(absolutePath)) + MARKDOWN_EXTENSION;
     }
 
 }

@@ -34,10 +34,8 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
 
         // Only on concept files =======================================================================================
         if (markdownFile.kind().equals(CONCEPT)) {
-            Frontmatter frontmatter = markdownFile.frontmatter();
-
             // If there is not frontmatter =============================================================================
-            if (frontmatter == null) {
+            if (!markdownFile.frontmatterPresent()) {
                 return List.of(ValidationIssue.builder()
                         .severity(ERROR)
                         .code(MISSING_FRONTMATTER)
@@ -45,6 +43,8 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                         .path(markdownFile.relativePath())
                         .build());
             } else {
+                Frontmatter frontmatter = markdownFile.frontmatter();
+
                 // If there is a frontmatter and type is missing =======================================================
                 if (StringUtils.isBlank(frontmatter.type())) {
                     return List.of(ValidationIssue.builder()
@@ -68,7 +68,7 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
 
         } else {
             // Non CONCEPT file should not contain frontmatter =========================================================
-            if (markdownFile.hasFrontmatter()) {
+            if (markdownFile.frontmatterPresent()) {
                 return List.of(ValidationIssue.builder()
                         .severity(ERROR)
                         .code(UNEXPECTED_FRONTMATTER)

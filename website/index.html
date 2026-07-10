@@ -21,6 +21,17 @@
     <meta content="assets/images/social/kiso-twitter.png" name="twitter:image"/>
 
     <link href="assets/images/logo/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
+    <link href="assets/images/logo/kiso_favicon_light_32x32.svg" media="(prefers-color-scheme: light)" rel="icon"
+          sizes="32x32" type="image/svg+xml">
+    <link href="assets/images/logo/kiso_favicon_light_16x16.svg" media="(prefers-color-scheme: light)" rel="icon"
+          sizes="16x16" type="image/svg+xml">
+    <link href="assets/images/logo/kiso_favicon_light_180x180.svg" rel="apple-touch-icon" sizes="180x180">
+
+    <link href="assets/images/logo/kiso_favicon_dark_32x32.svg" media="(prefers-color-scheme: dark)" rel="icon"
+          sizes="32x32" type="image/svg+xml">
+    <link href="assets/images/logo/kiso_favicon_dark_16x16.svg" media="(prefers-color-scheme: dark)" rel="icon"
+          sizes="16x16" type="image/svg+xml">
+    <link href="assets/images/logo/kiso_favicon_dark_180x180.svg" rel="apple-touch-icon" sizes="180x180">
 
     <link href="assets/css/daisyui@5.css" rel="stylesheet" type="text/css"/>
 
@@ -37,6 +48,7 @@
         </a>
         <nav class="hidden items-center gap-5 text-sm font-medium md:flex">
             <a class="link-hover" href="#okf">OKF</a>
+            <a class="link-hover" href="#check">Check command</a>
             <a class="link-hover" href="#build">Build command</a>
             <a class="link-hover" href="#GitHubAction">GitHub Action</a>
             <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="demo">Demo</a>
@@ -122,13 +134,39 @@
         </div>
     </section>
 
+    <!-- Check command ============================================================================================= -->
+    <section class="border-y border-base-300 bg-base-200" id="check">
+        <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+            <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-wide text-primary">Command</p>
+                    <h2 class="mt-3 text-3xl font-bold tracking-normal">What <code>check</code> does?</h2>
+                    <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
+                        The <code class="rounded bg-base-300 px-1.5 py-0.5">check</code> command validates the Markdown
+                        files in an OKF bundle and reports formatting or structural errors before publication.
+                    </p>
+                </div>
+                <div class="min-w-0 overflow-x-auto rounded-box border border-base-300 bg-base-100 shadow-sm">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th class="w-36">source</th>
+                            <td>Any OKF bundle directory like <code>examples/kb-google-example</code></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Build command ============================================================================================= -->
     <section class="border-y border-base-300 bg-base-200" id="build">
         <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
             <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                 <div>
                     <p class="text-sm font-semibold uppercase tracking-wide text-primary">Command</p>
-                    <h2 class="mt-3 text-3xl font-bold tracking-normal">What build does</h2>
+                    <h2 class="mt-3 text-3xl font-bold tracking-normal">What <code>build</code> does?</h2>
                     <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
                         The <code class="rounded bg-base-300 px-1.5 py-0.5">build</code> command generates a static
                         website from an OKF bundle, including the original Markdown files, generated HTML pages,
@@ -159,7 +197,7 @@
             <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
                 <div>
                     <p class="text-sm font-semibold uppercase tracking-wide text-primary">GitHub Action</p>
-                    <h2 class="mt-3 text-3xl font-bold tracking-normal">Use in Github CI</h2>
+                    <h2 class="mt-3 text-3xl font-bold tracking-normal">Use in GitHub CI</h2>
                     <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
                         You can use Kiso in a GitHub Action to automatically build and publish your OKF bundle to GitHub
                         Pages or any other static hosting service.
@@ -167,7 +205,7 @@
                 </div>
                 <div class="mockup-code min-w-0 max-w-full overflow-x-auto bg-neutral text-neutral-content">
                     <pre><code> - name: Build with Kiso
-   uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.2
+   uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.4
    with:
     command: build
     source: examples/kb-google-example

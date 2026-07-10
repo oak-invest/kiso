@@ -6,6 +6,7 @@ import com.oakinvest.kiso.core.renderer.model.PageMetadata;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
+import org.jspecify.annotations.Nullable;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -30,10 +31,26 @@ public record ConceptPage(
         ThemeConfiguration themeConfiguration,
         PageMetadata metadata,
         String type,
-        String resource,
+        @Nullable String resource,
         List<String> tags,
-        OffsetDateTime timestamp,
+        @Nullable OffsetDateTime timestamp,
         BundleTree bundleTree,
-        HtmlContent htmlContent
+        @Nullable HtmlContent htmlContent
 ) {
+
+    /**
+     * Creates a concept page with safe default values.
+     */
+    public ConceptPage {
+        if (siteConfiguration == null) {
+            siteConfiguration = SiteConfiguration.empty();
+        }
+        if (themeConfiguration == null) {
+            themeConfiguration = ThemeConfiguration.empty();
+        }
+        if (metadata == null) {
+            metadata = PageMetadata.empty();
+        }
+    }
+
 }

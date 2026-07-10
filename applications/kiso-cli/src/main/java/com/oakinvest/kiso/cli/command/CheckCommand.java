@@ -1,12 +1,10 @@
 package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.options.SourceOption;
-import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.validation.ValidationIssue;
-import com.oakinvest.kiso.core.validation.ValidationRunner;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -20,15 +18,26 @@ import java.util.concurrent.Callable;
         mixinStandardHelpOptions = true,
         description = "Validate Markdown files and report formatting or structural errors"
 )
-public class CheckCommand implements Callable<Integer> {
+public class CheckCommand extends AbstractCommand implements Callable<Integer> {
 
     /** Shared source directory option. */
     @CommandLine.Mixin
     private final SourceOption sourceOption = new SourceOption();
 
-    /** Command spec. */
+    /** Command specification. */
     @CommandLine.Spec
+    @SuppressWarnings("unused")
     private CommandLine.Model.CommandSpec commandSpec;
+
+    /**
+     * Get the command specification.
+     *
+     * @return command specification
+     */
+    @Override
+    protected CommandLine.Model.CommandSpec commandSpec() {
+        return commandSpec;
+    }
 
     /**
      * Run the check command.
@@ -44,16 +53,11 @@ public class CheckCommand implements Callable<Integer> {
         // Running the validation ======================================================================================
         try {
 
-            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath(), SiteConfiguration.empty());
-            final ValidationRunner validationRunner = new ValidationRunner();
-
-            final var report = validationRunner.runValidation(knowledgeBundle);
-            if (!report.hasErrors()) {
+            final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(sourceDirectory.toPath());
+            if (isValid(knowledgeBundle)) {
                 print("No errors found.");
                 return CommandLine.ExitCode.OK;
             } else {
-                // Errors were found ===================================================================================
-                report.issues().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
@@ -64,40 +68,6 @@ public class CheckCommand implements Callable<Integer> {
             printError("Unexpected error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
         }
-    }
-
-    /**
-     * Print message in console.
-     *
-     * @param message message to print
-     */
-    private void print(final String message) {
-        commandSpec.commandLine().getOut().println(message);
-    }
-
-    /**
-     * Blank line in console.
-     */
-    private void blankLine() {
-        commandSpec.commandLine().getOut().println();
-    }
-
-    /**
-     * Print an issue.
-     *
-     * @param issue issue to print
-     */
-    private void printError(final ValidationIssue issue) {
-        printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
-    }
-
-    /**
-     * Print error message in console.
-     *
-     * @param message message to print
-     */
-    private void printError(final String message) {
-        commandSpec.commandLine().getErr().println(message);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
 import com.oakinvest.kiso.core.model.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
@@ -21,14 +20,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ValidFrontmatterRuleTest extends BaseTest {
 
-    ValidFrontmatterRule rule = new ValidFrontmatterRule();
+    final ValidFrontmatterRule rule = new ValidFrontmatterRule();
 
     @Test
     @DisplayName("Report a concept file without frontmatter")
     void conceptWithoutFrontmatter() {
         // We create a concept file without frontmatter ================================================================
-        Path markdownFilePath = Path.of("concept-without-frontmatter.md");
-        MarkdownFile markdownFile = markdownFile(markdownFilePath, CONCEPT, null);
+        var markdownFilePath = Path.of("concept-without-frontmatter.md");
+        var markdownFile = markdownFile(markdownFilePath, CONCEPT, null);
 
         // Run validation to check a missing mandatory frontmatter =====================================================
         assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
@@ -43,8 +42,8 @@ class ValidFrontmatterRuleTest extends BaseTest {
     @DisplayName("Report a concept file without a type in its frontmatter")
     void conceptWithoutFrontmatterType() {
         // We create a concept file with frontmatter but without the type field ========================================
-        Path markdownFilePath = Path.of("concept-without-type.md");
-        MarkdownFile markdownFile = markdownFile(markdownFilePath, CONCEPT, Frontmatter.empty());
+        var markdownFilePath = Path.of("concept-without-type.md");
+        var markdownFile = markdownFile(markdownFilePath, CONCEPT, Frontmatter.empty());
 
         // Run validation to check a missing mandatory frontmatter type ================================================
         assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
@@ -59,8 +58,8 @@ class ValidFrontmatterRuleTest extends BaseTest {
     @DisplayName("Ignore an index file without frontmatter")
     void indexWithoutFrontmatter() {
         // We create an index.md file without frontmatter, which is allowed ============================================
-        Path markdownFilePath = Path.of("index.md");
-        MarkdownFile markdownFile = markdownFile(markdownFilePath, INDEX, null);
+        var markdownFilePath = Path.of("index.md");
+        var markdownFile = markdownFile(markdownFilePath, INDEX, null);
 
         // We check that there was no error at all =====================================================================
         assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
@@ -70,12 +69,12 @@ class ValidFrontmatterRuleTest extends BaseTest {
     @DisplayName("Timestamp is present but doesn't respect ISO 8601 datetime format")
     void invalidTimestamp() {
         // We create a concept file with frontmatter but with an invalid timestamp =====================================
-        Path markdownFilePath = Path.of("concept-with-invalid-timestamp.md");
-        Frontmatter frontmatter = Frontmatter.builder()
+        var markdownFilePath = Path.of("concept-with-invalid-timestamp.md");
+        var frontmatter = Frontmatter.builder()
                 .type("Concept")
                 .timestamp("02-07-2026T14:30:00Z")
                 .build();
-        MarkdownFile markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
 
         // Run validation to check an invalid timestamp ================================================================
         assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
@@ -89,19 +88,14 @@ class ValidFrontmatterRuleTest extends BaseTest {
     @Test
     @DisplayName("Non concept files should not have frontmatter")
     void unexpectedFrontmatter() {
-        // We create a concept file with frontmatter but with an invalid timestamp =====================================
-
-        // index.md
-        Path indexFilePath = Path.of(INDEX.getFileName());
-        Frontmatter frontmatter = Frontmatter.builder()
-                .type("Concept")
-                .timestamp("02-07-2026T14:30:00Z")
-                .build();
-        MarkdownFile indexFile = markdownFile(indexFilePath, INDEX, frontmatter);
+        // We create files that should not have frontmatter ============================================================
+        var indexFilePath = Path.of(INDEX.getFileName());
+        var frontmatter = Frontmatter.builder().build();
+        var indexFile = markdownFile(indexFilePath, INDEX, frontmatter);
 
         // log.md
-        Path logFilePath = Path.of(LOG.getFileName());
-        MarkdownFile logFile = markdownFile(logFilePath, LOG, frontmatter);
+        var logFilePath = Path.of(LOG.getFileName());
+        var logFile = markdownFile(logFilePath, LOG, frontmatter);
 
         // Run validation to check an unexpected frontmatter ============================================================
         assertThat(rule.validate(bundleWith(indexFile), indexFile)).satisfiesOnlyOnce(issue -> {
