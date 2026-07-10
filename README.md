@@ -39,11 +39,11 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ## CLI options
 
-| Variable      | Command          | Default  | Description |
-|---------------|------------------|----------|-------------|
+| Variable      | Command          | Default  | Description                                                                         |
+|---------------|------------------|----------|-------------------------------------------------------------------------------------|
 | `source`      | `check`, `build` | `.`      | Directory containing the Markdown files to read. Defaults to the current directory. |
-| `destination` | `build`          | `public` | Directory where generated files are created. Defaults to the `public` directory. |
-| `profile`     | `build`          |          | Publishing profile loaded from `.kiso/<name>/configuration.yaml`. |
+| `destination` | `build`          | `public` | Directory where generated files are created. Defaults to the `public` directory.    |
+| `profile`     | `build`          |          | Publishing profile loaded from `.kiso/<profile>/configuration.yaml`.                |
 
 ## Configuration file
 
