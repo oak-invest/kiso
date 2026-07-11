@@ -45,7 +45,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
     /** Static assets copied to the generated website root. */
     private static final String[] ASSET_PATHS = {
             "assets/css/application.css",
-            "assets/css/daisyui@5.css",
+            "assets/css/daisyui.css",
             "assets/css/themes.css",
             "assets/favicon/kiso_favicon_dark_16x16.svg",
             "assets/favicon/kiso_favicon_dark_32x32.svg",
@@ -53,7 +53,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             "assets/favicon/kiso_favicon_light_16x16.svg",
             "assets/favicon/kiso_favicon_light_32x32.svg",
             "assets/favicon/kiso_favicon_light_180x180.svg",
-            "assets/js/browser@4.js"
+            "assets/js/browser.js"
     };
 
     /** Source directory. */
@@ -102,7 +102,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Loading configuration ===================================================================================
             final Configuration configuration;
-            if (profile == null) {
+            if (StringUtils.isBlank(profile)) {
                 configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
             } else {
                 configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());

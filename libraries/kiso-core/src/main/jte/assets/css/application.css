@@ -74,6 +74,22 @@
 .kiso-navigation-menu .menu li > a,
 .kiso-navigation-menu .menu li > details > summary {
     border-radius: var(--radius-field);
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.35;
+}
+
+.kiso-navigation-menu-label {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.35;
 }
 
 /* Concept pages ================================================================================================ */

@@ -86,9 +86,9 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("topics/index.html")).exists();
         assertThat(destinationDirectory.resolve("topics/first-topic.html")).exists();
         assertThat(destinationDirectory.resolve("assets/css/application.css")).exists();
-        assertThat(destinationDirectory.resolve("assets/css/daisyui@5.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/daisyui.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
-        assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
 
         String topicHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
         assertThat(topicHtml)
@@ -188,11 +188,11 @@ class BuildCommandTest extends BaseTest {
         // Testing copied source files =================================================================================
         assertThat(destinationDirectory.resolve("index.html")).exists();
         assertThat(destinationDirectory.resolve("assets/css/application.css")).exists();
-        assertThat(destinationDirectory.resolve("assets/css/daisyui@5.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/css/daisyui.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/test.css")).exists();
         assertThat(destinationDirectory.resolve("assets/images/test.jpg")).exists();
-        assertThat(destinationDirectory.resolve("assets/js/browser@4.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
     }
 

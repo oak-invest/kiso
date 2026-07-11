@@ -125,6 +125,31 @@ class BuildCommandConfigurationTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Building Google OKF bundle with blank profile")
+    void buildWithBlankProfile() {
+        var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
+        Path destinationDirectory = temporaryDirectory.resolve("blank-profile");
+
+        StringWriter output = new StringWriter();
+        StringWriter error = new StringWriter();
+        int exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toString(),
+                        "--destination", destinationDirectory.toString(),
+                        "--profile", ""
+                );
+
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("Kiso-cli - Running build command")
+                .contains("HTML Generated for index.md")
+                .contains("Done!");
+    }
+
+    @Test
     @DisplayName("Building Google OKF bundle with unknown profile")
     void buildWithUnknownProfile() {
         // What we are testing - The Google example ====================================================================

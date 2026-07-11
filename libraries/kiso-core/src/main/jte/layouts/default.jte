@@ -22,12 +22,12 @@
     @endif
 
     <!-- CSS ======================================================================================================= -->
-    <link href="${assetBasePath}assets/css/daisyui@5.css" rel="stylesheet" type="text/css"/>
+    <link href="${assetBasePath}assets/css/daisyui.css" rel="stylesheet" type="text/css"/>
     <link href="${assetBasePath}assets/css/themes.css" rel="stylesheet" type="text/css"/>
     <link href="${assetBasePath}assets/css/application.css" rel="stylesheet" type="text/css"/>
 
     <!-- JS ======================================================================================================== -->
-    <script src="${assetBasePath}assets/js/browser@4.js"></script>
+    <script src="${assetBasePath}assets/js/browser.js"></script>
 
     <!-- Favicons ================================================================================================== -->
     <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>

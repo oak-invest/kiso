@@ -21,7 +21,6 @@ import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.groups.Tuple.tuple;
 
 public class MarkdownToHtmlRendererTest extends BaseTest {
 
@@ -62,11 +61,11 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.title()).isEqualTo("index.md");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
                 .containsExactly(
-                        "assets/css/daisyui@5.css",
+                        "assets/css/daisyui.css",
                         "assets/css/themes.css",
                         "assets/css/application.css"
                 );
-        assertThat(page.select("script[src]").eachAttr("src")).containsExactly("assets/js/browser@4.js");
+        assertThat(page.select("script[src]").eachAttr("src")).containsExactly("assets/js/browser.js");
 
         // Drawer.
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
@@ -74,18 +73,13 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
         assertThat(page.select(".drawer-side details[open]")).isEmpty();
-        assertThat(page.selectFirst(".drawer-side a[href='index.html']"))
-                .isNotNull()
-                .extracting(Element::text, Element::className)
-                .containsExactly(tuple("Index", "font-semibold"));
-        assertThat(page.selectFirst(".drawer-side details summary"))
-                .isNotNull()
-                .extracting(Element::text)
-                .containsExactly("datasets");
-        assertThat(page.selectFirst(".drawer-side a[href='datasets/ga4_obfuscated_sample_ecommerce.html']"))
-                .isNotNull()
-                .extracting(Element::text)
-                .containsExactly("BigQuery sample dataset for Google Analytics ecommerce web implementation");
+        var indexLink = page.selectFirst(".drawer-side a[href='index.html']");
+        assertThat(indexLink).isNotNull();
+        assertThat(indexLink.text()).isEqualTo("Index");
+        assertThat(indexLink.className()).isEqualTo("font-semibold");
+        assertElementText(page.selectFirst(".drawer-side details summary"), "datasets");
+        assertElementText(page.selectFirst(".drawer-side a[href='datasets/ga4_obfuscated_sample_ecommerce.html']"),
+                "BigQuery sample dataset for Google Analytics ecommerce web implementation");
 
         var kisoLink = page.selectFirst(".drawer-side a[href='https://oak-invest.github.io/kiso']");
         assertThat(kisoLink).isNotNull();
@@ -140,12 +134,12 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .containsExactly("A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
                 .containsExactly(
-                        "../assets/css/daisyui@5.css",
+                        "../assets/css/daisyui.css",
                         "../assets/css/themes.css",
                         "../assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
-                .containsExactly("../assets/js/browser@4.js");
+                .containsExactly("../assets/js/browser.js");
 
         // Drawer.
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
@@ -153,30 +147,13 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
         assertThat(page.select(".drawer-side details[open]")).hasSize(1);
-        assertThat(page.select(".drawer-side details[open] > summary"))
-                .isNotNull()
-                .extracting(Element::text)
-                .containsExactly("datasets");
-        assertThat(page.selectFirst(".drawer-side a[href='../index.html']"))
-                .isNotNull()
-                .extracting(Element::text)
-                .containsExactly("Index");
-        assertThat(page.selectFirst(".drawer-side summary"))
-                .isNotNull()
-                .extracting(Element::className)
-                .containsExactly("menu-active");
-        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"))
-                .isNotNull()
-                .extracting(Element::className)
-                .containsExactly("font-semibold");
-        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"))
-                .isNotNull()
-                .extracting(Element::className)
+        assertElementText(page.selectFirst(".drawer-side details[open] > summary"), "datasets");
+        assertElementText(page.selectFirst(".drawer-side a[href='../index.html']"), "Index");
+        assertElementClassName(page.selectFirst(".drawer-side summary"), "menu-active");
+        assertElementClassName(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"), "font-semibold");
+        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").className())
                 .doesNotContain("menu-active");
-        assertThat(page.selectFirst(".drawer-side a[href='../references/metrics/avg_pageviews.html']"))
-                .isNotNull()
-                .extracting(Element::text)
-                .containsExactly("Average Pageviews");
+        assertElementText(page.selectFirst(".drawer-side a[href='../references/metrics/avg_pageviews.html']"), "Average Pageviews");
 
         // Concept header.
         var header = page.selectFirst("main > section");
@@ -262,10 +239,19 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         assertThat(bundleTree.hasIndexPage()).isFalse();
         assertThat(page.select(".drawer-side a[href='index.html']")).isEmpty();
-        assertThat(page.selectFirst(".drawer-side a[href='concept.html']"))
-                .isNotNull()
-                .extracting(Element::text)
-                .containsExactly("Example");
+        var conceptLink = page.selectFirst(".drawer-side a[href='concept.html']");
+        assertThat(conceptLink).isNotNull();
+        assertThat(conceptLink.text()).isEqualTo("Example");
+    }
+
+    private static void assertElementText(Element element, String expectedText) {
+        assertThat(element).isNotNull();
+        assertThat(element.text()).isEqualTo(expectedText);
+    }
+
+    private static void assertElementClassName(Element element, String expectedClassName) {
+        assertThat(element).isNotNull();
+        assertThat(element.className()).isEqualTo(expectedClassName);
     }
 
 }
