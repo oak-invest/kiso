@@ -74,7 +74,7 @@
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
         <maven.puppycrawl.checkstyle.version>13.7.0</maven.puppycrawl.checkstyle.version>
         <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
-        <maven.dependency.plugin.version>3.6.1</maven.dependency.plugin.version>
+        <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
         <maven.antrun.plugin.version>3.1.0</maven.antrun.plugin.version>
         <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
