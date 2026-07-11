@@ -46,7 +46,7 @@ jobs:
       # Generate the knowledge bundle demo with the latest release of Kiso cli =========================================
 
       - name: Build with Kiso
-        uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.4
+        uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.5
         with:
           command: build
           source: examples/kb-google-example
