@@ -8,7 +8,7 @@
             <li>
                 <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
                    href="${assetBasePath}${bundleTree.indexHtmlPath()}">
-                    ${bundleTree.name()}
+                    <span class="kiso-navigation-menu-label">${bundleTree.name()}</span>
                 </a>
             </li>
         @endif
@@ -22,7 +22,7 @@
                 <li>
                     <a class="@if(page.href().equals(currentHtmlPath))font-semibold@endif"
                        href="${assetBasePath}${page.href()}">
-                        ${page.title()}
+                        <span class="kiso-navigation-menu-label">${page.title()}</span>
                     </a>
                 </li>
             @endif

@@ -100,6 +100,48 @@
                 </executions>
             </plugin>
 
+            <!-- Frontend dependencies ============================================================================= -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven.dependency.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>unpack-webjar-assets</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars.npm</groupId>
+                                    <artifactId>daisyui</artifactId>
+                                    <version>${daisyui.webjar.version}</version>
+                                    <outputDirectory>${project.build.directory}/generated-webjar-assets/daisyui
+                                    </outputDirectory>
+                                    <includes>
+                                        META-INF/resources/webjars/daisyui/${daisyui.webjar.version}/daisyui.css,
+                                        META-INF/resources/webjars/daisyui/${daisyui.webjar.version}/themes.css
+                                    </includes>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.webjars.npm</groupId>
+                                    <artifactId>tailwindcss__browser</artifactId>
+                                    <version>${tailwindcss.webjar.version}</version>
+                                    <outputDirectory>
+                                        ${project.build.directory}/generated-webjar-assets/tailwindcss-browser
+                                    </outputDirectory>
+                                    <includes>
+                                        META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js
+                                    </includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- Assets ============================================================================================ -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -117,6 +159,21 @@
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/src/main/jte/assets</directory>
+                                    <excludes>
+                                        <exclude>css/daisyui.css</exclude>
+                                        <exclude>css/themes.css</exclude>
+                                        <exclude>js/browser.js</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>
+                                        ${project.build.directory}/generated-webjar-assets/daisyui/META-INF/resources/webjars/daisyui/${daisyui.webjar.version}
+                                    </directory>
+                                    <targetPath>css</targetPath>
+                                    <includes>
+                                        <include>daisyui.css</include>
+                                        <include>themes.css</include>
+                                    </includes>
                                 </resource>
                             </resources>
                         </configuration>
@@ -132,8 +189,59 @@
                             <resources>
                                 <resource>
                                     <directory>${project.basedir}/src/main/jte/assets</directory>
+                                    <excludes>
+                                        <exclude>css/daisyui.css</exclude>
+                                        <exclude>css/themes.css</exclude>
+                                        <exclude>js/browser.js</exclude>
+                                    </excludes>
+                                </resource>
+                                <resource>
+                                    <directory>
+                                        ${project.build.directory}/generated-webjar-assets/daisyui/META-INF/resources/webjars/daisyui/${daisyui.webjar.version}
+                                    </directory>
+                                    <targetPath>css</targetPath>
+                                    <includes>
+                                        <include>daisyui.css</include>
+                                        <include>themes.css</include>
+                                    </includes>
                                 </resource>
                             </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>${maven.antrun.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-tailwind-browser-asset</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy
+                                        file="${project.build.directory}/generated-webjar-assets/tailwindcss-browser/META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js"
+                                        tofile="${project.build.outputDirectory}/assets/js/browser.js"/>
+                            </target>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-tailwind-browser-test-asset</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <copy
+                                        file="${project.build.directory}/generated-webjar-assets/tailwindcss-browser/META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js"
+                                        tofile="${project.build.directory}/assets/js/browser.js"/>
+                            </target>
                         </configuration>
                     </execution>
                 </executions>

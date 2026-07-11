@@ -63,7 +63,7 @@ public class RendererConfigurationTest extends BaseTest {
 
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
                 .containsExactly(
-                        "https://knowledge.angara.finance/assets/css/daisyui@5.css",
+                        "https://knowledge.angara.finance/assets/css/daisyui.css",
                         "https://knowledge.angara.finance/assets/css/themes.css",
                         "https://knowledge.angara.finance/assets/css/application.css"
                 );

@@ -75,7 +75,7 @@ release_run_check_straumat:
 release_run_build_straumat:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-stephane-traumat \
-      --destination=public/kb-stephane-traumat
+      --destination=public/kb-stephane-traumat-native
 
 # Website utils ========================================================================================================
 generate_website_demo:

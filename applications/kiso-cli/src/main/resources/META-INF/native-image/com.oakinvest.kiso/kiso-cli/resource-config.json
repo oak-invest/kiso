@@ -2,7 +2,7 @@
   "resources": {
     "includes": [
       {
-        "pattern": "assets/css/daisyui@5\\.css"
+        "pattern": "assets/css/daisyui\\.css"
       },
       {
         "pattern": "assets/css/themes\\.css"
@@ -11,7 +11,7 @@
         "pattern": "assets/css/application\\.css"
       },
       {
-        "pattern": "assets/js/browser@4\\.js"
+        "pattern": "assets/js/browser\\.js"
       },
       {
         "pattern": "assets/favicon/.*\\.svg"
