@@ -35,7 +35,12 @@ runs:
     - name: Run Kiso cli
       shell: bash
       run: |
-        ./kiso-cli ${{ inputs.command }} \
-          --source "${{ inputs.source }}" \
-          --destination "${{ inputs.destination }}" \
-          --profile "${{ inputs.profile }}"
+        arguments=(
+          "${{ inputs.command }}"
+          --source "${{ inputs.source }}"
+          --destination "${{ inputs.destination }}"
+        )
+        if [[ -n "${{ inputs.profile }}" ]]; then
+          arguments+=(--profile "${{ inputs.profile }}")
+        fi
+        ./kiso-cli "${arguments[@]}"

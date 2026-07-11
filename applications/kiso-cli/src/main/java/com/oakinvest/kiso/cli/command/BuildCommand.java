@@ -102,7 +102,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Loading configuration ===================================================================================
             final Configuration configuration;
-            if (profile == null) {
+            if (StringUtils.isBlank(profile)) {
                 configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
             } else {
                 configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());
