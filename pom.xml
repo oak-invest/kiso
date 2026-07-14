@@ -65,7 +65,7 @@
         <jackson.version>2.22.1</jackson.version>
 
         <!-- Test dependencies -->
-        <junit-jupiter.version>6.1.1</junit-jupiter.version>
+        <junit-jupiter.version>6.1.2</junit-jupiter.version>
         <junit-pionner.version>2.3.0</junit-pionner.version>
         <assertj.version>3.27.7</assertj.version>
         <jsoup.version>1.22.2</jsoup.version>
