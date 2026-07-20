@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.util.BaseTest;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -18,6 +19,18 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @TempDir
     private Path temporaryDirectory;
+
+    private static void assertMetaProperty(Document document, String property, String expected) {
+        var meta = document.selectFirst("meta[property=%s]".formatted(property));
+        assertThat(meta).isNotNull();
+        assertThat(meta.attr("content")).isEqualTo(expected);
+    }
+
+    private static void assertMetaName(Document document, String name, String expected) {
+        var meta = document.selectFirst("meta[name=%s]".formatted(name));
+        assertThat(meta).isNotNull();
+        assertThat(meta.attr("content")).isEqualTo(expected);
+    }
 
     @Test
     @DisplayName("Building Google OKF bundle with configuration")
@@ -73,6 +86,28 @@ class BuildCommandConfigurationTest extends BaseTest {
         assertThat(Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8))
                 .contains("[index.md](https://knowledge.angara.finance/index.md)")
                 .contains("[Event Count](https://knowledge.angara.finance/references/metrics/event_count.md)");
+
+        // Checking that the social preview images are generated =======================================================
+        assertThat(Files.exists(destinationDirectory.resolve("index.svg"))).isTrue();
+        assertThat(Files.exists(destinationDirectory.resolve("index.png"))).isTrue();
+        assertThat(Files.exists(destinationDirectory.resolve("references/metrics/event_count.svg"))).isTrue();
+        assertThat(Files.exists(destinationDirectory.resolve("references/metrics/event_count.png"))).isTrue();
+
+        // Checking the social share html tags =========================================================================
+        assertThat(Files.readString(destinationDirectory.resolve("references/metrics/event_count.html"), UTF_8))
+                .contains("<meta property=\"og:locale\" content=\"fr\">")
+                .contains("<meta property=\"og:site_name\" content=\"Knowledge Base\">")
+                .contains("<meta property=\"og:url\" content=\"https://knowledge.angara.finance/references/metrics/event_count.html\">")
+                .contains("<meta property=\"og:type\" content=\"website\">")
+                .contains("<meta property=\"og:title\" content=\"Event Count\">")
+                .contains("<meta property=\"og:description\" content=\"Total number of events.\">")
+                .contains("<meta property=\"og:image\" content=\"https://knowledge.angara.finance/references/metrics/event_count.html\">")
+                .contains("<meta property=\"og:image:width\" content=\"1200\">")
+                .contains("<meta property=\"og:image:height\" content=\"630\">")
+                .contains("<meta name=\"twitter:card\" content=\"summary_large_image\">")
+                .contains("<meta name=\"twitter:title\" content=\"Event Count\">")
+                .contains("<meta name=\"twitter:description\" content=\"Total number of events.\">")
+                .contains("<meta name=\"twitter:image\" content=\"https://knowledge.angara.finance/references/metrics/event_count.html\">");
     }
 
     @Test

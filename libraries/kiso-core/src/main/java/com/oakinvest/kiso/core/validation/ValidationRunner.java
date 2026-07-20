@@ -32,7 +32,7 @@ public class ValidationRunner {
     public static ValidationReport runValidation(final KnowledgeBundle knowledgeBundle) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
 
-        List<ValidationIssue> issues = new LinkedList<>();
+        final List<ValidationIssue> issues = new LinkedList<>();
         knowledgeBundle.bundles()
                 // For each bundle =====================================================================================
                 .forEach(bundle ->

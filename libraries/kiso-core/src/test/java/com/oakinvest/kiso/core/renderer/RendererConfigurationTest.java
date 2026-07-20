@@ -38,6 +38,7 @@ public class RendererConfigurationTest extends BaseTest {
         var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance/",
                 Locale.FRENCH,
+                "Nom du site",
                 "Titre du site",
                 "Description du site");
         var themeConfiguration = new ThemeConfiguration(

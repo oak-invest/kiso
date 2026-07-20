@@ -14,8 +14,10 @@ import com.oakinvest.kiso.core.publisher.IndexMarkdownGenerator;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
+import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
 import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import picocli.CommandLine;
 
@@ -170,6 +172,21 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                                 print("HTML Generated for " + markdownFile.relativePath());
                             } catch (IOException e) {
                                 printError("Error generating HTML for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                            }
+
+                            // We also generate the social preview images for every Markdown file ======================
+                            if (StringUtils.isNotBlank(configuration.site().baseUrl())) {
+                                try {
+                                    SocialPreviewImageGenerator.generate(
+                                            configuration.site().title(),
+                                            markdownFile.title(),
+                                            markdownFile.description(),
+                                            configuration.site().normalizedBaseUrl() + markdownFile.htmlFilePath(),
+                                            bundle.absolutePath(),
+                                            FilenameUtils.removeExtension(markdownFile.htmlFileName()));
+                                } catch (Exception e) {
+                                    printError("Error generating social preview image for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                                }
                             }
                         });
 

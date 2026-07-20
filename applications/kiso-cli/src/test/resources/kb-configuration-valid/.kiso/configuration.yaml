@@ -1,6 +1,7 @@
 site:
   baseUrl: https://knowledge.angara.finance/
   language: fr
+  name: Knowledge Base
   title: My Knowledge Base
   description: My knowledge base description
 

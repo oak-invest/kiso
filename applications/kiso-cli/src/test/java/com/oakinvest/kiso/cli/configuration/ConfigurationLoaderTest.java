@@ -27,6 +27,7 @@ public class ConfigurationLoaderTest extends BaseTest {
                     // Site ============================================================================================
                     assertThat(configuration.site().baseUrl()).isEqualTo("https://knowledge.angara.finance/");
                     assertThat(configuration.site().language()).isEqualTo(Locale.FRENCH);
+                    assertThat(configuration.site().name()).isEqualTo("Knowledge Base");
                     assertThat(configuration.site().title()).isEqualTo("My Knowledge Base");
                     assertThat(configuration.site().description()).isEqualTo("My knowledge base description");
 

@@ -3,6 +3,7 @@
 @param com.oakinvest.kiso.core.renderer.model.page.IndexPage page
 
 @template.layouts.default(
+siteName = page.siteConfiguration().name(),
 dataTheme  = page.themeConfiguration().effectiveName(),
 language = page.siteConfiguration().languageTag(),
 title = page.metadata().title(),

@@ -1,5 +1,6 @@
 @param String dataTheme
 @param String language
+@param String siteName
 @param String title
 @param String description
 @param String markdownFileName
@@ -47,6 +48,24 @@
           rel="icon"
           sizes="16x16" type="image/svg+xml">
     <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_180x180.svg" rel="apple-touch-icon" sizes="180x180">
+
+    <!-- Social preview ============================================================================================ -->
+    @if(assetBasePath != null)
+        <meta property="og:locale" content="${language}">
+        <meta property="og:site_name" content="${siteName}">
+        <meta property="og:url" content="${assetBasePath}${currentHtmlPath}">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="${title}">
+        <meta property="og:description" content="${description}">
+        <meta property="og:image" content="${assetBasePath}${currentHtmlPath}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="${title}">
+        <meta name="twitter:description" content="${description}">
+        <meta name="twitter:image" content="${assetBasePath}${currentHtmlPath}">
+    @endif
 
     <!-- AI Specific =============================================================================================== -->
     @if(markdownFileName != null)

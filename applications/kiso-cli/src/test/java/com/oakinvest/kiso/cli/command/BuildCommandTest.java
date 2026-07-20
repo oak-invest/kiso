@@ -64,6 +64,9 @@ class BuildCommandTest extends BaseTest {
                         "--destination", destinationDirectory.toString()
                 );
 
+        // Checking that the social preview images are generated =======================================================
+        assertThat(Files.exists(destinationDirectory.resolve("index.png"))).isFalse();
+
         // Testing command result ======================================================================================
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();

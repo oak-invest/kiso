@@ -3,6 +3,7 @@
 @param com.oakinvest.kiso.core.renderer.model.page.ConceptPage page
 
 @template.layouts.default(
+siteName = page.siteConfiguration().name(),
 dataTheme  = page.themeConfiguration().effectiveName(),
 language = page.siteConfiguration().languageTag(),
 title = page.metadata().title(),
@@ -24,7 +25,7 @@ content = @`
     -->
     <section class="mb-8 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm">
 
-        <!-- Header (Type, last update, title & description ======================================================== -->
+        <!-- Header (Type, last update, title & description) ======================================================= -->
         <div class="border-b border-base-300 bg-base-300/30 px-6 py-6 sm:px-8">
 
             <!-- Type ============================================================================================== -->
@@ -56,7 +57,6 @@ content = @`
             <!--
                 Render a description paragraph slightly below the title, constrained to a readable width, with slightly
                 larger text, generous line spacing, and reduced contrast so it feels secondary to the main heading.
-                    text-base-content/70 - Mix of DaisyUI + Tailwind opacity syntax.
             -->
             @if(page.metadata().description() != null)
                 <p class="mt-4 max-w-3xl text-lg leading-8 text-base-content/70">

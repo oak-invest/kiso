@@ -4,6 +4,8 @@ import lombok.experimental.UtilityClass;
 
 import java.util.Locale;
 
+import static java.util.Locale.ENGLISH;
+
 /**
  * Internationalization constants.
  */
@@ -12,6 +14,6 @@ import java.util.Locale;
 public class InternationalizationConstants {
 
     /** Default language. */
-    public static final Locale DEFAULT_LANGUAGE = Locale.ENGLISH;
+    public static final Locale DEFAULT_LANGUAGE = ENGLISH;
 
 }

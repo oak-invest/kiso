@@ -66,6 +66,7 @@ class LlmsTxtGeneratorTest extends BaseTest {
                 "https://knowledge.angara.finance",
                 null,
                 null,
+                null,
                 null);
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
         var content = LlmsTxtGenerator.generate(knowledgeBundle);

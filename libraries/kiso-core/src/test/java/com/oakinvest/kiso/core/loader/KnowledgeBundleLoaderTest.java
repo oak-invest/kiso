@@ -25,6 +25,7 @@ class KnowledgeBundleLoaderTest {
         SiteConfiguration siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance/",
                 Locale.FRENCH,
+                "Site name",
                 "Knowledge",
                 "Description");
 

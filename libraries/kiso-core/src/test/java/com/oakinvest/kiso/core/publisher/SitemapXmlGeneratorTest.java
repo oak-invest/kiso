@@ -57,6 +57,7 @@ class SitemapXmlGeneratorTest extends BaseTest {
         var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance/",
                 Locale.FRENCH,
+                "Site name",
                 "Knowledge",
                 "Description");
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
