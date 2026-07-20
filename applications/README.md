@@ -3,7 +3,7 @@
 This directory contains all executable applications built from the Kiso codebase.
 
 - `kiso-cli/` — the Kiso command-line interface (`kiso-cli build`, etc...).
-- `kiso-cli-actions/` — GitHub Actions for Kiso CLI.
+- `kiso-cli-action/` — GitHub Actions for Kiso CLI.
 
 ## Developer setup
 
