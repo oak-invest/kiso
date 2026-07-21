@@ -22,6 +22,22 @@ import java.nio.file.Path;
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class SvgToPngConverter {
 
+    /** GraalVM property exposing whether the code is running inside a native image. */
+    private static final String NATIVE_IMAGE_CODE_PROPERTY = "org.graalvm.nativeimage.imagecode";
+
+    /** GraalVM property value used at native image runtime. */
+    private static final String NATIVE_IMAGE_RUNTIME_CODE = "runtime";
+
+    /**
+     * Returns true when SVG to PNG conversion can run safely.
+     * Batik uses AWT internals that are not reliable in GraalVM native image runtime.
+     *
+     * @return true when SVG to PNG conversion is available
+     */
+    public static boolean isAvailable() {
+        return !NATIVE_IMAGE_RUNTIME_CODE.equals(System.getProperty(NATIVE_IMAGE_CODE_PROPERTY));
+    }
+
     /**
      * Converts an SVG file to PNG format.
      * The PNG will maintain the same dimensions as specified in the SVG.

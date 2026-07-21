@@ -77,6 +77,7 @@ class BuildCommandTest extends BaseTest {
                 .contains("HTML Generated for topics/first-topic.md")
                 .contains("File llms.txt generated")
                 .contains("File sitemap.xml generated")
+                .contains("File search-index.json generated")
                 .contains("Done!");
 
         // Testing copied source files =================================================================================
@@ -92,6 +93,15 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/daisyui.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/minisearch.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
+        assertThat(destinationDirectory.resolve("search-index.json")).exists();
+
+        String searchIndexJson = Files.readString(destinationDirectory.resolve("search-index.json"), UTF_8);
+        assertThat(searchIndexJson)
+                .contains("\"id\" : \"topics/first-topic\"")
+                .contains("\"url\" : \"topics/first-topic.html\"")
+                .contains("\"title\" : \"First Topic\"");
 
         String topicHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
         assertThat(topicHtml)
@@ -186,6 +196,7 @@ class BuildCommandTest extends BaseTest {
                 .contains("HTML Generated for index.md")
                 .contains("File llms.txt generated")
                 .contains("File sitemap.xml generated")
+                .contains("File search-index.json generated")
                 .contains("Done!");
 
         // Testing copied source files =================================================================================
@@ -196,7 +207,10 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/test.css")).exists();
         assertThat(destinationDirectory.resolve("assets/images/test.jpg")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/minisearch.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
+        assertThat(destinationDirectory.resolve("search-index.json")).exists();
     }
 
 }

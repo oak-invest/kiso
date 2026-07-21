@@ -36,4 +36,7 @@ public final class FileConstants {
     /** Filename for sitemap.xml. */
     public static final String SITEMAP_XML_FILENAME = "sitemap.xml";
 
+    /** Filename for the search index JSON file. */
+    public static final String SEARCH_INDEX_JSON_FILENAME = "search-index.json";
+
 }

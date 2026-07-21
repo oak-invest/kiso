@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.exception.SocialPreviewGenerationException;
-import com.oakinvest.kiso.core.renderer.model.SocialPreviewImage;
+import com.oakinvest.kiso.core.model.html.SocialPreviewImage;
 import com.oakinvest.kiso.core.renderer.util.SvgToPngConverter;
 import com.oakinvest.kiso.core.renderer.util.TextWrapper;
 import gg.jte.ContentType;
@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.PNG_EXTENSION;
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.SVG_EXTENSION;
 import static com.oakinvest.kiso.core.util.SocialPreviewConstants.CANVAS_HEIGHT;
 import static com.oakinvest.kiso.core.util.SocialPreviewConstants.CANVAS_WIDTH;
 import static com.oakinvest.kiso.core.util.SocialPreviewConstants.DESCRIPTION_MAXIMUM_LINES;
@@ -112,8 +114,8 @@ public final class SocialPreviewImageGenerator {
                 .build();
 
         // Filenames.
-        final Path svgPath = outputDirectory.resolve(filename + ".svg");
-        final Path pngPath = outputDirectory.resolve(filename + ".png");
+        final Path svgPath = outputDirectory.resolve(filename + SVG_EXTENSION);
+        final Path pngPath = outputDirectory.resolve(filename + PNG_EXTENSION);
 
         // Image generation.
         generateSvgFile(preview, svgPath);
@@ -146,6 +148,9 @@ public final class SocialPreviewImageGenerator {
      * @param pngPath the path where the PNG file will be written
      */
     private static void generatePngFile(final Path svgPath, final Path pngPath) {
+        if (!SvgToPngConverter.isAvailable()) {
+            return;
+        }
         SvgToPngConverter.convert(svgPath, pngPath, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 

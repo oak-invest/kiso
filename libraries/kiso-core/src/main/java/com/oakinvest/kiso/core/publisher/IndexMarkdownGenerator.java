@@ -1,7 +1,8 @@
 package com.oakinvest.kiso.core.publisher;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
@@ -17,8 +18,7 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
 
@@ -99,7 +99,7 @@ public class IndexMarkdownGenerator {
         Paragraph paragraph = new Paragraph();
 
         // Link + filename.
-        Link link = new Link(baseUrl + bundle.simpleName() + "/" + INDEX.getFileName(), null);
+        Link link = new Link(baseUrl + bundle.simpleName() + "/" + MarkdownFileKind.INDEX.getFileName(), null);
         link.appendChild(new Text(bundle.name()));
         paragraph.appendChild(link);
 

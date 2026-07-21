@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.loader;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
-import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

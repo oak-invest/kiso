@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;

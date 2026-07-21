@@ -1,4 +1,4 @@
 /**
- * Core Kiso data model.
+ * Kiso data model.
  */
 package com.oakinvest.kiso.core.model;

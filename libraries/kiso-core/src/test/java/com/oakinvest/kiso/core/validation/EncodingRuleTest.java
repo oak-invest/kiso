@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_ENCODING;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,9 +1,9 @@
 package com.oakinvest.kiso.core.util;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 
 import java.net.URISyntaxException;
 import java.net.URL;

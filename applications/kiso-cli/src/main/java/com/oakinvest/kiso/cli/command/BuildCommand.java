@@ -9,13 +9,14 @@ import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.publisher.IndexMarkdownGenerator;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
+import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,9 +30,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
 
 /**
@@ -55,7 +57,9 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             "assets/favicon/kiso_favicon_light_16x16.svg",
             "assets/favicon/kiso_favicon_light_32x32.svg",
             "assets/favicon/kiso_favicon_light_180x180.svg",
-            "assets/js/browser.js"
+            "assets/js/browser.js",
+            "assets/js/minisearch.js",
+            "assets/js/kiso-search.js"
     };
 
     /** Source directory. */
@@ -207,6 +211,14 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     StandardCharsets.UTF_8
             );
             print("File sitemap.xml generated");
+
+            // search-index.json generation ==========================================================================
+            FileUtils.writeStringToFile(
+                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), SEARCH_INDEX_JSON_FILENAME),
+                    SearchIndexGenerator.generate(knowledgeBundle),
+                    StandardCharsets.UTF_8
+            );
+            print("File search-index.json generated");
 
             // Add HTML assets =========================================================================================
             copyKisoAssets(destinationDirectory);

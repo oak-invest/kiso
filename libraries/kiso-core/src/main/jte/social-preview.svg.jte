@@ -1,4 +1,4 @@
-@import com.oakinvest.kiso.core.renderer.model.SocialPreviewImage
+@import com.oakinvest.kiso.core.model.html.SocialPreviewImage
 
 @param SocialPreviewImage preview
 

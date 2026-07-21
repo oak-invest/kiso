@@ -14,6 +14,12 @@
         "pattern": "assets/js/browser\\.js"
       },
       {
+        "pattern": "assets/js/minisearch\\.js"
+      },
+      {
+        "pattern": "assets/js/kiso-search\\.js"
+      },
+      {
         "pattern": "assets/favicon/.*\\.svg"
       }
     ]

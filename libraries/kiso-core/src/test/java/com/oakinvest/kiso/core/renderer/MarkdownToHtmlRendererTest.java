@@ -3,7 +3,7 @@ package com.oakinvest.kiso.core.renderer;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -26,6 +26,16 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
     @TempDir
     private Path temporaryDirectory;
+
+    private static void assertElementText(Element element, String expectedText) {
+        assertThat(element).isNotNull();
+        assertThat(element.text()).isEqualTo(expectedText);
+    }
+
+    private static void assertElementClassName(Element element, String expectedClassName) {
+        assertThat(element).isNotNull();
+        assertThat(element.className()).isEqualTo(expectedClassName);
+    }
 
     @BeforeEach
     void setup() {
@@ -65,7 +75,11 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "assets/css/themes.css",
                         "assets/css/application.css"
                 );
-        assertThat(page.select("script[src]").eachAttr("src")).containsExactly("assets/js/browser.js");
+        assertThat(page.select("script[src]").eachAttr("src"))
+                .containsExactly("assets/js/browser.js", "assets/js/minisearch.js", "assets/js/kiso-search.js");
+        assertThat(page.selectFirst(".kiso-search-button[aria-label='Search'] .kiso-search-icon")).isNotNull();
+        assertThat(page.selectFirst(".kiso-search[data-search-index-url='search-index.json']")).isNotNull();
+        assertThat(page.selectFirst(".kiso-search-input[type=search]")).isNotNull();
 
         // Drawer.
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
@@ -139,7 +153,8 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
-                .containsExactly("../assets/js/browser.js");
+                .containsExactly("../assets/js/browser.js", "../assets/js/minisearch.js", "../assets/js/kiso-search.js");
+        assertThat(page.selectFirst(".kiso-search[data-search-index-url='../search-index.json']")).isNotNull();
 
         // Drawer.
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
@@ -242,16 +257,6 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         var conceptLink = page.selectFirst(".drawer-side a[href='concept.html']");
         assertThat(conceptLink).isNotNull();
         assertThat(conceptLink.text()).isEqualTo("Example");
-    }
-
-    private static void assertElementText(Element element, String expectedText) {
-        assertThat(element).isNotNull();
-        assertThat(element.text()).isEqualTo(expectedText);
-    }
-
-    private static void assertElementClassName(Element element, String expectedClassName) {
-        assertThat(element).isNotNull();
-        assertThat(element.className()).isEqualTo(expectedClassName);
     }
 
 }

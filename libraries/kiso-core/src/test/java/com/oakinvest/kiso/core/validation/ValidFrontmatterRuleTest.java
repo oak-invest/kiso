@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;

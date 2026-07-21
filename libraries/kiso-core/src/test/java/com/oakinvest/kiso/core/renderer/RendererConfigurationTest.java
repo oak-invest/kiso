@@ -3,7 +3,7 @@ package com.oakinvest.kiso.core.renderer;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;

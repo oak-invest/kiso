@@ -4,7 +4,7 @@ import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import picocli.CommandLine;
 
 import java.io.File;

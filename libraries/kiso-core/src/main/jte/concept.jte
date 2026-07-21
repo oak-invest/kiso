@@ -1,6 +1,6 @@
 @import java.time.format.DateTimeFormatter
 
-@param com.oakinvest.kiso.core.renderer.model.page.ConceptPage page
+@param com.oakinvest.kiso.core.model.html.page.ConceptPage page
 
 @template.layouts.default(
 siteName = page.siteConfiguration().name(),

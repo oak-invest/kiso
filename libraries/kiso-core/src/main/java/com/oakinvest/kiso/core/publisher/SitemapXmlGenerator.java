@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.publisher;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.SitemapConstants.SITEMAP_NAMESPACE;
 

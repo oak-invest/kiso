@@ -1,6 +1,6 @@
-package com.oakinvest.kiso.core.model.bundle;
+package com.oakinvest.kiso.core.model.okf.bundle;
 
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 
@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 
 /**
  * A bundle is a directory tree of markdown files.

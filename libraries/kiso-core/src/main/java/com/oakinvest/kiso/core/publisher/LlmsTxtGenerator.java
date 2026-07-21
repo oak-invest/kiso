@@ -1,7 +1,8 @@
 package com.oakinvest.kiso.core.publisher;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.BulletList;
@@ -17,7 +18,6 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
@@ -63,7 +63,7 @@ public class LlmsTxtGenerator {
                     list.setMarker("-");
                     list.setTight(true);
                     bundle.markdownFiles().stream()
-                            .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
+                            .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != MarkdownFileKind.INDEX))
                             .forEach(markdownFile -> list.appendChild(markdownFileListItem(
                                     knowledgeBundle.siteConfiguration().normalizedBaseUrl(),
                                     markdownFile)));

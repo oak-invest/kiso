@@ -2,11 +2,11 @@ package com.oakinvest.kiso.core.loader;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
-import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;

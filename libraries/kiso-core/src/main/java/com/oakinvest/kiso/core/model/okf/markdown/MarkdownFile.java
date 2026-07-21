@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.model.markdown;
+package com.oakinvest.kiso.core.model.okf.markdown;
 
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
@@ -9,8 +9,8 @@ import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.HTML_EXTENSION;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 

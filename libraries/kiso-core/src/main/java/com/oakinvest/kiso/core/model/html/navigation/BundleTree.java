@@ -1,7 +1,7 @@
-package com.oakinvest.kiso.core.renderer.model.navigation;
+package com.oakinvest.kiso.core.model.html.navigation;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 

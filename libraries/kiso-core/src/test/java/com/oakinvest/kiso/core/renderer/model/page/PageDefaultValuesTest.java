@@ -2,7 +2,10 @@ package com.oakinvest.kiso.core.renderer.model.page;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
-import com.oakinvest.kiso.core.renderer.model.PageMetadata;
+import com.oakinvest.kiso.core.model.html.PageMetadata;
+import com.oakinvest.kiso.core.model.html.page.ConceptPage;
+import com.oakinvest.kiso.core.model.html.page.IndexPage;
+import com.oakinvest.kiso.core.model.html.page.LogPage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

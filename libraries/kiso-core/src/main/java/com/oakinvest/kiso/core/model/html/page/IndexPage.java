@@ -1,15 +1,15 @@
-package com.oakinvest.kiso.core.renderer.model.page;
+package com.oakinvest.kiso.core.model.html.page;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
-import com.oakinvest.kiso.core.renderer.model.PageMetadata;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.html.PageMetadata;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Log page.
+ * Index page.
  *
  * @param siteConfiguration  the site configuration
  * @param themeConfiguration the theme configuration
@@ -19,7 +19,7 @@ import org.jspecify.annotations.Nullable;
  */
 @Builder
 @SuppressWarnings("unused")
-public record LogPage(
+public record IndexPage(
         SiteConfiguration siteConfiguration,
         ThemeConfiguration themeConfiguration,
         PageMetadata metadata,
@@ -28,9 +28,9 @@ public record LogPage(
 ) {
 
     /**
-     * Creates a log page with safe default values.
+     * Creates an index page with safe default values.
      */
-    public LogPage {
+    public IndexPage {
         if (siteConfiguration == null) {
             siteConfiguration = SiteConfiguration.empty();
         }

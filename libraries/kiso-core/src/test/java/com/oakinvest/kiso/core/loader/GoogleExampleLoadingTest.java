@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.loader;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,8 +10,8 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GoogleExampleLoadingTest extends BaseTest {

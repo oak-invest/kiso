@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.cli.util;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import com.oakinvest.kiso.core.validation.ValidationReport;
 import com.oakinvest.kiso.core.validation.ValidationRunner;

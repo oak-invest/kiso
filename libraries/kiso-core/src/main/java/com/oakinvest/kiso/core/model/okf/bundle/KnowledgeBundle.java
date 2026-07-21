@@ -1,7 +1,7 @@
-package com.oakinvest.kiso.core.model.bundle;
+package com.oakinvest.kiso.core.model.okf.bundle;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.Builder;
 
 import java.util.stream.Stream;

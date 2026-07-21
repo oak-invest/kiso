@@ -5,7 +5,7 @@
 @param String description
 @param String markdownFileName
 @param String assetBasePath
-@param com.oakinvest.kiso.core.renderer.model.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
 @param String currentHtmlPath
 @param gg.jte.Content content
 
@@ -29,6 +29,8 @@
 
     <!-- JS ======================================================================================================== -->
     <script src="${assetBasePath}assets/js/browser.js"></script>
+    <script src="${assetBasePath}assets/js/minisearch.js"></script>
+    <script src="${assetBasePath}assets/js/kiso-search.js" defer></script>
 
     <!-- Favicons ================================================================================================== -->
     <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
@@ -96,6 +98,22 @@ current DaisyUI theme, and displays text using the default readable text color f
                    class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
                 <span class="kiso-hamburger" aria-hidden="true"></span>
             </label>
+            <div class="kiso-search" data-search-index-url="${assetBasePath}search-index.json" data-search-result-base-url="${assetBasePath}">
+                <button type="button"
+                        class="kiso-search-button btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur"
+                        aria-label="Search"
+                        aria-expanded="false">
+                    <span class="kiso-search-icon" aria-hidden="true"></span>
+                </button>
+                <div class="kiso-search-panel">
+                    <input class="kiso-search-input input input-bordered input-sm w-64 bg-base-100 shadow-sm"
+                           type="search"
+                           placeholder="Search"
+                           autocomplete="off"
+                           aria-label="Search">
+                    <div class="kiso-search-results menu rounded-box mt-2 hidden w-80 max-w-[calc(100vw-1.5rem)] bg-base-100 p-2 shadow-lg"></div>
+                </div>
+            </div>
         </div>
 
         <!--

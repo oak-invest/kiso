@@ -92,4 +92,38 @@ final class SvgToPngConverterTest {
         assertThat(pngPath).exists();
     }
 
+    @Test
+    @DisplayName("reports conversion as unavailable in native image runtime")
+    void reportsConversionAsUnavailableInNativeImageRuntime() {
+        String previousValue = System.getProperty("org.graalvm.nativeimage.imagecode");
+        try {
+            System.setProperty("org.graalvm.nativeimage.imagecode", "runtime");
+
+            assertThat(SvgToPngConverter.isAvailable()).isFalse();
+        } finally {
+            restoreNativeImageCodeProperty(previousValue);
+        }
+    }
+
+    @Test
+    @DisplayName("reports conversion as available outside native image runtime")
+    void reportsConversionAsAvailableOutsideNativeImageRuntime() {
+        String previousValue = System.getProperty("org.graalvm.nativeimage.imagecode");
+        try {
+            System.clearProperty("org.graalvm.nativeimage.imagecode");
+
+            assertThat(SvgToPngConverter.isAvailable()).isTrue();
+        } finally {
+            restoreNativeImageCodeProperty(previousValue);
+        }
+    }
+
+    private static void restoreNativeImageCodeProperty(final String previousValue) {
+        if (previousValue == null) {
+            System.clearProperty("org.graalvm.nativeimage.imagecode");
+        } else {
+            System.setProperty("org.graalvm.nativeimage.imagecode", previousValue);
+        }
+    }
+
 }

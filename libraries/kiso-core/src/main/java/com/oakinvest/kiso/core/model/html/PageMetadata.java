@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.renderer.model;
+package com.oakinvest.kiso.core.model.html;
 
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;

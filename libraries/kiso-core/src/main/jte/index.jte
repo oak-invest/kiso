@@ -1,6 +1,6 @@
 @import org.apache.commons.lang3.StringUtils
 
-@param com.oakinvest.kiso.core.renderer.model.page.IndexPage page
+@param com.oakinvest.kiso.core.model.html.page.IndexPage page
 
 @template.layouts.default(
 siteName = page.siteConfiguration().name(),

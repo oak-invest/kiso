@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_ENCODING;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 
