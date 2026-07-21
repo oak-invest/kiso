@@ -26,15 +26,24 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Download Java runtime
+      shell: bash
+      run: |
+        java_home="$RUNNER_TEMP/kiso-java"
+        java_archive="$RUNNER_TEMP/kiso-java.tar.gz"
+        mkdir -p "$java_home"
+        curl -fsSL -o "$java_archive" "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jre/hotspot/normal/eclipse"
+        tar -xzf "$java_archive" -C "$java_home" --strip-components=1
+
     - name: Download Kiso cli
       shell: bash
       run: |
-        curl -L -o kiso-cli https://github.com/oak-invest/kiso/releases/download/${{ inputs.version }}/kiso-cli-linux-x64
-        chmod +x kiso-cli
+        curl -fsSL -o kiso-cli.jar https://github.com/oak-invest/kiso/releases/download/${{ inputs.version }}/kiso-cli.jar
 
     - name: Run Kiso cli
       shell: bash
       run: |
+        java="$RUNNER_TEMP/kiso-java/bin/java"
         arguments=(
           "${{ inputs.command }}"
           --source "${{ inputs.source }}"
@@ -43,4 +52,4 @@ runs:
         if [[ -n "${{ inputs.profile }}" ]]; then
           arguments+=(--profile "${{ inputs.profile }}")
         fi
-        ./kiso-cli "${arguments[@]}"
+        "$java" -jar kiso-cli.jar "${arguments[@]}"
