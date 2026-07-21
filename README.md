@@ -1,4 +1,6 @@
 # Kiso
+[![OKF BundleDex](https://bundledex.net/static-badge.svg)](https://bundledex.net)
+
 Kiso is a publishing engine that turns [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) bundles into static websites for humans and AI agents (`llms.txt` and `sitemap.xml` included).
 
 ## Kiso cli quick start
