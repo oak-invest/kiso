@@ -23,6 +23,12 @@ jobs:
       - name: Set up environment
         uses: ./.github/actions/setup
 
+      - name: Install system dependencies for PNG tests
+        run: |
+          sudo apt update
+          sudo apt install -y librsvg2-bin inkscape
+          cargo install resvg
+
       - name: build and run tests
         run: |
           just test

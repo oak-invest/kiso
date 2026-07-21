@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @DisplayName("SvgToPngConverter")
 final class SvgToPngConverterTest {
@@ -93,26 +94,52 @@ final class SvgToPngConverterTest {
     }
 
     @Test
-    @DisplayName("reports conversion as unavailable in native image runtime")
-    void reportsConversionAsUnavailableInNativeImageRuntime() {
+    @DisplayName("reports conversion as available in JVM mode")
+    void reportsConversionAsAvailableInJvmMode() {
         String previousValue = System.getProperty("org.graalvm.nativeimage.imagecode");
         try {
-            System.setProperty("org.graalvm.nativeimage.imagecode", "runtime");
+            System.clearProperty("org.graalvm.nativeimage.imagecode");
 
-            assertThat(SvgToPngConverter.isAvailable()).isFalse();
+            assertThat(SvgToPngConverter.isAvailable()).isTrue();
         } finally {
             restoreNativeImageCodeProperty(previousValue);
         }
     }
 
     @Test
-    @DisplayName("reports conversion as available outside native image runtime")
-    void reportsConversionAsAvailableOutsideNativeImageRuntime() {
+    @DisplayName("finds an external tool when running in native image mode")
+    void findsExternalToolInNativeImageMode() {
+        assumeTrue(SvgToPngConverter.findExternalTool() != null,
+                "Skipped: no external SVG to PNG tool (rsvg-convert, inkscape, resvg) installed");
+
         String previousValue = System.getProperty("org.graalvm.nativeimage.imagecode");
         try {
-            System.clearProperty("org.graalvm.nativeimage.imagecode");
+            System.setProperty("org.graalvm.nativeimage.imagecode", "runtime");
 
             assertThat(SvgToPngConverter.isAvailable()).isTrue();
+        } finally {
+            restoreNativeImageCodeProperty(previousValue);
+        }
+    }
+
+    @Test
+    @DisplayName("converts SVG to PNG using external tool in native image mode")
+    void convertsSvgToPngWithExternalToolInNativeImageMode(@TempDir Path tempDir) throws Exception {
+        assumeTrue(SvgToPngConverter.findExternalTool() != null,
+                "Skipped: no external SVG to PNG tool (rsvg-convert, inkscape, resvg) installed");
+
+        Path svgPath = tempDir.resolve("test.svg");
+        Path pngPath = tempDir.resolve("test.png");
+        Files.writeString(svgPath, SAMPLE_SVG);
+
+        String previousValue = System.getProperty("org.graalvm.nativeimage.imagecode");
+        try {
+            System.setProperty("org.graalvm.nativeimage.imagecode", "runtime");
+
+            SvgToPngConverter.convert(svgPath, pngPath, 1200, 630);
+
+            assertThat(pngPath).exists();
+            assertThat(Files.size(pngPath)).isGreaterThan(0);
         } finally {
             restoreNativeImageCodeProperty(previousValue);
         }
