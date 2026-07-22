@@ -29,27 +29,31 @@
 
     <!-- JS ======================================================================================================== -->
     <script src="${assetBasePath}assets/js/browser.js"></script>
+    <script src="${assetBasePath}assets/js/i18next.js"></script>
     <script src="${assetBasePath}assets/js/minisearch.js"></script>
+    <script src="${assetBasePath}assets/js/kiso-i18n.js"
+            data-i18n-base-url="${assetBasePath}assets/i18n/"
+            data-i18n-languages="en,fr"
+            defer></script>
     <script src="${assetBasePath}assets/js/kiso-search.js" defer></script>
 
     <!-- Favicons ================================================================================================== -->
-    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
-    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
-    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" media="(prefers-color-scheme: light)"
-          rel="icon"
-          sizes="32x32" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_16x16.svg"
+          rel="icon" type="image/svg+xml"/>
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg"
+          rel="icon" type="image/svg+xml"/>
     <link href="${assetBasePath}assets/favicon/kiso_favicon_light_16x16.svg" media="(prefers-color-scheme: light)"
-          rel="icon"
-          sizes="16x16" type="image/svg+xml">
-    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_180x180.svg" rel="apple-touch-icon" sizes="180x180">
-
-    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_32x32.svg" media="(prefers-color-scheme: dark)"
-          rel="icon"
-          sizes="32x32" type="image/svg+xml">
+          rel="icon" sizes="16x16" type="image/svg+xml">
     <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_16x16.svg" media="(prefers-color-scheme: dark)"
-          rel="icon"
-          sizes="16x16" type="image/svg+xml">
-    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_180x180.svg" rel="apple-touch-icon" sizes="180x180">
+          rel="icon" sizes="16x16" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_32x32.svg" media="(prefers-color-scheme: light)"
+          rel="icon" sizes="32x32" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_32x32.svg" media="(prefers-color-scheme: dark)"
+          rel="icon" sizes="32x32" type="image/svg+xml">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_light_180x180.svg"
+          rel="apple-touch-icon" sizes="180x180">
+    <link href="${assetBasePath}assets/favicon/kiso_favicon_dark_180x180.svg"
+          rel="apple-touch-icon" sizes="180x180">
 
     <!-- Social preview ============================================================================================ -->
     @if(assetBasePath != null)
@@ -90,18 +94,22 @@ current DaisyUI theme, and displays text using the default readable text color f
         <div class="fixed left-3 top-3 z-40 flex gap-2 sm:left-4 sm:top-4">
             <a href="${assetBasePath}index.html"
                aria-label="Home"
+               data-i18n-aria-label="navigation.home"
                class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
                 <span class="kiso-home-icon" aria-hidden="true"></span>
             </a>
             <label for="kiso-navigation-drawer"
                    aria-label="Open navigation"
+                   data-i18n-aria-label="navigation.openNavigation"
                    class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
                 <span class="kiso-hamburger" aria-hidden="true"></span>
             </label>
-            <div class="kiso-search" data-search-index-url="${assetBasePath}search-index.json" data-search-result-base-url="${assetBasePath}">
+            <div class="kiso-search" data-search-index-url="${assetBasePath}search-index.json"
+                 data-search-result-base-url="${assetBasePath}">
                 <button type="button"
                         class="kiso-search-button btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur"
                         aria-label="Search"
+                        data-i18n-aria-label="search.label"
                         aria-expanded="false">
                     <span class="kiso-search-icon" aria-hidden="true"></span>
                 </button>
@@ -109,8 +117,10 @@ current DaisyUI theme, and displays text using the default readable text color f
                     <input class="kiso-search-input input input-bordered input-sm w-64 bg-base-100 shadow-sm"
                            type="search"
                            placeholder="Search"
+                           data-i18n-placeholder="search.placeholder"
                            autocomplete="off"
-                           aria-label="Search">
+                           aria-label="Search"
+                           data-i18n-aria-label="search.label">
                     <div class="kiso-search-results menu rounded-box mt-2 hidden w-80 max-w-[calc(100vw-1.5rem)] bg-base-100 p-2 shadow-lg"></div>
                 </div>
             </div>
@@ -131,16 +141,19 @@ current DaisyUI theme, and displays text using the default readable text color f
     </div>
 
     <div class="drawer-side z-50">
-        <label for="kiso-navigation-drawer" aria-label="Close navigation" class="drawer-overlay"></label>
+        <label for="kiso-navigation-drawer"
+               aria-label="Close navigation"
+               data-i18n-aria-label="navigation.closeNavigation"
+               class="drawer-overlay"></label>
         <aside class="flex min-h-full w-80 max-w-[85vw] flex-col bg-base-100 p-4 text-base-content">
             <div class="mb-6 px-2 pt-2">
-                <div class="mt-1 text-lg font-semibold">Bundle content</div>
+                <div class="mt-1 text-lg font-semibold" data-i18n="navigation.bundleContent">Bundle content</div>
             </div>
             <nav class="kiso-navigation-menu flex-1">
                 @template.partials.bundleTreeMenu(bundleTree = bundleTree, assetBasePath = assetBasePath, currentHtmlPath = currentHtmlPath)
             </nav>
             <div class="mt-6 border-t border-base-300 px-2 pt-4 text-xs text-base-content/60">
-                Generated with
+                <span data-i18n="footer.generatedWith">Generated with</span>
                 <a class="link link-hover font-semibold"
                    href="https://oak-invest.github.io/kiso"
                    target="kiso">

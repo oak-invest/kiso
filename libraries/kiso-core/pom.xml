@@ -158,6 +158,18 @@
                                         META-INF/resources/webjars/minisearch/${minisearch.webjar.version}/dist/umd/index.js
                                     </includes>
                                 </artifactItem>
+                                <!-- I18next ====================================================================== -->
+                                <artifactItem>
+                                    <groupId>org.webjars.npm</groupId>
+                                    <artifactId>i18next</artifactId>
+                                    <version>${i18next.webjar.version}</version>
+                                    <outputDirectory>
+                                        ${project.build.directory}/generated-webjar-assets/i18next
+                                    </outputDirectory>
+                                    <includes>
+                                        META-INF/resources/webjars/i18next/${i18next.webjar.version}/dist/umd/i18next.js
+                                    </includes>
+                                </artifactItem>
                             </artifactItems>
                         </configuration>
                     </execution>
@@ -186,6 +198,7 @@
                                         <exclude>css/themes.css</exclude>
                                         <exclude>js/browser.js</exclude>
                                         <exclude>js/minisearch.js</exclude>
+                                        <exclude>js/i18next.js</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
@@ -217,6 +230,7 @@
                                         <exclude>css/themes.css</exclude>
                                         <exclude>js/browser.js</exclude>
                                         <exclude>js/minisearch.js</exclude>
+                                        <exclude>js/i18next.js</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
@@ -254,6 +268,9 @@
                                 <copy failonerror="true"
                                       file="${project.build.directory}/generated-webjar-assets/minisearch/META-INF/resources/webjars/minisearch/${minisearch.webjar.version}/dist/umd/index.js"
                                       tofile="${project.build.outputDirectory}/assets/js/minisearch.js"/>
+                                <copy failonerror="true"
+                                      file="${project.build.directory}/generated-webjar-assets/i18next/META-INF/resources/webjars/i18next/${i18next.webjar.version}/dist/umd/i18next.js"
+                                      tofile="${project.build.outputDirectory}/assets/js/i18next.js"/>
                             </target>
                         </configuration>
                     </execution>
@@ -271,6 +288,9 @@
                                 <copy
                                         file="${project.build.directory}/generated-webjar-assets/minisearch/META-INF/resources/webjars/minisearch/${minisearch.webjar.version}/dist/umd/index.js"
                                         tofile="${project.build.directory}/assets/js/minisearch.js"/>
+                                <copy
+                                        file="${project.build.directory}/generated-webjar-assets/i18next/META-INF/resources/webjars/i18next/${i18next.webjar.version}/dist/umd/i18next.js"
+                                        tofile="${project.build.directory}/assets/js/i18next.js"/>
                             </target>
                         </configuration>
                     </execution>

@@ -92,8 +92,12 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/application.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/daisyui.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/en.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/fr.json")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/minisearch.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/i18next.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/kiso-i18n.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();
 
@@ -205,9 +209,13 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/daisyui.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/css/test.css")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/en.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/fr.json")).exists();
         assertThat(destinationDirectory.resolve("assets/images/test.jpg")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/minisearch.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/i18next.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/kiso-i18n.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();

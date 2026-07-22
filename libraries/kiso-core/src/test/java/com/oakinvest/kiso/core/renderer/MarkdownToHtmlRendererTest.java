@@ -76,7 +76,18 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
-                .containsExactly("assets/js/browser.js", "assets/js/minisearch.js", "assets/js/kiso-search.js");
+                .containsExactly(
+                        "assets/js/browser.js",
+                        "assets/js/i18next.js",
+                        "assets/js/minisearch.js",
+                        "assets/js/kiso-i18n.js",
+                        "assets/js/kiso-search.js"
+                );
+        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+                .containsExactly("assets/i18n/");
+        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-language")).isEmpty();
+        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-languages"))
+                .containsExactly("en,fr");
         assertThat(page.selectFirst(".kiso-search-button[aria-label='Search'] .kiso-search-icon")).isNotNull();
         assertThat(page.selectFirst(".kiso-search[data-search-index-url='search-index.json']")).isNotNull();
         assertThat(page.selectFirst(".kiso-search-input[type=search]")).isNotNull();
@@ -86,6 +97,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst("a[aria-label='Home'][href='index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
+        assertElementText(page.selectFirst(".drawer-side [data-i18n='navigation.bundleContent']"), "Bundle content");
         assertThat(page.select(".drawer-side details[open]")).isEmpty();
         var indexLink = page.selectFirst(".drawer-side a[href='index.html']");
         assertThat(indexLink).isNotNull();
@@ -153,7 +165,15 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
-                .containsExactly("../assets/js/browser.js", "../assets/js/minisearch.js", "../assets/js/kiso-search.js");
+                .containsExactly(
+                        "../assets/js/browser.js",
+                        "../assets/js/i18next.js",
+                        "../assets/js/minisearch.js",
+                        "../assets/js/kiso-i18n.js",
+                        "../assets/js/kiso-search.js"
+                );
+        assertThat(page.select("script[src='../assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+                .containsExactly("../assets/i18n/");
         assertThat(page.selectFirst(".kiso-search[data-search-index-url='../search-index.json']")).isNotNull();
 
         // Drawer.

@@ -1,0 +1,28 @@
+{
+  "footer": {
+    "generatedWith": "Generated with",
+    "lastUpdate": "Last update"
+  },
+  "metadata": {
+    "resource": "Resource",
+    "tags": "Tags"
+  },
+  "navigation": {
+    "bundleContent": "Bundle content",
+    "closeNavigation": "Close navigation",
+    "home": "Home",
+    "openNavigation": "Open navigation"
+  },
+  "pageKind": {
+    "concept": "Concept",
+    "index": "Index"
+  },
+  "search": {
+    "failedToLoadIndex": "Failed to load search index",
+    "label": "Search",
+    "placeholder": "Search"
+  },
+  "source": {
+    "markdownFile": "Markdown file"
+  }
+}

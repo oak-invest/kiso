@@ -12,7 +12,7 @@
                 <li>
                     <a class="@if(bundleTree.indexHtmlPath().equals(currentHtmlPath))font-semibold@endif"
                        href="${assetBasePath}${bundleTree.indexHtmlPath()}">
-                        <span class="kiso-navigation-menu-label">Index</span>
+                        <span class="kiso-navigation-menu-label" data-i18n="pageKind.index">Index</span>
                     </a>
                 </li>
             @endif

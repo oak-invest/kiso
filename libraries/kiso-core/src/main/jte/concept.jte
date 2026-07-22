@@ -34,7 +34,7 @@ content = @`
                 wrapping to additional lines on smaller screens, and leaving 1rem of spacing below the row.
             -->
             <div class="mb-4 flex flex-wrap items-center gap-2">
-                <span class="badge badge-primary badge-lg">Concept</span>
+                <span class="badge badge-primary badge-lg" data-i18n="pageKind.concept">Concept</span>
                 @if(page.type() != null)
                     <span class="badge badge-secondary badge-lg">${page.type()}</span>
                 @endif
@@ -82,7 +82,7 @@ content = @`
                 <!-- Resource and it's link ======================================================================== -->
                 @if(page.resource() != null)
                     <div class="px-6 py-5 sm:px-8">
-                        <div class="text-xs font-semibold uppercase text-base-content/50">Resource</div>
+                        <div class="text-xs font-semibold uppercase text-base-content/50" data-i18n="metadata.resource">Resource</div>
                         <a class="mt-2 block break-words font-mono text-sm text-primary underline-offset-4 hover:underline"
                            href="${page.resource()}">
                             ${page.resource()}
@@ -93,7 +93,7 @@ content = @`
                 <!-- Tags ========================================================================================== -->
                 @if(page.tags() != null)
                     <div class="px-6 py-5 sm:px-8">
-                        <div class="mb-3 text-xs font-semibold uppercase text-base-content/50">Tags</div>
+                        <div class="mb-3 text-xs font-semibold uppercase text-base-content/50" data-i18n="metadata.tags">Tags</div>
                         <div class="flex flex-wrap gap-2">
                             @for(var tag : page.tags())
                                 <span class="badge badge-ghost border border-base-300">${tag}</span>
@@ -110,7 +110,7 @@ content = @`
     <article class="kiso-content">
         ${page.htmlContent()}
         <div class="kiso-source-file">
-            <span class="kiso-source-file-label">Markdown file</span>
+            <span class="kiso-source-file-label" data-i18n="source.markdownFile">Markdown file</span>
             <span class="kiso-source-file-name">
                 <a class="link link-hover font-mono" href="${page.metadata().markdownFileName()}">
                     ${page.metadata().markdownFileName()}
@@ -122,7 +122,8 @@ content = @`
     <!-- Footer ==================================================================================================== -->
     @if(page.timestamp() != null)
         <footer class="mt-6 flex justify-end text-sm text-base-content/60">
-            Last update: ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
+            <span data-i18n="footer.lastUpdate">Last update</span>:
+            ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
         </footer>
     @endif
 `

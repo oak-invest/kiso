@@ -57,8 +57,12 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             "assets/favicon/kiso_favicon_light_16x16.svg",
             "assets/favicon/kiso_favicon_light_32x32.svg",
             "assets/favicon/kiso_favicon_light_180x180.svg",
+            "assets/i18n/en.json",
+            "assets/i18n/fr.json",
             "assets/js/browser.js",
             "assets/js/minisearch.js",
+            "assets/js/i18next.js",
+            "assets/js/kiso-i18n.js",
             "assets/js/kiso-search.js"
     };
 

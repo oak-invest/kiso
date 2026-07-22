@@ -1,0 +1,28 @@
+{
+  "footer": {
+    "generatedWith": "Généré avec",
+    "lastUpdate": "Dernière mise à jour"
+  },
+  "metadata": {
+    "resource": "Ressource",
+    "tags": "Tags"
+  },
+  "navigation": {
+    "bundleContent": "Contenu du bundle",
+    "closeNavigation": "Fermer la navigation",
+    "home": "Accueil",
+    "openNavigation": "Ouvrir la navigation"
+  },
+  "pageKind": {
+    "concept": "Concept",
+    "index": "Index"
+  },
+  "search": {
+    "failedToLoadIndex": "Impossible de charger l'index de recherche",
+    "label": "Rechercher",
+    "placeholder": "Rechercher"
+  },
+  "source": {
+    "markdownFile": "Fichier Markdown"
+  }
+}
