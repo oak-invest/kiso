@@ -39,7 +39,6 @@ jobs:
 
       # Generate the knowledge bundle demo with the actual code of Kiso cli ============================================
       - name: build and run tests
-        continue-on-error: true
         run: |
           just generate_website_demo
 
