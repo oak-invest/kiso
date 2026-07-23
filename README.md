@@ -52,6 +52,7 @@ The `build` command can be configured with an optional `.kiso/configuration.yaml
 ```yaml
 site:
   baseUrl: https://knowledge.example.com/
+  name: Example Knowledge Base
   language: en
   title: My knowledge base
   description: Documentation for humans and AI agents
@@ -66,14 +67,15 @@ content:
     - private/**
 ```
 
-| Property | Default | Description |
-|----------|---------|-------------|
-| `site.baseUrl` | | Public base URL prepended to generated site links and sitemap entries. |
-| `site.language` | `en` | Language used by the generated HTML pages. |
-| `site.title` | Page title | Title used for the root index page. |
-| `site.description` | Page description | Description used for the root index page. |
+| Property | Default | Description                                                                                     |
+|----------|---------|-------------------------------------------------------------------------------------------------|
+| `site.baseUrl` | | Public base URL prepended to generated site links and sitemap entries.                          |
+| `site.name` | | Name of the site, used in the social share.                                                     |
+| `site.language` | `en` | Language used by the generated HTML pages.                                                      |
+| `site.title` | Page title | Title used for the root index page.                                                             |
+| `site.description` | Page description | Description used for the root index page.                                                       |
 | `theme.name` | `light` | [DaisyUI theme](https://daisyui.com/docs/themes/#list-of-themes) used by the generated website. |
-| `content.ignorePatterns` | `[]` | Glob patterns identifying files and directories that must not be copied or published. |
+| `content.ignorePatterns` | `[]` | Glob patterns identifying files and directories that must not be copied or published.           |
 
 Ignore patterns are evaluated against paths relative to the bundle root. For example, `README.md` excludes only the root README, while `drafts/**` excludes the contents of the `drafts` directory. The source bundle is never modified: Kiso applies these exclusions while copying files to the destination directory, before loading, validating, and publishing the resulting bundle.
 

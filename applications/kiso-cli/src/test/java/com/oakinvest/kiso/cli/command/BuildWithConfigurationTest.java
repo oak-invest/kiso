@@ -1,7 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.util.BaseTest;
-import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -12,37 +11,24 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.oakinvest.kiso.core.util.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BuildCommandConfigurationTest extends BaseTest {
-
-    @TempDir
-    private Path temporaryDirectory;
-
-    private static void assertMetaProperty(Document document, String property, String expected) {
-        var meta = document.selectFirst("meta[property=%s]".formatted(property));
-        assertThat(meta).isNotNull();
-        assertThat(meta.attr("content")).isEqualTo(expected);
-    }
-
-    private static void assertMetaName(Document document, String name, String expected) {
-        var meta = document.selectFirst("meta[name=%s]".formatted(name));
-        assertThat(meta).isNotNull();
-        assertThat(meta.attr("content")).isEqualTo(expected);
-    }
+@DisplayName("Build command with configuration")
+class BuildWithConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with configuration")
-    void buildWithConfiguration() throws Exception {
-        // What we are testing - The Google example ====================================================================
+    void buildWithConfiguration(@TempDir Path temporaryDirectory) throws Exception {
+        // What we are testing : The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var destinationDirectory = temporaryDirectory.resolve(DEFAULT_DESTINATION_DIRECTORY_NAME);
 
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -112,15 +98,15 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with configuration profile")
-    void buildWithConfigurationProfile() throws Exception {
-        // What we are testing - The Google example ====================================================================
+    void buildWithConfigurationProfile(@TempDir Path temporaryDirectory) throws Exception {
+        // What we are testing : The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var destinationDirectory = temporaryDirectory.resolve(DEFAULT_DESTINATION_DIRECTORY_NAME);
 
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -161,13 +147,15 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with blank profile")
-    void buildWithBlankProfile() {
+    void buildWithBlankProfile(@TempDir Path temporaryDirectory) {
+        // What we are testing : The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
-        Path destinationDirectory = temporaryDirectory.resolve("blank-profile");
+        var destinationDirectory = temporaryDirectory.resolve(DEFAULT_DESTINATION_DIRECTORY_NAME);
 
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -176,6 +164,7 @@ class BuildCommandConfigurationTest extends BaseTest {
                         "--profile", ""
                 );
 
+        // Testing command result ======================================================================================
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
@@ -186,15 +175,15 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with unknown profile")
-    void buildWithUnknownProfile() {
-        // What we are testing - The Google example ====================================================================
+    void buildWithUnknownProfile(@TempDir Path temporaryDirectory) {
+        // What we are testing : The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var destinationDirectory = temporaryDirectory.resolve(DEFAULT_DESTINATION_DIRECTORY_NAME);
 
         // We execute code =============================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new BuildCommand())
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -210,15 +199,15 @@ class BuildCommandConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Building Google OKF bundle with empty profile")
-    void buildWithEmptyProfile() {
-        // What we are testing - The Google example ====================================================================
+    void buildWithEmptyProfile(@TempDir Path temporaryDirectory) {
+        // What we are testing : The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
-        Path destinationDirectory = temporaryDirectory.resolve("empty-profile");
+        var destinationDirectory = temporaryDirectory.resolve(DEFAULT_DESTINATION_DIRECTORY_NAME);
 
         // We execute code =============================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new BuildCommand())
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(

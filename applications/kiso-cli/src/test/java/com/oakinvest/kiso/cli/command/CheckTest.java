@@ -13,10 +13,8 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CheckCommandTest extends BaseTest {
-
-    @TempDir
-    private Path temporaryDirectory;
+@DisplayName("Check command")
+public class CheckTest extends BaseTest {
 
     @Test
     @DisplayName("Check a valid OKF bundle")
@@ -24,10 +22,10 @@ public class CheckCommandTest extends BaseTest {
         // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
 
-        // Executing the check command =================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new CheckCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new CheckCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -44,23 +42,23 @@ public class CheckCommandTest extends BaseTest {
 
     @Test
     @DisplayName("Check an invalid OKF bundle")
-    void checkInvalidBundle() throws Exception {
+    void checkInvalidBundle(@TempDir Path temporaryDirectory) throws Exception {
         // What we are testing =========================================================================================
-        Path sourceDirectory = temporaryDirectory.resolve("source");
+        var sourceDirectory = temporaryDirectory.resolve("source");
         Files.createDirectories(sourceDirectory);
-        Path testDirectory = sourceDirectory.resolve("test");
+        var testDirectory = sourceDirectory.resolve("test");
         Files.createDirectories(testDirectory);
 
         // Invalid encoding for two files
-        Path file1 = sourceDirectory.resolve("invalid-encoding-1.md");
+        var file1 = sourceDirectory.resolve("invalid-encoding-1.md");
         Files.write(file1, new byte[]{(byte) 0xC3, (byte) 0x28});
-        Path file2 = testDirectory.resolve("invalid-encoding-2.md");
+        var file2 = testDirectory.resolve("invalid-encoding-2.md");
         Files.write(file2, new byte[]{(byte) 0xC3, (byte) 0x28});
 
         // Files with missing frontmatter or missing type field in frontmatter field
-        Path file3 = sourceDirectory.resolve("missing-frontmatter.md");
+        var file3 = sourceDirectory.resolve("missing-frontmatter.md");
         Files.writeString(file3, "This file has no frontmatter.");
-        Path file4 = sourceDirectory.resolve("missing-frontmatter-type.md");
+        var file4 = sourceDirectory.resolve("missing-frontmatter-type.md");
         Files.writeString(file4, """
                 ---
                 title: Missing frontmatter type
@@ -69,7 +67,7 @@ public class CheckCommandTest extends BaseTest {
                 This file has frontmatter but is missing the type field.""");
 
         // File with invalid date.
-        Path file5 = testDirectory.resolve("invalid-timestamp.md");
+        var file5 = testDirectory.resolve("invalid-timestamp.md");
         Files.writeString(file5, """
                 ---
                 type: Test
@@ -80,7 +78,7 @@ public class CheckCommandTest extends BaseTest {
                 This file has frontmatter but an invalid timestamp.""");
 
         // index.md with frontmatter.
-        Path file6 = testDirectory.resolve("index.md");
+        var file6 = testDirectory.resolve("index.md");
         Files.writeString(file6, """
                 ---
                 type: Index
@@ -88,17 +86,17 @@ public class CheckCommandTest extends BaseTest {
                 This index file has frontmatter, which is not allowed.""");
 
         // log.md with frontmatter
-        Path file7 = testDirectory.resolve("log.md");
+        var file7 = testDirectory.resolve("log.md");
         Files.writeString(file7, """
                 ---
                 type: Log
                 ---
                 This index file has frontmatter, which is not allowed.""");
 
-        // Executing the check command =================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new CheckCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new CheckCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute("--source", sourceDirectory.toAbsolutePath().toString());

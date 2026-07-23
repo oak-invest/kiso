@@ -20,7 +20,6 @@ public class BaseTest {
      * @param resourceName resource fileName
      * @return absolutePath
      */
-    @SuppressWarnings("SameParameterValue")
     protected Path getResourcePath(final String resourceName) {
         URL resource = Thread.currentThread().getContextClassLoader().getResource(resourceName);
         assertNotNull(resource, "Missing test resource: " + resourceName);
@@ -30,4 +29,5 @@ public class BaseTest {
             throw new RuntimeException(e);
         }
     }
+
 }

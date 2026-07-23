@@ -4,6 +4,8 @@ import picocli.CommandLine;
 
 import java.nio.file.Path;
 
+import static com.oakinvest.kiso.core.util.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
+
 /**
  * Destination directory option for commands creating files.
  */
@@ -12,9 +14,9 @@ public class DestinationOption {
     /** Destination directory option. */
     @CommandLine.Option(
             names = {"-d", "--destination"},
-            defaultValue = "public",
+            defaultValue = DEFAULT_DESTINATION_DIRECTORY_NAME,
             paramLabel = "DIRECTORY",
-            description = "Directory where generated files are created. Defaults to 'public' directory."
+            description = "Directory where generated files are created. Defaults to '" + DEFAULT_DESTINATION_DIRECTORY_NAME + "' directory."
     )
     private Path destinationDirectory;
 

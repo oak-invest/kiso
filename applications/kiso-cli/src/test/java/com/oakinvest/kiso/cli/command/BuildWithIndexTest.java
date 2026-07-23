@@ -12,26 +12,25 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class BuildCommandIndexTest extends BaseTest {
-
-    @TempDir
-    private Path temporaryDirectory;
+@DisplayName("Build Command with index generation")
+public class BuildWithIndexTest extends BaseTest {
 
     @Test
     @DisplayName("Index generation test")
-    void indexGenerationTest() throws IOException {
+    void indexGenerationTest(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath("kb-without-index");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var destinationDirectory = temporaryDirectory.resolve(DEFAULT_DESTINATION_DIRECTORY_NAME);
 
-        // We run generation ===========================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -47,7 +46,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .contains("Done!");
 
         // index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve(INDEX.getFileName()), UTF_8))
                 .contains("## Content")
                 .contains("- [test1.md](test1.md): test1.md")
                 .contains("- [test2.md](test2.md): test2.md")
@@ -57,7 +56,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .contains("[directory2](directory2/index.md)");
 
         // directory1/index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("directory1/index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve("directory1/" + INDEX.getFileName()), UTF_8))
                 // Content.
                 .contains("## Content")
                 .contains("- [My title](test10.md): My description")
@@ -65,7 +64,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .doesNotContain("## Subdirectories");
 
         // directory2/index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("directory2/index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve("directory2/" + INDEX.getFileName()), UTF_8))
                 // Content.
                 .contains("## Content")
                 .contains("- [subtest1.md](subtest1.md): directory2/subtest1.md")
@@ -80,7 +79,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .doesNotContain("[directory2/subdirectory3](subdirectory4/index.md)");
 
         // directory2/subdirectory1/index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("directory2/subdirectory1/index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve("directory2/subdirectory1/" + INDEX.getFileName()), UTF_8))
                 .contains("Specific")
                 // Content.
                 .doesNotContain("## Content")
@@ -88,7 +87,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .doesNotContain("## Subdirectories");
 
         // directory2/subdirectory2/index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("directory2/subdirectory2/index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve("directory2/subdirectory2/" + INDEX.getFileName()), UTF_8))
                 // Content.
                 .contains("## Content")
                 .contains("- [test22.md](test22.md): directory2/subdirectory2/test22.md")
@@ -98,16 +97,15 @@ public class BuildCommandIndexTest extends BaseTest {
 
     @Test
     @DisplayName("Index with profile without Index")
-    void indexWithProfileWithoutIndex() throws IOException {
+    void indexWithProfileWithoutIndex(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath("kb-without-index");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var destinationDirectory = temporaryDirectory.resolve("public");
 
-        // We run generation ===========================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -124,7 +122,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .contains("Done!");
 
         // index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve(INDEX.getFileName()), UTF_8))
                 .contains("## Content")
                 .contains("- [test1.md](test1.md): test1.md")
                 .contains("- [test2.md](test2.md): test2.md")
@@ -136,16 +134,15 @@ public class BuildCommandIndexTest extends BaseTest {
 
     @Test
     @DisplayName("Index with profile with Index")
-    void indexWithProfileWithIndex() throws IOException {
+    void indexWithProfileWithIndex(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath("kb-without-index");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var destinationDirectory = temporaryDirectory.resolve("public");
 
-        // We run generation ===========================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -162,7 +159,7 @@ public class BuildCommandIndexTest extends BaseTest {
                 .contains("Done!");
 
         // index.md.
-        assertThat(Files.readString(destinationDirectory.resolve("index.md"), UTF_8))
+        assertThat(Files.readString(destinationDirectory.resolve(INDEX.getFileName()), UTF_8))
                 .contains("This is the specific index!")
                 .doesNotContain("## Content")
                 .doesNotContain("- [test1.md](test1.md): test1.md")

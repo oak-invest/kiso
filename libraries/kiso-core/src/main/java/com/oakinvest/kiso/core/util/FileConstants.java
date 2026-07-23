@@ -15,6 +15,9 @@ public final class FileConstants {
     /** Recursive directory pattern. */
     public static final String RECURSIVE_DIRECTORY_PATTERN = "/**";
 
+    /** Default destination directory. */
+    public static final String DEFAULT_DESTINATION_DIRECTORY_NAME = "public";
+
     /** Assets directory. */
     public static final String ASSETS_DIRECTORY = "assets";
 

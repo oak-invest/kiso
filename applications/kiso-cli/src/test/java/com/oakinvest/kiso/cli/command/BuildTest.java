@@ -13,21 +13,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class BuildCommandTest extends BaseTest {
-
-    @TempDir
-    private Path temporaryDirectory;
+@DisplayName("Build command")
+class BuildTest extends BaseTest {
 
     @Test
     @SuppressWarnings("HttpUrlsUsage")
     @DisplayName("Building a simple OKF bundle")
-    void build() throws IOException {
+    void build(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
-        Path sourceDirectory = temporaryDirectory.resolve("source");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var sourceDirectory = temporaryDirectory.resolve("source");
+        var destinationDirectory = temporaryDirectory.resolve("public");
         Files.createDirectories(sourceDirectory.resolve("topics"));
 
         Files.writeString(sourceDirectory.resolve("index.md"), """
@@ -53,10 +54,10 @@ class BuildCommandTest extends BaseTest {
                 Hello from the first topic.
                 """.stripIndent(), UTF_8);
 
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -101,13 +102,8 @@ class BuildCommandTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();
 
-        String searchIndexJson = Files.readString(destinationDirectory.resolve("search-index.json"), UTF_8);
-        assertThat(searchIndexJson)
-                .contains("\"id\" : \"topics/first-topic\"")
-                .contains("\"url\" : \"topics/first-topic.html\"")
-                .contains("\"title\" : \"First Topic\"");
-
-        String topicHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
+        // Testing an HTML file content ================================================================================
+        var topicHtml = Files.readString(destinationDirectory.resolve("topics/first-topic.html"), UTF_8);
         assertThat(topicHtml)
                 .contains("First Topic")
                 .contains("A first test topic.")
@@ -117,47 +113,51 @@ class BuildCommandTest extends BaseTest {
                 .contains("href=\"../index.html\"")
                 .doesNotContain("https://knowledge.angara.finance");
 
-        // Testing generated agent files ===============================================================================
-        String llmsTxt = Files.readString(destinationDirectory.resolve("llms.txt"), UTF_8);
-        assertThat(llmsTxt)
+        // Testing llms.txt file =======================================================================================
+        assertThat(Files.readString(destinationDirectory.resolve(LLMS_TXT_FILENAME), UTF_8))
                 .contains("# Knowledge Bundle")
                 .contains("## Index")
                 .contains("- [index.md](index.md): Knowledge bundle index")
                 .contains("## topics")
                 .contains("- [index.md](topics/index.md): Index of topics")
-                .contains("- [First Topic](topics/first-topic.md): A first test topic.");
-
-        // We should not have the HTML assets directories in the llms.txt file.
-        assertThat(llmsTxt).doesNotContain("## assets")
+                .contains("- [First Topic](topics/first-topic.md): A first test topic.")
+                // We should not have the HTML assets directories in the llms.txt file.
+                .doesNotContain("## assets")
                 .doesNotContain("## assets/css")
                 .doesNotContain("## assets/js");
 
-        String sitemapXml = Files.readString(destinationDirectory.resolve("sitemap.xml"), UTF_8);
-        assertThat(sitemapXml)
+        // Testing sitemap.xml file ====================================================================================
+        assertThat(Files.readString(destinationDirectory.resolve(SITEMAP_XML_FILENAME), UTF_8))
                 .contains("<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">")
                 .contains("<loc>index.html</loc>")
                 .contains("<loc>topics/index.html</loc>")
                 .contains("<loc>topics/first-topic.html</loc>")
                 .contains("<lastmod>2026-06-24T10:00Z</lastmod>");
+
+        // Testing search-index.json file ==============================================================================
+        assertThat(Files.readString(destinationDirectory.resolve(SEARCH_INDEX_JSON_FILENAME), UTF_8))
+                .contains("\"id\" : \"topics/first-topic\"")
+                .contains("\"url\" : \"topics/first-topic.html\"")
+                .contains("\"title\" : \"First Topic\"");
     }
 
     @Test
     @DisplayName("Building with error in the bundle")
-    void buildWithErrorInTheBundle() throws Exception {
+    void buildWithErrorInTheBundle(@TempDir Path temporaryDirectory) throws Exception {
         // What we are testing =========================================================================================
-        Path sourceDirectory = temporaryDirectory.resolve("source");
-        Path destinationDirectory = temporaryDirectory.resolve("public");
+        var sourceDirectory = temporaryDirectory.resolve("source");
+        var destinationDirectory = temporaryDirectory.resolve("public");
         Files.createDirectories(sourceDirectory);
         Files.createDirectories(destinationDirectory);
 
-        // A file with error!
-        Path file1 = sourceDirectory.resolve("missing-frontmatter.md");
+        // We create a concept file without a frontmatter to trigger an error.
+        var file1 = sourceDirectory.resolve("missing-frontmatter.md");
         Files.writeString(file1, "This file has no frontmatter.");
 
-        // Executing the build command =================================================================================
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
@@ -178,13 +178,14 @@ class BuildCommandTest extends BaseTest {
     @DisplayName("Building an OKF bundle with existing assets")
     void buildWithExistingAssets() throws Exception {
         // What we are testing =========================================================================================
-        Path sourceDirectory = Paths.get(ClassLoader.getSystemResource("kb-with-assets").toURI());
-        Path destinationDirectory = Path.of("target", "test-kb-with-assets");
+        var sourceDirectory = Paths.get(ClassLoader.getSystemResource("kb-with-assets").toURI());
+        var destinationDirectory = Path.of("target", "test-kb-with-assets");
         Files.createDirectories(destinationDirectory);
 
-        StringWriter output = new StringWriter();
-        StringWriter error = new StringWriter();
-        int exitCode = new CommandLine(new BuildCommand())
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
                 .setOut(new PrintWriter(output))
                 .setErr(new PrintWriter(error))
                 .execute(
