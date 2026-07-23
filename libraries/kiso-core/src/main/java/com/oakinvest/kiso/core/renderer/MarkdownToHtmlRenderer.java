@@ -2,10 +2,10 @@ package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
-import com.oakinvest.kiso.core.model.html.PageMetadata;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.model.html.page.ConceptPage;
 import com.oakinvest.kiso.core.model.html.page.IndexPage;
+import com.oakinvest.kiso.core.model.html.page.PageMetadata;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;

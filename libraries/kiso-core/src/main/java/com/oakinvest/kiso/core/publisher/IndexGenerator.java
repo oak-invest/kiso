@@ -15,7 +15,6 @@ import org.commonmark.node.Paragraph;
 import org.commonmark.node.Text;
 import org.commonmark.renderer.markdown.MarkdownRenderer;
 
-import java.nio.file.Path;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
@@ -23,14 +22,14 @@ import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
 
 /**
- * Index markdown (index.md) generator.
+ * Generator for the index.md file of a bundle.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
-public class IndexMarkdownGenerator {
+public class IndexGenerator {
 
     /**
-     * Generate the index content for a bundle.
+     * Generate an index.md file for a bundle.
      *
      * @param bundle bundle
      * @return index.md content
@@ -51,7 +50,7 @@ public class IndexMarkdownGenerator {
 
             bundle.markdownFiles()
                     .stream().filter(markdownFile -> markdownFile.kind().equals(CONCEPT))
-                    .forEach(markdownFile -> list.appendChild(markdownFileListItem("", markdownFile)));
+                    .forEach(markdownFile -> list.appendChild(markdownFileListItem(markdownFile)));
             llmsTxt.appendChild(list);
         }
 
@@ -63,12 +62,13 @@ public class IndexMarkdownGenerator {
             list.setTight(true);
 
             bundle.childBundles().stream()
-                    // Do not take the assets directory at the root !
+                    // Do not take the assets directory at the root!
                     .filter(childBundle -> !Strings.CI.equals(childBundle.relativePath().toString(), ASSETS_DIRECTORY))
-                    .forEach(childBundle -> list.appendChild(bundleListItem("", childBundle)));
+                    .forEach(childBundle -> list.appendChild(bundleListItem(childBundle)));
             llmsTxt.appendChild(list);
         }
 
+        // Return generated file =======================================================================================
         return MarkdownRenderer.builder()
                 .build()
                 .render(llmsTxt);
@@ -90,16 +90,15 @@ public class IndexMarkdownGenerator {
     /**
      * Creates a bundle list item.
      *
-     * @param baseUrl base url
-     * @param bundle  bundle
+     * @param bundle bundle
      * @return list item
      */
-    private static ListItem bundleListItem(final String baseUrl, final Bundle bundle) {
+    private static ListItem bundleListItem(final Bundle bundle) {
         ListItem listItem = new ListItem();
         Paragraph paragraph = new Paragraph();
 
         // Link + filename.
-        Link link = new Link(baseUrl + bundle.simpleName() + "/" + MarkdownFileKind.INDEX.getFileName(), null);
+        Link link = new Link(bundle.simpleName() + "/" + MarkdownFileKind.INDEX.getFileName(), null);
         link.appendChild(new Text(bundle.name()));
         paragraph.appendChild(link);
 
@@ -108,13 +107,12 @@ public class IndexMarkdownGenerator {
     }
 
     /**
-     * Creates one Markdown file list item.
+     * Creates a Markdown file list item.
      *
-     * @param baseUrl      public base URL of the generated site
      * @param markdownFile Markdown file
      * @return list item
      */
-    private static ListItem markdownFileListItem(final String baseUrl, final MarkdownFile markdownFile) {
+    private static ListItem markdownFileListItem(final MarkdownFile markdownFile) {
         ListItem listItem = new ListItem();
         Paragraph paragraph = new Paragraph();
 
@@ -131,16 +129,6 @@ public class IndexMarkdownGenerator {
 
         listItem.appendChild(paragraph);
         return listItem;
-    }
-
-    /**
-     * Returns a Markdown path usable in llms.txt links.
-     *
-     * @param relativePath Markdown path relative to the knowledge bundle root
-     * @return normalized Markdown path
-     */
-    private static String markdownPath(final Path relativePath) {
-        return relativePath.toString().replace('\\', '/');
     }
 
 }

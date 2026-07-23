@@ -1,8 +1,9 @@
-package com.oakinvest.kiso.core.model.html;
+package com.oakinvest.kiso.core.model.html.image;
 
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Social preview image data for Open Graph and Twitter Cards.
@@ -21,4 +22,13 @@ public record SocialPreviewImage(
         List<String> descriptionLines,
         String url
 ) {
+
+    /**
+     * Constructor.
+     */
+    public SocialPreviewImage {
+        titleLines = Objects.requireNonNullElse(titleLines, List.of());
+        descriptionLines = Objects.requireNonNullElse(descriptionLines, List.of());
+    }
+
 }

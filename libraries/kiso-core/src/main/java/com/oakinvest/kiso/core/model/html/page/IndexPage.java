@@ -2,11 +2,12 @@ package com.oakinvest.kiso.core.model.html.page;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
-import com.oakinvest.kiso.core.model.html.PageMetadata;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
 import org.jspecify.annotations.Nullable;
+
+import java.util.Objects;
 
 /**
  * Index page.
@@ -31,15 +32,9 @@ public record IndexPage(
      * Creates an index page with safe default values.
      */
     public IndexPage {
-        if (siteConfiguration == null) {
-            siteConfiguration = SiteConfiguration.empty();
-        }
-        if (themeConfiguration == null) {
-            themeConfiguration = ThemeConfiguration.empty();
-        }
-        if (metadata == null) {
-            metadata = PageMetadata.empty();
-        }
+        siteConfiguration = Objects.requireNonNullElse(siteConfiguration, SiteConfiguration.empty());
+        themeConfiguration = Objects.requireNonNullElse(themeConfiguration, ThemeConfiguration.empty());
+        metadata = Objects.requireNonNullElse(metadata, PageMetadata.empty());
     }
 
 }

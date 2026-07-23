@@ -27,7 +27,7 @@ public class ValidationRunner {
      * Validate a knowledge bundle.
      *
      * @param knowledgeBundle knowledge bundle
-     * @return validation report;
+     * @return validation report
      */
     public static ValidationReport runValidation(final KnowledgeBundle knowledgeBundle) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
@@ -45,11 +45,9 @@ public class ValidationRunner {
                                         )
                                 )
                 );
-
         return ValidationReport.builder()
                 .issues(issues)
                 .build();
-
     }
 
 }

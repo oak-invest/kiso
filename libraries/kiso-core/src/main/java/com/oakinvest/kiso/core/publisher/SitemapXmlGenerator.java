@@ -5,14 +5,11 @@ import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.text.StringEscapeUtils;
 
-import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
-import static com.oakinvest.kiso.core.util.SitemapConstants.SITEMAP_NAMESPACE;
 
 /**
  * Generator for the sitemap.xml file.
@@ -32,13 +29,11 @@ public final class SitemapXmlGenerator {
 
         // Building the sitemap ========================================================================================
         StringBuilder content = new StringBuilder();
-        content.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        content.append("<urlset xmlns=\"").append(SITEMAP_NAMESPACE).append("\">\n");
+        content.append("""
+                <?xml version="1.0" encoding="UTF-8"?>
+                <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+                """);
         knowledgeBundle.bundles()
-                .filter(bundle -> {
-                    Path path = bundle.relativePath();
-                    return path.getNameCount() == 0 || !path.getName(0).toString().equals(ASSETS_DIRECTORY);
-                })
                 .forEach(bundle -> bundle.markdownFiles().stream()
                         // Index first.
                         .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))

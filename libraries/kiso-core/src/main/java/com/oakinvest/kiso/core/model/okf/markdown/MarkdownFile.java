@@ -8,11 +8,11 @@ import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.HTML_EXTENSION;
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 
 /**
  * Markdown file discovered inside a knowledge bundle.
@@ -41,22 +41,20 @@ public record MarkdownFile(
      * Creates a Markdown file with safe default values.
      */
     public MarkdownFile {
-        if (frontmatter == null) {
-            frontmatter = Frontmatter.empty();
-        }
+        frontmatter = Objects.requireNonNullElse(frontmatter, Frontmatter.empty());
     }
 
     /**
      * Returns the concept id.
      * The path of the concept's file within the bundle, with the .md suffix removed.
-     * For example, tables/users.md has concept ID tables/users.
+     * For example, tables/users.md has a concept ID tables/users.
      *
      * @return concept id
      */
-    public String conceptId() {
+    public @Nullable String conceptId() {
         if (kind.equals(CONCEPT)) {
-            String path = relativePath.toString().replace('\\', '/');
-            return FilenameUtils.removeExtension(path);
+            String filePath = FilenameUtils.separatorsToUnix(relativePath.toString());
+            return FilenameUtils.removeExtension(filePath);
         } else {
             return null;
         }
@@ -85,14 +83,16 @@ public record MarkdownFile(
             if (Strings.CI.equals(relativePath.toString(), INDEX.getFileName())) {
                 return "Knowledge bundle index";
             } else {
-                return "Index of " + Strings.CI.replace(relativePath().toString(), "/" + fileName, "");
+                // Returns example: "/datasets/index.md" -> "Index of /datasets"
+                return "Index of " + Strings.CI.replace(relativePath().toString(), "/" + INDEX.getFileName(), "");
             }
         } else {
             // Concept file ============================================================================================
             if (StringUtils.isNotBlank(frontmatter.description())) {
                 return frontmatter.description();
+            } else {
+                return relativePath().toString();
             }
-            return relativePath().toString();
         }
     }
 
@@ -101,7 +101,7 @@ public record MarkdownFile(
      *
      * @return timestamp
      */
-    public OffsetDateTime timestamp() {
+    public @Nullable OffsetDateTime timestamp() {
         return frontmatter.parsedTimestamp();
     }
 
@@ -110,23 +110,18 @@ public record MarkdownFile(
      *
      * @return HTML file name
      */
-    public String htmlFileName() {
-        // TODO Manage the case "myfile.md.super.md".
-        return Strings.CI.replace(fileName, MARKDOWN_EXTENSION, HTML_EXTENSION);
+    public String htmlFilename() {
+        return FilenameUtils.removeExtension(fileName) + HTML_EXTENSION;
     }
 
     /**
      * Returns the HTML path corresponding to the Markdown file (with the file name).
      *
-     * @return HTML path
+     * @return HTML file path
      */
     public String htmlFilePath() {
-        String markdownFilePath = relativePath.toString().replace('\\', '/');
-        if (Strings.CI.endsWith(markdownFilePath, MARKDOWN_EXTENSION)) {
-            return markdownFilePath.substring(0, markdownFilePath.length() - MARKDOWN_EXTENSION.length()) + HTML_EXTENSION;
-        }
-        return markdownFilePath + HTML_EXTENSION;
+        String markdownFilePath = FilenameUtils.separatorsToUnix(relativePath.toString());
+        return FilenameUtils.removeExtension(markdownFilePath) + HTML_EXTENSION;
     }
-
 
 }

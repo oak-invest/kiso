@@ -67,7 +67,7 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
             }
 
         } else {
-            // Non CONCEPT file should not contain frontmatter =========================================================
+            // Non-CONCEPT file should not contain frontmatter =========================================================
             if (markdownFile.frontmatterPresent()) {
                 return List.of(ValidationIssue.builder()
                         .severity(ERROR)

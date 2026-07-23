@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.renderer;
 
 import com.oakinvest.kiso.core.exception.SocialPreviewGenerationException;
-import com.oakinvest.kiso.core.model.html.SocialPreviewImage;
+import com.oakinvest.kiso.core.model.html.image.SocialPreviewImage;
 import com.oakinvest.kiso.core.renderer.util.SvgToPngConverter;
 import com.oakinvest.kiso.core.renderer.util.TextWrapper;
 import gg.jte.ContentType;

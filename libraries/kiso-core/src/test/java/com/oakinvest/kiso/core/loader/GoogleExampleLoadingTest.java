@@ -38,7 +38,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                     assertThat(index.relativePath()).isEqualTo(Path.of("index.md"));
 
                     // HTML.
-                    assertThat(index.htmlFileName()).isEqualTo("index.html");
+                    assertThat(index.htmlFilename()).isEqualTo("index.html");
                     assertThat(index.htmlFilePath()).isEqualTo("index.html");
 
                     // Frontmatter.
@@ -72,7 +72,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(ga4.relativePath()).isEqualTo(Path.of("datasets/ga4_obfuscated_sample_ecommerce.md"));
 
                             // HTML.
-                            assertThat(ga4.htmlFileName()).isEqualTo("ga4_obfuscated_sample_ecommerce.html");
+                            assertThat(ga4.htmlFilename()).isEqualTo("ga4_obfuscated_sample_ecommerce.html");
                             assertThat(ga4.htmlFilePath()).isEqualTo("datasets/ga4_obfuscated_sample_ecommerce.html");
 
                             // Frontmatter.
@@ -101,7 +101,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(index.relativePath()).isEqualTo(Path.of("datasets/index.md"));
 
                             // HTML.
-                            assertThat(index.htmlFileName()).isEqualTo("index.html");
+                            assertThat(index.htmlFilename()).isEqualTo("index.html");
                             assertThat(index.htmlFilePath()).isEqualTo("datasets/index.html");
 
                             // Frontmatter.
@@ -142,14 +142,14 @@ class GoogleExampleLoadingTest extends BaseTest {
 
                                                 // Filename.
                                                 assertThat(events.fileName()).isEqualTo("events___ads_clickstats.md");
-                                                assertThat(events.htmlFileName()).isEqualTo("events___ads_clickstats.html");
+                                                assertThat(events.htmlFilename()).isEqualTo("events___ads_clickstats.html");
 
                                                 // Path.
                                                 assertThat(events.absolutePath()).isEqualTo(Path.of(resourcePath + "/references/joins/events___ads_clickstats.md"));
                                                 assertThat(events.relativePath()).isEqualTo(Path.of("references/joins/events___ads_clickstats.md"));
 
                                                 // HTML.
-                                                assertThat(events.htmlFileName()).isEqualTo("events___ads_clickstats.html");
+                                                assertThat(events.htmlFilename()).isEqualTo("events___ads_clickstats.html");
                                                 assertThat(events.htmlFilePath()).isEqualTo("references/joins/events___ads_clickstats.html");
 
                                                 // Frontmatter.

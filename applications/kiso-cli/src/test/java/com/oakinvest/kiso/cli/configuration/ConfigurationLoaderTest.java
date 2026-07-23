@@ -34,7 +34,8 @@ public class ConfigurationLoaderTest extends BaseTest {
                     assertThat(configuration.site().description()).isEqualTo("My knowledge base description");
 
                     // Theme ===========================================================================================
-                    assertThat(configuration.theme().name()).isEqualTo("corporate");
+                    assertThat(configuration.theme().name()).isEqualTo("corPorate");
+                    assertThat(configuration.theme().effectiveName()).isEqualTo("corporate");
 
                     // Content =========================================================================================
                     assertThat(configuration.content().ignorePatterns())

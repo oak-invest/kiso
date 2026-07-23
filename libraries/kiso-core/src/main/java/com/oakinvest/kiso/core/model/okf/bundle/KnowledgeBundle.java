@@ -4,6 +4,7 @@ import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.Builder;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
@@ -23,9 +24,7 @@ public record KnowledgeBundle(
      * Creates a knowledge bundle with safe default values.
      */
     public KnowledgeBundle {
-        if (siteConfiguration == null) {
-            siteConfiguration = SiteConfiguration.empty();
-        }
+        siteConfiguration = Objects.requireNonNullElse(siteConfiguration, SiteConfiguration.empty());
     }
 
     /**

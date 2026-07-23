@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.model.html;
+package com.oakinvest.kiso.core.model.html.page;
 
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
@@ -39,7 +39,7 @@ public record PageMetadata(
      *
      * @return Markdown filename
      */
-    public String markdownFileName() {
+    public String markdownFilename() {
         return FilenameUtils.removeExtension(FilenameUtils.getName(absolutePath)) + MARKDOWN_EXTENSION;
     }
 

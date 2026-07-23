@@ -8,7 +8,7 @@ dataTheme  = page.themeConfiguration().effectiveName(),
 language = page.siteConfiguration().languageTag(),
 title = page.metadata().title(),
 description = page.metadata().description(),
-markdownFileName = page.metadata().markdownFileName(),
+markdownFileName = page.metadata().markdownFilename(),
 assetBasePath = page.metadata().assetBasePath(),
 bundleTree = page.bundleTree(),
 currentHtmlPath = page.metadata().htmlPath(),
@@ -25,7 +25,7 @@ content = @`
     -->
     <section class="mb-8 overflow-hidden rounded-box border border-base-300 bg-base-100 shadow-sm">
 
-        <!-- Header (Type, last update, title & description ======================================================== -->
+        <!-- Header (Type, last update, title & description) ======================================================= -->
         <div class="border-b border-base-300 bg-base-300/30 px-6 py-6 sm:px-8">
 
             <!-- Type ============================================================================================== -->
@@ -60,8 +60,8 @@ content = @`
         <div class="kiso-source-file">
             <span class="kiso-source-file-label" data-i18n="source.markdownFile">Markdown file</span>
             <span class="kiso-source-file-name">
-                <a class="link link-hover font-mono" href="${page.metadata().markdownFileName()}">
-                    ${page.metadata().markdownFileName()}
+                <a class="link link-hover font-mono" href="${page.metadata().markdownFilename()}">
+                    ${page.metadata().markdownFilename()}
                 </a>
             </span>
         </div>

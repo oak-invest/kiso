@@ -6,7 +6,7 @@ package com.oakinvest.kiso.core.exception;
 public class SvgToPngConversionException extends RuntimeException {
 
     /**
-     * Creates a new exception with the given message and cause.
+     * Constructor.
      *
      * @param message the error message
      * @param cause   the underlying exception

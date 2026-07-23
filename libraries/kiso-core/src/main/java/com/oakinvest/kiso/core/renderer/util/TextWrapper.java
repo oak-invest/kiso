@@ -98,7 +98,7 @@ public class TextWrapper {
     }
 
     /**
-     * Truncates lines list to maximum lines and appends ellipsis to the last line.
+     * Truncates a line list to maximum lines and appends ellipsis to the last line.
      *
      * @param lines         the lines to truncate
      * @param maxLineLength maximum line length including ellipsis

@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @param title        page title displayed in navigation
  * @param fileName     Markdown file name
- * @param relativePath Markdown absolutePath relative to the generated site root
+ * @param relativePath Markdown relative path to the generated site root
  * @param href         HTML link relative to the generated site root
  * @param kind         semantic kind of the Markdown file
  */
@@ -34,7 +34,6 @@ public record BundleTreePage(
      */
     public static BundleTreePage fromMarkdownFile(final MarkdownFile markdownFile) {
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
-
         return BundleTreePage.builder()
                 .title(markdownFile.title())
                 .fileName(markdownFile.fileName())

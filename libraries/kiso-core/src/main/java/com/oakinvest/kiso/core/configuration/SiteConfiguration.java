@@ -46,8 +46,9 @@ public record SiteConfiguration(
         }
         if (Strings.CI.endsWith(baseUrl, "/")) {
             return baseUrl;
+        } else {
+            return baseUrl + "/";
         }
-        return baseUrl + "/";
     }
 
     /**

@@ -2,7 +2,6 @@ package com.oakinvest.kiso.core.model.html.page;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
-import com.oakinvest.kiso.core.model.html.PageMetadata;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
@@ -10,6 +9,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Concept page.
@@ -20,7 +20,7 @@ import java.util.List;
  * @param type               the type of the page
  * @param resource           A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
  * @param tags               A YAML list of short strings for cross-cutting categorization
- * @param timestamp          ISO 8601 datetime of last meaningful change
+ * @param timestamp          ISO 8601 datetime of the last meaningful change
  * @param bundleTree         calculated bundle tree for navigation
  * @param htmlContent        the HTML content of the page
  */
@@ -42,15 +42,9 @@ public record ConceptPage(
      * Creates a concept page with safe default values.
      */
     public ConceptPage {
-        if (siteConfiguration == null) {
-            siteConfiguration = SiteConfiguration.empty();
-        }
-        if (themeConfiguration == null) {
-            themeConfiguration = ThemeConfiguration.empty();
-        }
-        if (metadata == null) {
-            metadata = PageMetadata.empty();
-        }
+        siteConfiguration = Objects.requireNonNullElse(siteConfiguration, SiteConfiguration.empty());
+        themeConfiguration = Objects.requireNonNullElse(themeConfiguration, ThemeConfiguration.empty());
+        metadata = Objects.requireNonNullElse(metadata, PageMetadata.empty());
     }
 
 }

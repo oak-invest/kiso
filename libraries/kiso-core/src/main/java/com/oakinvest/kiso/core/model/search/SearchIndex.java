@@ -3,11 +3,12 @@ package com.oakinvest.kiso.core.model.search;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Search index.
  *
- * @param documents List of search documents
+ * @param documents List of documents to search on
  */
 @Builder
 @SuppressWarnings("unused")
@@ -16,12 +17,10 @@ public record SearchIndex(
 ) {
 
     /**
-     * Default constructor.
+     * Creates a SearchIndex with safe default values.
      */
     public SearchIndex {
-        if (documents == null) {
-            documents = List.of();
-        }
+        documents = Objects.requireNonNullElse(documents, List.of());
     }
 
 }

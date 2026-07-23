@@ -29,7 +29,7 @@ public enum MarkdownFileKind {
      */
     LOG("log.md");
 
-    /** Filename corresponding for the Markdown file kind. */
+    /** Filename corresponding to the Markdown file kind. */
     @Getter
     private final String fileName;
 

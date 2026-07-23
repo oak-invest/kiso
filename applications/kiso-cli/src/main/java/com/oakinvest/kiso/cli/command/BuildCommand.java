@@ -12,7 +12,7 @@ import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.publisher.IndexMarkdownGenerator;
+import com.oakinvest.kiso.core.publisher.IndexGenerator;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
@@ -148,7 +148,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                         try {
                             FileUtils.writeStringToFile(
                                     new File(bundle.absolutePath().toString(), INDEX.getFileName()),
-                                    IndexMarkdownGenerator.generate(bundle),
+                                    IndexGenerator.generate(bundle),
                                     StandardCharsets.UTF_8
                             );
                             print(INDEX.getFileName() + " generated for " + bundle.absolutePath());
@@ -167,7 +167,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                         bundle.markdownFiles().forEach(markdownFile -> {
                             try {
                                 FileUtils.writeStringToFile(
-                                        new File(bundle.absolutePath().toString(), markdownFile.htmlFileName()),
+                                        new File(bundle.absolutePath().toString(), markdownFile.htmlFilename()),
                                         MarkdownToHtmlRenderer.render(configuration.site(), configuration.theme(), markdownFile, bundleTree),
                                         StandardCharsets.UTF_8
                                 );
@@ -185,7 +185,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                                             markdownFile.description(),
                                             configuration.site().normalizedBaseUrl() + markdownFile.htmlFilePath(),
                                             bundle.absolutePath(),
-                                            FilenameUtils.removeExtension(markdownFile.htmlFileName()));
+                                            FilenameUtils.removeExtension(markdownFile.htmlFilename()));
                                 } catch (Exception e) {
                                     printError("Error generating social preview image for " + markdownFile.absolutePath() + ": " + e.getMessage());
                                 }

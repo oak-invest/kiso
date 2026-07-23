@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * Converts SVG files to PNG format.
- * Uses Apache Batik on the JVM, and falls back to an external CLI tool
+ * Uses Apache Batik on the JVM and falls back to an external CLI tool
  * (rsvg-convert, inkscape, or resvg) when running as a GraalVM native image.
  */
 @UtilityClass

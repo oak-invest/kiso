@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.model.search;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Search document.
@@ -28,12 +29,10 @@ public record SearchDocument(
 ) {
 
     /**
-     * Default constructor.
+     * Creates a SearchDocument with safe default values.
      */
     public SearchDocument {
-        if (tags == null) {
-            tags = List.of();
-        }
+        tags = Objects.requireNonNullElse(tags, List.of());
     }
 
 }

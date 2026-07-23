@@ -8,7 +8,6 @@ import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -47,7 +47,7 @@ import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 public class KnowledgeBundleLoader {
 
     /**
-     * Load a directory to build its corresponding {@link KnowledgeBundle}.
+     * Load a directory and returns its corresponding {@link KnowledgeBundle}.
      *
      * @param sourceDirectory source directory
      * @return knowledge bundle
@@ -57,10 +57,10 @@ public class KnowledgeBundleLoader {
     }
 
     /**
-     * Load a directory to build its corresponding {@link KnowledgeBundle} and the website configuration.
+     * Load a directory and returns its corresponding {@link KnowledgeBundle} and the website configuration.
      *
-     * @param sourceDirectory   content directory
-     * @param siteConfiguration generated site configuration
+     * @param sourceDirectory   source directory
+     * @param siteConfiguration site configuration
      * @return knowledge bundle
      */
     public static KnowledgeBundle load(final Path sourceDirectory, final SiteConfiguration siteConfiguration) {
@@ -96,7 +96,7 @@ public class KnowledgeBundleLoader {
     private static Bundle loadBundle(final Path rootBundle, final Path bundleToLoad) {
         final Path normalizedPath = bundleToLoad.toAbsolutePath().normalize();
 
-        // Choosing bundle name.
+        // Choosing bundle name ========================================================================================
         String bundleName;
         if (Strings.CI.equals(toRelativePath(rootBundle, normalizedPath).toString(), "")) {
             // The root directory has no relative path, so it receives a stable display name.
@@ -106,6 +106,7 @@ public class KnowledgeBundleLoader {
             bundleName = toRelativePath(rootBundle, normalizedPath).toString();
         }
 
+        // Returns the bundle ==========================================================================================
         return Bundle.builder()
                 .name(bundleName)
                 .absolutePath(normalizedPath)
@@ -137,7 +138,7 @@ public class KnowledgeBundleLoader {
                     .map(childDirectory -> loadBundle(rootBundle, childDirectory))
                     .toList();
         } catch (IOException exception) {
-            throw new KnowledgeBundleLoadingException("Unable to load child directories: " + bundleToLoad, exception);
+            throw new KnowledgeBundleLoadingException("Unable to load child bundles: " + bundleToLoad, exception);
         }
     }
 
@@ -176,6 +177,7 @@ public class KnowledgeBundleLoader {
         byte[] bytes = {};
 
         try {
+
             // Getting the markdown and the frontmatter ================================================================
             bytes = Files.readAllBytes(normalizedFile);
             final String content = decodeUtf8Strict(bytes);
@@ -191,8 +193,9 @@ public class KnowledgeBundleLoader {
                     .frontmatterPresent(frontmatter.isPresent())
                     .body(removeFrontmatter(content))
                     .build();
+
         } catch (CharacterCodingException exception) {
-            // The file is not a UTF-8 file.
+            // The file is not a UTF-8 file, but we still return it.
             final String content = decodeUtf8ReplacingInvalidCharacters(bytes);
             return MarkdownFile.builder()
                     .fileName(normalizedFile.getFileName().toString())
@@ -226,9 +229,9 @@ public class KnowledgeBundleLoader {
                 .title(getFrontMatterValue(data, TITLE_KEY))
                 .description(getFrontMatterValue(data, DESCRIPTION_KEY))
                 .resource(getFrontMatterValue(data, RESOURCE_KEY))
-                .tags(ObjectUtils.getIfNull(data.get(TAGS_KEY), List.of()))
+                .tags(Objects.requireNonNullElse(data.get(TAGS_KEY), List.of()))
                 .timestamp(getFrontMatterValue(data, TIMESTAMP_KEY))
-                .extraFields(ObjectUtils.getIfNull(getFrontMatterExtraFields(data), new HashMap<>()))
+                .extraFields(Objects.requireNonNullElse(getFrontMatterExtraFields(data), new HashMap<>()))
                 .build());
     }
 

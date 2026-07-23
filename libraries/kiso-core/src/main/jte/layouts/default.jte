@@ -27,15 +27,18 @@
     <link href="${assetBasePath}assets/css/themes.css" rel="stylesheet" type="text/css"/>
     <link href="${assetBasePath}assets/css/application.css" rel="stylesheet" type="text/css"/>
 
-    <!-- JS ======================================================================================================== -->
+    <!-- JS Librairies ============================================================================================= -->
     <script src="${assetBasePath}assets/js/browser.js"></script>
     <script src="${assetBasePath}assets/js/i18next.js"></script>
     <script src="${assetBasePath}assets/js/minisearch.js"></script>
+
+    <!-- JS Kiso code ============================================================================================== -->
     <script src="${assetBasePath}assets/js/kiso-i18n.js"
             data-i18n-base-url="${assetBasePath}assets/i18n/"
             data-i18n-languages="en,fr"
             defer></script>
-    <script src="${assetBasePath}assets/js/kiso-search.js" defer></script>
+    <script src="${assetBasePath}assets/js/kiso-search.js"
+            defer></script>
 
     <!-- Favicons ================================================================================================== -->
     <link href="${assetBasePath}assets/favicon/kiso_favicon_light_16x16.svg"
@@ -88,22 +91,27 @@ current DaisyUI theme, and displays text using the default readable text color f
     text-base-content - Apply DaisyUI’s default text color for base surfaces
 -->
 <div class="drawer min-h-screen bg-base-200 text-base-content">
+
     <input id="kiso-navigation-drawer" type="checkbox" class="drawer-toggle"/>
 
+    <!-- Buttons on top let (Home, navigation and searc) =========================================================== -->
     <div class="drawer-content min-h-screen">
         <div class="fixed left-3 top-3 z-40 flex gap-2 sm:left-4 sm:top-4">
+            <!-- Home ============================================================================================== -->
             <a href="${assetBasePath}index.html"
                aria-label="Home"
                data-i18n-aria-label="navigation.home"
                class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
                 <span class="kiso-home-icon" aria-hidden="true"></span>
             </a>
+            <!-- Navigation ======================================================================================== -->
             <label for="kiso-navigation-drawer"
                    aria-label="Open navigation"
                    data-i18n-aria-label="navigation.openNavigation"
                    class="btn btn-square btn-ghost bg-base-100/90 shadow-sm backdrop-blur">
                 <span class="kiso-hamburger" aria-hidden="true"></span>
             </label>
+            <!-- Search ============================================================================================ -->
             <div class="kiso-search" data-search-index-url="${assetBasePath}search-index.json"
                  data-search-result-base-url="${assetBasePath}">
                 <button type="button"
@@ -126,6 +134,7 @@ current DaisyUI theme, and displays text using the default readable text color f
             </div>
         </div>
 
+        <!-- Content =============================================================================================== -->
         <!--
             Create a centered main container, limit its width to about 1152px, add horizontal padding so content never
             touches screen edges, and increase spacing on larger screens for better readability.
@@ -140,6 +149,7 @@ current DaisyUI theme, and displays text using the default readable text color f
         </main>
     </div>
 
+    <!-- Left menu navigation =======================================================================================-->
     <div class="drawer-side z-50">
         <label for="kiso-navigation-drawer"
                aria-label="Close navigation"
@@ -162,6 +172,7 @@ current DaisyUI theme, and displays text using the default readable text color f
             </div>
         </aside>
     </div>
+
 </div>
 
 </body>

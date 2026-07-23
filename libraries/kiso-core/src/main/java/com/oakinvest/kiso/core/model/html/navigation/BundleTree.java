@@ -13,7 +13,7 @@ import java.util.Objects;
  * Calculated bundle tree used to build navigation menus.
  *
  * @param name          bundle name displayed in navigation
- * @param relativePath  bundle relative path to the generated site root
+ * @param relativePath  relative path to the generated site root
  * @param indexHtmlPath generated HTML path of the bundle index page, relative to the generated site root
  * @param childBundles  direct child bundles
  * @param pages         direct Markdown pages in this bundle

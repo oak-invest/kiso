@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -30,6 +31,14 @@ public record Bundle(
         List<Bundle> childBundles,
         List<MarkdownFile> markdownFiles
 ) {
+
+    /**
+     * Creates a bundle with safe default values.
+     */
+    public Bundle {
+        childBundles = Objects.requireNonNullElse(childBundles, List.of());
+        markdownFiles = Objects.requireNonNullElse(markdownFiles, List.of());
+    }
 
     /**
      * Returns all bundles contained in this knowledge bundle as a flat stream.
@@ -61,8 +70,7 @@ public record Bundle(
      * @return {@code true} if it has a concept file
      */
     public boolean hasContent() {
-        return markdownFiles.stream()
-                .anyMatch(markdownFile -> markdownFile.kind().equals(CONCEPT));
+        return markdownFiles.stream().anyMatch(markdownFile -> markdownFile.kind().equals(CONCEPT));
     }
 
     /**

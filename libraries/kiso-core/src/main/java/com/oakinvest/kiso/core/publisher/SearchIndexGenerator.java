@@ -1,33 +1,36 @@
 package com.oakinvest.kiso.core.publisher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
 
+import java.util.Objects;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
 
 /**
- * Search index generator.
+ * Generator for the search index JSON file.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class SearchIndexGenerator {
 
     /** JSON object mapper. */
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(INDENT_OUTPUT);
 
     /**
      * Generates a search index from a knowledge bundle.
      *
      * @param knowledgeBundle knowledge bundle
-     * @return search index
+     * @return search index JSON string
      */
     public static String generate(final KnowledgeBundle knowledgeBundle) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+
         ObjectNode searchIndex = OBJECT_MAPPER.createObjectNode();
         ArrayNode documents = searchIndex.putArray("documents");
 
@@ -55,10 +58,8 @@ public class SearchIndexGenerator {
         document.put("title", markdownFile.frontmatter().title());
         document.put("description", markdownFile.frontmatter().description());
         document.put("body", markdownFile.body());
-
         ArrayNode tags = document.putArray("tags");
         markdownFile.frontmatter().tags().forEach(tags::add);
-
         return document;
     }
 

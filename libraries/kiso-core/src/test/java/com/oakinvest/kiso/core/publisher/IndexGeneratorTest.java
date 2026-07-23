@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class IndexMarkdownGeneratorTest extends BaseTest {
+public class IndexGeneratorTest extends BaseTest {
 
     @Test
     @DisplayName("Index.md generation")
@@ -20,7 +20,7 @@ public class IndexMarkdownGeneratorTest extends BaseTest {
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
 
         // Testing google OFK example root =============================================================================
-        assertThat(IndexMarkdownGenerator.generate(knowledgeBundle.rootBundle()))
+        assertThat(IndexGenerator.generate(knowledgeBundle.rootBundle()))
                 .isNotBlank()
                 // No content.
                 .doesNotContain("## Content")
@@ -37,7 +37,7 @@ public class IndexMarkdownGeneratorTest extends BaseTest {
                 .findFirst();
         assertThat(joinsBundle).isPresent();
 
-        assertThat(IndexMarkdownGenerator.generate(joinsBundle.get()))
+        assertThat(IndexGenerator.generate(joinsBundle.get()))
                 // Content.
                 .contains("## Content")
                 .contains("- [Join Google Analytics Events to Google Ads Clicks](events___ads_clickstats.md): Join Google Analytics event data with Google Ads click data.")
