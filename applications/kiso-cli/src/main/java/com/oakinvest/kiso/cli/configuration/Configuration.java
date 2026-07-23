@@ -4,8 +4,10 @@ import com.oakinvest.kiso.core.configuration.ContentConfiguration;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 
+import java.util.Objects;
+
 /**
- * Kiso-cli configuration.
+ * Kiso-cli configuration file.
  *
  * @param site    site configuration
  * @param theme   theme configuration
@@ -21,15 +23,9 @@ public record Configuration(
      * Creates a configuration with safe default values.
      */
     public Configuration {
-        if (site == null) {
-            site = SiteConfiguration.empty();
-        }
-        if (theme == null) {
-            theme = ThemeConfiguration.empty();
-        }
-        if (content == null) {
-            content = ContentConfiguration.empty();
-        }
+        site = Objects.requireNonNullElse(site, SiteConfiguration.empty());
+        theme = Objects.requireNonNullElse(theme, ThemeConfiguration.empty());
+        content = Objects.requireNonNullElse(content, ContentConfiguration.empty());
     }
 
     /**

@@ -44,7 +44,7 @@ public class SvgToPngConverter {
      * In JVM mode, Batik is always available.
      * In GraalVM native image mode, returns true if at least one external CLI tool is installed.
      *
-     * @return true when SVG to PNG conversion is available
+     * @return {@code true} when SVG to PNG conversion is available
      */
     public static boolean isAvailable() {
         if (!isNativeImageRuntime()) {
@@ -74,7 +74,7 @@ public class SvgToPngConverter {
     /**
      * Returns true when running inside a GraalVM native image.
      *
-     * @return true when running as a native image
+     * @return {@code true} when running as a native image
      */
     static boolean isNativeImageRuntime() {
         return NATIVE_IMAGE_RUNTIME_CODE.equals(System.getProperty(NATIVE_IMAGE_CODE_PROPERTY));
@@ -103,7 +103,7 @@ public class SvgToPngConverter {
      * Returns true if the given CLI tool is installed and can be launched.
      *
      * @param toolName the tool to check
-     * @return true if the tool is available
+     * @return {@code true} if the tool is available
      */
     private static boolean isToolInstalled(final String toolName) {
         try {

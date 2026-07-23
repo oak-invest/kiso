@@ -77,7 +77,7 @@ public final class MarkdownToHtmlRenderer {
     /**
      * Returns true when JTE precompiled templates are available on the classpath.
      *
-     * @return true when precompiled templates are available
+     * @return {@code true} when precompiled templates are available
      */
     private static boolean precompiledTemplatesAvailable() {
         try {

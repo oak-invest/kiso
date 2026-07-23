@@ -58,7 +58,7 @@ public record Bundle(
     /**
      * Returns true if the bundle has any concept files.
      *
-     * @return true if it has concept file
+     * @return {@code true} if it has a concept file
      */
     public boolean hasContent() {
         return markdownFiles.stream()
@@ -78,6 +78,15 @@ public record Bundle(
     }
 
     /**
+     * Returns true if the bundle has an index file.
+     *
+     * @return {@code true} if it has an index file
+     */
+    public boolean hasIndexFile() {
+        return getIndexFile().isPresent();
+    }
+
+    /**
      * Returns the index file of the bundle.
      *
      * @return index file
@@ -91,7 +100,7 @@ public record Bundle(
     /**
      * Returns true if the bundle has no child bundles and no markdown files.
      *
-     * @return true if empty
+     * @return {@code true} if empty
      */
     public boolean isEmpty() {
         return childBundles.isEmpty() && markdownFiles.isEmpty();

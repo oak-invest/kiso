@@ -26,10 +26,9 @@ public class IgnorePatternMatcher {
      */
     @SuppressWarnings("checkstyle:MagicNumber")
     public IgnorePatternMatcher(final List<String> ignorePatterns) {
-        Objects.requireNonNull(ignorePatterns, "ignorePatterns must not be null");
-
+        final List<String> validIgnorePatterns = Objects.requireNonNullElse(ignorePatterns, List.of());
         this.pathMatchers = Stream.concat(
-                        ignorePatterns.stream().flatMap(pattern -> {
+                        validIgnorePatterns.stream().flatMap(pattern -> {
                             if (pattern.endsWith(RECURSIVE_DIRECTORY_PATTERN)) {
                                 return Stream.of(
                                         pattern,
@@ -56,7 +55,7 @@ public class IgnorePatternMatcher {
      * Returns whether the given relative path matches at least one configured ignore pattern.
      *
      * @param relativePath the path relative to the bundle root
-     * @return {@code true} if the path matches an ignore pattern; {@code false} otherwise
+     * @return {@code true} if the path matches an ignored pattern; {@code false} otherwise
      */
     public boolean matches(final Path relativePath) {
         return pathMatchers.stream().anyMatch(pathMatcher -> pathMatcher.matches(relativePath));

@@ -63,7 +63,7 @@ public final class SocialPreviewImageGenerator {
     /**
      * Returns true when the JTE precompiled social preview template is available on the classpath.
      *
-     * @return true when the precompiled template is available
+     * @return {@code true} when the precompiled template is available
      */
     private static boolean precompiledTemplateAvailable() {
         try {

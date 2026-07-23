@@ -18,7 +18,7 @@ public record ValidationReport(
     /**
      * Has errors.
      *
-     * @return true is there are errors
+     * @return {@code true} is there are errors
      */
     public boolean hasErrors() {
         return issues.stream().anyMatch(ValidationIssue::isError);

@@ -8,6 +8,7 @@ import com.oakinvest.kiso.cli.options.ProfileOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
+import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
@@ -70,14 +71,13 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
     @CommandLine.Mixin
     private final SourceOption sourceOption = new SourceOption();
 
-    /** Profile option. */
-    @CommandLine.Mixin
-    private final ProfileOption profileOption = new ProfileOption();
-
     /** Destination directory. */
     @CommandLine.Mixin
     private final DestinationOption destinationOption = new DestinationOption();
 
+    /** Profile option. */
+    @CommandLine.Mixin
+    private final ProfileOption profileOption = new ProfileOption();
 
     /** Command specification. */
     @CommandLine.Spec
@@ -108,17 +108,13 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         blankLine();
 
         try {
+            // Loading configuration & profile =========================================================================
             final String profile = profileOption.profile();
+            final Configuration configuration = ConfigurationLoader
+                    .load(sourceDirectory.toPath(), profile)
+                    .orElse(Configuration.empty());
 
-            // Loading configuration ===================================================================================
-            final Configuration configuration;
-            if (StringUtils.isBlank(profile)) {
-                configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
-            } else {
-                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());
-            }
-
-            // Copying files ===========================================================================================
+            // Copying user okf bundle files to the destination directory ==============================================
             FileUtils.deleteDirectory(destinationDirectory);
             IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
             FileFilter fileFilter = file -> {
@@ -127,7 +123,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             };
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
-            // Copy the profile file.
+            // If a profile is specified, check if the profile contains an index file to use ===========================
             if (StringUtils.isNotBlank(profile)) {
                 final File sourceFile = sourceDirectory.toPath()
                         .resolve(CONFIGURATION_DIRECTORY_NAME)
@@ -145,31 +141,29 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
-            // Adding missing index.md files to bundles without index ==================================================
+            // Creating missing index.md files for bundles without index ===============================================
             knowledgeBundle.bundles()
-                    .filter(bundle -> bundle.getIndexFile().isEmpty())
+                    .filter(bundle -> !bundle.hasIndexFile())
                     .forEach(bundle -> {
                         try {
                             FileUtils.writeStringToFile(
-                                    new File(bundle.absolutePath().toString(), "index.md"),
+                                    new File(bundle.absolutePath().toString(), INDEX.getFileName()),
                                     IndexMarkdownGenerator.generate(bundle),
                                     StandardCharsets.UTF_8
                             );
-                            print("index.md generated for " + bundle.absolutePath());
+                            print(INDEX.getFileName() + " generated for " + bundle.absolutePath());
                         } catch (IOException e) {
-                            printError("Error generating index.md for " + bundle.absolutePath() + ": " + e.getMessage());
+                            printError("Error generating " + INDEX.getFileName() + " for " + bundle.absolutePath() + ": " + e.getMessage());
                         }
                     });
 
             // HTML generation =========================================================================================
-            knowledgeBundle = KnowledgeBundleLoader.load(
-                    destinationDirectory.toPath(),
-                    configuration.site());
+            knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath(), configuration.site());
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
 
-                        // We generate the HTML version of every Markdown file =========================================
+                        // We generate the HTML version of every Markdown file in the bundle ===========================
                         bundle.markdownFiles().forEach(markdownFile -> {
                             try {
                                 FileUtils.writeStringToFile(
@@ -234,8 +228,11 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         } catch (ConfigurationLoadingException e) {
             printError("Error loading configuration: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
-        } catch (IOException e) {
-            printError("Error: " + e.getMessage());
+        } catch (KnowledgeBundleLoadingException e) {
+            printError("Error loading knowledge bundle: " + e.getMessage());
+            return CommandLine.ExitCode.SOFTWARE;
+        } catch (Exception e) {
+            printError("Unexpected error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
         }
     }

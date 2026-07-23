@@ -5,7 +5,7 @@ import picocli.CommandLine;
 import java.nio.file.Path;
 
 /**
- * Shared destination directory option for commands creating files.
+ * Destination directory option for commands creating files.
  */
 public class DestinationOption {
 
@@ -16,7 +16,6 @@ public class DestinationOption {
             paramLabel = "DIRECTORY",
             description = "Directory where generated files are created. Defaults to 'public' directory."
     )
-    @SuppressWarnings("unused")
     private Path destinationDirectory;
 
     /**

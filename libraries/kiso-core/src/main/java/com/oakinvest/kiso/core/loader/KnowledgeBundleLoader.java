@@ -291,7 +291,7 @@ public class KnowledgeBundleLoader {
      * Returns true when a frontmatter value is an inline YAML list.
      *
      * @param value frontmatter value
-     * @return true for an inline list
+     * @return {@code true} for an inline list
      */
     private static boolean isInlineList(final String value) {
         String trimmedValue = StringUtils.trim(value);
@@ -388,7 +388,7 @@ public class KnowledgeBundleLoader {
      * Returns true when the line is a frontmatter delimiter.
      *
      * @param line line
-     * @return true when the line is a frontmatter delimiter
+     * @return {@code true} when the line is a frontmatter delimiter
      */
     private static boolean isFrontmatterDelimiter(final String line) {
         return !FRONTMATTER_DELIMITER.equals(StringUtils.trim(line));
