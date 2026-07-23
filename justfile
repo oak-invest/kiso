@@ -58,7 +58,18 @@ start_release:
 finish_release:
     mvn gitflow:release-finish -DskipTests
 
-# Release tests ========================================================================================================
+# Release tasks ========================================================================================================
+create-code-review-checklist:
+    find . \
+      \( -path "*/target" -o -path "*/build" -o -path "*/generated" \) -prune -o \
+      -type f \
+      \( -name "*.java" -o -name "*.jte" -o -name "*.kte" \) \
+      -print \
+      | sort \
+      | tee code-review-files.txt \
+      | sed 's/^/- [ ] /' \
+      > code-review-checklist.md
+
 release_run_check_google:
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example
