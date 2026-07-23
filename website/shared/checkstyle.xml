@@ -15,7 +15,6 @@
         <property name="tabWidth" value="4"/>
         <module name="MissingJavadocMethod"/>
         <module name="MissingJavadocType"/>
-        <module name="MissingJavadocVariable"/>
         <module name="JavadocMethod"/>
         <module name="JavadocType"/>
         <module name="JavadocVariable"/>
