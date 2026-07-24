@@ -14,16 +14,17 @@ import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEP
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Loading google example bundle")
 class GoogleExampleLoadingTest extends BaseTest {
 
     @Test
-    @DisplayName("Loading google example bundle")
-    void googleExamplesLoading() {
+    @DisplayName("Loading google example bundle without configuration")
+    void googleExamplesLoadingWithoutConfiguration() {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
-        // Testing isRoot bundle =========================================================================================
+        // Testing isRoot bundle =======================================================================================
         assertThat(bundle.rootBundle().childBundles()).hasSize(3);
         assertThat(bundle.rootBundle().markdownFiles())
                 .hasSize(1)

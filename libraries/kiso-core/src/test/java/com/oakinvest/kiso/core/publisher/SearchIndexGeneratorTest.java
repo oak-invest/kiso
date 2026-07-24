@@ -1,23 +1,20 @@
 package com.oakinvest.kiso.core.publisher;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.stream.StreamSupport;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
 
+@DisplayName("search-index.json generator")
 class SearchIndexGeneratorTest extends BaseTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Test
-    @DisplayName("Generating search index content")
+    @DisplayName("search-index.json generation")
     void generate() throws Exception {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
@@ -62,35 +59,6 @@ class SearchIndexGeneratorTest extends BaseTest {
                 .isEqualTo("Contains Google Analytics event export data from the `ga4_obfuscated_sample_ecommerce` dataset.");
         assertThat(eventsTable.get("tags").get(0).asText()).isEqualTo("events");
         assertThat(eventsTable.get("body").asText()).contains("Google Analytics event export data");
-    }
-
-    /**
-     * Returns the document ids from search documents.
-     *
-     * @param documents search documents JSON array
-     * @return document ids
-     */
-    private static java.util.List<String> documentIds(final JsonNode documents) {
-        return StreamSupport.stream(documents.spliterator(), false)
-                .map(document -> document.get("id").asText())
-                .toList();
-    }
-
-    /**
-     * Finds a document by id.
-     *
-     * @param documents search documents JSON array
-     * @param id        document id
-     * @return matching document
-     */
-    private static JsonNode documentWithId(final JsonNode documents, final String id) {
-        for (JsonNode document : documents) {
-            if (document.get("id").asText().equals(id)) {
-                return document;
-            }
-        }
-        fail("Missing search document: " + id);
-        return null;
     }
 
 }

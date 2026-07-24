@@ -18,6 +18,7 @@ import static com.oakinvest.kiso.core.validation.ValidationCode.UNEXPECTED_FRONT
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Valid frontmatter rule")
 class ValidFrontmatterRuleTest extends BaseTest {
 
     final ValidFrontmatterRule rule = new ValidFrontmatterRule();

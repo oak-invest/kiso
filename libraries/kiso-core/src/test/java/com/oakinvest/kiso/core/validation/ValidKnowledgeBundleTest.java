@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Valid knowledge bundle")
 public class ValidKnowledgeBundleTest extends BaseTest {
 
     @Test
@@ -17,8 +18,7 @@ public class ValidKnowledgeBundleTest extends BaseTest {
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
         // We check that Google examples don't raise any error =========================================================
-        var report = ValidationRunner.runValidation(bundle);
-        assertThat(report.hasErrors()).isFalse();
+        assertThat(ValidationRunner.runValidation(bundle).hasErrors()).isFalse();
     }
 
 

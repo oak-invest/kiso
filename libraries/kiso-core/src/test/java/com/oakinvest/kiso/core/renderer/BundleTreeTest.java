@@ -12,6 +12,7 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Bundle tree")
 public class BundleTreeTest extends BaseTest {
 
     @Test
@@ -22,7 +23,7 @@ public class BundleTreeTest extends BaseTest {
         var bundle = KnowledgeBundleLoader.load(resourcePath);
         var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
 
-        // Root bundle ================================================================================================
+        // Root bundle =================================================================================================
         assertThat(bundleTree)
                 .returns("Index", BundleTree::name)
                 .returns(Path.of(""), BundleTree::relativePath)
@@ -40,7 +41,7 @@ public class BundleTreeTest extends BaseTest {
                 .returns("index.html", BundleTreePage::href)
                 .returns(MarkdownFileKind.INDEX, BundleTreePage::kind);
 
-        // Direct child bundle ========================================================================================
+        // Direct child bundle =========================================================================================
         var datasetsBundle = bundleTree.childBundles().getFirst();
         assertThat(datasetsBundle)
                 .returns("datasets", BundleTree::name)
@@ -51,7 +52,7 @@ public class BundleTreeTest extends BaseTest {
                 .extracting(BundleTreePage::href)
                 .containsExactly("datasets/ga4_obfuscated_sample_ecommerce.html", "datasets/index.html");
 
-        // Nested bundle ==============================================================================================
+        // Nested bundle ===============================================================================================
         var referencesBundle = bundleTree.childBundles().get(1);
         assertThat(referencesBundle.childBundles())
                 .extracting(BundleTree::indexHtmlPath)
