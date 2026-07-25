@@ -96,15 +96,22 @@
     @if(preview.descriptionLines().size() > 0)
         <text x="60" y="410"
               font-family="Helvetica, Arial, sans-serif"
-              font-size="23" fill="#94a3b8">
+              font-size="27" fill="#94a3b8">
             ${preview.descriptionLines().get(0)}
         </text>
     @endif
     @if(preview.descriptionLines().size() > 1)
         <text x="60" y="450"
               font-family="Helvetica, Arial, sans-serif"
-              font-size="23" fill="#94a3b8">
+              font-size="27" fill="#94a3b8">
             ${preview.descriptionLines().get(1)}
+        </text>
+    @endif
+    @if(preview.descriptionLines().size() > 2)
+        <text x="60" y="490"
+              font-family="Helvetica, Arial, sans-serif"
+              font-size="27" fill="#94a3b8">
+            ${preview.descriptionLines().get(2)}
         </text>
     @endif
 
@@ -118,5 +125,3 @@
     @endif
 
 </svg>
-
-

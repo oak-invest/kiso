@@ -22,9 +22,9 @@ public class SocialPreviewConstants {
     public static final int TITLE_MAXIMUM_LINES = 2;
 
     /** Default maximum line length for description text. */
-    public static final int DESCRIPTION_MAXIMUM_LINE_LENGTH = 50;
+    public static final int DESCRIPTION_MAXIMUM_LINE_LENGTH = 72;
 
     /** Default maximum lines for description text. */
-    public static final int DESCRIPTION_MAXIMUM_LINES = 2;
+    public static final int DESCRIPTION_MAXIMUM_LINES = 3;
 
 }
