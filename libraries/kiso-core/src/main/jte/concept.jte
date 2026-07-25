@@ -73,7 +73,7 @@ content = @`
             switches to a two-column layout on medium screens and above, using a wide main column and a narrower sidebar
             separated by a vertical divider.
                 divide-y - Add horizontal separators between children.
-                md:grid-cols-[minmax(0,1fr)_minmax(18rem,0.45fr)] - Define two columns on medium screens and above.
+                md:grid-cols - Define two columns on medium screens and above.
                 md:divide-x - Instead of horizontal separators, add vertical separators.
                 md:divide-y-0 - Remove horizontal separators on medium screens and above.
             -->

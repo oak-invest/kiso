@@ -42,12 +42,12 @@ public class SvgToPngConverter {
     /**
      * Returns true when SVG to PNG conversion is available.
      * In JVM mode, Batik is always available.
-     * In GraalVM native image mode, returns true if at least one external CLI tool is installed.
+     * In GraalVM native image mode, it returns true if at least one external CLI tool is installed.
      *
      * @return {@code true} when SVG to PNG conversion is available
      */
     public static boolean isAvailable() {
-        if (!isNativeImageRuntime()) {
+        if (isNativeImageRuntime()) {
             return true;
         }
         return findExternalTool() != null;
@@ -64,7 +64,7 @@ public class SvgToPngConverter {
      * @throws SvgToPngConversionException if the conversion fails
      */
     public static void convert(final Path svgPath, final Path pngPath, final int width, final int height) {
-        if (!isNativeImageRuntime()) {
+        if (isNativeImageRuntime()) {
             convertWithBatik(svgPath, pngPath, width, height);
         } else {
             convertWithExternalTool(svgPath, pngPath, width, height);
@@ -77,7 +77,7 @@ public class SvgToPngConverter {
      * @return {@code true} when running as a native image
      */
     static boolean isNativeImageRuntime() {
-        return NATIVE_IMAGE_RUNTIME_CODE.equals(System.getProperty(NATIVE_IMAGE_CODE_PROPERTY));
+        return !NATIVE_IMAGE_RUNTIME_CODE.equals(System.getProperty(NATIVE_IMAGE_CODE_PROPERTY));
     }
 
     /**

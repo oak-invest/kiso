@@ -140,7 +140,7 @@ current DaisyUI theme, and displays text using the default readable text color f
             touches screen edges, and increase spacing on larger screens for better readability.
                 container - Create a centered layout wrapper
                 mx-auto - Center a block element horizontally
-                max-w-6xl - Limit the maximum width of the container to 6xl (1152px)
+                max-w-6xl - Limit the maximum width of the container
         -->
         <main class="container mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
 

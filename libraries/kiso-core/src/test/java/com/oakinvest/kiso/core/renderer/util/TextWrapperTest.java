@@ -98,15 +98,17 @@ final class TextWrapperTest {
 
         @Test
         @DisplayName("handles single long word")
+        @SuppressWarnings("SpellCheckingInspection")
         void handlesSingleLongWord() {
             String longWord = "Supercalifragilisticexpialidocious";
             List<String> result = TextWrapper.wrap(longWord, 10, 2);
             assertThat(result).isNotEmpty();
-            assertThat(result.get(0).length()).isLessThanOrEqualTo(11); // 10 + ellipsis
+            assertThat(result.getFirst().length()).isLessThanOrEqualTo(11); // 10 + ellipsis
         }
 
         @Test
         @DisplayName("truncates long word before following lines")
+        @SuppressWarnings("SpellCheckingInspection")
         void truncatesLongWordBeforeFollowingLines() {
             String text = "Supercalifragilisticexpialidocious small words";
             List<String> result = TextWrapper.wrap(text, 10, 3);

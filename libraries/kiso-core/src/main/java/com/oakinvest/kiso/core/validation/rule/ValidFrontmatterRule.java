@@ -23,7 +23,7 @@ import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
  * Every concept has two parts:
  * - A YAML frontmatter block.
  * - A markdown body.
- * type: <Type name> # REQUIRED
+ * Type: <Type name> # REQUIRED
  */
 public class ValidFrontmatterRule implements MarkdownFileRule {
 

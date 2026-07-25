@@ -18,6 +18,7 @@ public class DestinationOption {
             paramLabel = "DIRECTORY",
             description = "Directory where generated files are created. Defaults to '" + DEFAULT_DESTINATION_DIRECTORY_NAME + "' directory."
     )
+    @SuppressWarnings("unused")
     private Path destinationDirectory;
 
     /**

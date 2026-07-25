@@ -13,6 +13,7 @@ public class ProfileOption {
             paramLabel = "PROFILE",
             description = "Publishing profile from .kiso/<profile>/configuration.yaml"
     )
+    @SuppressWarnings("unused")
     private String profile;
 
     /**

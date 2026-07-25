@@ -17,7 +17,7 @@ public enum MarkdownFileKind {
 
     /**
      * Directory listing document (index.md).
-     * An index.md file MAY appear in any directory, including the bundle root. It enumerates the directory's contents
+     * An index.md file MAY appear in any directory, including the bundle root. It lists the directory's contents
      * to support progressive disclosure - letting a human or agent see what is available before opening individual
      * documents.
      */

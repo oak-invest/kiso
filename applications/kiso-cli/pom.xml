@@ -162,6 +162,13 @@
                             <mainClass>${application.main.class}</mainClass>
                             <fallback>false</fallback>
                         </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.apache.maven.shared</groupId>
+                                <artifactId>maven-shared-utils</artifactId>
+                                <version>${maven.shared.utils.version}</version>
+                            </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>

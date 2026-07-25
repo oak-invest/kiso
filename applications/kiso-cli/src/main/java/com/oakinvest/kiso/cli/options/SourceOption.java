@@ -16,6 +16,7 @@ public class SourceOption {
             paramLabel = "DIRECTORY",
             description = "Directory containing the bundle to read. Defaults to the current directory."
     )
+    @SuppressWarnings("unused")
     private Path sourceDirectory;
 
     /**

@@ -23,7 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BuildTest extends BaseTest {
 
     @Test
-    @SuppressWarnings("HttpUrlsUsage")
     @DisplayName("Building a simple OKF bundle")
     void build(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
