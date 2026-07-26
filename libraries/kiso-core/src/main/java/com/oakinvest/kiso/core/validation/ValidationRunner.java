@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
@@ -27,12 +27,12 @@ public class ValidationRunner {
      * Validate a knowledge bundle.
      *
      * @param knowledgeBundle knowledge bundle
-     * @return validation report;
+     * @return validation report
      */
     public static ValidationReport runValidation(final KnowledgeBundle knowledgeBundle) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
 
-        List<ValidationIssue> issues = new LinkedList<>();
+        final List<ValidationIssue> issues = new LinkedList<>();
         knowledgeBundle.bundles()
                 // For each bundle =====================================================================================
                 .forEach(bundle ->
@@ -45,11 +45,9 @@ public class ValidationRunner {
                                         )
                                 )
                 );
-
         return ValidationReport.builder()
                 .issues(issues)
                 .build();
-
     }
 
 }

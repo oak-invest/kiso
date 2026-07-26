@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.oakinvest.kiso</groupId>
         <artifactId>kiso</artifactId>
-        <version>0.1.5</version>
+        <version>0.1.6</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -59,6 +59,14 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>batik-all</artifactId>
         </dependency>
 
         <!-- Test dependencies -->
@@ -114,6 +122,7 @@
                         </goals>
                         <configuration>
                             <artifactItems>
+                                <!-- DaisyUI ======================================================================= -->
                                 <artifactItem>
                                     <groupId>org.webjars.npm</groupId>
                                     <artifactId>daisyui</artifactId>
@@ -125,6 +134,7 @@
                                         META-INF/resources/webjars/daisyui/${daisyui.webjar.version}/themes.css
                                     </includes>
                                 </artifactItem>
+                                <!-- TailwindCSS =================================================================== -->
                                 <artifactItem>
                                     <groupId>org.webjars.npm</groupId>
                                     <artifactId>tailwindcss__browser</artifactId>
@@ -134,6 +144,30 @@
                                     </outputDirectory>
                                     <includes>
                                         META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js
+                                    </includes>
+                                </artifactItem>
+                                <!-- Minisearch ==================================================================== -->
+                                <artifactItem>
+                                    <groupId>org.webjars.npm</groupId>
+                                    <artifactId>minisearch</artifactId>
+                                    <version>${minisearch.webjar.version}</version>
+                                    <outputDirectory>
+                                        ${project.build.directory}/generated-webjar-assets/minisearch
+                                    </outputDirectory>
+                                    <includes>
+                                        META-INF/resources/webjars/minisearch/${minisearch.webjar.version}/dist/umd/index.js
+                                    </includes>
+                                </artifactItem>
+                                <!-- I18next ====================================================================== -->
+                                <artifactItem>
+                                    <groupId>org.webjars.npm</groupId>
+                                    <artifactId>i18next</artifactId>
+                                    <version>${i18next.webjar.version}</version>
+                                    <outputDirectory>
+                                        ${project.build.directory}/generated-webjar-assets/i18next
+                                    </outputDirectory>
+                                    <includes>
+                                        META-INF/resources/webjars/i18next/${i18next.webjar.version}/dist/umd/i18next.js
                                     </includes>
                                 </artifactItem>
                             </artifactItems>
@@ -163,6 +197,8 @@
                                         <exclude>css/daisyui.css</exclude>
                                         <exclude>css/themes.css</exclude>
                                         <exclude>js/browser.js</exclude>
+                                        <exclude>js/minisearch.js</exclude>
+                                        <exclude>js/i18next.js</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
@@ -193,6 +229,8 @@
                                         <exclude>css/daisyui.css</exclude>
                                         <exclude>css/themes.css</exclude>
                                         <exclude>js/browser.js</exclude>
+                                        <exclude>js/minisearch.js</exclude>
+                                        <exclude>js/i18next.js</exclude>
                                     </excludes>
                                 </resource>
                                 <resource>
@@ -217,21 +255,27 @@
                 <version>${maven.antrun.plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>copy-tailwind-browser-asset</id>
+                        <id>copy-js-asset</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>run</goal>
                         </goals>
                         <configuration>
                             <target>
-                                <copy
-                                        file="${project.build.directory}/generated-webjar-assets/tailwindcss-browser/META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js"
-                                        tofile="${project.build.outputDirectory}/assets/js/browser.js"/>
+                                <copy failonerror="true"
+                                      file="${project.build.directory}/generated-webjar-assets/tailwindcss-browser/META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js"
+                                      tofile="${project.build.outputDirectory}/assets/js/browser.js"/>
+                                <copy failonerror="true"
+                                      file="${project.build.directory}/generated-webjar-assets/minisearch/META-INF/resources/webjars/minisearch/${minisearch.webjar.version}/dist/umd/index.js"
+                                      tofile="${project.build.outputDirectory}/assets/js/minisearch.js"/>
+                                <copy failonerror="true"
+                                      file="${project.build.directory}/generated-webjar-assets/i18next/META-INF/resources/webjars/i18next/${i18next.webjar.version}/dist/umd/i18next.js"
+                                      tofile="${project.build.outputDirectory}/assets/js/i18next.js"/>
                             </target>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>copy-tailwind-browser-test-asset</id>
+                        <id>copy-js-test-asset</id>
                         <phase>process-test-resources</phase>
                         <goals>
                             <goal>run</goal>
@@ -241,6 +285,12 @@
                                 <copy
                                         file="${project.build.directory}/generated-webjar-assets/tailwindcss-browser/META-INF/resources/webjars/tailwindcss__browser/${tailwindcss.webjar.version}/dist/index.global.js"
                                         tofile="${project.build.directory}/assets/js/browser.js"/>
+                                <copy
+                                        file="${project.build.directory}/generated-webjar-assets/minisearch/META-INF/resources/webjars/minisearch/${minisearch.webjar.version}/dist/umd/index.js"
+                                        tofile="${project.build.directory}/assets/js/minisearch.js"/>
+                                <copy
+                                        file="${project.build.directory}/generated-webjar-assets/i18next/META-INF/resources/webjars/i18next/${i18next.webjar.version}/dist/umd/i18next.js"
+                                        tofile="${project.build.directory}/assets/js/i18next.js"/>
                             </target>
                         </configuration>
                     </execution>

@@ -35,6 +35,11 @@
     "allDeclaredMethods": true
   },
   {
+    "name": "gg.jte.generated.precompiled.JtesocialpreviewsvgGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
     "name": "gg.jte.generated.precompiled.layouts.JtedefaultGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true

@@ -4,10 +4,13 @@ import com.oakinvest.kiso.cli.command.BuildCommand;
 import com.oakinvest.kiso.cli.command.CheckCommand;
 import picocli.CommandLine;
 
+/**
+ * Application.
+ */
 @CommandLine.Command(
         name = "kiso-cli",
         mixinStandardHelpOptions = true,
-        version = "v0.1.5",
+        version = "v0.1.6",
         subcommands = {
                 CheckCommand.class,
                 BuildCommand.class
@@ -21,15 +24,12 @@ public class Application implements Runnable {
      * @param args arguments
      */
     public static void main(final String[] args) {
-        int exitCode = new CommandLine(new Application()).execute(args);
+        final int exitCode = new CommandLine(new Application()).execute(args);
         System.exit(exitCode);
     }
 
-    /**
-     * Run.
-     */
     @Override
-    public void run() {
+    public final void run() {
         new CommandLine(this).usage(System.out);
     }
 

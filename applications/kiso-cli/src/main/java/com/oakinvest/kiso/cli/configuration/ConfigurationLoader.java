@@ -1,16 +1,17 @@
 package com.oakinvest.kiso.cli.configuration;
 
-import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE_NAME;
@@ -23,9 +24,10 @@ import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE_NAME
 public class ConfigurationLoader {
 
     /** Mapper. */
-    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder(YAMLFactory.builder()
-                    .enable(StreamReadFeature.STRICT_DUPLICATE_DETECTION)
-                    .build())
+    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder(
+                    YAMLFactory.builder()
+                            .enable(STRICT_DUPLICATE_DETECTION)
+                            .build())
             .build();
 
     /**
@@ -45,7 +47,7 @@ public class ConfigurationLoader {
             throw new ConfigurationLoadingException("Configuration path is not a regular file: " + configurationFilePath);
         }
 
-        // We get the content ==========================================================================================
+        // We get the configuration ====================================================================================
         return getConfiguration(configurationFilePath);
     }
 
@@ -59,11 +61,12 @@ public class ConfigurationLoader {
     public static Optional<Configuration> load(final Path bundlePath, final String profileName) {
         // We check if we have the bundle ==============================================================================
         Objects.requireNonNull(bundlePath, "Bundle path must not be null");
-        if (profileName.isBlank()) {
-            throw new ConfigurationLoadingException("Profile name must not be blank");
+        if (StringUtils.isBlank(profileName)) {
+            // If profile name is blank, we load the default configuration file.
+            return load(bundlePath);
         }
 
-        // We treath the profile name ==================================================================================
+        // We treat the profile name ===================================================================================
         final Path configurationDirectory = bundlePath.resolve(CONFIGURATION_DIRECTORY).normalize();
         final Path profileDirectory = configurationDirectory.resolve(profileName).normalize();
         final Path profileFilePath = profileDirectory.resolve(CONFIGURATION_FILE_NAME);
@@ -77,7 +80,7 @@ public class ConfigurationLoader {
             throw new ConfigurationLoadingException("Profile path is not a regular file: " + profileFilePath);
         }
 
-        // We get the content ==========================================================================================
+        // We get the configuration ====================================================================================
         return getConfiguration(profileFilePath);
     }
 
@@ -89,16 +92,15 @@ public class ConfigurationLoader {
      */
     private static Optional<Configuration> getConfiguration(final Path configurationFilePath) {
         try {
-            String yaml = Files.readString(configurationFilePath);
-            if (yaml.isBlank()) {
-                return Optional.of(Configuration.empty());
+            // Loading the content.
+            final String yaml = Files.readString(configurationFilePath);
+
+            // If there is some content in the configuration file, we load it.
+            if (StringUtils.isNotBlank(yaml)) {
+                return Optional.of(OBJECT_MAPPER.readValue(yaml, Configuration.class));
             }
 
-            Configuration configuration = OBJECT_MAPPER.readValue(yaml, Configuration.class);
-            if (configuration == null) {
-                configuration = Configuration.empty();
-            }
-            return Optional.of(configuration);
+            return Optional.of(Configuration.empty());
         } catch (Exception exception) {
             throw new ConfigurationLoadingException(
                     "Unable to load configuration file " + configurationFilePath + ": " + exception.getMessage(),

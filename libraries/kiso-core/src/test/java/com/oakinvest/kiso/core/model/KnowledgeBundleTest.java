@@ -2,28 +2,19 @@ package com.oakinvest.kiso.core.model;
 
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("KnowledgeBundle Tests")
 public class KnowledgeBundleTest extends BaseTest {
 
     @Test
-    @DisplayName("Using an empty site configuration when none is provided")
-    void emptySiteConfigurationByDefault() {
-        var knowledgeBundle = KnowledgeBundle.builder().build();
-
-        assertThat(knowledgeBundle.siteConfiguration())
-                .isNotNull()
-                .isEqualTo(SiteConfiguration.empty());
-    }
-
-    @Test
-    @DisplayName("Testing KnowledgeBundle.bundles()")
-    void bundles() {
+    @DisplayName("Testing KnowledgeBundle load")
+    void load() {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
         var rootBundle = KnowledgeBundleLoader.load(resourcePath);
@@ -79,6 +70,15 @@ public class KnowledgeBundleTest extends BaseTest {
                         markdownFile -> assertThat(markdownFile.relativePath().toString())
                                 .isEqualTo("tables/index.md")
                 );
+    }
+
+    @Test
+    @DisplayName("Using an empty site configuration when none is provided")
+    void emptySiteConfigurationByDefault() {
+        var knowledgeBundle = KnowledgeBundle.builder().build();
+        assertThat(knowledgeBundle.siteConfiguration())
+                .isNotNull()
+                .isEqualTo(SiteConfiguration.empty());
     }
 
 }

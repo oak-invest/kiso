@@ -8,10 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("llms.txt generator")
 class LlmsTxtGeneratorTest extends BaseTest {
 
     @Test
-    @DisplayName("Generating llms.txt content")
+    @DisplayName("llms.txt generation")
     void generate() {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
@@ -64,6 +65,7 @@ class LlmsTxtGeneratorTest extends BaseTest {
         var resourcePath = getResourcePath(KB_GOOGLE);
         var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance",
+                null,
                 null,
                 null,
                 null);

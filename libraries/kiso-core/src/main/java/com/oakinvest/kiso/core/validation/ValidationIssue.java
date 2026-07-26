@@ -27,7 +27,7 @@ public record ValidationIssue(
     /**
      * Is an error.
      *
-     * @return true if this issue is an error
+     * @return {@code true} if this issue is an error
      */
     public boolean isError() {
         return severity == ERROR;
@@ -36,7 +36,7 @@ public record ValidationIssue(
     /**
      * Is a warning.
      *
-     * @return true if this issue is a warning
+     * @return {@code true} if this issue is a warning
      */
     public boolean isWarning() {
         return severity == WARNING;

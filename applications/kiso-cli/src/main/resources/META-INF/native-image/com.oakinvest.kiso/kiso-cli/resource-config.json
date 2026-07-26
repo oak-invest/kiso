@@ -14,6 +14,21 @@
         "pattern": "assets/js/browser\\.js"
       },
       {
+        "pattern": "assets/js/minisearch\\.js"
+      },
+      {
+        "pattern": "assets/js/i18next\\.js"
+      },
+      {
+        "pattern": "assets/js/kiso-i18n\\.js"
+      },
+      {
+        "pattern": "assets/js/kiso-search\\.js"
+      },
+      {
+        "pattern": "assets/i18n/.*\\.json"
+      },
+      {
         "pattern": "assets/favicon/.*\\.svg"
       }
     ]

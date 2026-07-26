@@ -4,19 +4,19 @@ import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import picocli.CommandLine;
 
 import java.io.File;
 import java.util.concurrent.Callable;
 
 /**
- * Check: Validate Markdown files and report formatting or structural errors.
+ * Check: Validate bundles and Markdown files and report formatting or structural errors.
  */
 @CommandLine.Command(
         name = "check",
         mixinStandardHelpOptions = true,
-        description = "Validate Markdown files and report formatting or structural errors"
+        description = "Validate bundles and Markdown files and report formatting or structural errors"
 )
 public class CheckCommand extends AbstractCommand implements Callable<Integer> {
 
@@ -62,7 +62,7 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
             }
 
         } catch (KnowledgeBundleLoadingException e) {
-            printError(e.getMessage());
+            printError("Error loading knowledge bundle: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
         } catch (Exception e) {
             printError("Unexpected error: " + e.getMessage());

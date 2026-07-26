@@ -3,33 +3,29 @@ package com.oakinvest.kiso.core.renderer;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Markdown to HTML with configuration")
 public class RendererConfigurationTest extends BaseTest {
 
     @Test
     @DisplayName("Markdown to html with configuration")
-    void markdownToHTML() throws URISyntaxException, IOException {
+    void markdownToHTML(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
-        var targetDirectory = Path.of(RendererConfigurationTest.class
-                .getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .toURI()).getParent();
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
         var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
@@ -38,17 +34,16 @@ public class RendererConfigurationTest extends BaseTest {
         var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance/",
                 Locale.FRENCH,
+                "Nom du site",
                 "Titre du site",
                 "Description du site");
         var themeConfiguration = new ThemeConfiguration(
-                "corporate");
+                "Corporate ");
 
         // Index file of the bundle ====================================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
         var page = Jsoup.parse(MarkdownToHtmlRenderer.render(siteConfiguration, themeConfiguration, markdownFiles.getFirst(), bundleTree));
-
-        // Writing the file (console & target directory) for debugging purposes ========================================
-        FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
+        FileUtils.writeStringToFile(temporaryDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
 
         // Assertions ==================================================================================================
         Element html = page.selectFirst("html");
@@ -67,6 +62,34 @@ public class RendererConfigurationTest extends BaseTest {
                         "https://knowledge.angara.finance/assets/css/themes.css",
                         "https://knowledge.angara.finance/assets/css/application.css"
                 );
+
+        // Open Graph meta tags =======================================================================================
+        assertThat(page.select("meta[property=og:locale]").eachAttr("content"))
+                .containsExactly("fr");
+        assertThat(page.select("meta[property=og:site_name]").eachAttr("content"))
+                .containsExactly("Nom du site");
+        assertThat(page.select("meta[property=og:title]").eachAttr("content"))
+                .containsExactly("Titre du site");
+        assertThat(page.select("meta[property=og:description]").eachAttr("content"))
+                .containsExactly("Description du site");
+        assertThat(page.select("meta[property=og:type]").eachAttr("content"))
+                .containsExactly("website");
+        assertThat(page.select("meta[property=og:image]").eachAttr("content"))
+                .containsExactly("https://knowledge.angara.finance/index.png");
+        assertThat(page.select("meta[property=og:image:width]").eachAttr("content"))
+                .containsExactly("1200");
+        assertThat(page.select("meta[property=og:image:height]").eachAttr("content"))
+                .containsExactly("630");
+
+        // Twitter Card meta tags ====================================================================================
+        assertThat(page.select("meta[name=twitter:card]").eachAttr("content"))
+                .containsExactly("summary_large_image");
+        assertThat(page.select("meta[name=twitter:title]").eachAttr("content"))
+                .containsExactly("Titre du site");
+        assertThat(page.select("meta[name=twitter:description]").eachAttr("content"))
+                .containsExactly("Description du site");
+        assertThat(page.select("meta[name=twitter:image]").eachAttr("content"))
+                .containsExactly("https://knowledge.angara.finance/index.png");
     }
 
 }

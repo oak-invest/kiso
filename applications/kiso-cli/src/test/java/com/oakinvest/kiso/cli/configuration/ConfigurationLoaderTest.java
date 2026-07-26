@@ -13,10 +13,11 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayName("Configuration loader")
 public class ConfigurationLoaderTest extends BaseTest {
 
     @TempDir
-    private Path temporaryDirectory;
+    Path temporaryDirectory;
 
     @Test
     @DisplayName("Test loading Kiso-cli configuration from a bundle path")
@@ -25,13 +26,16 @@ public class ConfigurationLoaderTest extends BaseTest {
                 .isNotEmpty().get()
                 .satisfies(configuration -> {
                     // Site ============================================================================================
-                    assertThat(configuration.site().baseUrl()).isEqualTo("https://knowledge.angara.finance/");
+                    assertThat(configuration.site().baseUrl()).isEqualTo("https://knowledge.angara.finance");
+                    assertThat(configuration.site().normalizedBaseUrl()).isEqualTo("https://knowledge.angara.finance/");
                     assertThat(configuration.site().language()).isEqualTo(Locale.FRENCH);
+                    assertThat(configuration.site().name()).isEqualTo("Knowledge Base");
                     assertThat(configuration.site().title()).isEqualTo("My Knowledge Base");
                     assertThat(configuration.site().description()).isEqualTo("My knowledge base description");
 
                     // Theme ===========================================================================================
-                    assertThat(configuration.theme().name()).isEqualTo("corporate");
+                    assertThat(configuration.theme().name()).isEqualTo("corPorate");
+                    assertThat(configuration.theme().effectiveName()).isEqualTo("corporate");
 
                     // Content =========================================================================================
                     assertThat(configuration.content().ignorePatterns())

@@ -3,7 +3,7 @@ package com.oakinvest.kiso.core.renderer;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.jsoup.Jsoup;
@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
@@ -22,10 +21,8 @@ import java.util.Locale;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Markdown to HTML renderer")
 public class MarkdownToHtmlRendererTest extends BaseTest {
-
-    @TempDir
-    private Path temporaryDirectory;
 
     @BeforeEach
     void setup() {
@@ -34,25 +31,22 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
     @Test
     @DisplayName("Markdown to html")
-    void markdownToHTML() throws URISyntaxException, IOException {
+    void markdownToHTML(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
-        var targetDirectory = Path.of(MarkdownToHtmlRendererTest.class
-                .getProtectionDomain()
-                .getCodeSource()
-                .getLocation()
-                .toURI()).getParent();
         var resourcePath = getResourcePath(KB_GOOGLE);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
         var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
 
-        // Index file of the bundle ====================================================================================
+        // =============================================================================================================
+        // Testing index.md
+        // =============================================================================================================
+
+        // Writing the file of the bundle ==============================================================================
         var markdownFiles = bundle.rootBundle().markdownFiles();
         var page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
+        FileUtils.writeStringToFile(temporaryDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
 
-        // Writing the file (console & target directory) for debugging purposes ========================================
-        FileUtils.writeStringToFile(targetDirectory.resolve("test-index.html").toFile(), page.html(), UTF_8);
-
-        // Document head.
+        // Document head ===============================================================================================
         Element html = page.selectFirst("html");
         assertThat(html).isNotNull();
         assertThat(html.attr("lang")).isEqualTo("en");
@@ -65,13 +59,29 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "assets/css/themes.css",
                         "assets/css/application.css"
                 );
-        assertThat(page.select("script[src]").eachAttr("src")).containsExactly("assets/js/browser.js");
+        assertThat(page.select("script[src]").eachAttr("src"))
+                .containsExactly(
+                        "assets/js/browser.js",
+                        "assets/js/i18next.js",
+                        "assets/js/minisearch.js",
+                        "assets/js/kiso-i18n.js",
+                        "assets/js/kiso-search.js"
+                );
+        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+                .containsExactly("assets/i18n/");
+        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-language")).isEmpty();
+        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-languages"))
+                .containsExactly("en,fr");
+        assertThat(page.selectFirst(".kiso-search-button[aria-label='Search'] .kiso-search-icon")).isNotNull();
+        assertThat(page.selectFirst(".kiso-search[data-search-index-url='search-index.json']")).isNotNull();
+        assertThat(page.selectFirst(".kiso-search-input[type=search]")).isNotNull();
 
-        // Drawer.
+        // Drawer ======================================================================================================
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
         assertThat(page.selectFirst("a[aria-label='Home'][href='index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
+        assertElementText(page.selectFirst(".drawer-side [data-i18n='navigation.bundleContent']"), "Bundle content");
         assertThat(page.select(".drawer-side details[open]")).isEmpty();
         var indexLink = page.selectFirst(".drawer-side a[href='index.html']");
         assertThat(indexLink).isNotNull();
@@ -81,6 +91,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertElementText(page.selectFirst(".drawer-side a[href='datasets/ga4_obfuscated_sample_ecommerce.html']"),
                 "BigQuery sample dataset for Google Analytics ecommerce web implementation");
 
+        // Link ========================================================================================================
         var kisoLink = page.selectFirst(".drawer-side a[href='https://oak-invest.github.io/kiso']");
         assertThat(kisoLink).isNotNull();
         assertThat(kisoLink.text()).isEqualTo("Kiso");
@@ -94,6 +105,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         var indexArticle = page.selectFirst("article.kiso-content");
         assertThat(indexArticle).isNotNull();
 
+        // Content =====================================================================================================
         // H1.
         assertThat(indexArticle.select("h1")).hasSize(1);
         assertThat(indexArticle.selectFirst("h1"))
@@ -122,13 +134,15 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(thirdLink.attr("href")).isEqualTo("tables/index.html");
         assertThat(thirdLink.text()).isEqualTo("tables");
 
+        // =============================================================================================================
+        // Testing datasets/ga4_obfuscated_sample_ecommerce.md
+        // =============================================================================================================
+
         // datasets/ga4_obfuscated_sample_ecommerce.md =================================================================
         markdownFiles = bundle.rootBundle().childBundles().getFirst().markdownFiles();
         page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
 
-        // Testing the content =========================================================================================
-
-        // Document head.
+        // Document head ===============================================================================================
         assertThat(page.title()).isEqualTo("BigQuery sample dataset for Google Analytics ecommerce web implementation");
         assertThat(page.select("meta[name=description]").eachAttr("content"))
                 .containsExactly("A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
@@ -139,9 +153,18 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
-                .containsExactly("../assets/js/browser.js");
+                .containsExactly(
+                        "../assets/js/browser.js",
+                        "../assets/js/i18next.js",
+                        "../assets/js/minisearch.js",
+                        "../assets/js/kiso-i18n.js",
+                        "../assets/js/kiso-search.js"
+                );
+        assertThat(page.select("script[src='../assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+                .containsExactly("../assets/i18n/");
+        assertThat(page.selectFirst(".kiso-search[data-search-index-url='../search-index.json']")).isNotNull();
 
-        // Drawer.
+        // Drawer ======================================================================================================
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
         assertThat(page.selectFirst("a[aria-label='Home'][href='../index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
@@ -155,7 +178,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .doesNotContain("menu-active");
         assertElementText(page.selectFirst(".drawer-side a[href='../references/metrics/avg_pageviews.html']"), "Average Pageviews");
 
-        // Concept header.
+        // Concept header ==============================================================================================
         var header = page.selectFirst("main > section");
         assertThat(header).isNotNull();
         assertThat(header.select(".badge").eachText())
@@ -169,7 +192,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "public dataset"
                 );
 
-        // Title.
+        // Title =======================================================================================================
         assertThat(header.selectFirst("div.text-4xl"))
                 .isNotNull()
                 .extracting(Element::text)
@@ -179,10 +202,12 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .extracting(Element::text)
                 .containsExactly("A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
 
-        // Ressource
+        // Ressource ===================================================================================================
         var resourceLink = header.selectFirst("a[href='https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce']");
         assertThat(resourceLink).isNotNull();
         assertThat(resourceLink.text()).isEqualTo("https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce");
+
+        // Content =====================================================================================================
 
         // H1.
         assertThat(page.selectXpath("//h1").size()).isEqualTo(5);
@@ -220,7 +245,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
     @Test
     @DisplayName("Do not display a bundle index link when index.md does not exist")
-    void doNotDisplayMissingBundleIndexInNavigation() throws IOException {
+    void doNotDisplayMissingBundleIndexInNavigation(@TempDir Path temporaryDirectory) throws IOException {
         Files.writeString(temporaryDirectory.resolve("concept.md"), """
                 ---
                 type: Concept
@@ -242,16 +267,6 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         var conceptLink = page.selectFirst(".drawer-side a[href='concept.html']");
         assertThat(conceptLink).isNotNull();
         assertThat(conceptLink.text()).isEqualTo("Example");
-    }
-
-    private static void assertElementText(Element element, String expectedText) {
-        assertThat(element).isNotNull();
-        assertThat(element.text()).isEqualTo(expectedText);
-    }
-
-    private static void assertElementClassName(Element element, String expectedClassName) {
-        assertThat(element).isNotNull();
-        assertThat(element.className()).isEqualTo(expectedClassName);
     }
 
 }

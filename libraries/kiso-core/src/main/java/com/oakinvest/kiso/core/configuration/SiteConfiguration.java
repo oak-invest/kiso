@@ -14,12 +14,14 @@ import static com.oakinvest.kiso.core.util.InternationalizationConstants.DEFAULT
  *
  * @param baseUrl     base URL of the generated site
  * @param language    language selected (en, de...)
+ * @param name        Site name
  * @param title       Index pages title
  * @param description Index pages description
  */
 public record SiteConfiguration(
         @Nullable String baseUrl,
         Locale language,
+        @Nullable String name,
         @Nullable String title,
         @Nullable String description
 ) {
@@ -30,7 +32,7 @@ public record SiteConfiguration(
      * @return empty site configuration
      */
     public static SiteConfiguration empty() {
-        return new SiteConfiguration(null, DEFAULT_LANGUAGE, null, null);
+        return new SiteConfiguration(null, DEFAULT_LANGUAGE, null, null, null);
     }
 
     /**
@@ -44,8 +46,9 @@ public record SiteConfiguration(
         }
         if (Strings.CI.endsWith(baseUrl, "/")) {
             return baseUrl;
+        } else {
+            return baseUrl + "/";
         }
-        return baseUrl + "/";
     }
 
     /**

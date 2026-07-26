@@ -16,4 +16,10 @@ public final class FileExtensionsConstants {
     /** HTML file. */
     public static final String HTML_EXTENSION = ".html";
 
+    /** SVG file. */
+    public static final String SVG_EXTENSION = ".svg";
+
+    /** PNG file. */
+    public static final String PNG_EXTENSION = ".png";
+
 }

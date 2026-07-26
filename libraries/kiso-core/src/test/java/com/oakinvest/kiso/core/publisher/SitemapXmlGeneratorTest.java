@@ -5,20 +5,16 @@ import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
 import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("sitemap.xml generator")
 class SitemapXmlGeneratorTest extends BaseTest {
 
     @Test
-    @DisplayName("Generating sitemap.xml content")
-    @SuppressWarnings("HttpUrlsUsage")
+    @DisplayName("sitemap.xml generation")
     void generate() throws Exception {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
@@ -26,7 +22,7 @@ class SitemapXmlGeneratorTest extends BaseTest {
         var content = SitemapXmlGenerator.generate(knowledgeBundle);
         var document = parseXml(content);
 
-        // Testing structure ==========================================================================================
+        // Testing content =============================================================================================
         assertThat(content)
                 .startsWith("""
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -53,32 +49,21 @@ class SitemapXmlGeneratorTest extends BaseTest {
     @Test
     @DisplayName("Generating sitemap.xml with a base URL")
     void generateWithBaseUrl() {
+        // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_WITH_CONFIGURATION);
         var siteConfiguration = new SiteConfiguration(
                 "https://knowledge.angara.finance/",
                 Locale.FRENCH,
+                "Site name",
                 "Knowledge",
                 "Description");
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
         var content = SitemapXmlGenerator.generate(knowledgeBundle);
 
+        // Testing content =============================================================================================
         assertThat(content)
                 .contains("<loc>https://knowledge.angara.finance/index.html</loc>")
                 .contains("<loc>https://knowledge.angara.finance/datasets/index.html</loc>");
-    }
-
-    /**
-     * Parses XML content.
-     *
-     * @param content XML content
-     * @return parsed document
-     * @throws Exception if XML parsing fails
-     */
-    private Document parseXml(final String content) throws Exception {
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        documentBuilderFactory.setNamespaceAware(true);
-        documentBuilderFactory.setExpandEntityReferences(false);
-        return documentBuilderFactory.newDocumentBuilder().parse(new InputSource(new StringReader(content)));
     }
 
 }

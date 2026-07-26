@@ -1,8 +1,9 @@
 package com.oakinvest.kiso.core.publisher;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Document;
@@ -17,8 +18,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.FileConstants.ASSETS_DIRECTORY;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.OKFConstants.DEFAULT_TITLE;
@@ -45,14 +45,8 @@ public class LlmsTxtGenerator {
 
         // Each bundle section =========================================================================================
         knowledgeBundle.bundles()
-                // Remove "/assets".
-                .filter(bundle -> {
-                    Path path = bundle.relativePath();
-                    return path.getNameCount() == 0 || !path.getName(0).toString().equals(ASSETS_DIRECTORY);
-                })
                 // Do not add a bundle with no child and no file.
                 .filter(bundle -> !bundle.isEmpty())
-                // Each bundle
                 .forEach(bundle -> {
 
                     // Bundle name =====================================================================================
@@ -71,6 +65,7 @@ public class LlmsTxtGenerator {
 
                 });
 
+        // Return generated file =======================================================================================
         return MarkdownRenderer.builder()
                 .build()
                 .render(llmsTxt);
@@ -123,7 +118,7 @@ public class LlmsTxtGenerator {
      * @return normalized Markdown path
      */
     private static String markdownPath(final Path relativePath) {
-        return relativePath.toString().replace('\\', '/');
+        return FilenameUtils.separatorsToUnix(relativePath.toString());
     }
 
 }

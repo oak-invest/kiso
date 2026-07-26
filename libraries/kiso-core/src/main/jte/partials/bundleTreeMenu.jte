@@ -1,4 +1,4 @@
-@param com.oakinvest.kiso.core.renderer.model.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
 @param String assetBasePath
 @param String currentHtmlPath
 
@@ -18,7 +18,7 @@
             @endif
         @endfor
         @for(var page : bundleTree.pages())
-            @if(page.kind() != com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX)
+            @if(page.kind() != com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX)
                 <li>
                     <a class="@if(page.href().equals(currentHtmlPath))font-semibold@endif"
                        href="${assetBasePath}${page.href()}">

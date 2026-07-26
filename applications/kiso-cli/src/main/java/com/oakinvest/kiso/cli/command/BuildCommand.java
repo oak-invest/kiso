@@ -8,14 +8,18 @@ import com.oakinvest.kiso.cli.options.ProfileOption;
 import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
+import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.publisher.IndexMarkdownGenerator;
+import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
+import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.publisher.IndexGenerator;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
+import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
-import com.oakinvest.kiso.core.renderer.model.navigation.BundleTree;
+import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import picocli.CommandLine;
 
@@ -27,9 +31,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
-import static com.oakinvest.kiso.core.model.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
 
 /**
@@ -53,21 +58,26 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             "assets/favicon/kiso_favicon_light_16x16.svg",
             "assets/favicon/kiso_favicon_light_32x32.svg",
             "assets/favicon/kiso_favicon_light_180x180.svg",
-            "assets/js/browser.js"
+            "assets/i18n/en.json",
+            "assets/i18n/fr.json",
+            "assets/js/browser.js",
+            "assets/js/minisearch.js",
+            "assets/js/i18next.js",
+            "assets/js/kiso-i18n.js",
+            "assets/js/kiso-search.js"
     };
 
     /** Source directory. */
     @CommandLine.Mixin
     private final SourceOption sourceOption = new SourceOption();
 
-    /** Profile option. */
-    @CommandLine.Mixin
-    private final ProfileOption profileOption = new ProfileOption();
-
     /** Destination directory. */
     @CommandLine.Mixin
     private final DestinationOption destinationOption = new DestinationOption();
 
+    /** Profile option. */
+    @CommandLine.Mixin
+    private final ProfileOption profileOption = new ProfileOption();
 
     /** Command specification. */
     @CommandLine.Spec
@@ -98,17 +108,13 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         blankLine();
 
         try {
+            // Loading configuration & profile =========================================================================
             final String profile = profileOption.profile();
+            final Configuration configuration = ConfigurationLoader
+                    .load(sourceDirectory.toPath(), profile)
+                    .orElse(Configuration.empty());
 
-            // Loading configuration ===================================================================================
-            final Configuration configuration;
-            if (StringUtils.isBlank(profile)) {
-                configuration = ConfigurationLoader.load(sourceDirectory.toPath()).orElse(Configuration.empty());
-            } else {
-                configuration = ConfigurationLoader.load(sourceDirectory.toPath(), profile).orElse(Configuration.empty());
-            }
-
-            // Copying files ===========================================================================================
+            // Copying user okf bundle files to the destination directory ==============================================
             FileUtils.deleteDirectory(destinationDirectory);
             IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
             FileFilter fileFilter = file -> {
@@ -117,7 +123,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             };
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
-            // Copy the profile file.
+            // If a profile is specified, check if the profile contains an index file to use ===========================
             if (StringUtils.isNotBlank(profile)) {
                 final File sourceFile = sourceDirectory.toPath()
                         .resolve(CONFIGURATION_DIRECTORY_NAME)
@@ -135,41 +141,54 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
-            // Adding missing index.md files to bundles without index ==================================================
+            // Creating missing index.md files for bundles without index ===============================================
             knowledgeBundle.bundles()
-                    .filter(bundle -> bundle.getIndexFile().isEmpty())
+                    .filter(bundle -> !bundle.hasIndexFile())
                     .forEach(bundle -> {
                         try {
                             FileUtils.writeStringToFile(
-                                    new File(bundle.absolutePath().toString(), "index.md"),
-                                    IndexMarkdownGenerator.generate(bundle),
+                                    new File(bundle.absolutePath().toString(), INDEX.getFileName()),
+                                    IndexGenerator.generate(bundle),
                                     StandardCharsets.UTF_8
                             );
-                            print("index.md generated for " + bundle.absolutePath());
+                            print(INDEX.getFileName() + " generated for " + bundle.absolutePath());
                         } catch (IOException e) {
-                            printError("Error generating index.md for " + bundle.absolutePath() + ": " + e.getMessage());
+                            printError("Error generating " + INDEX.getFileName() + " for " + bundle.absolutePath() + ": " + e.getMessage());
                         }
                     });
 
             // HTML generation =========================================================================================
-            knowledgeBundle = KnowledgeBundleLoader.load(
-                    destinationDirectory.toPath(),
-                    configuration.site());
+            knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath(), configuration.site());
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
 
-                        // We generate the HTML version of every Markdown file =========================================
+                        // We generate the HTML version of every Markdown file in the bundle ===========================
                         bundle.markdownFiles().forEach(markdownFile -> {
                             try {
                                 FileUtils.writeStringToFile(
-                                        new File(bundle.absolutePath().toString(), markdownFile.htmlFileName()),
+                                        new File(bundle.absolutePath().toString(), markdownFile.htmlFilename()),
                                         MarkdownToHtmlRenderer.render(configuration.site(), configuration.theme(), markdownFile, bundleTree),
                                         StandardCharsets.UTF_8
                                 );
                                 print("HTML Generated for " + markdownFile.relativePath());
                             } catch (IOException e) {
                                 printError("Error generating HTML for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                            }
+
+                            // We also generate the social preview images for every Markdown file ======================
+                            if (StringUtils.isNotBlank(configuration.site().baseUrl())) {
+                                try {
+                                    SocialPreviewImageGenerator.generate(
+                                            configuration.site().title(),
+                                            markdownFile.title(),
+                                            markdownFile.description(),
+                                            configuration.site().normalizedBaseUrl() + markdownFile.htmlFilePath(),
+                                            bundle.absolutePath(),
+                                            FilenameUtils.removeExtension(markdownFile.htmlFilename()));
+                                } catch (Exception e) {
+                                    printError("Error generating social preview image for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                                }
                             }
                         });
 
@@ -191,6 +210,14 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             );
             print("File sitemap.xml generated");
 
+            // search-index.json generation ==========================================================================
+            FileUtils.writeStringToFile(
+                    new File(knowledgeBundle.rootBundle().absolutePath().toString(), SEARCH_INDEX_JSON_FILENAME),
+                    SearchIndexGenerator.generate(knowledgeBundle),
+                    StandardCharsets.UTF_8
+            );
+            print("File search-index.json generated");
+
             // Add HTML assets =========================================================================================
             copyKisoAssets(destinationDirectory);
 
@@ -201,8 +228,11 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         } catch (ConfigurationLoadingException e) {
             printError("Error loading configuration: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
-        } catch (IOException e) {
-            printError("Error: " + e.getMessage());
+        } catch (KnowledgeBundleLoadingException e) {
+            printError("Error loading knowledge bundle: " + e.getMessage());
+            return CommandLine.ExitCode.SOFTWARE;
+        } catch (Exception e) {
+            printError("Unexpected error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
         }
     }

@@ -2,6 +2,8 @@ package com.oakinvest.kiso.core.configuration;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Locale;
+
 /**
  * Theme configuration.
  * You can select a theme <a href="https://daisyui.com/docs/themes/?lang=fr#list-of-themes">here</a>.
@@ -25,16 +27,15 @@ public record ThemeConfiguration(
     }
 
     /**
-     * Returns a theme name even if configuration parameter is empty.
+     * Returns a theme name (if not specified, returns the default theme).
      *
      * @return theme name
      */
     public String effectiveName() {
         if (StringUtils.isBlank(name)) {
             return DEFAULT_THEME;
-        } else {
-            return name;
         }
+        return name.strip().toLowerCase(Locale.ROOT);
     }
 
 }

@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.validation;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Validation report.
@@ -16,9 +17,16 @@ public record ValidationReport(
 ) {
 
     /**
+     * Creates a validation report with safe default values.
+     */
+    public ValidationReport {
+        issues = Objects.requireNonNullElse(issues, List.of());
+    }
+
+    /**
      * Has errors.
      *
-     * @return true is there are errors
+     * @return {@code true} is there are errors
      */
     public boolean hasErrors() {
         return issues.stream().anyMatch(ValidationIssue::isError);

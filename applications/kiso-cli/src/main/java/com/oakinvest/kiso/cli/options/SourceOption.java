@@ -5,7 +5,7 @@ import picocli.CommandLine;
 import java.nio.file.Path;
 
 /**
- * Shared source directory option for commands reading a bundle.
+ * Source directory option for commands reading a bundle.
  */
 public class SourceOption {
 
@@ -14,7 +14,7 @@ public class SourceOption {
             names = {"-s", "--source"},
             defaultValue = ".",
             paramLabel = "DIRECTORY",
-            description = "Directory containing the Markdown files to read. Defaults to the current directory."
+            description = "Directory containing the bundle to read. Defaults to the current directory."
     )
     @SuppressWarnings("unused")
     private Path sourceDirectory;
