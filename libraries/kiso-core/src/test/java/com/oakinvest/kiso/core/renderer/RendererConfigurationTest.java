@@ -74,6 +74,8 @@ public class RendererConfigurationTest extends BaseTest {
                 .containsExactly("Description du site");
         assertThat(page.select("meta[property=og:type]").eachAttr("content"))
                 .containsExactly("website");
+        assertThat(page.select("meta[property=og:image]").eachAttr("content"))
+                .containsExactly("https://knowledge.angara.finance/index.png");
         assertThat(page.select("meta[property=og:image:width]").eachAttr("content"))
                 .containsExactly("1200");
         assertThat(page.select("meta[property=og:image:height]").eachAttr("content"))
@@ -86,6 +88,8 @@ public class RendererConfigurationTest extends BaseTest {
                 .containsExactly("Titre du site");
         assertThat(page.select("meta[name=twitter:description]").eachAttr("content"))
                 .containsExactly("Description du site");
+        assertThat(page.select("meta[name=twitter:image]").eachAttr("content"))
+                .containsExactly("https://knowledge.angara.finance/index.png");
     }
 
 }

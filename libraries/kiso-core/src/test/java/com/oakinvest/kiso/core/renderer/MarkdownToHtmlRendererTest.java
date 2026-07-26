@@ -142,7 +142,6 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         markdownFiles = bundle.rootBundle().childBundles().getFirst().markdownFiles();
         page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), markdownFiles.getFirst(), bundleTree));
 
-
         // Document head ===============================================================================================
         assertThat(page.title()).isEqualTo("BigQuery sample dataset for Google Analytics ecommerce web implementation");
         assertThat(page.select("meta[name=description]").eachAttr("content"))

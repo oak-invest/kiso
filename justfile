@@ -80,20 +80,20 @@ release_build_native:
     mvn clean install -pl libraries/kiso-core -am -DskipTests
     mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
 
-release_run_check_google:
+release_run_check_kb_google:
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example
 
-release_run_build_google:
+release_run_check_kb_straumat:
+    ./applications/kiso-cli/target/kiso-cli check \
+      --source=examples/kb-stephane-traumat
+
+release_run_build_kb_google:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-google-example \
       --destination=public/kb-google-example-native
 
-release_run_check_straumat:
-    ./applications/kiso-cli/target/kiso-cli check \
-      --source=examples/kb-stephane-traumat
-
-release_run_build_straumat:
+release_run_build_kb_straumat:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-stephane-traumat \
       --destination=public/kb-stephane-traumat-native

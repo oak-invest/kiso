@@ -5,6 +5,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jspecify.annotations.Nullable;
 
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.PNG_EXTENSION;
 
 /**
  * Page metadata.
@@ -41,6 +42,15 @@ public record PageMetadata(
      */
     public String markdownFilename() {
         return FilenameUtils.removeExtension(FilenameUtils.getName(absolutePath)) + MARKDOWN_EXTENSION;
+    }
+
+    /**
+     * Returns the social preview image HTML path.
+     *
+     * @return the social preview image HTML path
+     */
+    public String socialPreviewImagePath() {
+        return FilenameUtils.removeExtension(htmlPath) + PNG_EXTENSION;
     }
 
 }

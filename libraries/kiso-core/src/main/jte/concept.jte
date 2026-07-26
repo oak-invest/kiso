@@ -12,6 +12,7 @@ markdownFileName = page.metadata().markdownFilename(),
 assetBasePath = page.metadata().assetBasePath(),
 bundleTree = page.bundleTree(),
 currentHtmlPath = page.metadata().htmlPath(),
+socialPreviewImagePath = page.metadata().socialPreviewImagePath(),
 content = @`
 
     <!-- Header ==================================================================================================== -->

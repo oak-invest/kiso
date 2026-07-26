@@ -87,13 +87,13 @@ class BuildWithConfigurationTest extends BaseTest {
                 .contains("<meta property=\"og:type\" content=\"website\">")
                 .contains("<meta property=\"og:title\" content=\"Event Count\">")
                 .contains("<meta property=\"og:description\" content=\"Total number of events.\">")
-                .contains("<meta property=\"og:image\" content=\"https://knowledge.angara.finance/references/metrics/event_count.html\">")
+                .contains("<meta property=\"og:image\" content=\"https://knowledge.angara.finance/references/metrics/event_count.png\">")
                 .contains("<meta property=\"og:image:width\" content=\"1200\">")
                 .contains("<meta property=\"og:image:height\" content=\"630\">")
                 .contains("<meta name=\"twitter:card\" content=\"summary_large_image\">")
                 .contains("<meta name=\"twitter:title\" content=\"Event Count\">")
                 .contains("<meta name=\"twitter:description\" content=\"Total number of events.\">")
-                .contains("<meta name=\"twitter:image\" content=\"https://knowledge.angara.finance/references/metrics/event_count.html\">");
+                .contains("<meta name=\"twitter:image\" content=\"https://knowledge.angara.finance/references/metrics/event_count.png\">");
     }
 
     @Test
