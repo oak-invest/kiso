@@ -36,6 +36,12 @@
 - Change the release number in `applications/kiso-cli-action/action.yml`
 - Change the release number in `applications/kiso-cli/src/main/java/com/oakinvest/kiso/cli/Application.java`
 
+## Release steps
+
+- `just start_release`
+- `just finish_release`
+
 ## Post-release steps:
+
 - Add a release note
 - Change the release number in `.github/workflows/publish-website.yml`
