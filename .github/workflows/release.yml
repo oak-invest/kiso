@@ -42,7 +42,7 @@ jobs:
 
       - name: Build native executable
         run: |
-          just build_native
+          just release_build_native
 
       - name: Rename executable
         shell: bash

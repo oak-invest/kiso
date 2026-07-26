@@ -18,12 +18,14 @@ The `check` command validates the Markdown files in the OKF bundle and reports f
 
 You will find the generated static website in the `public` directory. You can open the `index.html` file in your browser to view the generated site.
 
+If you use the native Kiso binary and want Kiso to generate social network preview images, install one of the supported native SVG to PNG conversion tools: `rsvg-convert`, `inkscape`, or `resvg`.
+
 ## Kiso cli with GitHub Action
 You can use Kiso CLI in GitHub Action to automatically build your OKF bundles into static websites whenever you push changes to your repository. Here's an example workflow configuration:
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.3
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.6
   with:
     command: build
     source: examples/kb-google-example
