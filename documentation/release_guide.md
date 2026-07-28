@@ -40,8 +40,17 @@
 
 - `just start_release`
 - `just finish_release`
+- Wait for the release to appear here: https://github.com/oak-invest/kiso/releases
 
 ## Post-release steps:
 
-- Add a release note
+- Add a release note.
 - Change the release number in `.github/workflows/publish-website.yml`
+- Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
+- Wait to see if the website is correctly built and deployed on https://oak-invest.github.io/kiso/
+
+## Communicate
+
+- Write an English / French announcement.
+- Post it on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell
+- Post on social media (LinkedIn, Twitter, Mastodon, etc.)
