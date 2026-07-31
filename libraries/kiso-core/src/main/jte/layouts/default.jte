@@ -1,3 +1,6 @@
+@import java.time.LocalDate
+@import java.time.format.DateTimeFormatter
+
 @param String dataTheme
 @param String language
 @param String siteName
@@ -23,22 +26,24 @@
         <meta name="description" content="${description}">
     @endif
 
+    !{var build = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);}
+
     <!-- CSS ======================================================================================================= -->
-    <link href="${assetBasePath}assets/css/daisyui.css" rel="stylesheet" type="text/css"/>
-    <link href="${assetBasePath}assets/css/themes.css" rel="stylesheet" type="text/css"/>
-    <link href="${assetBasePath}assets/css/application.css" rel="stylesheet" type="text/css"/>
+    <link href="${assetBasePath}assets/css/daisyui.css?build=${build}" rel="stylesheet" type="text/css"/>
+    <link href="${assetBasePath}assets/css/themes.css?build=${build}" rel="stylesheet" type="text/css"/>
+    <link href="${assetBasePath}assets/css/application.css?build=${build}" rel="stylesheet" type="text/css"/>
 
     <!-- JS Librairies ============================================================================================= -->
-    <script src="${assetBasePath}assets/js/browser.js"></script>
-    <script src="${assetBasePath}assets/js/i18next.js"></script>
-    <script src="${assetBasePath}assets/js/minisearch.js"></script>
+    <script src="${assetBasePath}assets/js/browser.js?build=${build}"></script>
+    <script src="${assetBasePath}assets/js/i18next.js?build=${build}"></script>
+    <script src="${assetBasePath}assets/js/minisearch.js?build=${build}"></script>
 
     <!-- JS Kiso code ============================================================================================== -->
-    <script src="${assetBasePath}assets/js/kiso-i18n.js"
+    <script src="${assetBasePath}assets/js/kiso-i18n.js?build=${build}"
             data-i18n-base-url="${assetBasePath}assets/i18n/"
             data-i18n-languages="en,fr"
             defer></script>
-    <script src="${assetBasePath}assets/js/kiso-search.js"
+    <script src="${assetBasePath}assets/js/kiso-search.js?build=${build}"
             defer></script>
 
     <!-- Favicons ================================================================================================== -->
