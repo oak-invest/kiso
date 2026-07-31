@@ -108,7 +108,7 @@ class BuildTest extends BaseTest {
                 .contains("A first test topic.")
                 .contains("Hello from the first topic.")
                 // Without a base URL, generated links must remain relative.
-                .contains("href=\"../assets/css/application.css\"")
+                .contains("href=\"../assets/css/application.css?build=")
                 .contains("href=\"../index.html\"")
                 .doesNotContain("https://knowledge.angara.finance");
 
