@@ -7,6 +7,7 @@ import com.oakinvest.kiso.core.model.html.page.ConceptPage;
 import com.oakinvest.kiso.core.model.html.page.IndexPage;
 import com.oakinvest.kiso.core.model.html.page.PageMetadata;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.renderer.util.HtmlCleaner;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;
@@ -121,6 +122,7 @@ public final class MarkdownToHtmlRenderer {
         }
 
         // Generating the HTML =========================================================================================
+        HtmlCleaner htmlCleaner = new HtmlCleaner();
         final Node document = MARKDOWN_PARSER.parse(markdownFile.body());
 
         // Transforming .md file links to .html links ==================================================================
@@ -179,7 +181,7 @@ public final class MarkdownToHtmlRenderer {
                 TEMPLATE_ENGINE.render(CONCEPT_TEMPLATE_PAGE, page, htmlOutput);
             }
         }
-        return htmlOutput.toString();
+        return htmlCleaner.clean(htmlOutput.toString());
     }
 
     /**

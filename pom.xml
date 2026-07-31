@@ -58,6 +58,10 @@
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
         <i18next.webjar.version>26.3.6</i18next.webjar.version>
 
+        <!-- HTML sanitization -->
+        <jsoup.version>1.22.2</jsoup.version>
+        <htmlcompressor.version>2.4.0</htmlcompressor.version>
+
         <!-- Boilerplate and utils -->
         <jspecify.version>1.0.0</jspecify.version>
         <lombok.version>1.18.46</lombok.version>
@@ -71,7 +75,6 @@
         <junit-jupiter.version>6.1.2</junit-jupiter.version>
         <junit-pionner.version>2.3.0</junit-pionner.version>
         <assertj.version>3.27.7</assertj.version>
-        <jsoup.version>1.22.2</jsoup.version>
 
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
@@ -195,6 +198,11 @@
                 <groupId>org.jsoup</groupId>
                 <artifactId>jsoup</artifactId>
                 <version>${jsoup.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.hazendaz</groupId>
+                <artifactId>htmlcompressor</artifactId>
+                <version>${htmlcompressor.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
