@@ -55,7 +55,7 @@ class BuildWithConfigurationTest extends BaseTest {
         // Checking that configuration is applied to the generated HTML files ==========================================
         assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
                 .contains("data-theme=\"corporate\"")
-                .contains("href=\"https://knowledge.angara.finance/assets/css/application.css\"")
+                .contains("href=\"https://knowledge.angara.finance/assets/css/application.css?build=")
                 .contains("href=\"https://knowledge.angara.finance/datasets/index.html\"")
                 .contains("lang=\"fr\"")
                 .contains("<title>My Knowledge Base</title>")

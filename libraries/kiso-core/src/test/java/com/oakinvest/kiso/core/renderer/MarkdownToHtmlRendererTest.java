@@ -54,12 +54,16 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         assertThat(page.title()).isEqualTo("index.md");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "assets/css/daisyui.css",
                         "assets/css/themes.css",
                         "assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "assets/js/browser.js",
                         "assets/js/i18next.js",
@@ -67,10 +71,10 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "assets/js/kiso-i18n.js",
                         "assets/js/kiso-search.js"
                 );
-        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+        assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-base-url"))
                 .containsExactly("assets/i18n/");
-        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-language")).isEmpty();
-        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-languages"))
+        assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-language")).isEmpty();
+        assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-languages"))
                 .containsExactly("en,fr");
         assertThat(page.selectFirst(".kiso-search-button[aria-label='Search'] .kiso-search-icon")).isNotNull();
         assertThat(page.selectFirst(".kiso-search[data-search-index-url='search-index.json']")).isNotNull();
@@ -147,12 +151,16 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.select("meta[name=description]").eachAttr("content"))
                 .containsExactly("A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "../assets/css/daisyui.css",
                         "../assets/css/themes.css",
                         "../assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "../assets/js/browser.js",
                         "../assets/js/i18next.js",
@@ -160,7 +168,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/js/kiso-i18n.js",
                         "../assets/js/kiso-search.js"
                 );
-        assertThat(page.select("script[src='../assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+        assertThat(page.select("script[src^='../assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-base-url"))
                 .containsExactly("../assets/i18n/");
         assertThat(page.selectFirst(".kiso-search[data-search-index-url='../search-index.json']")).isNotNull();
 
