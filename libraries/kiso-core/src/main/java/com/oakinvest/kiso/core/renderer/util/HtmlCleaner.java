@@ -31,12 +31,10 @@ public class HtmlCleaner {
      * @return cleaned HTML content
      */
     public String clean(final String htmlContent) {
-        String compressed = compressor.compress(htmlContent);
-
-        Document document = Jsoup.parse(compressed);
+        Document document = Jsoup.parse(compressor.compress(htmlContent));
         document.outputSettings()
                 .prettyPrint(true)
-                .indentAmount(2)
+                .indentAmount(1)
                 .maxPaddingWidth(Integer.MAX_VALUE);
         return document.outerHtml();
     }
