@@ -1,0 +1,9 @@
+site:
+  baseUrl: https://knowledge.angara.finance
+  language: fr
+  title: My Knowledge Base
+  description: My knowledge base description
+
+theme:
+  name: corporate
+

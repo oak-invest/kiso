@@ -117,8 +117,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Copying user okf bundle files to the destination directory ==============================================
             FileUtils.deleteDirectory(destinationDirectory);
-            IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
-            FileFilter fileFilter = file -> {
+            final IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
+            final FileFilter fileFilter = file -> {
                 Path relativePath = sourceDirectory.toPath().relativize(file.toPath());
                 return !ignorePatternMatcher.matches(relativePath);
             };
