@@ -13,7 +13,7 @@
 
 ## Test the release (online)
 
-- Deploy my personal knowledge base.
+- Deploy my personal knowledge base. - It builds Kiso from the development branch to build the websites.
 
 ### Angara knowledge base
 - Test content deployed on: https://knowledge.angara.finance
@@ -34,7 +34,6 @@
 
 - Update the projet README.md content and release number in it.
 - Change the release number in `applications/kiso-cli-action/action.yml`
-- Change the release number in `applications/kiso-cli/src/main/java/com/oakinvest/kiso/cli/Application.java`
 
 ## Release steps
 
@@ -53,4 +52,4 @@
 
 - Write an English / French announcement.
 - Post it on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell
-- Post on social media (LinkedIn, Twitter, Mastodon, etc.)
+- Post on social media (LinkedIn, Twitter, Facebook, etc.)

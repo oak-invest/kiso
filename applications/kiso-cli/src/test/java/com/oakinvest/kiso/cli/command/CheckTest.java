@@ -36,7 +36,7 @@ public class CheckTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running check command")
+                .contains("Running check command")
                 .contains("No errors found.");
     }
 
@@ -104,7 +104,7 @@ public class CheckTest extends BaseTest {
         // Checking the results ========================================================================================
         assertThat(exitCode).isNotZero();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running check command")
+                .contains("Running check command")
                 .doesNotContain("No errors found.");
         assertThat(error.toString())
                 // invalid-encoding-1.md

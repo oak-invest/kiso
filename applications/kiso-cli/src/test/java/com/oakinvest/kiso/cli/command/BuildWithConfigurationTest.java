@@ -40,7 +40,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 // Those files should exist
                 .contains("HTML Generated for index.md")
                 .contains("HTML Generated for datasets/index.md")
@@ -119,7 +119,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 // Those files should exist
                 .contains("HTML Generated for index.md")
                 // I asked to remove datasets.
@@ -168,7 +168,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .contains("HTML Generated for index.md")
                 .contains("Done!");
     }

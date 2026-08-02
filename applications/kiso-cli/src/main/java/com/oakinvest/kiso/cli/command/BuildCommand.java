@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
+import com.oakinvest.kiso.cli.ApplicationVersion;
 import com.oakinvest.kiso.cli.configuration.Configuration;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
@@ -102,7 +103,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
         final File destinationDirectory = destinationOption.destinationDirectory().toFile();
-        print("Kiso-cli - Running build command");
+        print("Kiso-cli " + ApplicationVersion.get() + " - Running build command");
         print("Sources in " + sourceDirectory.getAbsolutePath());
         print("Building in " + destinationDirectory.getAbsolutePath());
         blankLine();

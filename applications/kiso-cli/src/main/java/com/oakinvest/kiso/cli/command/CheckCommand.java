@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
+import com.oakinvest.kiso.cli.ApplicationVersion;
 import com.oakinvest.kiso.cli.options.SourceOption;
 import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
@@ -46,7 +47,7 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
     public Integer call() {
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
-        print("Kiso-cli - Running check command");
+        print("Kiso-cli " + ApplicationVersion.get() + " - Running check command");
         print("Sources in " + sourceDirectory.getAbsolutePath());
         blankLine();
 

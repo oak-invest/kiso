@@ -71,7 +71,7 @@ class BuildTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .contains("HTML Generated for index.md")
                 .contains("HTML Generated for topics/index.md")
                 .contains("HTML Generated for topics/first-topic.md")
@@ -167,7 +167,7 @@ class BuildTest extends BaseTest {
         // Testing command result ======================================================================================
         assertThat(exitCode).isNotZero();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .doesNotContain("Done!");
         assertThat(error.toString())
                 .contains("ERROR - MISSING_FRONTMATTER - File missing-frontmatter.md is missing mandatory frontmatter");
@@ -196,7 +196,7 @@ class BuildTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .contains("HTML Generated for index.md")
                 .contains("File llms.txt generated")
                 .contains("File sitemap.xml generated")
