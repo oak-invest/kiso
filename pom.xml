@@ -60,11 +60,11 @@
         <i18next.webjar.version>26.3.6</i18next.webjar.version>
 
         <!-- HTML sanitization -->
-        <jsoup.version>1.22.2</jsoup.version>
-        <htmlcompressor.version>2.4.0</htmlcompressor.version>
+        <jsoup.version>1.23.1</jsoup.version>
+        <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- Boilerplate and utils -->
-        <jspecify.version>1.0.0</jspecify.version>
+        <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.46</lombok.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
