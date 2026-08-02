@@ -7,7 +7,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>com.oakinvest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.1.7-SNAPSHOT</version>
+    <version>0.1.7-new_header-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
     <description>Publishing engine for the Open Knowledge Format</description>
