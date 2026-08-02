@@ -48,8 +48,7 @@ release_create_code_review_checklist:
       \( -name "*.java" -o -name "*.jte" -o -name "*.kte" \) \
       -print \
       | sort \
-      | tee code-review-files.txt \
-      | sed 's/^/- [ ] /' \
+      | sed -e 's|^\./||' -e 's/^/- [ ] /' \
       > code-review-checklist.md
 
 release_build_native:
