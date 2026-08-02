@@ -7,9 +7,8 @@ inputs:
     required: false
     default: "v0.1.6"
   command:
-    description: "Kiso command: build"
-    required: false
-    default: "build"
+    description: "Kiso command, for example 'check' or 'build'"
+    required: true
   source:
     description: "Directory containing the Markdown files to read. Defaults to the current directory."
     required: false
