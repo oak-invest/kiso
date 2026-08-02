@@ -61,7 +61,7 @@
 
         <!-- HTML sanitization -->
         <jsoup.version>1.23.1</jsoup.version>
-        <htmlcompressor.version>2.4.0</htmlcompressor.version>
+        <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- Boilerplate and utils -->
         <jspecify.version>1.0.1</jspecify.version>
