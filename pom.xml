@@ -79,7 +79,7 @@
 
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.puppycrawl.checkstyle.version>13.8.0</maven.puppycrawl.checkstyle.version>
+        <maven.puppycrawl.checkstyle.version>13.9.0</maven.puppycrawl.checkstyle.version>
         <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
@@ -253,7 +253,7 @@
                 </executions>
                 <configuration>
                     <consoleOutput>true</consoleOutput>
-                    <configLocation>https://oak-invest.github.io/kiso/shared/checkstyle.xml</configLocation>
+                    <configLocation>website/shared/checkstyle.xml</configLocation>
                     <failOnViolation>true</failOnViolation>
                     <violationSeverity>warning</violationSeverity>
                 </configuration>
