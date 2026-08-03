@@ -57,6 +57,9 @@ public final class MarkdownToHtmlRenderer {
     /** JTE - Java Template engine. */
     private static final TemplateEngine TEMPLATE_ENGINE = createTemplateEngine();
 
+    /** HTML cleaner. */
+    private static final HtmlCleaner HTML_CLEANER = new HtmlCleaner();
+
     /**
      * Creates the JTE template engine.
      *
@@ -122,7 +125,6 @@ public final class MarkdownToHtmlRenderer {
         }
 
         // Generating the HTML =========================================================================================
-        HtmlCleaner htmlCleaner = new HtmlCleaner();
         final Node document = MARKDOWN_PARSER.parse(markdownFile.body());
 
         // Transforming .md file links to .html links ==================================================================
@@ -181,7 +183,7 @@ public final class MarkdownToHtmlRenderer {
                 TEMPLATE_ENGINE.render(CONCEPT_TEMPLATE_PAGE, page, htmlOutput);
             }
         }
-        return htmlCleaner.clean(htmlOutput.toString());
+        return HTML_CLEANER.clean(htmlOutput.toString());
     }
 
     /**
