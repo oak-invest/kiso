@@ -36,6 +36,7 @@ public class CheckTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
+                .doesNotContain("WARNING")
                 .contains("Running check command")
                 .contains("No errors found.");
     }
@@ -165,6 +166,31 @@ public class CheckTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
+                .contains("Running check command")
+                .contains("No errors found.");
+    }
+
+    @Test
+    @DisplayName("Check a bundle with broken links")
+    void checkWithBrokenLinks() {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath("kb-with-broken-links");
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new CheckCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("WARNING - BROKEN_LINK - File index.md contains broken link: uknownContent.md")
                 .contains("Running check command")
                 .contains("No errors found.");
     }

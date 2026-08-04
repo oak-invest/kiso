@@ -1,9 +1,6 @@
 package com.oakinvest.kiso.cli.util;
 
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
-import com.oakinvest.kiso.core.validation.ValidationReport;
-import com.oakinvest.kiso.core.validation.ValidationRunner;
 import picocli.CommandLine;
 
 /**
@@ -17,21 +14,6 @@ public abstract class AbstractCommand {
      * @return command specification
      */
     protected abstract CommandLine.Model.CommandSpec commandSpec();
-
-    /**
-     * Validate a knowledge bundle and print its issues when it contains errors.
-     *
-     * @param knowledgeBundle knowledge bundle to validate
-     * @return {@code true} when the bundle contains no validation errors
-     */
-    protected boolean isValid(final KnowledgeBundle knowledgeBundle) {
-        final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
-        if (validationReport.hasErrors()) {
-            validationReport.issues().forEach(this::printError);
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Print a blank line in the console.
@@ -50,12 +32,21 @@ public abstract class AbstractCommand {
     }
 
     /**
-     * Print warning.
+     * Print a warning message in the console.
      *
      * @param message warning message
      */
     protected void printWarning(final String message) {
-        print("WARNING: " + message);
+        commandSpec().commandLine().getOut().println(message);
+    }
+
+    /**
+     * Print a warning message in the console.
+     *
+     * @param issue issue
+     */
+    protected void printWarning(final ValidationIssue issue) {
+        printWarning(issue.severity() + " - " + issue.code() + " - " + issue.message());
     }
 
     /**

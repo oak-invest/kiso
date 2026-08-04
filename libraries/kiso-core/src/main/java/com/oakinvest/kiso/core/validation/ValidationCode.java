@@ -18,6 +18,9 @@ public enum ValidationCode {
     MISSING_FRONTMATTER_TYPE,
 
     /** Invalid timestamp field in frontmatter - Not an ISO 8601 datetime format. */
-    INVALID_TIMESTAMP
+    INVALID_TIMESTAMP,
+
+    /** Broken local link. */
+    BROKEN_LINK
 
 }

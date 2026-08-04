@@ -10,6 +10,8 @@ import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.validation.ValidationReport;
+import com.oakinvest.kiso.core.validation.ValidationRunner;
 import org.apache.commons.io.FileUtils;
 import picocli.CommandLine;
 
@@ -83,11 +85,16 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
 
             // Running the validation ==================================================================================
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(temporaryDirectory);
-            if (isValid(knowledgeBundle)) {
+            final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
+
+            // Print warnings et errors.
+            validationReport.warnings().forEach(this::printWarning);
+            if (validationReport.hasErrors()) {
+                validationReport.errors().forEach(this::printError);
+                return CommandLine.ExitCode.SOFTWARE;
+            } else {
                 print("No errors found.");
                 return CommandLine.ExitCode.OK;
-            } else {
-                return CommandLine.ExitCode.SOFTWARE;
             }
 
         } catch (KnowledgeBundleLoadingException e) {

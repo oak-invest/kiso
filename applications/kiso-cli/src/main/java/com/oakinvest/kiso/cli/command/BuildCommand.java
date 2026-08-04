@@ -20,6 +20,8 @@ import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
 import com.oakinvest.kiso.core.util.ThemeConstants;
+import com.oakinvest.kiso.core.validation.ValidationReport;
+import com.oakinvest.kiso.core.validation.ValidationRunner;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -151,7 +153,12 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Loading and checking the bundle =========================================================================
             KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
-            if (!isValid(knowledgeBundle)) {
+            final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
+
+            // Print warnings et errors.
+            validationReport.warnings().forEach(this::printWarning);
+            if (validationReport.hasErrors()) {
+                validationReport.errors().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
@@ -234,7 +241,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Theme validation ========================================================================================
             if (!ThemeConstants.contains(configuration.theme().effectiveName())) {
-                printWarning("Theme '" + configuration.theme().effectiveName() + "' is not a valid DaisyUI theme.");
+                printWarning("WARNING: Theme '" + configuration.theme().effectiveName() + "' is not a valid DaisyUI theme.");
             }
 
             // Add HTML assets =========================================================================================

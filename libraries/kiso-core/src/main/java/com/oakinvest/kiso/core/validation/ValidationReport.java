@@ -24,6 +24,24 @@ public record ValidationReport(
     }
 
     /**
+     * Returns all warnings.
+     *
+     * @return issues that are warnings
+     */
+    public List<ValidationIssue> warnings() {
+        return issues.stream().filter(ValidationIssue::isWarning).toList();
+    }
+
+    /**
+     * Returns all errors.
+     *
+     * @return issues that are errors
+     */
+    public List<ValidationIssue> errors() {
+        return issues.stream().filter(ValidationIssue::isError).toList();
+    }
+
+    /**
      * Has errors.
      *
      * @return {@code true} is there are errors

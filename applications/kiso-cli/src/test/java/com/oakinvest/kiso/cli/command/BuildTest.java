@@ -23,6 +23,32 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BuildTest extends BaseTest {
 
     @Test
+    @DisplayName("Build a valid OKF bundle")
+    void buildValidBundle(@TempDir Path temporaryDirectory) {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath(KB_GOOGLE);
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString(),
+                        "--destination", temporaryDirectory.toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .doesNotContain("WARNING")
+                .contains("Running build command")
+                .contains("Done!");
+    }
+
+    @Test
     @DisplayName("Building a simple OKF bundle")
     void build(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing =========================================================================================
@@ -243,6 +269,32 @@ class BuildTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();
+    }
+
+    @Test
+    @DisplayName("Build a bundle with broken links")
+    void buildWithBrokenLinks(@TempDir Path temporaryDirectory) {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath("kb-with-broken-links");
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString(),
+                        "--destination", temporaryDirectory.toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("WARNING - BROKEN_LINK - File index.md contains broken link: uknownContent.md")
+                .contains("Running build command")
+                .contains("Done!");
     }
 
 }
