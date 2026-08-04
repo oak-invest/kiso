@@ -42,6 +42,7 @@ public class BuildWithIndexTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
+                .doesNotContain("WARNING")
                 .contains("Running build command")
                 .contains("Done!");
 
@@ -118,6 +119,7 @@ public class BuildWithIndexTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
+                .contains("WARNING: Theme 'unknown!' is not a valid DaisyUI theme.")
                 .contains("Running build command")
                 .contains("Done!");
 
@@ -155,6 +157,7 @@ public class BuildWithIndexTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
+                .contains("WARNING: Theme 'unknown!' is not a valid DaisyUI theme.")
                 .contains("Running build command")
                 .contains("Done!");
 

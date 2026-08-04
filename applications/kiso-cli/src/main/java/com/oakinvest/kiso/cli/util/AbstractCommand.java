@@ -50,6 +50,15 @@ public abstract class AbstractCommand {
     }
 
     /**
+     * Print warning.
+     *
+     * @param message warning message
+     */
+    protected void printWarning(final String message) {
+        print("WARNING: " + message);
+    }
+
+    /**
      * Print an error message in the console.
      *
      * @param message error message to print

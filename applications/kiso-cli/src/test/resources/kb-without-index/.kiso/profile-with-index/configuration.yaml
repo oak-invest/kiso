@@ -5,7 +5,7 @@ site:
   description: My knowledge base description
 
 theme:
-  name: corporate
+  name: unknown!
 
 content:
   ignorePatterns:

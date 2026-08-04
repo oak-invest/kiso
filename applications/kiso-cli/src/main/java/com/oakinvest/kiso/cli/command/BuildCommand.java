@@ -19,6 +19,7 @@ import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
+import com.oakinvest.kiso.core.util.ThemeConstants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -218,6 +219,11 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     StandardCharsets.UTF_8
             );
             print("File search-index.json generated");
+
+            // Theme validation ========================================================================================
+            if (!ThemeConstants.contains(configuration.theme().effectiveName())) {
+                printWarning("Theme '" + configuration.theme().effectiveName() + "' is not a valid DaisyUI theme.");
+            }
 
             // Add HTML assets =========================================================================================
             copyKisoAssets(destinationDirectory);
