@@ -11,7 +11,8 @@
     "bundleContent": "محتوى الحزمة",
     "closeNavigation": "إغلاق التنقل",
     "home": "الرئيسية",
-    "openNavigation": "فتح التنقل"
+    "openNavigation": "فتح التنقل",
+    "downloadBundle": "تنزيل الحزمة"
   },
   "pageKind": {
     "concept": "مفهوم",

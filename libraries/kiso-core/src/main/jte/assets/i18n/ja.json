@@ -11,7 +11,8 @@
     "bundleContent": "バンドルの内容",
     "closeNavigation": "ナビゲーションを閉じる",
     "home": "ホーム",
-    "openNavigation": "ナビゲーションを開く"
+    "openNavigation": "ナビゲーションを開く",
+    "downloadBundle": "バンドルをダウンロード"
   },
   "pageKind": {
     "concept": "コンセプト",

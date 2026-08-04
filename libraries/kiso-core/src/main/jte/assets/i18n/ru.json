@@ -11,7 +11,8 @@
     "bundleContent": "Содержимое пакета",
     "closeNavigation": "Закрыть навигацию",
     "home": "Главная",
-    "openNavigation": "Открыть навигацию"
+    "openNavigation": "Открыть навигацию",
+    "downloadBundle": "Скачать пакет"
   },
   "pageKind": {
     "concept": "Концепт",

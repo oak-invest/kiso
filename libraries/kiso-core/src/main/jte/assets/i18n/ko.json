@@ -11,7 +11,8 @@
     "bundleContent": "번들 내용",
     "closeNavigation": "내비게이션 닫기",
     "home": "홈",
-    "openNavigation": "내비게이션 열기"
+    "openNavigation": "내비게이션 열기",
+    "downloadBundle": "번들 다운로드"
   },
   "pageKind": {
     "concept": "개념",

@@ -22,6 +22,8 @@ import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
 import com.oakinvest.kiso.core.util.ThemeConstants;
 import com.oakinvest.kiso.core.validation.ValidationReport;
 import com.oakinvest.kiso.core.validation.ValidationRunner;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.model.ZipParameters;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +38,7 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
@@ -114,7 +117,12 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
      * Run the build command.
      */
     @Override
+    @SuppressWarnings("checkstyle:MethodLength")
     public Integer call() {
+        // A bit of configuration ======================================================================================
+        ZipParameters parameters = new ZipParameters();
+        parameters.setIncludeRootFolder(false);
+
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
         final File destinationDirectory = destinationOption.destinationDirectory().toFile();
@@ -183,6 +191,13 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
+
+                        // We generate a zip file ======================================================================
+                        try (ZipFile zip = new ZipFile(bundle.absolutePath().resolve(BUNDLE_ZIP_FILENAME).toFile())) {
+                            zip.addFolder(bundle.absolutePath().toFile(), parameters);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
 
                         // We generate the HTML version of every Markdown file in the bundle ===========================
                         bundle.markdownFiles().forEach(markdownFile -> {

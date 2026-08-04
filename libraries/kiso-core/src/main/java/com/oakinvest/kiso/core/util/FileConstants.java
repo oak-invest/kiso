@@ -42,4 +42,7 @@ public final class FileConstants {
     /** Filename for the search index JSON file. */
     public static final String SEARCH_INDEX_JSON_FILENAME = "search-index.json";
 
+    /** Bundle zip filename. */
+    public static final String BUNDLE_ZIP_FILENAME = "bundle.zip";
+
 }

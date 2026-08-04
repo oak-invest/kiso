@@ -11,7 +11,8 @@
     "bundleContent": "बंडल सामग्री",
     "closeNavigation": "नेविगेशन बंद करें",
     "home": "होम",
-    "openNavigation": "नेविगेशन खोलें"
+    "openNavigation": "नेविगेशन खोलें",
+    "downloadBundle": "बंडल डाउनलोड करें"
   },
   "pageKind": {
     "concept": "संकल्पना",

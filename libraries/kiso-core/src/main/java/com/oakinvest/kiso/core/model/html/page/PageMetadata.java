@@ -2,6 +2,7 @@ package com.oakinvest.kiso.core.model.html.page;
 
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
@@ -51,6 +52,15 @@ public record PageMetadata(
      */
     public String socialPreviewImagePath() {
         return FilenameUtils.removeExtension(htmlPath) + PNG_EXTENSION;
+    }
+
+    /**
+     * Returns the html directory path.
+     *
+     * @return html directory path
+     */
+    public String htmlDirectoryPath() {
+        return StringUtils.defaultIfEmpty(FilenameUtils.getPath(htmlPath), "/");
     }
 
 }

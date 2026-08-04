@@ -11,7 +11,8 @@
     "bundleContent": "Zawartość pakietu",
     "closeNavigation": "Zamknij nawigację",
     "home": "Strona główna",
-    "openNavigation": "Otwórz nawigację"
+    "openNavigation": "Otwórz nawigację",
+    "downloadBundle": "Pobierz pakiet"
   },
   "pageKind": {
     "concept": "Pojęcie",

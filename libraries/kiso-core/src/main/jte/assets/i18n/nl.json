@@ -11,7 +11,8 @@
     "bundleContent": "Bundle-inhoud",
     "closeNavigation": "Navigatie sluiten",
     "home": "Startpagina",
-    "openNavigation": "Navigatie openen"
+    "openNavigation": "Navigatie openen",
+    "downloadBundle": "Bundle downloaden"
   },
   "pageKind": {
     "concept": "Concept",

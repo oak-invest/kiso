@@ -11,7 +11,8 @@
     "bundleContent": "Contenido del bundle",
     "closeNavigation": "Cerrar navegación",
     "home": "Inicio",
-    "openNavigation": "Abrir navegación"
+    "openNavigation": "Abrir navegación",
+    "downloadBundle": "Descargar bundle"
   },
   "pageKind": {
     "concept": "Concepto",

@@ -1,6 +1,8 @@
 package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.util.BaseTest;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.model.FileHeader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -13,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
@@ -24,7 +27,7 @@ class BuildTest extends BaseTest {
 
     @Test
     @DisplayName("Build a valid OKF bundle")
-    void buildValidBundle(@TempDir Path temporaryDirectory) {
+    void buildValidBundle(@TempDir Path temporaryDirectory) throws IOException {
         // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE);
 
@@ -46,6 +49,49 @@ class BuildTest extends BaseTest {
                 .doesNotContain("WARNING")
                 .contains("Running build command")
                 .contains("Done!");
+
+        // Checking the zip files ======================================================================================
+        Path rootZip = temporaryDirectory.resolve(BUNDLE_ZIP_FILENAME);
+        assertThat(rootZip).exists().isRegularFile();
+        try (ZipFile zip = new ZipFile(rootZip.toFile())) {
+            assertThat(zip.getFileHeaders())
+                    .extracting(FileHeader::getFileName)
+                    .containsExactlyInAnyOrder(
+                            "datasets/ga4_obfuscated_sample_ecommerce.md",
+                            "datasets/index.md",
+                            "datasets/",
+                            "references/metrics/avg_pageviews.md",
+                            "references/metrics/new_user_count.md",
+                            "references/metrics/user_count.md",
+                            "references/metrics/day_count.md",
+                            "references/metrics/event_count.md",
+                            "references/metrics/avg_spend_per_purchase_session_by_user.md",
+                            "references/metrics/index.md",
+                            "references/metrics/overall_avg_spend_per_purchase_session.md",
+                            "references/metrics/avg_transactions_per_purchaser.md",
+                            "references/metrics/",
+                            "references/index.md",
+                            "references/joins/events___ads_clickstats.md",
+                            "references/joins/index.md",
+                            "references/joins/",
+                            "references/",
+                            "tables/index.md",
+                            "tables/events_.md",
+                            "tables/",
+                            "index.md"
+                    );
+        }
+
+        Path datasetZip = temporaryDirectory.resolve("datasets/" + BUNDLE_ZIP_FILENAME);
+        assertThat(datasetZip).exists().isRegularFile();
+        try (ZipFile zip = new ZipFile(datasetZip.toFile())) {
+            assertThat(zip.getFileHeaders())
+                    .extracting(FileHeader::getFileName)
+                    .containsExactlyInAnyOrder(
+                            "ga4_obfuscated_sample_ecommerce.md",
+                            "index.md"
+                    );
+        }
     }
 
     @Test

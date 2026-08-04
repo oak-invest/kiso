@@ -71,6 +71,7 @@
         <commons-text.version>1.15.0</commons-text.version>
         <jackson.version>2.22.1</jackson.version>
         <batik.version>1.19</batik.version>
+        <zip4j.version>2.11.6</zip4j.version>
 
         <!-- Test dependencies -->
         <junit-jupiter.version>6.1.2</junit-jupiter.version>
@@ -174,6 +175,11 @@
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>batik-all</artifactId>
                 <version>${batik.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.lingala.zip4j</groupId>
+                <artifactId>zip4j</artifactId>
+                <version>${zip4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
