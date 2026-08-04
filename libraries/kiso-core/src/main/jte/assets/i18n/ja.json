@@ -1,0 +1,32 @@
+{
+  "footer": {
+    "generatedWith": "生成ツール",
+    "lastUpdate": "最終更新"
+  },
+  "metadata": {
+    "resource": "リソース",
+    "tags": "タグ"
+  },
+  "navigation": {
+    "bundleContent": "バンドルの内容",
+    "closeNavigation": "ナビゲーションを閉じる",
+    "home": "ホーム",
+    "openNavigation": "ナビゲーションを開く"
+  },
+  "pageKind": {
+    "concept": "コンセプト",
+    "index": "インデックス"
+  },
+  "search": {
+    "failedToLoadIndex": "検索インデックスを読み込めませんでした",
+    "label": "検索",
+    "placeholder": "検索"
+  },
+  "source": {
+    "markdownFile": "Markdown ファイル"
+  },
+  "content": {
+    "content": "内容",
+    "subdirectories": "サブディレクトリ"
+  }
+}

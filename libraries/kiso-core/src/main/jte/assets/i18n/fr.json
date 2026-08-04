@@ -24,5 +24,9 @@
   },
   "source": {
     "markdownFile": "Fichier Markdown"
+  },
+  "content": {
+    "content": "Contenu",
+    "subdirectories": "Sous-répertoires"
   }
 }

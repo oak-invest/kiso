@@ -13,7 +13,7 @@
 <!-- JS Kiso code ================================================================================================== -->
 <script src="${assetBasePath}assets/js/kiso-i18n.js?build=${build}"
         data-i18n-base-url="${assetBasePath}assets/i18n/"
-        data-i18n-languages="en,fr"
+        data-i18n-languages="en,fr,de,es,it,pt,nl,pl,ru,zh,ja,ko,ar,hi"
         defer></script>
 <script src="${assetBasePath}assets/js/kiso-search.js?build=${build}"
         defer></script>

@@ -14,6 +14,7 @@ import gg.jte.output.StringOutput;
 import gg.jte.resolve.DirectoryCodeResolver;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.Strings;
 import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -155,7 +156,11 @@ public final class MarkdownToHtmlRenderer {
                                 .htmlPath(markdownFile.htmlFilePath())
                                 .build())
                         .bundleTree(bundleTree)
-                        .htmlContent(output -> output.writeContent(htmlContent))
+                        .htmlContent(output -> output.writeContent(
+                                // For index generated file, we add i18n.
+                                Strings.CI.replace(htmlContent, "<h2>Content</h2>", "<h2 data-i18n=\"content.content\">Content</h2>")
+                                        .replace("<h2>Subdirectories</h2>", "<h2 data-i18n=\"content.subdirectories\">Subdirectories</h2>"))
+                        )
                         .build();
 
                 TEMPLATE_ENGINE.render(INDEX_TEMPLATE_PAGE, page, htmlOutput);

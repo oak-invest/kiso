@@ -75,7 +75,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .containsExactly("assets/i18n/");
         assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-language")).isEmpty();
         assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-languages"))
-                .containsExactly("en,fr");
+                .containsExactly("en,fr,de,es,it,pt,nl,pl,ru,zh,ja,ko,ar,hi");
 
         // Navigation bar - Home index =================================================================================
         Element homeLink = page.selectFirst("a[aria-label='Home'][data-i18n-aria-label='navigation.home']");

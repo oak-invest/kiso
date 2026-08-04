@@ -1,0 +1,32 @@
+{
+  "footer": {
+    "generatedWith": "生成工具",
+    "lastUpdate": "最后更新"
+  },
+  "metadata": {
+    "resource": "资源",
+    "tags": "标签"
+  },
+  "navigation": {
+    "bundleContent": "知识包内容",
+    "closeNavigation": "关闭导航",
+    "home": "首页",
+    "openNavigation": "打开导航"
+  },
+  "pageKind": {
+    "concept": "概念",
+    "index": "索引"
+  },
+  "search": {
+    "failedToLoadIndex": "无法加载搜索索引",
+    "label": "搜索",
+    "placeholder": "搜索"
+  },
+  "source": {
+    "markdownFile": "Markdown 文件"
+  },
+  "content": {
+    "content": "内容",
+    "subdirectories": "子目录"
+  }
+}
