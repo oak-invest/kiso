@@ -5,23 +5,12 @@
 
     <!-- Home link ================================================================================================= -->
     <div class="flex-none">
-        @if(siteConfiguration.name() != null)
-            <!-- If the site has a name, display it as a text link to the home page -->
-            <a href="${pageMetadata.assetBasePath()}"
-               aria-label="Home"
-               data-i18n-aria-label="navigation.home"
-               class="btn btn-ghost text-xl">
-                ${siteConfiguration.name()}
-            </a>
-        @else
-            <!-- Else use an icon button to link to the home page -->
-            <a href="${pageMetadata.assetBasePath()}"
-               class="btn btn-square btn-ghost"
-               aria-label="Home"
-               data-i18n-aria-label="navigation.home">
-                @template.components.icons.home()
-            </a>
-        @endif
+        <a href="${pageMetadata.assetBasePath()}"
+           class="btn btn-square btn-ghost"
+           aria-label="Home"
+           data-i18n-aria-label="navigation.home">
+            @template.components.icons.home()
+        </a>
     </div>
 
     <!-- Navigation button ========================================================================================= -->
