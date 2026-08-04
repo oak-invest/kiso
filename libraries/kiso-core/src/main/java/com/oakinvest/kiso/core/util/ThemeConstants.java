@@ -1,7 +1,10 @@
 package com.oakinvest.kiso.core.util;
 
 import lombok.experimental.UtilityClass;
+import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
 
+import java.util.Locale;
 import java.util.Set;
 
 /**
@@ -29,8 +32,11 @@ public class ThemeConstants {
      * @param themeName theme name
      * @return true if it exists
      */
-    public static boolean contains(final String themeName) {
-        return NAMES.contains(themeName);
+    public static boolean contains(@Nullable final String themeName) {
+        if (StringUtils.isBlank(themeName)) {
+            return false;
+        }
+        return NAMES.contains(themeName.strip().toLowerCase(Locale.ROOT));
     }
 
 }
