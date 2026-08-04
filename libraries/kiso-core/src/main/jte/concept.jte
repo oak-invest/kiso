@@ -3,16 +3,10 @@
 @param com.oakinvest.kiso.core.model.html.page.ConceptPage page
 
 @template.layouts.default(
-siteName = page.siteConfiguration().name(),
-dataTheme  = page.themeConfiguration().effectiveName(),
-language = page.siteConfiguration().languageTag(),
-title = page.metadata().title(),
-description = page.metadata().description(),
-markdownFileName = page.metadata().markdownFilename(),
-assetBasePath = page.metadata().assetBasePath(),
+siteConfiguration = page.siteConfiguration(),
+themeConfiguration = page.themeConfiguration(),
+pageMetadata = page.metadata(),
 bundleTree = page.bundleTree(),
-currentHtmlPath = page.metadata().htmlPath(),
-socialPreviewImagePath = page.metadata().socialPreviewImagePath(),
 content = @`
 
     <!-- Header ==================================================================================================== -->
