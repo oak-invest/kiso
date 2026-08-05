@@ -80,6 +80,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${maven.resources.plugin.version}</version>
                 <configuration>
+                    <propertiesEncoding>${project.build.sourceEncoding}</propertiesEncoding>
                     <useDefaultDelimiters>false</useDefaultDelimiters>
                     <delimiters>
                         <delimiter>@</delimiter>

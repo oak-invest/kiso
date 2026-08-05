@@ -7,6 +7,7 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("KnowledgeBundle Tests")
@@ -23,7 +24,7 @@ public class KnowledgeBundleTest extends BaseTest {
         assertThat(rootBundle.bundles())
                 .hasSize(6)
                 .satisfiesExactly(
-                        bundle -> assertThat(bundle.name()).isEqualTo("Index"),
+                        bundle -> assertThat(bundle.name()).isEqualTo(ROOT_BUNDLE_NAME),
                         bundle -> assertThat(bundle.name()).isEqualTo("datasets"),
                         bundle -> assertThat(bundle.name()).isEqualTo("references"),
                         bundle -> assertThat(bundle.name()).isEqualTo("references/joins"),

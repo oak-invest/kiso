@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
+import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Bundle tree")
@@ -25,7 +26,7 @@ public class BundleTreeTest extends BaseTest {
 
         // Root bundle =================================================================================================
         assertThat(bundleTree)
-                .returns("Index", BundleTree::name)
+                .returns(ROOT_BUNDLE_NAME, BundleTree::name)
                 .returns(Path.of(""), BundleTree::relativePath)
                 .returns("index.html", BundleTree::indexHtmlPath)
                 .returns(true, BundleTree::isRoot);

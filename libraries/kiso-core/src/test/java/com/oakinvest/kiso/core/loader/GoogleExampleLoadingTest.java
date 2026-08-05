@@ -32,7 +32,12 @@ class GoogleExampleLoadingTest extends BaseTest {
                 .satisfiesExactly(index -> {
                     // File information.
                     assertThat(index.fileName()).isEqualTo("index.md");
+                    assertThat(index.conceptId()).isNull();
                     assertThat(index.kind()).isEqualTo(INDEX);
+
+                    // Bundle information.
+                    assertThat(index.bundlePath()).isEmpty();
+                    assertThat(index.bundleName()).isEqualTo("index");
 
                     // Path.
                     assertThat(index.absolutePath()).isEqualTo(Path.of(resourcePath + "/index.md"));
@@ -55,6 +60,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                 .returns("datasets", Bundle::name)
                 .returns(Path.of(resourcePath + "/datasets"), Bundle::absolutePath)
                 .returns(Path.of("datasets"), Bundle::relativePath)
+                .returns("datasets", Bundle::simpleName)
                 .returns(List.of(), Bundle::childBundles);
 
         assertThat(datasetBundle.markdownFiles())
@@ -65,8 +71,12 @@ class GoogleExampleLoadingTest extends BaseTest {
                         ga4 -> {
                             // File information.
                             assertThat(ga4.fileName()).isEqualTo("ga4_obfuscated_sample_ecommerce.md");
-                            assertThat(ga4.kind()).isEqualTo(CONCEPT);
                             assertThat(ga4.conceptId()).isEqualTo("datasets/ga4_obfuscated_sample_ecommerce");
+                            assertThat(ga4.kind()).isEqualTo(CONCEPT);
+
+                            // Bundle information.
+                            assertThat(ga4.bundlePath()).isEqualTo("datasets");
+                            assertThat(ga4.bundleName()).isEqualTo("datasets");
 
                             // Path.
                             assertThat(ga4.absolutePath()).isEqualTo(Path.of(resourcePath + "/datasets/ga4_obfuscated_sample_ecommerce.md"));
@@ -97,6 +107,10 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(index.fileName()).isEqualTo("index.md");
                             assertThat(index.kind()).isEqualTo(INDEX);
 
+                            // Bundle information.
+                            assertThat(index.bundlePath()).isEqualTo("datasets");
+                            assertThat(index.bundleName()).isEqualTo("datasets");
+
                             // Path.
                             assertThat(index.absolutePath()).isEqualTo(Path.of(resourcePath + "/datasets/index.md"));
                             assertThat(index.relativePath()).isEqualTo(Path.of("datasets/index.md"));
@@ -117,8 +131,10 @@ class GoogleExampleLoadingTest extends BaseTest {
         // /references
         var referencesBundle = bundle.rootBundle().childBundles().get(1);
         assertThat(referencesBundle)
+                .returns("references", Bundle::name)
                 .returns(Path.of(resourcePath + "/references"), Bundle::absolutePath)
-                .returns(Path.of("references"), Bundle::relativePath);
+                .returns(Path.of("references"), Bundle::relativePath)
+                .returns("references", Bundle::simpleName);
 
         assertThat(referencesBundle.childBundles())
                 .hasSize(2)
@@ -139,7 +155,12 @@ class GoogleExampleLoadingTest extends BaseTest {
                                             events -> {
                                                 // File information.
                                                 assertThat(events.fileName()).isEqualTo("events___ads_clickstats.md");
+                                                assertThat(events.conceptId()).isEqualTo("references/joins/events___ads_clickstats");
                                                 assertThat(events.kind()).isEqualTo(CONCEPT);
+
+                                                // Bundle information.
+                                                assertThat(events.bundlePath()).isEqualTo("references/joins");
+                                                assertThat(events.bundleName()).isEqualTo("joins");
 
                                                 // Filename.
                                                 assertThat(events.fileName()).isEqualTo("events___ads_clickstats.md");
@@ -183,6 +204,14 @@ class GoogleExampleLoadingTest extends BaseTest {
                             assertThat(metrics.markdownFiles()).hasSize(9);
                         }
                 );
+
+        // "references/joins" bundle ===================================================================================
+        var referencesJoinsBundle = bundle.rootBundle().childBundles().get(1).childBundles().getFirst();
+        assertThat(referencesJoinsBundle)
+                .returns("references/joins", Bundle::name)
+                .returns(Path.of(resourcePath + "/references/joins"), Bundle::absolutePath)
+                .returns(Path.of("references/joins"), Bundle::relativePath)
+                .returns("joins", Bundle::simpleName);
     }
 
     @Test

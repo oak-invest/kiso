@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
 public class OKFConstants {
 
     /** Root bundle name used when the bundle isRoot has no relative absolutePath. */
-    public static final String ROOT_BUNDLE_NAME = "Index";
+    public static final String ROOT_BUNDLE_NAME = "index";
 
     /** Default title used when the knowledge bundle does not provide a readable name. */
     public static final String DEFAULT_TITLE = "Knowledge Bundle";

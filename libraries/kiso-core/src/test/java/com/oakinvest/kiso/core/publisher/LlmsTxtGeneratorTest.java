@@ -24,7 +24,7 @@ class LlmsTxtGeneratorTest extends BaseTest {
                 .startsWith("""
                         # Knowledge Bundle
                         
-                        ## Index
+                        ## index
                         
                         - [index.md](index.md): Knowledge bundle index
                         """.stripIndent())

@@ -14,7 +14,7 @@
                 <li>
                     <a class="@if(bundleTree.indexHtmlPath().equals(pageMetadata.htmlPath()))font-semibold@endif"
                        href="${pageMetadata.assetBasePath()}${bundleTree.indexHtmlPath()}">
-                        <span class="kiso-navigation-menu-label" data-i18n="pageKind.index">Index</span>
+                        <span class="kiso-navigation-menu-label" data-i18n="pageKind.index">index</span>
                     </a>
                 </li>
             @endif

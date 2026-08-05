@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
+import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -101,7 +102,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.select(".drawer-side details[open]")).isEmpty();
         var indexLink = page.selectFirst(".drawer-side a[href='index.html']");
         assertThat(indexLink).isNotNull();
-        assertThat(indexLink.text()).isEqualTo("Index");
+        assertThat(indexLink.text()).isEqualTo(ROOT_BUNDLE_NAME);
         assertThat(indexLink.className()).isEqualTo("font-semibold");
         assertElementText(page.selectFirst(".drawer-side details summary"), "datasets");
         assertElementText(page.selectFirst(".drawer-side a[href='datasets/ga4_obfuscated_sample_ecommerce.html']"),
@@ -201,7 +202,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
         assertThat(page.select(".drawer-side details[open]")).hasSize(1);
         assertElementText(page.selectFirst(".drawer-side details[open] > summary"), "datasets");
-        assertElementText(page.selectFirst(".drawer-side a[href='../index.html']"), "Index");
+        assertElementText(page.selectFirst(".drawer-side a[href='../index.html']"), ROOT_BUNDLE_NAME);
         assertElementClassName(page.selectFirst(".drawer-side summary"), "menu-active");
         assertElementClassName(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"), "font-semibold");
         assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").className())

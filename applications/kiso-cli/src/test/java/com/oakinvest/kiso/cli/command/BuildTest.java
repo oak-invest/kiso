@@ -199,7 +199,7 @@ class BuildTest extends BaseTest {
         // Testing llms.txt file =======================================================================================
         assertThat(Files.readString(destinationDirectory.resolve(LLMS_TXT_FILENAME), UTF_8))
                 .contains("# Knowledge Bundle")
-                .contains("## Index")
+                .contains("## index")
                 .contains("- [index.md](index.md): Knowledge bundle index")
                 .contains("## topics")
                 .contains("- [index.md](topics/index.md): Index of topics")
