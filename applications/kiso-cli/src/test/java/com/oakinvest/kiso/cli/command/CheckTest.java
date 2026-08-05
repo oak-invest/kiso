@@ -36,7 +36,8 @@ public class CheckTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running check command")
+                .doesNotContain("WARNING")
+                .contains("Running check command")
                 .contains("No errors found.");
     }
 
@@ -104,7 +105,7 @@ public class CheckTest extends BaseTest {
         // Checking the results ========================================================================================
         assertThat(exitCode).isNotZero();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running check command")
+                .contains("Running check command")
                 .doesNotContain("No errors found.");
         assertThat(error.toString())
                 // invalid-encoding-1.md
@@ -123,6 +124,75 @@ public class CheckTest extends BaseTest {
                 .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/index.md is not a concept file and should not contain frontmatter")
                 // test/log.md
                 .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/log.md is not a concept file and should not contain frontmatter");
+    }
+
+
+    @Test
+    @DisplayName("Check a valid OKF bundle with ignore patterns")
+    void checkValidBundleWithIgnorePatterns() {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath("kb-with-ignore-patterns");
+
+        // We execute the command without profile ======================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new CheckCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isNotZero();
+        assertThat(output.toString())
+                .contains("Running check command")
+                .doesNotContain("No errors found.");
+        assertThat(error.toString())
+                .contains("ERROR - MISSING_FRONTMATTER_TYPE - File directoryWithError/test2.md is missing mandatory 'type' in frontmatter");
+
+        // We execute the command without profile including ignore patterns ============================================
+        output = new StringWriter();
+        error = new StringWriter();
+        exitCode = new CommandLine(new CheckCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString(),
+                        "--profile", "profile-with-ignore-patterns"
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("Running check command")
+                .contains("No errors found.");
+    }
+
+    @Test
+    @DisplayName("Check a bundle with broken links")
+    void checkWithBrokenLinks() {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath("kb-with-broken-links");
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new CheckCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("WARNING - BROKEN_LINK - File index.md contains broken link: uknownContent.md")
+                .contains("Running check command")
+                .contains("No errors found.");
     }
 
 }

@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.validation;
 
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.validation.rule.BrokenLinkRule;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
@@ -20,7 +21,8 @@ public class ValidationRunner {
     /** Markdown file rules. */
     private static final List<MarkdownFileRule> MARKDOWN_FILE_RULES = List.of(
             new EncodingRule(),
-            new ValidFrontmatterRule()
+            new ValidFrontmatterRule(),
+            new BrokenLinkRule()
     );
 
     /**
@@ -41,7 +43,7 @@ public class ValidationRunner {
                                 .forEach(markdownFile ->
                                         // With each markdown file rules ===============================================
                                         MARKDOWN_FILE_RULES.forEach(markdownFileRule ->
-                                                issues.addAll(markdownFileRule.validate(bundle, markdownFile))
+                                                issues.addAll(markdownFileRule.validate(knowledgeBundle.rootBundle(), markdownFile))
                                         )
                                 )
                 );

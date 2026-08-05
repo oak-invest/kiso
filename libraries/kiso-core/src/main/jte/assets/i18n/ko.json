@@ -1,0 +1,33 @@
+{
+  "footer": {
+    "generatedWith": "생성 도구",
+    "lastUpdate": "마지막 업데이트"
+  },
+  "metadata": {
+    "resource": "리소스",
+    "tags": "태그"
+  },
+  "navigation": {
+    "bundleContent": "번들 내용",
+    "closeNavigation": "내비게이션 닫기",
+    "home": "홈",
+    "openNavigation": "내비게이션 열기",
+    "downloadBundle": "번들 다운로드"
+  },
+  "pageKind": {
+    "concept": "개념",
+    "index": "색인"
+  },
+  "search": {
+    "failedToLoadIndex": "검색 인덱스를 불러오지 못했습니다",
+    "label": "검색",
+    "placeholder": "검색"
+  },
+  "source": {
+    "markdownFile": "Markdown 파일"
+  },
+  "content": {
+    "content": "내용",
+    "subdirectories": "하위 디렉터리"
+  }
+}

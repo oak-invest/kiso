@@ -1,0 +1,33 @@
+{
+  "footer": {
+    "generatedWith": "इसके साथ बनाया गया",
+    "lastUpdate": "अंतिम अपडेट"
+  },
+  "metadata": {
+    "resource": "संसाधन",
+    "tags": "टैग"
+  },
+  "navigation": {
+    "bundleContent": "बंडल सामग्री",
+    "closeNavigation": "नेविगेशन बंद करें",
+    "home": "होम",
+    "openNavigation": "नेविगेशन खोलें",
+    "downloadBundle": "बंडल डाउनलोड करें"
+  },
+  "pageKind": {
+    "concept": "संकल्पना",
+    "index": "सूची"
+  },
+  "search": {
+    "failedToLoadIndex": "खोज इंडेक्स लोड नहीं हो सका",
+    "label": "खोजें",
+    "placeholder": "खोजें"
+  },
+  "source": {
+    "markdownFile": "Markdown फ़ाइल"
+  },
+  "content": {
+    "content": "सामग्री",
+    "subdirectories": "उप-निर्देशिकाएं"
+  }
+}

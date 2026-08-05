@@ -1,0 +1,33 @@
+{
+  "footer": {
+    "generatedWith": "Gerado com",
+    "lastUpdate": "Última atualização"
+  },
+  "metadata": {
+    "resource": "Recurso",
+    "tags": "Tags"
+  },
+  "navigation": {
+    "bundleContent": "Conteúdo do bundle",
+    "closeNavigation": "Fechar navegação",
+    "home": "Início",
+    "openNavigation": "Abrir navegação",
+    "downloadBundle": "Baixar bundle"
+  },
+  "pageKind": {
+    "concept": "Conceito",
+    "index": "Índice"
+  },
+  "search": {
+    "failedToLoadIndex": "Não foi possível carregar o índice de pesquisa",
+    "label": "Pesquisar",
+    "placeholder": "Pesquisar"
+  },
+  "source": {
+    "markdownFile": "Arquivo Markdown"
+  },
+  "content": {
+    "content": "Conteúdo",
+    "subdirectories": "Subdiretórios"
+  }
+}

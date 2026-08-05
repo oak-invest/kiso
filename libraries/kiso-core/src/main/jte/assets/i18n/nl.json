@@ -1,0 +1,33 @@
+{
+  "footer": {
+    "generatedWith": "Gegenereerd met",
+    "lastUpdate": "Laatste update"
+  },
+  "metadata": {
+    "resource": "Bron",
+    "tags": "Tags"
+  },
+  "navigation": {
+    "bundleContent": "Bundle-inhoud",
+    "closeNavigation": "Navigatie sluiten",
+    "home": "Startpagina",
+    "openNavigation": "Navigatie openen",
+    "downloadBundle": "Bundle downloaden"
+  },
+  "pageKind": {
+    "concept": "Concept",
+    "index": "Index"
+  },
+  "search": {
+    "failedToLoadIndex": "Zoekindex kan niet worden geladen",
+    "label": "Zoeken",
+    "placeholder": "Zoeken"
+  },
+  "source": {
+    "markdownFile": "Markdown-bestand"
+  },
+  "content": {
+    "content": "Inhoud",
+    "subdirectories": "Submappen"
+  }
+}

@@ -10,7 +10,7 @@ Download the latest release of Kiso for your operating system from the [releases
 ./kiso-cli check --source=examples/kb-google-example
 ```
 
-The `check` command validates the Markdown files in the OKF bundle and reports formatting or structural errors. Once the bundle is valid, build the static website:
+The `check` command validates the Markdown files in the OKF bundle and reports formatting or structural errors (it also reports broken links as warnings). Once the bundle is valid, build the static website:
 
 ```bash
 ./kiso-cli build --source=examples/kb-google-example --destination=public
@@ -25,7 +25,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.6
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.7
   with:
     command: build
     source: examples/kb-google-example

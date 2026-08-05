@@ -57,6 +57,8 @@ public class RendererConfigurationTest extends BaseTest {
                 .containsExactly("Description du site");
 
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "https://knowledge.angara.finance/assets/css/daisyui.css",
                         "https://knowledge.angara.finance/assets/css/themes.css",

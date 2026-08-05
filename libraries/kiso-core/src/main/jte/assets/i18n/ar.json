@@ -1,0 +1,33 @@
+{
+  "footer": {
+    "generatedWith": "تم إنشاؤه باستخدام",
+    "lastUpdate": "آخر تحديث"
+  },
+  "metadata": {
+    "resource": "المورد",
+    "tags": "الوسوم"
+  },
+  "navigation": {
+    "bundleContent": "محتوى الحزمة",
+    "closeNavigation": "إغلاق التنقل",
+    "home": "الرئيسية",
+    "openNavigation": "فتح التنقل",
+    "downloadBundle": "تنزيل الحزمة"
+  },
+  "pageKind": {
+    "concept": "مفهوم",
+    "index": "فهرس"
+  },
+  "search": {
+    "failedToLoadIndex": "تعذر تحميل فهرس البحث",
+    "label": "بحث",
+    "placeholder": "بحث"
+  },
+  "source": {
+    "markdownFile": "ملف Markdown"
+  },
+  "content": {
+    "content": "المحتوى",
+    "subdirectories": "المجلدات الفرعية"
+  }
+}

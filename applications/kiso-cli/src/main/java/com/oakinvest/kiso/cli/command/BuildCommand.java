@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.command;
 
+import com.oakinvest.kiso.cli.ApplicationVersion;
 import com.oakinvest.kiso.cli.configuration.Configuration;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
@@ -18,6 +19,11 @@ import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
+import com.oakinvest.kiso.core.util.ThemeConstants;
+import com.oakinvest.kiso.core.validation.ValidationReport;
+import com.oakinvest.kiso.core.validation.ValidationRunner;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.model.ZipParameters;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +38,7 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
@@ -60,6 +67,18 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             "assets/favicon/kiso_favicon_light_180x180.svg",
             "assets/i18n/en.json",
             "assets/i18n/fr.json",
+            "assets/i18n/de.json",
+            "assets/i18n/es.json",
+            "assets/i18n/it.json",
+            "assets/i18n/pt.json",
+            "assets/i18n/nl.json",
+            "assets/i18n/pl.json",
+            "assets/i18n/ru.json",
+            "assets/i18n/zh.json",
+            "assets/i18n/ja.json",
+            "assets/i18n/ko.json",
+            "assets/i18n/ar.json",
+            "assets/i18n/hi.json",
             "assets/js/browser.js",
             "assets/js/minisearch.js",
             "assets/js/i18next.js",
@@ -98,11 +117,16 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
      * Run the build command.
      */
     @Override
+    @SuppressWarnings("checkstyle:MethodLength")
     public Integer call() {
+        // A bit of configuration ======================================================================================
+        ZipParameters parameters = new ZipParameters();
+        parameters.setIncludeRootFolder(false);
+
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
         final File destinationDirectory = destinationOption.destinationDirectory().toFile();
-        print("Kiso-cli - Running build command");
+        print("Kiso-cli " + ApplicationVersion.get() + " - Running build command");
         print("Sources in " + sourceDirectory.getAbsolutePath());
         print("Building in " + destinationDirectory.getAbsolutePath());
         blankLine();
@@ -116,8 +140,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Copying user okf bundle files to the destination directory ==============================================
             FileUtils.deleteDirectory(destinationDirectory);
-            IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
-            FileFilter fileFilter = file -> {
+            final IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
+            final FileFilter fileFilter = file -> {
                 Path relativePath = sourceDirectory.toPath().relativize(file.toPath());
                 return !ignorePatternMatcher.matches(relativePath);
             };
@@ -137,7 +161,12 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Loading and checking the bundle =========================================================================
             KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
-            if (!isValid(knowledgeBundle)) {
+            final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
+
+            // Print warnings et errors.
+            validationReport.warnings().forEach(this::printWarning);
+            if (validationReport.hasErrors()) {
+                validationReport.errors().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
             }
 
@@ -162,6 +191,13 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
+
+                        // We generate a zip file ======================================================================
+                        try (ZipFile zip = new ZipFile(bundle.absolutePath().resolve(BUNDLE_ZIP_FILENAME).toFile())) {
+                            zip.addFolder(bundle.absolutePath().toFile(), parameters);
+                        } catch (IOException e) {
+                            printError("Impossible to generate the zip file for " + bundle.absolutePath() + ": " + e.getMessage());
+                        }
 
                         // We generate the HTML version of every Markdown file in the bundle ===========================
                         bundle.markdownFiles().forEach(markdownFile -> {
@@ -217,6 +253,11 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     StandardCharsets.UTF_8
             );
             print("File search-index.json generated");
+
+            // Theme validation ========================================================================================
+            if (!ThemeConstants.contains(configuration.theme().effectiveName())) {
+                printWarning("WARNING: Theme '" + configuration.theme().effectiveName() + "' is not a valid DaisyUI theme.");
+            }
 
             // Add HTML assets =========================================================================================
             copyKisoAssets(destinationDirectory);

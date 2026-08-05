@@ -1,0 +1,33 @@
+{
+  "footer": {
+    "generatedWith": "Создано с помощью",
+    "lastUpdate": "Последнее обновление"
+  },
+  "metadata": {
+    "resource": "Ресурс",
+    "tags": "Теги"
+  },
+  "navigation": {
+    "bundleContent": "Содержимое пакета",
+    "closeNavigation": "Закрыть навигацию",
+    "home": "Главная",
+    "openNavigation": "Открыть навигацию",
+    "downloadBundle": "Скачать пакет"
+  },
+  "pageKind": {
+    "concept": "Концепт",
+    "index": "Индекс"
+  },
+  "search": {
+    "failedToLoadIndex": "Не удалось загрузить поисковый индекс",
+    "label": "Поиск",
+    "placeholder": "Поиск"
+  },
+  "source": {
+    "markdownFile": "Файл Markdown"
+  },
+  "content": {
+    "content": "Содержимое",
+    "subdirectories": "Подкаталоги"
+  }
+}

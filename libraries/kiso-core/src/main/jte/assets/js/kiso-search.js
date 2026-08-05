@@ -66,11 +66,13 @@
         const baseUrl = container.dataset.searchResultBaseUrl || "";
         let miniSearchPromise;
 
-        button.addEventListener("click", () => {
-            container.classList.add("kiso-search-open");
-            button.setAttribute("aria-expanded", "true");
-            input.focus();
-        });
+        if (button) {
+            button.addEventListener("click", () => {
+                container.classList.add("kiso-search-open");
+                button.setAttribute("aria-expanded", "true");
+                input.focus();
+            });
+        }
 
         input.addEventListener("input", async () => {
             const query = input.value.trim();
@@ -95,8 +97,10 @@
                 input.value = "";
                 clearResults(resultsElement);
                 container.classList.remove("kiso-search-open");
-                button.setAttribute("aria-expanded", "false");
-                button.focus();
+                if (button) {
+                    button.setAttribute("aria-expanded", "false");
+                    button.focus();
+                }
             }
         });
     }

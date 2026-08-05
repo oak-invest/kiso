@@ -54,12 +54,16 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         assertThat(page.title()).isEqualTo("index.md");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "assets/css/daisyui.css",
                         "assets/css/themes.css",
                         "assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "assets/js/browser.js",
                         "assets/js/i18next.js",
@@ -67,20 +71,24 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "assets/js/kiso-i18n.js",
                         "assets/js/kiso-search.js"
                 );
-        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+        assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-base-url"))
                 .containsExactly("assets/i18n/");
-        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-language")).isEmpty();
-        assertThat(page.select("script[src='assets/js/kiso-i18n.js']").eachAttr("data-i18n-languages"))
-                .containsExactly("en,fr");
-        assertThat(page.selectFirst(".kiso-search-button[aria-label='Search'] .kiso-search-icon")).isNotNull();
-        assertThat(page.selectFirst(".kiso-search[data-search-index-url='search-index.json']")).isNotNull();
-        assertThat(page.selectFirst(".kiso-search-input[type=search]")).isNotNull();
+        assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-language")).isEmpty();
+        assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-languages"))
+                .containsExactly("en,fr,de,es,it,pt,nl,pl,ru,zh,ja,ko,ar,hi");
 
-        // Drawer ======================================================================================================
+        // Navigation bar - Home index =================================================================================
+        Element homeLink = page.selectFirst("a[aria-label='Home'][data-i18n-aria-label='navigation.home']");
+        assertThat(homeLink).isNotNull();
+        assertThat(homeLink.hasClass("btn-square")).isTrue();
+        assertThat(homeLink.selectFirst("svg")).isNotNull();
+        assertThat(homeLink.text()).isBlank();
+
+        // Navigation bar - Drawer =====================================================================================
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
-        assertThat(page.selectFirst("a[aria-label='Home'][href='index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
+
         assertElementText(page.selectFirst(".drawer-side [data-i18n='navigation.bundleContent']"), "Bundle content");
         assertThat(page.select(".drawer-side details[open]")).isEmpty();
         var indexLink = page.selectFirst(".drawer-side a[href='index.html']");
@@ -147,12 +155,16 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(page.select("meta[name=description]").eachAttr("content"))
                 .containsExactly("A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "../assets/css/daisyui.css",
                         "../assets/css/themes.css",
                         "../assets/css/application.css"
                 );
         assertThat(page.select("script[src]").eachAttr("src"))
+                .allMatch(href -> href.contains("?build="))
+                .extracting(href -> href.substring(0, href.indexOf('?')))
                 .containsExactly(
                         "../assets/js/browser.js",
                         "../assets/js/i18next.js",
@@ -160,13 +172,19 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/js/kiso-i18n.js",
                         "../assets/js/kiso-search.js"
                 );
-        assertThat(page.select("script[src='../assets/js/kiso-i18n.js']").eachAttr("data-i18n-base-url"))
+        assertThat(page.select("script[src^='../assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-base-url"))
                 .containsExactly("../assets/i18n/");
         assertThat(page.selectFirst(".kiso-search[data-search-index-url='../search-index.json']")).isNotNull();
 
+        // Navigation bar - Home index =================================================================================
+        homeLink = page.selectFirst("a[aria-label='Home'][data-i18n-aria-label='navigation.home']");
+        assertThat(homeLink).isNotNull();
+        assertThat(homeLink.hasClass("btn-square")).isTrue();
+        assertThat(homeLink.selectFirst("svg")).isNotNull();
+        assertThat(homeLink.text()).isBlank();
+
         // Drawer ======================================================================================================
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
-        assertThat(page.selectFirst("a[aria-label='Home'][href='../index.html'] .kiso-home-icon")).isNotNull();
         assertThat(page.selectFirst("label[for=kiso-navigation-drawer][aria-label='Open navigation']")).isNotNull();
         assertThat(page.selectFirst(".drawer-side ul.menu.menu-sm")).isNotNull();
         assertThat(page.select(".drawer-side details[open]")).hasSize(1);

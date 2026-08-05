@@ -42,7 +42,8 @@ public class BuildWithIndexTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .doesNotContain("WARNING")
+                .contains("Running build command")
                 .contains("Done!");
 
         // index.md.
@@ -118,7 +119,8 @@ public class BuildWithIndexTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("WARNING: Theme 'unknown!' is not a valid DaisyUI theme.")
+                .contains("Running build command")
                 .contains("Done!");
 
         // index.md.
@@ -155,7 +157,8 @@ public class BuildWithIndexTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("WARNING: Theme 'unknown!' is not a valid DaisyUI theme.")
+                .contains("Running build command")
                 .contains("Done!");
 
         // index.md.

@@ -1,6 +1,8 @@
 package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.cli.util.BaseTest;
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.model.FileHeader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -21,6 +23,75 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Build command")
 class BuildTest extends BaseTest {
+
+    @Test
+    @DisplayName("Build a valid OKF bundle")
+    void buildValidBundle(@TempDir Path temporaryDirectory) throws IOException {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath(KB_GOOGLE);
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString(),
+                        "--destination", temporaryDirectory.toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .doesNotContain("WARNING")
+                .contains("Running build command")
+                .contains("Done!");
+
+        // Checking the zip files ======================================================================================
+        Path rootZip = temporaryDirectory.resolve("bundle.zip");
+        assertThat(rootZip).exists().isRegularFile();
+        try (ZipFile zip = new ZipFile(rootZip.toFile())) {
+            assertThat(zip.getFileHeaders())
+                    .extracting(FileHeader::getFileName)
+                    .containsExactlyInAnyOrder(
+                            "datasets/ga4_obfuscated_sample_ecommerce.md",
+                            "datasets/index.md",
+                            "datasets/",
+                            "references/metrics/avg_pageviews.md",
+                            "references/metrics/new_user_count.md",
+                            "references/metrics/user_count.md",
+                            "references/metrics/day_count.md",
+                            "references/metrics/event_count.md",
+                            "references/metrics/avg_spend_per_purchase_session_by_user.md",
+                            "references/metrics/index.md",
+                            "references/metrics/overall_avg_spend_per_purchase_session.md",
+                            "references/metrics/avg_transactions_per_purchaser.md",
+                            "references/metrics/",
+                            "references/index.md",
+                            "references/joins/events___ads_clickstats.md",
+                            "references/joins/index.md",
+                            "references/joins/",
+                            "references/",
+                            "tables/index.md",
+                            "tables/events_.md",
+                            "tables/",
+                            "index.md"
+                    );
+        }
+
+        Path datasetZip = temporaryDirectory.resolve("datasets/bundle.zip");
+        assertThat(datasetZip).exists().isRegularFile();
+        try (ZipFile zip = new ZipFile(datasetZip.toFile())) {
+            assertThat(zip.getFileHeaders())
+                    .extracting(FileHeader::getFileName)
+                    .containsExactlyInAnyOrder(
+                            "ga4_obfuscated_sample_ecommerce.md",
+                            "index.md"
+                    );
+        }
+    }
 
     @Test
     @DisplayName("Building a simple OKF bundle")
@@ -71,7 +142,7 @@ class BuildTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .contains("HTML Generated for index.md")
                 .contains("HTML Generated for topics/index.md")
                 .contains("HTML Generated for topics/first-topic.md")
@@ -94,6 +165,18 @@ class BuildTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/themes.css")).exists();
         assertThat(destinationDirectory.resolve("assets/i18n/en.json")).exists();
         assertThat(destinationDirectory.resolve("assets/i18n/fr.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/de.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/es.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/it.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/pt.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/nl.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/pl.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ru.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/zh.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ja.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ko.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ar.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/hi.json")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/minisearch.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/i18next.js")).exists();
@@ -108,7 +191,7 @@ class BuildTest extends BaseTest {
                 .contains("A first test topic.")
                 .contains("Hello from the first topic.")
                 // Without a base URL, generated links must remain relative.
-                .contains("href=\"../assets/css/application.css\"")
+                .contains("href=\"../assets/css/application.css?build=")
                 .contains("href=\"../index.html\"")
                 .doesNotContain("https://knowledge.angara.finance");
 
@@ -167,7 +250,7 @@ class BuildTest extends BaseTest {
         // Testing command result ======================================================================================
         assertThat(exitCode).isNotZero();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .doesNotContain("Done!");
         assertThat(error.toString())
                 .contains("ERROR - MISSING_FRONTMATTER - File missing-frontmatter.md is missing mandatory frontmatter");
@@ -196,7 +279,7 @@ class BuildTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .contains("HTML Generated for index.md")
                 .contains("File llms.txt generated")
                 .contains("File sitemap.xml generated")
@@ -211,6 +294,18 @@ class BuildTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/css/test.css")).exists();
         assertThat(destinationDirectory.resolve("assets/i18n/en.json")).exists();
         assertThat(destinationDirectory.resolve("assets/i18n/fr.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/de.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/es.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/it.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/pt.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/nl.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/pl.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ru.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/zh.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ja.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ko.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/ar.json")).exists();
+        assertThat(destinationDirectory.resolve("assets/i18n/hi.json")).exists();
         assertThat(destinationDirectory.resolve("assets/images/test.jpg")).exists();
         assertThat(destinationDirectory.resolve("assets/js/browser.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/minisearch.js")).exists();
@@ -219,6 +314,32 @@ class BuildTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();
+    }
+
+    @Test
+    @DisplayName("Build a bundle with broken links")
+    void buildWithBrokenLinks(@TempDir Path temporaryDirectory) {
+        // What we are testing - The Google example ====================================================================
+        var resourcePath = getResourcePath("kb-with-broken-links");
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new BuildCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString(),
+                        "--destination", temporaryDirectory.toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                .contains("WARNING - BROKEN_LINK - File index.md contains broken link: uknownContent.md")
+                .contains("Running build command")
+                .contains("Done!");
     }
 
 }

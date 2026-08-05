@@ -1,5 +1,5 @@
 (() => {
-    const scriptElement = document.currentScript;
+    const scriptElement = document.currentScript || document.querySelector("script[src*='kiso-i18n.js']");
     const fallbackLanguage = "en";
 
     function normalizeLanguage(language) {
@@ -10,6 +10,9 @@
     }
 
     function availableLanguages() {
+        if (!scriptElement || !scriptElement.dataset.i18nLanguages) {
+            return [fallbackLanguage];
+        }
         return scriptElement.dataset.i18nLanguages
                 .split(",")
                 .map(normalizeLanguage)
@@ -38,6 +41,9 @@
     }
 
     async function loadTranslations(language) {
+        if (!scriptElement || !scriptElement.dataset.i18nBaseUrl) {
+            throw new Error("Missing i18n base URL");
+        }
         const response = await fetch(scriptElement.dataset.i18nBaseUrl + language + ".json");
         if (!response.ok) {
             throw new Error("Failed to load translations");
@@ -80,5 +86,6 @@
     }
 
     initializeI18next().catch(() => {
+        console.warn("Kiso i18n initialization failed");
     });
 })();

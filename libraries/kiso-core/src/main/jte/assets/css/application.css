@@ -67,6 +67,13 @@
     position: relative;
 }
 
+.kiso-search-results {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    z-index: 90;
+}
+
 .kiso-search-icon {
     position: relative;
     display: block;

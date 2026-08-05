@@ -40,7 +40,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 // Those files should exist
                 .contains("HTML Generated for index.md")
                 .contains("HTML Generated for datasets/index.md")
@@ -55,7 +55,7 @@ class BuildWithConfigurationTest extends BaseTest {
         // Checking that configuration is applied to the generated HTML files ==========================================
         assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
                 .contains("data-theme=\"corporate\"")
-                .contains("href=\"https://knowledge.angara.finance/assets/css/application.css\"")
+                .contains("href=\"https://knowledge.angara.finance/assets/css/application.css?build=")
                 .contains("href=\"https://knowledge.angara.finance/datasets/index.html\"")
                 .contains("lang=\"fr\"")
                 .contains("<title>My Knowledge Base</title>")
@@ -119,7 +119,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 // Those files should exist
                 .contains("HTML Generated for index.md")
                 // I asked to remove datasets.
@@ -168,7 +168,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("Kiso-cli - Running build command")
+                .contains("Running build command")
                 .contains("HTML Generated for index.md")
                 .contains("Done!");
     }
