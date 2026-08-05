@@ -48,6 +48,7 @@
 
 - Add a release note.
 - Change the release number in `.github/workflows/publish-website.yml`
+- Close the milestone at https://github.com/oak-invest/kiso/milestones
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
 - Wait to see if the website is correctly built and deployed on https://oak-invest.github.io/kiso/
 
