@@ -61,7 +61,7 @@ jobs:
           path: dist/${{ matrix.artifact }}
 
   build-java:
-    name: Build Java archive
+    name: Build Java release
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -75,7 +75,7 @@ jobs:
       - name: Set up environment
         uses: ./.github/actions/setup
 
-      - name: Build executable Java archive
+      - name: Build executable Java release
         run: |
           just install
           mvn package -pl applications/kiso-cli -am -DskipTests
