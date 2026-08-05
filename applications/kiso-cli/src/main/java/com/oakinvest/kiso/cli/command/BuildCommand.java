@@ -38,6 +38,7 @@ import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
@@ -192,7 +193,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     .forEach(bundle -> {
 
                         // We generate a zip file ======================================================================
-                        try (ZipFile zip = new ZipFile(bundle.absolutePath().resolve(bundle.zipName()).toFile())) {
+                        try (ZipFile zip = new ZipFile(bundle.absolutePath().resolve(BUNDLE_ZIP_FILENAME).toFile())) {
                             zip.addFolder(bundle.absolutePath().toFile(), parameters);
                         } catch (IOException e) {
                             printError("Impossible to generate the zip file for " + bundle.absolutePath() + ": " + e.getMessage());

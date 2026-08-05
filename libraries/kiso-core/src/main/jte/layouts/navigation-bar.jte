@@ -23,7 +23,7 @@
         </label>
 
         <!-- Download bundle button ===============================================================================  -->
-        <a href="${pageMetadata.assetBasePath()}${bundleTree.zipName()}"
+        <a href="bundle.zip"
            download
            class="btn btn-square btn-ghost"
            aria-label="Download bundle"

@@ -81,7 +81,7 @@ class BuildTest extends BaseTest {
                     );
         }
 
-        Path datasetZip = temporaryDirectory.resolve("datasets/datasets.zip");
+        Path datasetZip = temporaryDirectory.resolve("datasets/bundle.zip");
         assertThat(datasetZip).exists().isRegularFile();
         try (ZipFile zip = new ZipFile(datasetZip.toFile())) {
             assertThat(zip.getFileHeaders())
