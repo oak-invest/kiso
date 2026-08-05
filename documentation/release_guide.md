@@ -7,20 +7,22 @@
 
 ## Test the release (local)
 
+- Delete the `public` folder in the project root.
 - Run `just release_build_native` to build a native app.
 - Test the check command on Google knowledge base: `just release_run_check_kb_google`
 - Test the build command on Google knowledge base: `just release_run_build_kb_google`
 
 ## Test the release (online)
 
-- Deploy my personal knowledge base. - It builds Kiso from the development branch to build the websites.
+- Deploy my personal knowledge base - It builds Kiso from the development branch to build the websites.
 
 ### Angara knowledge base
 - Test content deployed on: https://knowledge.angara.finance
-- Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html
-- Test sociale preview image deployed on: https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.png
+- Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html.
+- Test social preview image deployed on: https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.png
 - Test llms.txt deployed on: https://knowledge.angara.finance/llms.txt
 - Test sitemap.xml deployed on: https://knowledge.angara.finance/sitemap.xml
+- Test zip downloads on https://knowledge.angara.finance/entreprises/index.html
 
 ### Oak Invest knowledge base
 - Test content deployed on: https://www.oak-invest.com/okf/
@@ -34,6 +36,7 @@
 
 - Update the projet README.md content and release number in it.
 - Change the release number in `applications/kiso-cli-action/action.yml`
+- Commit the changes and push them to the `development` branch.
 
 ## Release steps
 
