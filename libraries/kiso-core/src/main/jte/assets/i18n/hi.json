@@ -12,7 +12,8 @@
     "closeNavigation": "नेविगेशन बंद करें",
     "home": "होम",
     "openNavigation": "नेविगेशन खोलें",
-    "downloadBundle": "बंडल डाउनलोड करें"
+    "downloadBundle": "बंडल डाउनलोड करें",
+    "backToTop": "शीर्ष पर वापस जाएं"
   },
   "pageKind": {
     "concept": "संकल्पना",

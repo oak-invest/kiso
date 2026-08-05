@@ -12,7 +12,8 @@
     "closeNavigation": "Закрыть навигацию",
     "home": "Главная",
     "openNavigation": "Открыть навигацию",
-    "downloadBundle": "Скачать пакет"
+    "downloadBundle": "Скачать пакет",
+    "backToTop": "Наверх"
   },
   "pageKind": {
     "concept": "Концепт",

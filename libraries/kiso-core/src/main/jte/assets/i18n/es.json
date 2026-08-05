@@ -12,7 +12,8 @@
     "closeNavigation": "Cerrar navegación",
     "home": "Inicio",
     "openNavigation": "Abrir navegación",
-    "downloadBundle": "Descargar bundle"
+    "downloadBundle": "Descargar bundle",
+    "backToTop": "Volver arriba"
   },
   "pageKind": {
     "concept": "Concepto",

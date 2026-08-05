@@ -69,7 +69,8 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "assets/js/i18next.js",
                         "assets/js/minisearch.js",
                         "assets/js/kiso-i18n.js",
-                        "assets/js/kiso-search.js"
+                        "assets/js/kiso-search.js",
+                        "assets/js/kiso-back-to-top.js"
                 );
         assertThat(page.select("script[src^='assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-base-url"))
                 .containsExactly("assets/i18n/");
@@ -83,6 +84,13 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(homeLink.hasClass("btn-square")).isTrue();
         assertThat(homeLink.selectFirst("svg")).isNotNull();
         assertThat(homeLink.text()).isBlank();
+
+        Element backToTopButton = page.selectFirst("button.kiso-back-to-top[aria-label='Back to top'][data-i18n-aria-label='navigation.backToTop']");
+        assertThat(backToTopButton).isNotNull();
+        assertThat(backToTopButton.hasClass("btn-square")).isTrue();
+        assertThat(backToTopButton.hasClass("fixed")).isTrue();
+        assertThat(backToTopButton.selectFirst("svg")).isNotNull();
+        assertThat(backToTopButton.text()).isBlank();
 
         // Navigation bar - Drawer =====================================================================================
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();
@@ -170,7 +178,8 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                         "../assets/js/i18next.js",
                         "../assets/js/minisearch.js",
                         "../assets/js/kiso-i18n.js",
-                        "../assets/js/kiso-search.js"
+                        "../assets/js/kiso-search.js",
+                        "../assets/js/kiso-back-to-top.js"
                 );
         assertThat(page.select("script[src^='../assets/js/kiso-i18n.js?build=']").eachAttr("data-i18n-base-url"))
                 .containsExactly("../assets/i18n/");
@@ -182,6 +191,9 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(homeLink.hasClass("btn-square")).isTrue();
         assertThat(homeLink.selectFirst("svg")).isNotNull();
         assertThat(homeLink.text()).isBlank();
+
+        backToTopButton = page.selectFirst("button.kiso-back-to-top[aria-label='Back to top'][data-i18n-aria-label='navigation.backToTop']");
+        assertThat(backToTopButton).isNotNull();
 
         // Drawer ======================================================================================================
         assertThat(page.selectFirst("input#kiso-navigation-drawer.drawer-toggle")).isNotNull();

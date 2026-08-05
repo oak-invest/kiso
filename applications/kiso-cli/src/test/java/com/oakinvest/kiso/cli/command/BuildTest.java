@@ -182,6 +182,7 @@ class BuildTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/js/i18next.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/kiso-i18n.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/kiso-back-to-top.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();
 
         // Testing an HTML file content ================================================================================
@@ -312,6 +313,7 @@ class BuildTest extends BaseTest {
         assertThat(destinationDirectory.resolve("assets/js/i18next.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/kiso-i18n.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/kiso-search.js")).exists();
+        assertThat(destinationDirectory.resolve("assets/js/kiso-back-to-top.js")).exists();
         assertThat(destinationDirectory.resolve("assets/js/test.js")).exists();
         assertThat(destinationDirectory.resolve("search-index.json")).exists();
     }

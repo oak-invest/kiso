@@ -12,7 +12,8 @@
     "closeNavigation": "ナビゲーションを閉じる",
     "home": "ホーム",
     "openNavigation": "ナビゲーションを開く",
-    "downloadBundle": "バンドルをダウンロード"
+    "downloadBundle": "バンドルをダウンロード",
+    "backToTop": "上に戻る"
   },
   "pageKind": {
     "concept": "コンセプト",

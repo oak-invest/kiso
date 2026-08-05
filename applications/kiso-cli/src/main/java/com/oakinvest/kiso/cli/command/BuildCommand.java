@@ -83,7 +83,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             "assets/js/minisearch.js",
             "assets/js/i18next.js",
             "assets/js/kiso-i18n.js",
-            "assets/js/kiso-search.js"
+            "assets/js/kiso-search.js",
+            "assets/js/kiso-back-to-top.js"
     };
 
     /** Source directory. */

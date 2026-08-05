@@ -12,7 +12,8 @@
     "closeNavigation": "Navigatie sluiten",
     "home": "Startpagina",
     "openNavigation": "Navigatie openen",
-    "downloadBundle": "Bundle downloaden"
+    "downloadBundle": "Bundle downloaden",
+    "backToTop": "Terug naar boven"
   },
   "pageKind": {
     "concept": "Concept",

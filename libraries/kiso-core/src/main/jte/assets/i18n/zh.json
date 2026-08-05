@@ -12,7 +12,8 @@
     "closeNavigation": "关闭导航",
     "home": "首页",
     "openNavigation": "打开导航",
-    "downloadBundle": "下载知识包"
+    "downloadBundle": "下载知识包",
+    "backToTop": "返回顶部"
   },
   "pageKind": {
     "concept": "概念",

@@ -17,3 +17,5 @@
         defer></script>
 <script src="${assetBasePath}assets/js/kiso-search.js?build=${build}"
         defer></script>
+<script src="${assetBasePath}assets/js/kiso-back-to-top.js?build=${build}"
+        defer></script>

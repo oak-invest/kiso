@@ -57,6 +57,14 @@ current DaisyUI theme, and displays text using the default readable text color f
             ${content}
         </main>
 
+        <!-- Back to top =========================================================================================== -->
+        <button type="button"
+                class="kiso-back-to-top btn btn-primary btn-square fixed bottom-4 right-4 z-50 hidden shadow-lg"
+                aria-label="Back to top"
+                data-i18n-aria-label="navigation.backToTop">
+            @template.components.icons.arrowUp()
+        </button>
+
     </div>
 
     <!-- Drawer side menu ===========================================================================================-->

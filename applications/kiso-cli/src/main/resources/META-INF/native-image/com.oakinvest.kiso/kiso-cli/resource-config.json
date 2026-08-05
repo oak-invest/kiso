@@ -26,6 +26,9 @@
         "pattern": "assets/js/kiso-search\\.js"
       },
       {
+        "pattern": "assets/js/kiso-back-to-top\\.js"
+      },
+      {
         "pattern": "assets/i18n/.*\\.json"
       },
       {

@@ -12,7 +12,8 @@
     "closeNavigation": "إغلاق التنقل",
     "home": "الرئيسية",
     "openNavigation": "فتح التنقل",
-    "downloadBundle": "تنزيل الحزمة"
+    "downloadBundle": "تنزيل الحزمة",
+    "backToTop": "العودة إلى الأعلى"
   },
   "pageKind": {
     "concept": "مفهوم",
