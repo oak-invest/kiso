@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.model.okf.bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -12,6 +13,9 @@ import java.util.stream.Stream;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.ZIP_EXTENSION;
+import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 
 /**
  * A bundle is a directory tree of markdown files.
@@ -83,6 +87,18 @@ public record Bundle(
             return name();
         }
         return StringUtils.substringAfterLast(name(), "/");
+    }
+
+    /**
+     * Returns the zip name of the bundle.
+     *
+     * @return zip name
+     */
+    public String zipName() {
+        if (Strings.CI.equals(simpleName(), ROOT_BUNDLE_NAME)) {
+            return BUNDLE_ZIP_FILENAME;
+        }
+        return simpleName() + ZIP_EXTENSION;
     }
 
     /**

@@ -43,7 +43,7 @@ current DaisyUI theme, and displays text using the default readable text color f
     <div class="drawer-content min-h-screen">
 
         <!-- Navigation bar ======================================================================================== -->
-        @template.layouts.navigation-bar(siteConfiguration = siteConfiguration, pageMetadata = pageMetadata)
+        @template.layouts.navigation-bar(siteConfiguration = siteConfiguration, pageMetadata = pageMetadata, bundleTree = bundleTree)
 
         <!-- Content =============================================================================================== -->
         <!--

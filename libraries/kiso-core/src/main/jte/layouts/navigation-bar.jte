@@ -1,5 +1,6 @@
 @param com.oakinvest.kiso.core.configuration.SiteConfiguration siteConfiguration
 @param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
+@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
 
 <div class="navbar bg-base-100 shadow-sm">
 
@@ -22,7 +23,7 @@
         </label>
 
         <!-- Download bundle button ===============================================================================  -->
-        <a href="bundle.zip"
+        <a href="${pageMetadata.assetBasePath()}${bundleTree.zipName()}"
            download
            class="btn btn-square btn-ghost"
            aria-label="Download bundle"

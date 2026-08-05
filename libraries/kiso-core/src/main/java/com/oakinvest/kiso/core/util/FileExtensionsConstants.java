@@ -22,4 +22,7 @@ public final class FileExtensionsConstants {
     /** PNG file. */
     public static final String PNG_EXTENSION = ".png";
 
+    /** ZIP file. */
+    public static final String ZIP_EXTENSION = ".zip";
+
 }

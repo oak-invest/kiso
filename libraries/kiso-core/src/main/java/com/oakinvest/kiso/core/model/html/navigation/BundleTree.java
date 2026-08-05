@@ -4,10 +4,15 @@ import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+
+import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
+import static com.oakinvest.kiso.core.util.FileExtensionsConstants.ZIP_EXTENSION;
+import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 
 /**
  * Calculated bundle tree used to build navigation menus.
@@ -115,6 +120,30 @@ public record BundleTree(
         return indexHtmlPath.equals(htmlPath)
                 || pages.stream().anyMatch(page -> page.href().equals(htmlPath))
                 || childBundles.stream().anyMatch(childBundle -> childBundle.containsHtmlPath(htmlPath));
+    }
+
+    /**
+     * Returns the bundle name without its parent path.
+     *
+     * @return the bundle name without its parent path
+     */
+    public String simpleName() {
+        if (!StringUtils.contains(name(), '/')) {
+            return name();
+        }
+        return StringUtils.substringAfterLast(name(), "/");
+    }
+
+    /**
+     * Returns the zip name of the bundle.
+     *
+     * @return zip name
+     */
+    public String zipName() {
+        if (Strings.CI.equals(simpleName(), ROOT_BUNDLE_NAME)) {
+            return BUNDLE_ZIP_FILENAME;
+        }
+        return simpleName() + ZIP_EXTENSION;
     }
 
 }

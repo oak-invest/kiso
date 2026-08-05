@@ -15,7 +15,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
@@ -51,7 +50,7 @@ class BuildTest extends BaseTest {
                 .contains("Done!");
 
         // Checking the zip files ======================================================================================
-        Path rootZip = temporaryDirectory.resolve(BUNDLE_ZIP_FILENAME);
+        Path rootZip = temporaryDirectory.resolve("bundle.zip");
         assertThat(rootZip).exists().isRegularFile();
         try (ZipFile zip = new ZipFile(rootZip.toFile())) {
             assertThat(zip.getFileHeaders())
@@ -82,7 +81,7 @@ class BuildTest extends BaseTest {
                     );
         }
 
-        Path datasetZip = temporaryDirectory.resolve("datasets/" + BUNDLE_ZIP_FILENAME);
+        Path datasetZip = temporaryDirectory.resolve("datasets/datasets.zip");
         assertThat(datasetZip).exists().isRegularFile();
         try (ZipFile zip = new ZipFile(datasetZip.toFile())) {
             assertThat(zip.getFileHeaders())
