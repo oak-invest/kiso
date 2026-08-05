@@ -196,7 +196,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                         try (ZipFile zip = new ZipFile(bundle.absolutePath().resolve(BUNDLE_ZIP_FILENAME).toFile())) {
                             zip.addFolder(bundle.absolutePath().toFile(), parameters);
                         } catch (IOException e) {
-                            throw new RuntimeException(e);
+                            printError("Impossible to generate the zip file for " + bundle.absolutePath() + ": " + e.getMessage());
                         }
 
                         // We generate the HTML version of every Markdown file in the bundle ===========================
