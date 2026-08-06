@@ -3,11 +3,9 @@
 @param com.oakinvest.kiso.core.model.html.page.ConceptPage page
 
 @template.layouts.default(
-siteConfiguration = page.siteConfiguration(),
-themeConfiguration = page.themeConfiguration(),
+pageContext = page.context(),
 pageMetadata = page.metadata(),
-bundleTree = page.bundleTree(),
-content = @`
+pageContent = @`
 
     <!-- Header ==================================================================================================== -->
     <!--

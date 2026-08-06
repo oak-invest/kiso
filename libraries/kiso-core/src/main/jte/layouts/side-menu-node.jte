@@ -1,8 +1,9 @@
 @param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
-@param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
+@param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
 <li>
     <details open="${bundleTree.containsHtmlPath(pageMetadata.htmlPath())}">
+
         <!-- Bundle name =========================================================================================== -->
         <summary class="@if(bundleTree.containsHtmlPath(pageMetadata.htmlPath()))menu-active@endif">
             <span class="kiso-navigation-menu-label">${bundleTree.name()}</span>

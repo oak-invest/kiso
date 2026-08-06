@@ -1,6 +1,4 @@
-@param com.oakinvest.kiso.core.configuration.SiteConfiguration siteConfiguration
-@param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
-@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
 <div class="navbar bg-base-100 shadow-sm">
 
@@ -51,6 +49,7 @@
                    autocomplete="off"
                    aria-label="Search"
                    data-i18n-aria-label="search.label"/>
+
         </label>
 
         <div class="kiso-search-results menu rounded-box mt-2 hidden w-80 max-w-[calc(100vw-1.5rem)] bg-base-100 p-2 shadow-lg"></div>

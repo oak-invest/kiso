@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.model.html.page;
+package com.oakinvest.kiso.core.model.html.util;
 
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
@@ -33,7 +33,8 @@ public record PageMetadata(
      * @return empty page metadata
      */
     public static PageMetadata empty() {
-        return new PageMetadata(null, null, null, null, null);
+        return PageMetadata.builder()
+                .build();
     }
 
     /**
@@ -55,9 +56,9 @@ public record PageMetadata(
     }
 
     /**
-     * Returns the html directory path.
+     * Returns the HTML directory path.
      *
-     * @return html directory path
+     * @return HTML directory path
      */
     public String htmlDirectoryPath() {
         return StringUtils.defaultIfEmpty(FilenameUtils.getPath(htmlPath), "/");

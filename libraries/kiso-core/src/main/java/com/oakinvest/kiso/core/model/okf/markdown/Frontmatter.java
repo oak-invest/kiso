@@ -47,15 +47,10 @@ public record Frontmatter(
      * @return empty frontmatter
      */
     public static Frontmatter empty() {
-        return new Frontmatter(
-                null,
-                null,
-                null,
-                null,
-                List.of(),
-                null,
-                Map.of()
-        );
+        return Frontmatter.builder()
+                .tags(List.of())
+                .extraFields(Map.of())
+                .build();
     }
 
     /**

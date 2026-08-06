@@ -1,5 +1,5 @@
-@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
-@param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
+@param com.oakinvest.kiso.core.model.html.util.PageContext pageContext
+@param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
 <!-- Left tree menu ================================================================================================ -->
 <aside class="flex min-h-full w-80 max-w-[85vw] flex-col bg-base-100 p-4 text-base-content">
@@ -14,22 +14,22 @@
         <ul class="menu menu-sm w-full gap-1 p-0">
 
             <!-- Index page (if present) =========================================================================== -->
-            @if(bundleTree.hasIndexPage())
+            @if(pageContext.bundleTree().hasIndexPage())
                 <li>
-                    <a class="@if(bundleTree.indexHtmlPath().equals(pageMetadata.htmlPath()))font-semibold@endif"
-                       href="${pageMetadata.assetBasePath()}${bundleTree.indexHtmlPath()}">
-                        <span class="kiso-navigation-menu-label">${bundleTree.name()}</span>
+                    <a class="@if(pageContext.bundleTree().indexHtmlPath().equals(pageMetadata.htmlPath()))font-semibold@endif"
+                       href="${pageMetadata.assetBasePath()}${pageContext.bundleTree().indexHtmlPath()}">
+                        <span class="kiso-navigation-menu-label">${pageContext.bundleTree().name()}</span>
                     </a>
                 </li>
             @endif
 
             <!-- All bundles ======================================================================================= -->
-            @for(var childBundle : bundleTree.childBundles())
+            @for(var childBundle : pageContext.bundleTree().childBundles())
                 @template.layouts.side-menu-node(bundleTree = childBundle, pageMetadata = pageMetadata)
             @endfor
 
             <!-- All pages inside the bundle ======================================================================= -->
-            @for(var page : bundleTree.pages())
+            @for(var page : pageContext.bundleTree().pages())
                 @if(page.kind() != com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX)
                     <li>
                         <a class="@if(page.href().equals(pageMetadata.htmlPath()))font-semibold@endif"
