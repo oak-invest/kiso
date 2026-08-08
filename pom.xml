@@ -54,7 +54,7 @@
         <picocli.version>4.7.7</picocli.version>
 
         <!-- Frontend assets -->
-        <daisyui.webjar.version>5.7.0</daisyui.webjar.version>
+        <daisyui.webjar.version>5.7.16</daisyui.webjar.version>
         <tailwindcss.webjar.version>4.3.2</tailwindcss.webjar.version>
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
         <i18next.webjar.version>26.3.6</i18next.webjar.version>
