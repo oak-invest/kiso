@@ -86,7 +86,7 @@ public class SvgToPngConverter {
      *
      * @return the name of the available tool, or null if none is installed
      */
-    static synchronized String findExternalTool() {
+    public static synchronized String findExternalTool() {
         if (!externalToolSearchDone) {
             externalToolSearchDone = true;
             for (String tool : EXTERNAL_TOOLS) {

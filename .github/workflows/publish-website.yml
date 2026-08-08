@@ -43,14 +43,14 @@ jobs:
           mvn install -pl libraries/kiso-core -am -DskipTests
           mvn compile -pl applications/kiso-cli -DskipTests exec:java \
           -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-          -Dexec.args="build --source=examples/kb-google-example --destination=website/examples/kb-google-example/"
+          -Dexec.args="build --source=examples/kb-google-example-v0.1 --destination=website/examples/kb-google-example"
 
       # Generate the knowledge bundle demo with the latest release of Kiso cli =========================================
       - name: Build with Kiso
         uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.7
         with:
           command: build
-          source: examples/kb-google-example
+          source: examples/kb-google-example-v0.1
           destination: website/examples/kb-google-example-latest
 
       # Publish the website to GitHub Pages ============================================================================

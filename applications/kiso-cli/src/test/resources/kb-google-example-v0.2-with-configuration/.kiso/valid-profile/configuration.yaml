@@ -1,0 +1,12 @@
+site:
+  language: de
+  title: My Knowledge Base 2
+  description: My knowledge base description 3
+
+theme:
+  name: pastel
+
+content:
+  ignorePatterns:
+    - tables
+    - references/metrics/acquired_users.md

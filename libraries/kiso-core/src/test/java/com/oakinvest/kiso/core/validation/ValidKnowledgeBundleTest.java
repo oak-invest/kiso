@@ -14,7 +14,7 @@ public class ValidKnowledgeBundleTest extends BaseTest {
     @DisplayName("Google example bundle validation")
     void googleExamplesValidation() {
         // What we are testing =========================================================================================
-        var resourcePath = getResourcePath(KB_GOOGLE);
+        var resourcePath = getResourcePath(KB_GOOGLE_V_0_2);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
         // We check that Google examples don't raise any error =========================================================
