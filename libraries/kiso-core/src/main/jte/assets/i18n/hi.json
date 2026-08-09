@@ -1,7 +1,9 @@
 {
   "footer": {
     "generatedWith": "इसके साथ बनाया गया",
-    "lastUpdate": "अंतिम अपडेट"
+    "lastUpdate": "अंतिम अपडेट",
+    "generatedAt": "बनाया गया",
+    "generatedBy": "द्वारा बनाया गया"
   },
   "metadata": {
     "resource": "संसाधन",

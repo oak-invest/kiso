@@ -1,7 +1,9 @@
 {
   "footer": {
     "generatedWith": "생성 도구",
-    "lastUpdate": "마지막 업데이트"
+    "lastUpdate": "마지막 업데이트",
+    "generatedAt": "생성 일시",
+    "generatedBy": "생성자"
   },
   "metadata": {
     "resource": "리소스",

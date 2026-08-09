@@ -186,7 +186,9 @@ public final class MarkdownToHtmlRenderer {
                         .type(markdownFile.frontmatter().type())
                         .resource(markdownFile.frontmatter().resource())
                         .tags(markdownFile.frontmatter().tags())
-                        .timestamp(markdownFile.frontmatter().parsedTimestamp())
+                        .generatedBy(markdownFile.frontmatter().generatedBy())
+                        .generatedAt(markdownFile.frontmatter().generatedAt())
+                        .timestamp(markdownFile.timestamp())
                         .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
 
@@ -210,7 +212,7 @@ public final class MarkdownToHtmlRenderer {
         if (markdownRelativePath == null || markdownRelativePath.getParent() == null) {
             return "";
         }
-        return "../".repeat(markdownRelativePath.getParent().getNameCount());
+        return "../" .repeat(markdownRelativePath.getParent().getNameCount());
     }
 
 }

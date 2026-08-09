@@ -18,6 +18,8 @@ import java.util.Objects;
  * @param type        the type of the page
  * @param resource    a URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
  * @param tags        a YAML list of short strings for cross-cutting categorization
+ * @param generatedBy the entity that generated the content
+ * @param generatedAt the timestamp when the content was generated
  * @param timestamp   ISO 8601 datetime of the last meaningful change
  * @param htmlContent the HTML content of the page
  */
@@ -29,6 +31,8 @@ public record ConceptPage(
         String type,
         @Nullable String resource,
         List<String> tags,
+        @Nullable String generatedBy,
+        @Nullable OffsetDateTime generatedAt,
         @Nullable OffsetDateTime timestamp,
         @Nullable HtmlContent htmlContent
 ) {

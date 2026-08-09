@@ -1,7 +1,9 @@
 {
   "footer": {
     "generatedWith": "Создано с помощью",
-    "lastUpdate": "Последнее обновление"
+    "lastUpdate": "Последнее обновление",
+    "generatedAt": "Создано",
+    "generatedBy": "Создано"
   },
   "metadata": {
     "resource": "Ресурс",

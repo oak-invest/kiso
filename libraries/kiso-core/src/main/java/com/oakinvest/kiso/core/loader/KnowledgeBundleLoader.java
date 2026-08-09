@@ -5,6 +5,7 @@ import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.Generated;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
@@ -32,6 +33,9 @@ import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.DESCRIPTION_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.FRONTMATTER_DELIMITER;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.GENERATED_AT_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.GENERATED_BY_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.GENERATED_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.RESOURCE_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.TAGS_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.TIMESTAMP_KEY;
@@ -231,6 +235,7 @@ public class KnowledgeBundleLoader {
                 .resource(getFrontMatterValue(data, RESOURCE_KEY))
                 .tags(Objects.requireNonNullElse(data.get(TAGS_KEY), List.of()))
                 .timestamp(getFrontMatterValue(data, TIMESTAMP_KEY))
+                .generated(loadGenerated(content))
                 .extraFields(Objects.requireNonNullElse(getFrontMatterExtraFields(data), new HashMap<>()))
                 .build());
     }
@@ -288,6 +293,116 @@ public class KnowledgeBundleLoader {
         }
 
         return data;
+    }
+
+    /**
+     * Loads the generated metadata from frontmatter.
+     *
+     * @param content Markdown content
+     * @return generated metadata, or null
+     */
+    private static Generated loadGenerated(final String content) {
+        FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
+        if (frontmatterBlock == null) {
+            return null;
+        }
+
+        String frontmatterContent = content.substring(
+                frontmatterBlock.contentStart(),
+                frontmatterBlock.closingDelimiterStart());
+        Map<String, String> generatedValues = generatedValues(frontmatterContent);
+        if (generatedValues.isEmpty()) {
+            return null;
+        }
+
+        return Generated.builder()
+                .by(generatedValues.get(GENERATED_BY_KEY))
+                .at(generatedValues.get(GENERATED_AT_KEY))
+                .build();
+    }
+
+    /**
+     * Extracts generated metadata values from a frontmatter block.
+     *
+     * @param frontmatterContent frontmatter content
+     * @return generated metadata values
+     */
+    private static Map<String, String> generatedValues(final String frontmatterContent) {
+        Map<String, String> generatedValues = new LinkedHashMap<>();
+        boolean readingGeneratedBlock = false;
+        for (String line : frontmatterContent.split("\\R")) {
+            if (StringUtils.isBlank(line)) {
+                continue;
+            }
+
+            String trimmedLine = StringUtils.trim(line);
+            if (readingGeneratedBlock && !Character.isWhitespace(line.charAt(0))) {
+                return generatedValues;
+            }
+
+            if (readingGeneratedBlock) {
+                appendGeneratedValue(generatedValues, trimmedLine);
+                continue;
+            }
+
+            int separatorIndex = line.indexOf(':');
+            if (separatorIndex < 0) {
+                continue;
+            }
+
+            String key = StringUtils.trim(line.substring(0, separatorIndex));
+            if (!GENERATED_KEY.equals(key)) {
+                continue;
+            }
+
+            String value = StringUtils.trim(line.substring(separatorIndex + 1));
+            if (StringUtils.isBlank(value)) {
+                readingGeneratedBlock = true;
+            } else {
+                generatedValues.putAll(parseInlineMap(value));
+            }
+        }
+
+        return generatedValues;
+    }
+
+    /**
+     * Appends a generated metadata value.
+     *
+     * @param generatedValues generated metadata values
+     * @param line            frontmatter line
+     */
+    private static void appendGeneratedValue(final Map<String, String> generatedValues, final String line) {
+        int separatorIndex = line.indexOf(':');
+        if (separatorIndex < 0) {
+            return;
+        }
+
+        String key = StringUtils.trim(line.substring(0, separatorIndex));
+        String value = StringUtils.trim(line.substring(separatorIndex + 1));
+        if (GENERATED_BY_KEY.equals(key) || GENERATED_AT_KEY.equals(key)) {
+            generatedValues.put(key, cleanFrontMatterValue(value));
+        }
+    }
+
+    /**
+     * Parses an inline YAML map.
+     *
+     * @param value inline map value
+     * @return map values
+     */
+    private static Map<String, String> parseInlineMap(final String value) {
+        String trimmedValue = StringUtils.trim(value);
+        if (!trimmedValue.startsWith("{") || !trimmedValue.endsWith("}")) {
+            return Map.of();
+        }
+
+        Map<String, String> values = new LinkedHashMap<>();
+        String mapContent = trimmedValue.substring(1, trimmedValue.length() - 1);
+        for (String entry : mapContent.split(",")) {
+            appendGeneratedValue(values, StringUtils.trim(entry));
+        }
+        return values;
     }
 
     /**

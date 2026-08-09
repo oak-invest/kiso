@@ -1,7 +1,9 @@
 {
   "footer": {
     "generatedWith": "生成ツール",
-    "lastUpdate": "最終更新"
+    "lastUpdate": "最終更新",
+    "generatedAt": "生成日時",
+    "generatedBy": "生成者"
   },
   "metadata": {
     "resource": "リソース",

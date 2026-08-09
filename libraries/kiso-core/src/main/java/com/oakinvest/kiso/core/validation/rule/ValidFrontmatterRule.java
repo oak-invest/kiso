@@ -64,6 +64,18 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                             .path(markdownFile.relativePath())
                             .build());
                 }
+
+                // If there is a frontmatter and generated.at is not ISO 8601 datetime format =========================
+                if (frontmatter.generated() != null
+                        && StringUtils.isNotBlank(frontmatter.generated().at())
+                        && frontmatter.generated().parsedAt() == null) {
+                    return List.of(ValidationIssue.builder()
+                            .severity(ERROR)
+                            .code(INVALID_TIMESTAMP)
+                            .message("File " + markdownFile.relativePath() + " has invalid 'generated.at' in frontmatter. It must be in ISO 8601 datetime format")
+                            .path(markdownFile.relativePath())
+                            .build());
+                }
             }
 
         } else {

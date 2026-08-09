@@ -29,10 +29,9 @@ class SitemapXmlGeneratorTest extends BaseTest {
                         <?xml version="1.0" encoding="UTF-8"?>
                         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
                         """.stripIndent())
-                // TODO Uncomment this when the generated.at field is correctly managed.
-//                .contains("<lastmod>2026-05-28T22:49:59Z</lastmod>")
-//                .contains("<lastmod>2026-05-28T22:51:46Z</lastmod>")
-//                .contains("<lastmod>2026-05-28T22:53:05Z</lastmod>")
+                .contains("<lastmod>2026-07-10T21:14:56Z</lastmod>")
+                .contains("<lastmod>2026-07-10T21:16:43Z</lastmod>")
+                .contains("<lastmod>2026-07-10T21:15:20Z</lastmod>")
                 .endsWith("</urlset>\n");
         assertThat(document.getDocumentElement().getNodeName()).isEqualTo("urlset");
         assertThat(document.getElementsByTagName("url").getLength()).isEqualTo(14);

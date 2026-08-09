@@ -160,6 +160,9 @@ public record MarkdownFile(
      * @return timestamp
      */
     public @Nullable OffsetDateTime timestamp() {
+        if (frontmatter.generated() != null && frontmatter.generated().parsedAt() != null) {
+            return frontmatter.generated().parsedAt();
+        }
         return frontmatter.parsedTimestamp();
     }
 

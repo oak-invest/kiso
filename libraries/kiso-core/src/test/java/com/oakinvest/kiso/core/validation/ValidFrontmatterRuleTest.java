@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.validation;
 
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.Generated;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
@@ -82,6 +83,29 @@ class ValidFrontmatterRuleTest extends BaseTest {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_TIMESTAMP);
             assertThat(issue.message()).isEqualTo("File concept-with-invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format");
+            assertThat(issue.path()).isEqualTo(markdownFilePath);
+        });
+    }
+
+    @Test
+    @DisplayName("Generated at is present but doesn't respect ISO 8601 datetime format")
+    void invalidGeneratedAt() {
+        // We create a concept file with frontmatter but with an invalid generated.at ==================================
+        var markdownFilePath = Path.of("concept-with-invalid-generated-at.md");
+        var frontmatter = Frontmatter.builder()
+                .type("Concept")
+                .generated(Generated.builder()
+                        .by("reference_agent/gemini-2.5-pro")
+                        .at("20-06-2026T22:53:05Z")
+                        .build())
+                .build();
+        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+
+        // Run validation to check an invalid generated.at =============================================================
+        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(INVALID_TIMESTAMP);
+            assertThat(issue.message()).isEqualTo("File concept-with-invalid-generated-at.md has invalid 'generated.at' in frontmatter. It must be in ISO 8601 datetime format");
             assertThat(issue.path()).isEqualTo(markdownFilePath);
         });
     }

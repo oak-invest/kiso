@@ -18,7 +18,8 @@ import java.util.Objects;
  * @param description A single sentence summarizing the concept. Used by index.md generators, search snippets, and previews.
  * @param resource    A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources.
  * @param tags        A YAML list of short strings for cross-cutting categorization.
- * @param timestamp   ISO 8601 datetime of the last meaningful change.
+ * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2.
+ * @param generated   records how the current content was produced
  * @param extraFields producer-defined fields not modeled by OKF.
  */
 @Builder
@@ -30,6 +31,7 @@ public record Frontmatter(
         @Nullable String resource,
         List<String> tags,
         @Nullable String timestamp,
+        @Nullable Generated generated,
         Map<String, Object> extraFields
 ) {
 
@@ -51,6 +53,32 @@ public record Frontmatter(
                 .tags(List.of())
                 .extraFields(Map.of())
                 .build();
+    }
+
+    /**
+     * Returns the actor that generated the content.
+     *
+     * @return actor that generated the content, or null if not available
+     */
+    @Nullable
+    public String generatedBy() {
+        if (generated == null) {
+            return null;
+        }
+        return generated.by();
+    }
+
+    /**
+     * Returns the ISO 8601 datetime of the generation.
+     *
+     * @return ISO 8601 datetime of the generation or null if not available
+     */
+    @Nullable
+    public OffsetDateTime generatedAt() {
+        if (generated == null) {
+            return null;
+        }
+        return generated.parsedAt();
     }
 
     /**

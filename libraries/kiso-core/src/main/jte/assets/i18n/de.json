@@ -1,7 +1,9 @@
 {
   "footer": {
     "generatedWith": "Erstellt mit",
-    "lastUpdate": "Letzte Aktualisierung"
+    "lastUpdate": "Letzte Aktualisierung",
+    "generatedAt": "Erstellt am",
+    "generatedBy": "Erstellt von"
   },
   "metadata": {
     "resource": "Ressource",

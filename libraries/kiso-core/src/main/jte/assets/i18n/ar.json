@@ -1,7 +1,9 @@
 {
   "footer": {
     "generatedWith": "تم إنشاؤه باستخدام",
-    "lastUpdate": "آخر تحديث"
+    "lastUpdate": "آخر تحديث",
+    "generatedAt": "تم إنشاؤه في",
+    "generatedBy": "تم إنشاؤه بواسطة"
   },
   "metadata": {
     "resource": "المورد",

@@ -273,6 +273,14 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .isEqualTo("https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset");
         assertThat(citationLink.text())
                 .isEqualTo("https://developers.google.com/analytics/bigquery/web-ecommerce-demo-dataset");
+
+        // Footer v0.1 should be here.
+        var timestampFooter = page.selectFirst("footer:has([data-i18n='footer.lastUpdate'])");
+        assertThat(timestampFooter).isNotNull();
+        assertThat(timestampFooter.text()).isEqualTo("Last update: May 28, 2026 at 10:49 PM UTC");
+
+        // Footer v0.2 should not be here.
+        assertThat(page.selectFirst("footer:has([data-i18n='footer.generatedBy'])")).isNull();
     }
 
     @Test

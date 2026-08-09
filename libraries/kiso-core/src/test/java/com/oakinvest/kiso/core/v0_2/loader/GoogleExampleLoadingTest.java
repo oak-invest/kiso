@@ -3,12 +3,17 @@ package com.oakinvest.kiso.core.v0_2.loader;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.okf.markdown.Generated;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
@@ -95,6 +100,12 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns("GA4 Obfuscated Sample Ecommerce Dataset", Frontmatter::title)
                                     .returns("Obfuscated Google Analytics 4 dataset emulating a web ecommerce implementation of the Google Merchandise Store.", Frontmatter::description)
                                     .returns(List.of("ga4", "ecommerce", "obfuscated", "analytics", "sample-data"), Frontmatter::tags);
+                            assertThat(ga4.frontmatter().generated())
+                                    .isNotNull()
+                                    .returns("reference_agent/gemini-3.5-flash", Generated::by)
+                                    .returns("2026-07-10T21:14:56+00:00", Generated::at)
+                                    .returns(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"), Generated::parsedAt);
+                            assertThat(ga4.timestamp()).isEqualTo(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"));
 
                             // Content.
                             assertThat(ga4.body()).doesNotContain("type: BigQuery Dataset");
@@ -177,6 +188,28 @@ class GoogleExampleLoadingTest extends BaseTest {
 
         // Testing root bundle =========================================================================================
         assertThat(bundle.rootBundle().childBundles()).hasSize(3);
+    }
+
+    @Test
+    @DisplayName("Loading inline generated frontmatter")
+    void inlineGeneratedFrontmatter(@TempDir Path temporaryDirectory) throws IOException {
+        Files.writeString(temporaryDirectory.resolve("concept.md"), """
+                ---
+                type: Concept
+                generated: { by: reference_agent/gemini-2.5-pro, at: 2026-06-20T22:53:05Z }
+                ---
+                # Concept
+                """);
+
+        var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
+        var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
+
+        assertThat(markdownFile.frontmatter().generated())
+                .isNotNull()
+                .returns("reference_agent/gemini-2.5-pro", Generated::by)
+                .returns("2026-06-20T22:53:05Z", Generated::at)
+                .returns(OffsetDateTime.parse("2026-06-20T22:53:05Z"), Generated::parsedAt);
+        assertThat(markdownFile.timestamp()).isEqualTo(OffsetDateTime.parse("2026-06-20T22:53:05Z"));
     }
 
 }
