@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.model.okf.markdown;
+package com.oakinvest.kiso.core.util;
 
 import lombok.Getter;
 import org.apache.commons.lang3.Strings;

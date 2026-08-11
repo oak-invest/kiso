@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 
 /**
  * Generator for the sitemap.xml file.

@@ -1,5 +1,6 @@
-package com.oakinvest.kiso.core.model.okf.markdown;
+package com.oakinvest.kiso.core.model.okf.markdown.trust;
 
+import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
@@ -11,12 +12,12 @@ import java.time.format.DateTimeParseException;
  * Generated records how the current content was produced.
  *
  * @param by actor that generated the content
- * @param at ISO 8601 datetime of the generation
+ * @param at ISO 8601 datetime marking the content's last meaningful change
  */
 @Builder
 @SuppressWarnings("unused")
 public record Generated(
-        @Nullable String by,
+        Actor by,
         @Nullable String at
 ) {
 

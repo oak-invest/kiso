@@ -24,7 +24,7 @@ sources:
 
 The `ga4_obfuscated_sample_ecommerce` dataset is an obfuscated, publicly accessible export of Google Analytics 4 (GA4) event data representing a real-world web ecommerce implementation (specifically, from the Google Merchandise Store)[^ga4-demo-docs]. It spans three months of historical activity from November 1, 2020, to January 1, 2021[^ga4-demo-docs], and is designed to allow developers, analysts, and students to experiment with high-volume, granular GA4 event data in BigQuery without provisioning a proprietary dataset.
 
-This dataset contains a single sharded table family, [events_](../tables/events_.md), which holds daily export tables containing individual session interactions, user properties, and ecommerce transaction details. Analysts can leverage this dataset to learn how to query GA4 nested schemas, build user acquisition models, reconstruct user journeys, and analyze purchase funnels.
+`This dataset contains a single sharded table family`, [events_](../tables/events_.md), which holds daily export tables containing individual session interactions, user properties, and ecommerce transaction details. Analysts can leverage this dataset to learn how to query GA4 nested schemas, build user acquisition models, reconstruct user journeys, and analyze purchase funnels.
 
 # Schema
 

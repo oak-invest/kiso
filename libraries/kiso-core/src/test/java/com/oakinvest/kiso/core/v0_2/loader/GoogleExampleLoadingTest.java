@@ -2,9 +2,10 @@ package com.oakinvest.kiso.core.v0_2.loader;
 
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
+import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.Generated;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +17,9 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.ActorType.AGENT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("vO.2 - Loading google example bundle")
@@ -30,7 +32,7 @@ class GoogleExampleLoadingTest extends BaseTest {
         var resourcePath = getResourcePath(KB_GOOGLE_V_0_2);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
-        // Testing isRoot bundle =======================================================================================
+        // Testing root bundle =========================================================================================
         assertThat(bundle.rootBundle().childBundles()).hasSize(3);
         assertThat(bundle.rootBundle().markdownFiles())
                 .hasSize(1)
@@ -102,9 +104,12 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns(List.of("ga4", "ecommerce", "obfuscated", "analytics", "sample-data"), Frontmatter::tags);
                             assertThat(ga4.frontmatter().generated())
                                     .isNotNull()
-                                    .returns("reference_agent/gemini-3.5-flash", Generated::by)
+                                    .returns(Actor.of("reference_agent/gemini-3.5-flash"), Generated::by)
                                     .returns("2026-07-10T21:14:56+00:00", Generated::at)
                                     .returns(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"), Generated::parsedAt);
+                            assertThat(ga4.frontmatter().generated().by().isAgent()).isTrue();
+                            assertThat(ga4.frontmatter().generated().by().type()).isEqualTo(AGENT);
+                            assertThat(ga4.frontmatter().sources().getFirst().hasAuthor()).isFalse();
                             assertThat(ga4.timestamp()).isEqualTo(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"));
 
                             // Content.
@@ -206,7 +211,7 @@ class GoogleExampleLoadingTest extends BaseTest {
 
         assertThat(markdownFile.frontmatter().generated())
                 .isNotNull()
-                .returns("reference_agent/gemini-2.5-pro", Generated::by)
+                .returns(Actor.of("reference_agent/gemini-2.5-pro"), Generated::by)
                 .returns("2026-06-20T22:53:05Z", Generated::at)
                 .returns(OffsetDateTime.parse("2026-06-20T22:53:05Z"), Generated::parsedAt);
         assertThat(markdownFile.timestamp()).isEqualTo(OffsetDateTime.parse("2026-06-20T22:53:05Z"));

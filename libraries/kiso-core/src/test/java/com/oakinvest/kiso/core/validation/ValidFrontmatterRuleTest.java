@@ -1,7 +1,8 @@
 package com.oakinvest.kiso.core.validation;
 
+import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.Generated;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
@@ -9,9 +10,9 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
@@ -95,7 +96,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var frontmatter = Frontmatter.builder()
                 .type("Concept")
                 .generated(Generated.builder()
-                        .by("reference_agent/gemini-2.5-pro")
+                        .by(Actor.of("reference_agent/gemini-2.5-pro"))
                         .at("20-06-2026T22:53:05Z")
                         .build())
                 .build();

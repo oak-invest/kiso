@@ -3,8 +3,8 @@ package com.oakinvest.kiso.core.v0_1.renderer;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTreePage;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.util.MarkdownFileKind;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

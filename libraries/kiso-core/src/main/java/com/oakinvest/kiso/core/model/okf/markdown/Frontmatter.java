@@ -1,9 +1,16 @@
 package com.oakinvest.kiso.core.model.okf.markdown;
 
+import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
+import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.Verification;
+import com.oakinvest.kiso.core.util.LifecycleStatus;
+import com.oakinvest.kiso.core.util.TrustLevel;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 
+import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -14,13 +21,18 @@ import java.util.Objects;
  * Frontmatter associated with a Markdown file.
  *
  * @param type        A short string identifying the kind of concept. Consumers use this for routing, filtering, and presentation. Example values: BigQuery Table, BigQuery Dataset, API Endpoint, Metric, Playbook, Reference
- * @param title       Human-readable display name. If omitted, consumers MAY derive a title from the filename.
- * @param description A single sentence summarizing the concept. Used by index.md generators, search snippets, and previews.
- * @param resource    A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources.
- * @param tags        A YAML list of short strings for cross-cutting categorization.
- * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2.
+ * @param title       Human-readable display name. If omitted, consumers MAY derive a title from the filename
+ * @param description A single sentence summarizing the concept. Used by index.md generators, search snippets, and previews
+ * @param resource    A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
+ * @param tags        A YAML list of short strings for cross-cutting categorization
+ * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2
+ * @param sources     materials the concept derives from
+ * @param usageWindow date range that frames source usage counts
  * @param generated   records how the current content was produced
- * @param extraFields producer-defined fields not modeled by OKF.
+ * @param verified    A list of verification events
+ * @param status      lifecycle status value.
+ * @param staleAfter  absolute date after which content is stale
+ * @param extraFields producer-defined fields not modeled by OKF
  */
 @Builder
 @SuppressWarnings("unused")
@@ -31,7 +43,12 @@ public record Frontmatter(
         @Nullable String resource,
         List<String> tags,
         @Nullable String timestamp,
+        List<Source> sources,
+        @Nullable UsageWindow usageWindow,
         @Nullable Generated generated,
+        List<Verification> verified,
+        LifecycleStatus status,
+        @Nullable String staleAfter,
         Map<String, Object> extraFields
 ) {
 
@@ -40,6 +57,9 @@ public record Frontmatter(
      */
     public Frontmatter {
         tags = Objects.requireNonNullElse(tags, List.of());
+        sources = Objects.requireNonNullElse(sources, List.of());
+        verified = Objects.requireNonNullElse(verified, List.of());
+        status = Objects.requireNonNullElse(status, LifecycleStatus.STABLE);
         extraFields = Objects.requireNonNullElse(extraFields, Map.of());
     }
 
@@ -51,6 +71,8 @@ public record Frontmatter(
     public static Frontmatter empty() {
         return Frontmatter.builder()
                 .tags(List.of())
+                .sources(List.of())
+                .verified(List.of())
                 .extraFields(Map.of())
                 .build();
     }
@@ -60,12 +82,14 @@ public record Frontmatter(
      *
      * @return actor that generated the content, or null if not available
      */
-    @Nullable
-    public String generatedBy() {
+    public @Nullable String generatedBy() {
         if (generated == null) {
             return null;
         }
-        return generated.by();
+        if (generated.by() == null) {
+            return null;
+        }
+        return generated.by().identifier();
     }
 
     /**
@@ -73,8 +97,7 @@ public record Frontmatter(
      *
      * @return ISO 8601 datetime of the generation or null if not available
      */
-    @Nullable
-    public OffsetDateTime generatedAt() {
+    public @Nullable OffsetDateTime generatedAt() {
         if (generated == null) {
             return null;
         }
@@ -96,6 +119,51 @@ public record Frontmatter(
         } catch (DateTimeParseException exception) {
             return null;
         }
+    }
+
+    /**
+     * Returns parsed stale date.
+     *
+     * @return stale date as LocalDate or null if the value is blank or not parsable
+     */
+    public @Nullable LocalDate parsedStaleAfter() {
+        if (StringUtils.isBlank(staleAfter)) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(staleAfter);
+        } catch (DateTimeParseException exception) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns lifecycle status.
+     *
+     * @return lifecycle status, stable when missing or unknown
+     */
+    public LifecycleStatus lifecycleStatus() {
+        return status;
+    }
+
+    /**
+     * Returns trust tier inferred from verification events.
+     *
+     * @return inferred trust tier
+     */
+    public TrustLevel trustTier() {
+        if (verified.isEmpty()) {
+            return TrustLevel.UNVERIFIED;
+        }
+        boolean humanReviewed = verified.stream()
+                .map(Verification::by)
+                .filter(Objects::nonNull)
+                .anyMatch(Actor::isHuman);
+        if (humanReviewed) {
+            return TrustLevel.HUMAN_REVIEWED;
+        }
+        return TrustLevel.MACHINE_CONFIRMED;
     }
 
 }

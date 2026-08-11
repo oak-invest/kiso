@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.model.okf.markdown;
 
+import com.oakinvest.kiso.core.util.MarkdownFileKind;
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,9 +11,9 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.HTML_EXTENSION;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 
 /**
@@ -73,7 +74,7 @@ public record MarkdownFile(
 
     /**
      * Returns the bundle path.
-     * For "index.md" in root bundle:
+     * For "index.md" in the root bundle:
      * For "user_count.md" in references/metrics/user_count.md: references/metrics
      *
      * @return bundle path, or an empty string for a root Markdown file
@@ -86,7 +87,7 @@ public record MarkdownFile(
 
     /**
      * Returns the bundle name.
-     * For "index.md" in root bundle: index
+     * For "index.md" in the root bundle: index
      * For "user_count.md" in references/metrics/user_count.md: metrics
      *
      * @return bundle name, or an empty string for a root Markdown file
@@ -102,7 +103,7 @@ public record MarkdownFile(
     /**
      * Returns the concept id.
      * The path of the concept's file within the bundle, with the .md suffix removed.
-     * For "index.md" in root bundle: returns null
+     * For "index.md" in the root bundle: returns null
      * For "events.md" in tables/events_.md: returns "tables/events_"
      *
      * @return concept id
@@ -118,7 +119,7 @@ public record MarkdownFile(
 
     /**
      * Returns the page title.
-     * For "index.md" in root bundle: index.md
+     * For "index.md" in the root bundle: index.md
      * For "events.md" in tables/events_.md: Events table (Google Analytics BigQuery Export)
      *
      * @return page title
@@ -168,7 +169,7 @@ public record MarkdownFile(
 
     /**
      * Returns the HTML file name corresponding to the Markdown file.
-     * For "index.md" in root bundle: index.html
+     * For "index.md" in the root bundle: index.html
      * For "events.md" in tables/events_.md: events.html
      *
      * @return HTML file name
@@ -179,7 +180,7 @@ public record MarkdownFile(
 
     /**
      * Returns the HTML path corresponding to the Markdown file (with the file name).
-     * For "index.md" in root bundle: index.html
+     * For "index.md" in the root bundle: index.html
      * For "events.md" in tables/events_.md: tables/events.html
      *
      * @return HTML file path

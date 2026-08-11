@@ -11,8 +11,8 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("vO.1 - Loading google example bundle")
@@ -25,7 +25,7 @@ class GoogleExampleLoadingTest extends BaseTest {
         var resourcePath = getResourcePath(KB_GOOGLE_V_0_1);
         var bundle = KnowledgeBundleLoader.load(resourcePath);
 
-        // Testing isRoot bundle =======================================================================================
+        // Testing root bundle =========================================================================================
         assertThat(bundle.rootBundle().childBundles()).hasSize(3);
         assertThat(bundle.rootBundle().markdownFiles())
                 .hasSize(1)

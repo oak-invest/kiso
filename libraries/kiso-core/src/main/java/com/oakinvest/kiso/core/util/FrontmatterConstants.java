@@ -39,4 +39,40 @@ public class FrontmatterConstants {
     /** Frontmatter key for generated at metadata. */
     public static final String GENERATED_AT_KEY = "at";
 
+    /** Frontmatter key for source metadata. */
+    public static final String SOURCES_KEY = "sources";
+
+    /** Frontmatter key for source id metadata. */
+    public static final String SOURCE_ID_KEY = "id";
+
+    /** Frontmatter key for source title metadata. */
+    public static final String SOURCE_TITLE_KEY = "title";
+
+    /** Frontmatter key for source author metadata. */
+    public static final String SOURCE_AUTHOR_KEY = "author";
+
+    /** Frontmatter key for source usage count metadata. */
+    public static final String SOURCE_USAGE_COUNT_KEY = "usage_count";
+
+    /** Frontmatter key for source last modified metadata. */
+    public static final String SOURCE_LAST_MODIFIED_KEY = "last_modified";
+
+    /** Frontmatter key for usage window metadata. */
+    public static final String USAGE_WINDOW_KEY = "usage_window";
+
+    /** Frontmatter key for usage window start metadata. */
+    public static final String USAGE_WINDOW_FROM_KEY = "from";
+
+    /** Frontmatter key for usage window end metadata. */
+    public static final String USAGE_WINDOW_TO_KEY = "to";
+
+    /** Frontmatter key for verified metadata. */
+    public static final String VERIFIED_KEY = "verified";
+
+    /** Frontmatter key for status metadata. */
+    public static final String STATUS_KEY = "status";
+
+    /** Frontmatter key for stale after metadata. */
+    public static final String STALE_AFTER_KEY = "stale_after";
+
 }

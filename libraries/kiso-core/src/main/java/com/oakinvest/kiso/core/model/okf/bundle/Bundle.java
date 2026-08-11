@@ -10,11 +10,11 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 
 /**
- * A bundle is a directory tree of markdown files.
+ * A self-contained, hierarchical collection of knowledge documents. The unit of distribution.
  * <p>
  * Example for the root bundle:
  * <pre>{@code

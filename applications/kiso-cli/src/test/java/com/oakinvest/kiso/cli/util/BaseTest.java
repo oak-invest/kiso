@@ -20,6 +20,9 @@ public class BaseTest {
     /** Google example knowledge base with configuration v0.2. */
     public static final String KB_GOOGLE_V_0_2_WITH_CONFIGURATION = "kb-google-example-v0.2-with-configuration";
 
+    /** Acme example knowledge base v0.2. */
+    public static final String KB_ACME_V_0_2 = "kb-acme-example-v0.2";
+
     /**
      * Retrieves absolutePath from a resource fileName.
      *

@@ -18,9 +18,9 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.OKFConstants.DEFAULT_TITLE;
 
 /**
