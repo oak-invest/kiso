@@ -75,4 +75,31 @@ public class FrontmatterConstants {
     /** Frontmatter key for stale after metadata. */
     public static final String STALE_AFTER_KEY = "stale_after";
 
+    /** Frontmatter key for computation runtime metadata. */
+    public static final String RUNTIME_KEY = "runtime";
+
+    /** Frontmatter key for computation parameters metadata. */
+    public static final String PARAMETERS_KEY = "parameters";
+
+    /** Frontmatter key for computation parameter name metadata. */
+    public static final String PARAMETER_NAME_KEY = "name";
+
+    /** Frontmatter key for computation parameter type metadata. */
+    public static final String PARAMETER_TYPE_KEY = "type";
+
+    /** Frontmatter key for computation parameter required metadata. */
+    public static final String PARAMETER_REQUIRED_KEY = "required";
+
+    /** Frontmatter key for computation file metadata. */
+    public static final String COMPUTATION_KEY = "computation";
+
+    /** Frontmatter key for computation executor metadata. */
+    public static final String EXECUTOR_KEY = "executor";
+
+    /** Frontmatter key for computation executor receipt metadata. */
+    public static final String EXECUTOR_RECEIPT_KEY = "receipt";
+
+    /** Frontmatter key for computation attester metadata. */
+    public static final String ATTESTER_KEY = "attester";
+
 }

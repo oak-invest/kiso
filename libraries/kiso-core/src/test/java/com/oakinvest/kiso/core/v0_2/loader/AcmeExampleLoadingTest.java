@@ -4,6 +4,9 @@ import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
@@ -19,6 +22,7 @@ import java.util.List;
 
 import static com.oakinvest.kiso.core.util.ActorType.AGENT;
 import static com.oakinvest.kiso.core.util.ActorType.HUMAN;
+import static com.oakinvest.kiso.core.util.ConceptTypeConstants.ATTESTED_COMPUTATION;
 import static com.oakinvest.kiso.core.util.LifecycleStatus.STABLE;
 import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.util.TrustLevel.HUMAN_REVIEWED;
@@ -57,7 +61,7 @@ public class AcmeExampleLoadingTest extends BaseTest {
 
         // Frontmatter.
         assertThat(revenue.frontmatter()).isNotNull()
-                .returns("Attested Computation", Frontmatter::type)
+                .returns(ATTESTED_COMPUTATION, Frontmatter::type)
                 .returns("Revenue for a fiscal year", Frontmatter::title)
                 .returns("Sanctioned SQL that produces the recognized-revenue figure for a given fiscal year, per Acme's FY2026 Revenue Recognition Policy.", Frontmatter::description)
                 .returns(List.of("finance", "revenue", "attested"), Frontmatter::tags)
@@ -85,6 +89,7 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns(Actor.of("human:jsmith@acme"), Verification::by)
                 .returns("2026-07-01T09:00:00Z", Verification::at)
                 .returns(OffsetDateTime.parse("2026-07-01T09:00:00Z"), Verification::parsedAt);
+        assertThat(revenue.frontmatter().verified().getFirst().by()).isNotNull();
         assertThat(revenue.frontmatter().verified().getFirst().by().isHuman()).isTrue();
         assertThat(revenue.frontmatter().verified().getFirst().by().type()).isEqualTo(HUMAN);
 
@@ -120,6 +125,36 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns(LocalDate.parse("2026-04-01"), UsageWindow::parsedFrom)
                 .returns("2026-06-30", UsageWindow::to)
                 .returns(LocalDate.parse("2026-06-30"), UsageWindow::parsedTo);
+    }
+
+    @Test
+    @DisplayName("Loading attested computation fields from acme revenue example")
+    void acmeRevenueAttestedComputationFieldsLoading() {
+        // What we are testing =========================================================================================
+        var resourcePath = getResourcePath(KB_ACME_V_0_2);
+        var bundle = KnowledgeBundleLoader.load(resourcePath);
+
+        var revenue = bundle.markdownFiles()
+                .filter(markdownFile -> "computations/revenue-ytd".equalsIgnoreCase(markdownFile.conceptId()))
+                .findAny().orElseThrow(() -> new IllegalStateException("computations/revenue-ytd file not found"));
+
+        assertThat(revenue.frontmatter()).isNotNull()
+                .returns(ATTESTED_COMPUTATION, Frontmatter::type)
+                .returns("bigquery", Frontmatter::runtime)
+                .returns(null, Frontmatter::computation);
+
+        assertThat(revenue.frontmatter().parameters())
+                .singleElement()
+                .returns("year", ComputationParameter::name)
+                .returns("integer", ComputationParameter::type)
+                .returns(true, ComputationParameter::required);
+
+        assertThat(revenue.frontmatter().executor()).isNotNull()
+                .returns("skills/run-on-bq.md", ComputationExecutor::resource)
+                .returns(List.of("job_id", "executed_sql", "result"), ComputationExecutor::receipt);
+
+        assertThat(revenue.frontmatter().attester()).isNotNull()
+                .returns("attesters/sql_equality.py", ComputationAttester::resource);
     }
 
 }

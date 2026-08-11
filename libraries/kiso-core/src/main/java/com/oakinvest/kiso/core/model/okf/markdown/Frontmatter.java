@@ -2,6 +2,9 @@ package com.oakinvest.kiso.core.model.okf.markdown;
 
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.Verification;
 import com.oakinvest.kiso.core.util.LifecycleStatus;
@@ -32,6 +35,11 @@ import java.util.Objects;
  * @param verified    A list of verification events
  * @param status      lifecycle status value.
  * @param staleAfter  absolute date after which content is stale
+ * @param runtime     computation runtime for Attested Computation concepts
+ * @param parameters  typed, named holes the agent may fill for an Attested Computation
+ * @param computation path to a file holding the computation
+ * @param executor    run instructions for an Attested Computation
+ * @param attester    deterministic check for an Attested Computation
  * @param extraFields producer-defined fields not modeled by OKF
  */
 @Builder
@@ -49,6 +57,11 @@ public record Frontmatter(
         List<Verification> verified,
         LifecycleStatus status,
         @Nullable String staleAfter,
+        @Nullable String runtime,
+        List<ComputationParameter> parameters,
+        @Nullable String computation,
+        @Nullable ComputationExecutor executor,
+        @Nullable ComputationAttester attester,
         Map<String, Object> extraFields
 ) {
 
@@ -60,6 +73,7 @@ public record Frontmatter(
         sources = Objects.requireNonNullElse(sources, List.of());
         verified = Objects.requireNonNullElse(verified, List.of());
         status = Objects.requireNonNullElse(status, LifecycleStatus.STABLE);
+        parameters = Objects.requireNonNullElse(parameters, List.of());
         extraFields = Objects.requireNonNullElse(extraFields, Map.of());
     }
 
@@ -73,6 +87,7 @@ public record Frontmatter(
                 .tags(List.of())
                 .sources(List.of())
                 .verified(List.of())
+                .parameters(List.of())
                 .extraFields(Map.of())
                 .build();
     }

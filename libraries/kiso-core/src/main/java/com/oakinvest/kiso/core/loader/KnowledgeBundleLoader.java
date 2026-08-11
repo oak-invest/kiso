@@ -12,6 +12,9 @@ import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
@@ -39,14 +42,23 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.ATTESTER_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.COMPUTATION_KEY;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.DESCRIPTION_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.EXECUTOR_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.EXECUTOR_RECEIPT_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.FRONTMATTER_DELIMITER;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.GENERATED_AT_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.GENERATED_BY_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.GENERATED_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.PARAMETERS_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.PARAMETER_NAME_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.PARAMETER_REQUIRED_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.PARAMETER_TYPE_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.RESOURCE_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.RUNTIME_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.SOURCES_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.SOURCE_AUTHOR_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.SOURCE_ID_KEY;
@@ -276,6 +288,11 @@ public class KnowledgeBundleLoader {
                 .verified(verifications(frontmatter.get(VERIFIED_KEY)))
                 .status(LifecycleStatus.from(textValue(frontmatter, STATUS_KEY)))
                 .staleAfter(textValue(frontmatter, STALE_AFTER_KEY))
+                .runtime(textValue(frontmatter, RUNTIME_KEY))
+                .parameters(parameters(frontmatter.get(PARAMETERS_KEY)))
+                .computation(textValue(frontmatter, COMPUTATION_KEY))
+                .executor(executor(frontmatter.get(EXECUTOR_KEY)))
+                .attester(attester(frontmatter.get(ATTESTER_KEY)))
                 .extraFields(extraFields(frontmatter))
                 .build());
     }
@@ -430,6 +447,69 @@ public class KnowledgeBundleLoader {
     }
 
     /**
+     * Returns computation parameters from frontmatter.
+     *
+     * @param parameters parameters node
+     * @return computation parameters
+     */
+    private static List<ComputationParameter> parameters(final JsonNode parameters) {
+        if (parameters == null || !parameters.isArray()) {
+            return List.of();
+        }
+
+        final List<ComputationParameter> values = new ArrayList<>();
+        parameters.forEach(parameter -> values.add(parameter(parameter)));
+        return values;
+    }
+
+    /**
+     * Creates computation parameter metadata.
+     *
+     * @param parameter parameter node
+     * @return computation parameter metadata
+     */
+    private static ComputationParameter parameter(final JsonNode parameter) {
+        return ComputationParameter.builder()
+                .name(textValue(parameter, PARAMETER_NAME_KEY))
+                .type(textValue(parameter, PARAMETER_TYPE_KEY))
+                .required(booleanValue(parameter, PARAMETER_REQUIRED_KEY))
+                .build();
+    }
+
+    /**
+     * Returns executor metadata from frontmatter.
+     *
+     * @param executor executor node
+     * @return executor metadata, or null
+     */
+    private static ComputationExecutor executor(final JsonNode executor) {
+        if (executor == null || !executor.isObject()) {
+            return null;
+        }
+
+        return ComputationExecutor.builder()
+                .resource(textValue(executor, RESOURCE_KEY))
+                .receipt(textList(executor.get(EXECUTOR_RECEIPT_KEY)))
+                .build();
+    }
+
+    /**
+     * Returns attester metadata from frontmatter.
+     *
+     * @param attester attester node
+     * @return attester metadata, or null
+     */
+    private static ComputationAttester attester(final JsonNode attester) {
+        if (attester == null || !attester.isObject()) {
+            return null;
+        }
+
+        return ComputationAttester.builder()
+                .resource(textValue(attester, RESOURCE_KEY))
+                .build();
+    }
+
+    /**
      * Returns a text value.
      *
      * @param node      node
@@ -488,6 +568,28 @@ public class KnowledgeBundleLoader {
         } catch (NumberFormatException exception) {
             return null;
         }
+    }
+
+    /**
+     * Returns a boolean value.
+     *
+     * @param node      node
+     * @param fieldName field name
+     * @return boolean value, or null
+     */
+    private static Boolean booleanValue(final JsonNode node, final String fieldName) {
+        if (node == null || node.get(fieldName) == null || node.get(fieldName).isNull()) {
+            return null;
+        }
+
+        final JsonNode value = node.get(fieldName);
+        if (value.isBoolean()) {
+            return value.asBoolean();
+        }
+        if (StringUtils.isBlank(value.asText())) {
+            return null;
+        }
+        return Boolean.parseBoolean(value.asText());
     }
 
     /**
