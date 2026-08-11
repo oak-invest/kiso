@@ -167,7 +167,9 @@ pageContent = @`
                         <tbody>
                         @for(var source : page.sources())
                             <tr>
-                                <td class="font-mono">${source.id()}</td>
+                                <td class="font-mono">
+                                    <div id="${source.id()}">${source.id()}</div>
+                                </td>
                                 <td>
                                     @if(source.resource() != null)
                                         <a class="link link-hover break-words font-mono" href="${source.resource()}">

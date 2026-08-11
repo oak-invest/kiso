@@ -271,6 +271,14 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(citationLink.text())
                 .isEqualTo("Google Analytics 4 eCommerce Demo Dataset documentation");
 
+        // Links to source.
+        Element anchorLink = page.selectFirst("a[href='#ga4-demo-docs']");
+        assertThat(anchorLink).isNotNull();
+        assertThat(anchorLink.text()).isEqualTo("[ga4-demo-docs]");
+        Element anchor = page.selectFirst("#ga4-metadata");
+        assertThat(anchor).isNotNull();
+        assertThat(anchor.text()).isEqualTo("ga4-metadata");
+
         // Footer v0.1 should not be here.
         assertThat(page.selectFirst("footer:has([data-i18n='footer.lastUpdate'])")).isNull();
     }
