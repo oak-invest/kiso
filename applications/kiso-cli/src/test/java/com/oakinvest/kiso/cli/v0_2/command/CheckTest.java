@@ -18,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CheckTest extends BaseTest {
 
     @Test
-    @DisplayName("Check a valid OKF bundle")
-    void checkValidBundle() {
+    @DisplayName("Check a valid Google OKF bundle")
+    void checkValidGoogleBundle() {
         // What we are testing - The Google example ====================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_V_0_2);
 
@@ -38,6 +38,31 @@ public class CheckTest extends BaseTest {
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
                 .doesNotContain("WARNING")
+                .contains("Running check command")
+                .contains("No errors found.");
+    }
+
+    @Test
+    @DisplayName("Check a valid Acme OKF bundle")
+    void checkValidAcmeBundle() {
+        // What we are testing - The Acme example ======================================================================
+        var resourcePath = getResourcePath(KB_ACME_V_0_2);
+
+        // We execute the command ======================================================================================
+        var output = new StringWriter();
+        var error = new StringWriter();
+        var exitCode = new CommandLine(new CheckCommand())
+                .setOut(new PrintWriter(output))
+                .setErr(new PrintWriter(error))
+                .execute(
+                        "--source", resourcePath.toAbsolutePath().toString()
+                );
+
+        // Checking the results ========================================================================================
+        assertThat(exitCode).isZero();
+        assertThat(error.toString()).isEmpty();
+        assertThat(output.toString())
+                //.doesNotContain("WARNING")
                 .contains("Running check command")
                 .contains("No errors found.");
     }
@@ -122,9 +147,9 @@ public class CheckTest extends BaseTest {
                 // test/invalid-timestamp.md
                 .contains("ERROR - INVALID_TIMESTAMP - File test/invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format")
                 // test/index.md
-                .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/index.md is not a concept file and should not contain frontmatter")
-                // test/log.md
-                .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/log.md is not a concept file and should not contain frontmatter");
+                .contains("ERROR - UNEXPECTED_FRONTMATTER - File test/index.md is not a concept file and should not contain frontmatter");
+        // test/log.md
+        //.contains("ERROR - UNEXPECTED_FRONTMATTER - File test/log.md is not a concept file and should not contain frontmatter");
     }
 
 

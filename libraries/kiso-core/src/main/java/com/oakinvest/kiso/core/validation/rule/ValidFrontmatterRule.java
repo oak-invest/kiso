@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
@@ -31,6 +32,13 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
     public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
         Objects.requireNonNull(bundle, "bundle must not be null");
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
+        // =============================================================================================================
+        // Removed the verification on log.md file: https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/286
+        // For now, we accept anything on that kind of file.
+        if (markdownFile.kind().equals(LOG)) {
+            return List.of();
+        }
 
         // Only on concept files =======================================================================================
         if (markdownFile.kind().equals(CONCEPT)) {

@@ -131,12 +131,13 @@ class ValidFrontmatterRuleTest extends BaseTest {
             assertThat(issue.path()).isEqualTo(indexFilePath);
         });
 
-        assertThat(rule.validate(bundleWith(logFile), logFile)).satisfiesOnlyOnce(issue -> {
-            assertThat(issue.severity()).isEqualTo(ERROR);
-            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
-            assertThat(issue.message()).isEqualTo("File log.md is not a concept file and should not contain frontmatter");
-            assertThat(issue.path()).isEqualTo(logFilePath);
-        });
+        // Removed as log.md is now allowed to have frontmatter, as it is a concept file.
+//        assertThat(rule.validate(bundleWith(logFile), logFile)).satisfiesOnlyOnce(issue -> {
+//            assertThat(issue.severity()).isEqualTo(ERROR);
+//            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
+//            assertThat(issue.message()).isEqualTo("File log.md is not a concept file and should not contain frontmatter");
+//            assertThat(issue.path()).isEqualTo(logFilePath);
+//        });
     }
 
 }
