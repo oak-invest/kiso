@@ -9,8 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.Objects;
 
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.OKF_VERSION_KEY;
 import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
@@ -89,6 +92,14 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
         } else {
             // Non-CONCEPT file should not contain frontmatter =========================================================
             if (markdownFile.frontmatterPresent()) {
+
+                // spec 0.2: For index.md files at root, a specific frontmatter is allowed =============================
+                if (markdownFile.kind().equals(INDEX)
+                        && markdownFile.bundleName().equals(ROOT_BUNDLE_NAME)
+                        && markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY) != null) {
+                    return List.of();
+                }
+
                 return List.of(ValidationIssue.builder()
                         .severity(ERROR)
                         .code(UNEXPECTED_FRONTMATTER)

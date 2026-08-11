@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
+import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
@@ -7,7 +8,9 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
@@ -69,6 +72,68 @@ class ValidFrontmatterRuleTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Index with a valid frontmatter is allowed")
+    void indexWithFrontmatter(@TempDir Path temporaryDirectory) throws Exception {
+        // What we are testing =========================================================================================
+        var sourceDirectory = temporaryDirectory.resolve("bundle");
+        Files.createDirectories(sourceDirectory);
+
+        // index.md with invalid frontmatter ===========================================================================
+        var rootIndex = sourceDirectory.resolve("index.md");
+        Files.createDirectories(rootIndex.getParent());
+        Files.writeString(rootIndex, """
+                ---
+                okf_version: "0.2"
+                ---
+                Example content""");
+
+        // index.md with invalid frontmatter in a subdirectory =========================================================
+        var indexWithInvalidFrontmatter = sourceDirectory.resolve("test1/index.md");
+        Files.createDirectories(indexWithInvalidFrontmatter.getParent());
+        Files.writeString(indexWithInvalidFrontmatter, """
+                ---
+                title: Invalid frontmatter title
+                ---
+                Example content""");
+
+        // index.md with valid frontmatter in a subdirectory ===========================================================
+        var indexWithFrontmatterNotRoot = sourceDirectory.resolve("test2/index.md");
+        Files.createDirectories(indexWithFrontmatterNotRoot.getParent());
+        Files.writeString(indexWithFrontmatterNotRoot, """
+                ---
+                okf_version: "0.2"
+                ---
+                Example content""");
+
+        // We get the files from the bundle ============================================================================
+        var bundle = KnowledgeBundleLoader.load(sourceDirectory);
+        var indexRoot = bundle.markdownFiles()
+                .filter(markdownFile -> markdownFile.bundleName().equals("index"))
+                .findAny().orElseThrow(() -> new Exception("index.md not found"));
+        var index1 = bundle.markdownFiles()
+                .filter(markdownFile -> markdownFile.bundleName().equals("test1"))
+                .findAny().orElseThrow(() -> new Exception("test1/index.md not found"));
+        var index2 = bundle.markdownFiles()
+                .filter(markdownFile -> markdownFile.bundleName().equals("test2"))
+                .findAny().orElseThrow(() -> new Exception("test2/index.md not found"));
+
+        // We check the errors =========================================================================================
+        assertThat(rule.validate(bundle.rootBundle(), indexRoot)).isEmpty();
+        assertThat(rule.validate(bundle.rootBundle(), index1)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
+            assertThat(issue.message()).isEqualTo("File test1/index.md is not a concept file and should not contain frontmatter");
+            assertThat(issue.path()).isEqualTo(Path.of("test1/index.md"));
+        });
+        assertThat(rule.validate(bundle.rootBundle(), index2)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
+            assertThat(issue.message()).isEqualTo("File test2/index.md is not a concept file and should not contain frontmatter");
+            assertThat(issue.path()).isEqualTo(Path.of("test2/index.md"));
+        });
+    }
+
+    @Test
     @DisplayName("Timestamp is present but doesn't respect ISO 8601 datetime format")
     void invalidTimestamp() {
         // We create a concept file with frontmatter but with an invalid timestamp =====================================
@@ -121,7 +186,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
 
         // log.md
         var logFilePath = Path.of(LOG.getFileName());
-        var logFile = markdownFile(logFilePath, LOG, frontmatter);
+        // var logFile = markdownFile(logFilePath, LOG, frontmatter);
 
         // Run validation to check an unexpected frontmatter ============================================================
         assertThat(rule.validate(bundleWith(indexFile), indexFile)).satisfiesOnlyOnce(issue -> {

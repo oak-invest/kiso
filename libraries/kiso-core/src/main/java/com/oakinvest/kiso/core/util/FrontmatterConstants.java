@@ -12,6 +12,9 @@ public class FrontmatterConstants {
     /** Frontmatter delimiter. */
     public static final String FRONTMATTER_DELIMITER = "---";
 
+    /** Frontmatter OKF version key. */
+    public static final String OKF_VERSION_KEY = "okf_version";
+
     /** Frontmatter key for type. */
     public static final String TYPE_KEY = "type";
 
