@@ -189,6 +189,17 @@ public final class MarkdownToHtmlRenderer {
                         .generatedBy(markdownFile.frontmatter().generatedBy())
                         .generatedAt(markdownFile.frontmatter().generatedAt())
                         .timestamp(markdownFile.timestamp())
+                        .sources(markdownFile.frontmatter().sources())
+                        .usageWindow(markdownFile.frontmatter().usageWindow())
+                        .generated(markdownFile.frontmatter().generated())
+                        .verified(markdownFile.frontmatter().verified())
+                        .status(markdownFile.frontmatter().status())
+                        .staleAfter(markdownFile.frontmatter().staleAfter())
+                        .runtime(markdownFile.frontmatter().runtime())
+                        .parameters(markdownFile.frontmatter().parameters())
+                        .computation(markdownFile.frontmatter().computation())
+                        .executor(markdownFile.frontmatter().executor())
+                        .attester(markdownFile.frontmatter().attester())
                         .htmlContent(output -> output.writeContent(htmlContent))
                         .build();
 

@@ -1,7 +1,3 @@
----
-type: Log
-title: Acme Retail bundle history
----
 
 # Bundle history
 

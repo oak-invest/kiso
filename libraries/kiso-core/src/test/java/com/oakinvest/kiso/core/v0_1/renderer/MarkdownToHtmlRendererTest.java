@@ -217,6 +217,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .containsExactly(
                         "Concept",
                         "BigQuery Dataset",
+                        "Status: stable",
                         "ecommerce",
                         "web analytics",
                         "Google Analytics",
@@ -281,6 +282,109 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
         // Footer v0.2 should not be here.
         assertThat(page.selectFirst("footer:has([data-i18n='footer.generatedBy'])")).isNull();
+
+        // =============================================================================================================
+        // Testing v0.2 frontmatter rendering with computations/revenue-ytd.md
+        // =============================================================================================================
+
+        var acmeResourcePath = getResourcePath(KB_ACME_V_0_2);
+        var acmeBundle = KnowledgeBundleLoader.load(acmeResourcePath);
+        var acmeBundleTree = BundleTree.fromBundle(acmeBundle.rootBundle());
+        var revenue = acmeBundle.markdownFiles()
+                .filter(markdownFile -> "computations/revenue-ytd".equalsIgnoreCase(markdownFile.conceptId()))
+                .findAny().orElseThrow(() -> new IllegalStateException("computations/revenue-ytd file not found"));
+
+        page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), revenue, acmeBundleTree));
+
+        header = page.selectFirst("main > section");
+        assertThat(header).isNotNull();
+        assertThat(header.select("[data-okf-field=status]").text()).isEqualTo("Status: stable");
+        assertThat(header.select("[data-okf-field=status] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.status");
+        assertThat(header.select("[data-okf-field=stale-after]").text()).isEqualTo("Stale after: 2026-12-31");
+        assertThat(header.select("[data-okf-field=stale-after] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.staleAfter");
+
+        var sourcesSection = page.selectFirst("[data-okf-section=sources]");
+        assertThat(sourcesSection).isNotNull();
+        assertThat(sourcesSection.select("h2[data-i18n=okfMetadata.sources]")).isNotEmpty();
+        assertThat(sourcesSection.select("th[data-i18n]").eachAttr("data-i18n"))
+                .containsExactly(
+                        "okfMetadata.id",
+                        "metadata.resource",
+                        "okfMetadata.title",
+                        "okfMetadata.author",
+                        "okfMetadata.usageCount",
+                        "okfMetadata.lastModified"
+                );
+        assertThat(sourcesSection.select("tbody tr")).hasSize(2);
+        assertThat(sourcesSection.text()).contains("revenue-policy");
+        assertThat(sourcesSection.text()).contains("policies/revenue-recognition.md");
+        assertThat(sourcesSection.text()).contains("Revenue Recognition Policy (FY2026)");
+        assertThat(sourcesSection.text()).contains("human:jsmith@acme");
+        assertThat(sourcesSection.text()).contains("orders-table");
+        assertThat(sourcesSection.text()).contains("tables/orders.md");
+
+        var trustSection = page.selectFirst("[data-okf-section=trust]");
+        assertThat(trustSection).isNotNull();
+        assertThat(trustSection.select("h2[data-i18n=okfMetadata.trust]")).isNotEmpty();
+        assertThat(trustSection.select("[data-okf-field=generated] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.generated", "okfMetadata.by", "okfMetadata.at");
+        assertThat(trustSection.select("[data-okf-field=verified] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.verified");
+        assertThat(trustSection.select("[data-okf-field=generated]").text())
+                .contains("reference_agent/gemini-2.5-pro")
+                .contains("2026-06-30T14:00:00Z");
+        assertThat(trustSection.select("[data-okf-field=verified]").text())
+                .contains("human:jsmith@acme")
+                .contains("2026-07-01T09:00:00Z");
+
+        var computationSection = page.selectFirst("[data-okf-section=computation]");
+        assertThat(computationSection).isNotNull();
+        assertThat(computationSection.select("h2[data-i18n=okfMetadata.computationContract]")).isNotEmpty();
+        assertThat(computationSection.select("dt[data-i18n]").eachAttr("data-i18n"))
+                .containsExactly(
+                        "okfMetadata.runtime",
+                        "okfMetadata.executor",
+                        "okfMetadata.attester"
+                );
+        assertThat(computationSection.select("[data-okf-field=parameters] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly(
+                        "okfMetadata.parameters",
+                        "okfMetadata.name",
+                        "okfMetadata.type",
+                        "okfMetadata.required"
+                );
+        assertThat(computationSection.select("[data-okf-field=receipt] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.receipt");
+        assertThat(computationSection.select("[data-okf-field=runtime]").text()).contains("bigquery");
+        assertThat(computationSection.select("[data-okf-field=parameters]").text())
+                .contains("year")
+                .contains("integer")
+                .contains("true");
+        assertThat(computationSection.select("[data-okf-field=executor]").text()).contains("skills/run-on-bq.md");
+        assertThat(computationSection.select("[data-okf-field=attester]").text()).contains("attesters/sql_equality.py");
+        assertThat(computationSection.select("[data-okf-field=receipt]").text())
+                .contains("job_id")
+                .contains("executed_sql")
+                .contains("result");
+
+        // =============================================================================================================
+        // Testing v0.2 usage window rendering with tables/orders.md
+        // =============================================================================================================
+
+        var orders = acmeBundle.markdownFiles()
+                .filter(markdownFile -> "tables/orders".equalsIgnoreCase(markdownFile.conceptId()))
+                .findAny().orElseThrow(() -> new IllegalStateException("tables/orders file not found"));
+        page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), orders, acmeBundleTree));
+
+        sourcesSection = page.selectFirst("[data-okf-section=sources]");
+        assertThat(sourcesSection).isNotNull();
+        assertThat(sourcesSection.select("[data-okf-field=usage-window] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.usageWindowFrom", "okfMetadata.usageWindowTo");
+        assertThat(sourcesSection.select("[data-okf-field=usage-window]").text())
+                .contains("Usage window from 2026-04-01")
+                .contains("Usage window to 2026-06-30");
     }
 
     @Test

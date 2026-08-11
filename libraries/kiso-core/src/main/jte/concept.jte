@@ -31,6 +31,14 @@ pageContent = @`
                 @if(page.type() != null)
                     <span class="badge badge-secondary badge-lg">${page.type()}</span>
                 @endif
+                <span class="badge badge-outline badge-lg" data-okf-field="status">
+                    <span data-i18n="okfMetadata.status">Status</span>: ${page.status().name().toLowerCase()}
+                </span>
+                @if(page.staleAfter() != null)
+                    <span class="badge badge-outline badge-lg" data-okf-field="stale-after">
+                        <span data-i18n="okfMetadata.staleAfter">Stale after</span>: ${page.staleAfter()}
+                    </span>
+                @endif
             </div>
 
             <!-- Title ============================================================================================= -->
@@ -116,21 +124,222 @@ pageContent = @`
         </div>
     </article>
 
-    <!-- Footer for OKF v0.1 ======================================================================================= -->
-    @if(page.generatedAt() == null && page.timestamp() != null)
-        <footer class="mt-6 flex justify-end text-sm text-base-content/60">
-            <span data-i18n="footer.lastUpdate">Last update</span>:
-            ${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
-        </footer>
+    <!-- Sources =================================================================================================== -->
+    @if(!page.sources().isEmpty() || page.usageWindow() != null)
+        <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
+                 data-okf-section="sources">
+            <h2 class="mb-4 text-xl font-semibold" data-i18n="okfMetadata.sources">Sources</h2>
+
+            @if(page.usageWindow() != null)
+                <dl class="mb-5 grid gap-3 text-sm sm:grid-cols-2" data-okf-field="usage-window">
+                    @if(page.usageWindow().from() != null)
+                        <div>
+                            <dt class="text-xs font-semibold uppercase text-base-content/50"
+                                data-i18n="okfMetadata.usageWindowFrom">Usage window from
+                            </dt>
+                            <dd class="mt-1">${page.usageWindow().from()}</dd>
+                        </div>
+                    @endif
+                    @if(page.usageWindow().to() != null)
+                        <div>
+                            <dt class="text-xs font-semibold uppercase text-base-content/50"
+                                data-i18n="okfMetadata.usageWindowTo">Usage window to
+                            </dt>
+                            <dd class="mt-1">${page.usageWindow().to()}</dd>
+                        </div>
+                    @endif
+                </dl>
+            @endif
+
+            @if(!page.sources().isEmpty())
+                <div class="overflow-x-auto">
+                    <table class="table table-sm">
+                        <thead>
+                        <tr>
+                            <th data-i18n="okfMetadata.id">Id</th>
+                            <th data-i18n="metadata.resource">Resource</th>
+                            <th data-i18n="okfMetadata.title">Title</th>
+                            <th data-i18n="okfMetadata.author">Author</th>
+                            <th data-i18n="okfMetadata.usageCount">Usage count</th>
+                            <th data-i18n="okfMetadata.lastModified">Last modified</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @for(var source : page.sources())
+                            <tr>
+                                <td class="font-mono">${source.id()}</td>
+                                <td>
+                                    @if(source.resource() != null)
+                                        <a class="link link-hover break-words font-mono" href="${source.resource()}">
+                                            ${source.resource()}
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>${source.title()}</td>
+                                <td>
+                                    @if(source.author() != null)
+                                        <span class="font-mono">${source.author().identifier()}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if(source.usageCount() != null)
+                                        ${source.usageCount()}
+                                    @endif
+                                </td>
+                                <td>${source.lastModified()}</td>
+                            </tr>
+                        @endfor
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </section>
     @endif
 
-    <!-- Footer for OKF v0.2 ======================================================================================= -->
-    @if(page.generatedAt() != null)
-        <footer class="mt-6 flex justify-end text-sm text-base-content/60">
-            <span data-i18n="footer.generatedBy">Generated by</span>:
-            ${page.generatedBy()} |
-            <span data-i18n="footer.generatedAt">Generated at</span>:
-            ${page.generatedAt().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}
+    <!-- Trust ===================================================================================================== -->
+    @if(page.generated() != null || !page.verified().isEmpty())
+        <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
+                 data-okf-section="trust">
+            <h2 class="mb-4 text-xl font-semibold" data-i18n="okfMetadata.trust">Trust</h2>
+            <div class="grid gap-6 md:grid-cols-2">
+                @if(page.generated() != null)
+                    <div data-okf-field="generated">
+                        <div class="text-xs font-semibold uppercase text-base-content/50"
+                             data-i18n="okfMetadata.generated">Generated
+                        </div>
+                        <dl class="mt-3 space-y-2 text-sm">
+                            @if(page.generated().by() != null)
+                                <div>
+                                    <dt class="font-semibold" data-i18n="okfMetadata.by">By</dt>
+                                    <dd class="font-mono">${page.generated().by().identifier()}</dd>
+                                </div>
+                            @endif
+                            @if(page.generated().at() != null)
+                                <div>
+                                    <dt class="font-semibold" data-i18n="okfMetadata.at">At</dt>
+                                    <dd>${page.generated().at()}</dd>
+                                </div>
+                            @endif
+                        </dl>
+                    </div>
+                @endif
+
+                @if(!page.verified().isEmpty())
+                    <div data-okf-field="verified">
+                        <div class="text-xs font-semibold uppercase text-base-content/50"
+                             data-i18n="okfMetadata.verified">Verified
+                        </div>
+                        <ul class="mt-3 space-y-3 text-sm">
+                            @for(var verification : page.verified())
+                                <li>
+                                    @if(verification.by() != null)
+                                        <span class="font-mono">${verification.by().identifier()}</span>
+                                    @endif
+                                    @if(verification.at() != null)
+                                        <span class="text-base-content/60">${verification.at()}</span>
+                                    @endif
+                                </li>
+                            @endfor
+                        </ul>
+                    </div>
+                @endif
+            </div>
+        </section>
+    @endif
+
+    <!-- Computation =============================================================================================== -->
+    @if(page.attestedComputation())
+        <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
+                 data-okf-section="computation">
+            <h2 class="mb-4 text-xl font-semibold" data-i18n="okfMetadata.computationContract">
+                Computation contract
+            </h2>
+
+            <dl class="grid gap-4 text-sm sm:grid-cols-2">
+                @if(page.runtime() != null)
+                    <div data-okf-field="runtime">
+                        <dt class="text-xs font-semibold uppercase text-base-content/50"
+                            data-i18n="okfMetadata.runtime">Runtime
+                        </dt>
+                        <dd class="mt-1 font-mono">${page.runtime()}</dd>
+                    </div>
+                @endif
+                @if(page.computation() != null)
+                    <div data-okf-field="computation-file">
+                        <dt class="text-xs font-semibold uppercase text-base-content/50"
+                            data-i18n="okfMetadata.computationFile">Computation file
+                        </dt>
+                        <dd class="mt-1 font-mono">${page.computation()}</dd>
+                    </div>
+                @endif
+                @if(page.executor() != null)
+                    <div data-okf-field="executor">
+                        <dt class="text-xs font-semibold uppercase text-base-content/50"
+                            data-i18n="okfMetadata.executor">Executor
+                        </dt>
+                        <dd class="mt-1 font-mono">${page.executor().resource()}</dd>
+                    </div>
+                @endif
+                @if(page.attester() != null)
+                    <div data-okf-field="attester">
+                        <dt class="text-xs font-semibold uppercase text-base-content/50"
+                            data-i18n="okfMetadata.attester">Attester
+                        </dt>
+                        <dd class="mt-1 font-mono">${page.attester().resource()}</dd>
+                    </div>
+                @endif
+            </dl>
+
+            @if(!page.parameters().isEmpty())
+                <div class="mt-5" data-okf-field="parameters">
+                    <div class="mb-3 text-xs font-semibold uppercase text-base-content/50"
+                         data-i18n="okfMetadata.parameters">Parameters
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th data-i18n="okfMetadata.name">Name</th>
+                                <th data-i18n="okfMetadata.type">Type</th>
+                                <th data-i18n="okfMetadata.required">Required</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @for(var parameter : page.parameters())
+                                <tr>
+                                    <td class="font-mono">${parameter.name()}</td>
+                                    <td class="font-mono">${parameter.type()}</td>
+                                    <td>${parameter.required()}</td>
+                                </tr>
+                            @endfor
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
+
+            @if(page.executor() != null && !page.executor().receipt().isEmpty())
+                <div class="mt-5" data-okf-field="receipt">
+                    <div class="mb-3 text-xs font-semibold uppercase text-base-content/50"
+                         data-i18n="okfMetadata.receipt">Receipt
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        @for(var receiptField : page.executor().receipt())
+                            <span class="badge badge-ghost border border-base-300 font-mono">${receiptField}</span>
+                        @endfor
+                    </div>
+                </div>
+            @endif
+        </section>
+    @endif
+
+    <!-- Footer for OKF v0.1 ======================================================================================= -->
+    @if(page.generatedAt() == null && page.timestamp() != null)
+        <footer class="mt-6 text-sm text-base-content/60">
+            <div class="flex flex-col gap-1 sm:flex-row sm:justify-end">
+                <span><span class="font-semibold" data-i18n="footer.lastUpdate">Last update</span>:</span>
+                <span>${page.timestamp().format(DateTimeFormatter.ofPattern("MMMM d, yyyy 'at' h:mm a")) + " UTC"}</span>
+            </div>
         </footer>
     @endif
 

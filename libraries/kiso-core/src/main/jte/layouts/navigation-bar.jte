@@ -33,7 +33,7 @@
     <div class="flex-1"></div>
 
     <!-- Search engine ============================================================================================= -->
-    <div class="kiso-search flex-none"
+    <div class="kiso-search hidden flex-none md:block"
          data-search-index-url="${pageMetadata.assetBasePath()}search-index.json"
          data-search-result-base-url="${pageMetadata.assetBasePath()}">
 

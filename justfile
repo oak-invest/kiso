@@ -34,6 +34,9 @@ run_build_v_0_2:
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="build --source=examples/kb-google-example-v0.2 --destination=public/kb-google-example-v0.2"
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-acme-example-v0.2 --destination=public/kb-acme-example-v0.2"
 
 run_build_straumat:
     mvn install -pl libraries/kiso-core -am -DskipTests
