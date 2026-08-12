@@ -108,7 +108,6 @@ public record Bundle(
         return childBundles.isEmpty() && markdownFiles.isEmpty();
     }
 
-
     /**
      * Returns all bundles contained in this knowledge bundle as a flat stream.
      *

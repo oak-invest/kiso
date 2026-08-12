@@ -22,7 +22,6 @@ public class KnowledgeBundleTest extends BaseTest {
 
         // Testing .bundles() ==========================================================================================
         assertThat(rootBundle.bundles())
-                .hasSize(5)
                 .satisfiesExactly(
                         bundle -> assertThat(bundle.name()).isEqualTo(ROOT_BUNDLE_NAME),
                         bundle -> assertThat(bundle.name()).isEqualTo("datasets"),
@@ -33,7 +32,6 @@ public class KnowledgeBundleTest extends BaseTest {
 
         // Testing .markdownFiles() ====================================================================================
         assertThat(rootBundle.markdownFiles())
-                .hasSize(14)
                 .satisfiesExactly(
                         markdownFile -> assertThat(markdownFile.relativePath().toString())
                                 .isEqualTo("index.md"),
@@ -63,6 +61,14 @@ public class KnowledgeBundleTest extends BaseTest {
                                 .isEqualTo("tables/events_.md"),
                         markdownFile -> assertThat(markdownFile.relativePath().toString())
                                 .isEqualTo("tables/index.md")
+                );
+
+        // Testing tags() ==============================================================================================
+        assertThat(rootBundle.tags())
+                .containsExactlyInAnyOrder(
+                        "ga4", "ecommerce", "obfuscated", "analytics", "sample-data", "metric", "audience",
+                        "acquired-users", "frequent-actives", "cohorts", "high-actives", "active-users",
+                        "inactive-users", "purchasers", "e-commerce", "sharded-tables"
                 );
     }
 
