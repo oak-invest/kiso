@@ -30,6 +30,7 @@
     "status": "Status",
     "title": "Tytuł",
     "trust": "Zaufanie",
+    "trustTier": "Poziom zaufania",
     "type": "Typ",
     "usageCount": "Liczba użyć",
     "usageWindowFrom": "Okno użycia od",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "Pojęcie",
-    "index": "Indeks"
+    "index": "Indeks",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Nie udało się załadować indeksu wyszukiwania",

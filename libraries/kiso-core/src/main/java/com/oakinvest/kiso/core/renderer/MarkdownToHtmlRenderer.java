@@ -5,6 +5,7 @@ import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
 import com.oakinvest.kiso.core.model.html.page.ConceptPage;
 import com.oakinvest.kiso.core.model.html.page.IndexPage;
+import com.oakinvest.kiso.core.model.html.page.LogPage;
 import com.oakinvest.kiso.core.model.html.util.PageContext;
 import com.oakinvest.kiso.core.model.html.util.PageMetadata;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import static com.oakinvest.kiso.core.util.TemplateConstants.CONCEPT_TEMPLATE_PAGE;
 import static com.oakinvest.kiso.core.util.TemplateConstants.INDEX_TEMPLATE_PAGE;
+import static com.oakinvest.kiso.core.util.TemplateConstants.LOG_TEMPLATE_PAGE;
 import static com.oakinvest.kiso.core.util.TemplateConstants.MODULE_SOURCE_TEMPLATES_DIRECTORY;
 import static com.oakinvest.kiso.core.util.TemplateConstants.PRECOMPILED_INDEX_TEMPLATE_CLASS;
 import static com.oakinvest.kiso.core.util.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
@@ -155,8 +157,24 @@ public final class MarkdownToHtmlRenderer {
         StringOutput htmlOutput = new StringOutput();
         switch (markdownFile.kind()) {
             case LOG -> {
-                // Log - No treatment for now, return nothing ==========================================================
-                return "";
+                // Log =================================================================================================
+                LogPage page = LogPage.builder()
+                        .context(PageContext.builder()
+                                .siteConfiguration(siteConfiguration)
+                                .themeConfiguration(themeConfiguration)
+                                .bundleTree(bundleTree)
+                                .build())
+                        .metadata(PageMetadata.builder()
+                                .title(ObjectUtils.firstNonNull(siteConfiguration.title(), markdownFile.relativePath().toString()))
+                                .description(siteConfiguration.description())
+                                .absolutePath(markdownFile.absolutePath().toString())
+                                .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
+                                .htmlPath(markdownFile.htmlFilePath())
+                                .build())
+                        .htmlContent(output -> output.writeContent(htmlContent))
+                        .build();
+
+                TEMPLATE_ENGINE.render(LOG_TEMPLATE_PAGE, page, htmlOutput);
             }
             case INDEX -> {
 
@@ -204,6 +222,7 @@ public final class MarkdownToHtmlRenderer {
                         .usageWindow(markdownFile.frontmatter().usageWindow())
                         .generated(markdownFile.frontmatter().generated())
                         .verified(markdownFile.frontmatter().verified())
+                        .trustTier(markdownFile.frontmatter().trustTier())
                         .status(markdownFile.frontmatter().status())
                         .staleAfter(markdownFile.frontmatter().staleAfter())
                         .runtime(markdownFile.frontmatter().runtime())

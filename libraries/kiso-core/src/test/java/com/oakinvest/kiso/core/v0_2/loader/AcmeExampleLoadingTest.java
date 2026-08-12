@@ -9,8 +9,7 @@ import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecuto
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Verification;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -77,18 +76,18 @@ public class AcmeExampleLoadingTest extends BaseTest {
 
         // Frontmatter::generated.
         assertThat(revenue.frontmatter().generated()).isNotNull()
-                .returns(Actor.of("reference_agent/gemini-2.5-pro"), Generated::by)
-                .returns("2026-06-30T14:00:00Z", Generated::at)
-                .returns(OffsetDateTime.parse("2026-06-30T14:00:00Z"), Generated::parsedAt);
+                .returns(Actor.of("reference_agent/gemini-2.5-pro"), TrustEvent::by)
+                .returns("2026-06-30T14:00:00Z", TrustEvent::at)
+                .returns(OffsetDateTime.parse("2026-06-30T14:00:00Z"), TrustEvent::parsedAt);
         assertThat(revenue.frontmatter().generated().by().isAgent()).isTrue();
         assertThat(revenue.frontmatter().generated().by().type()).isEqualTo(AGENT);
 
         // Frontmatter::verified.
         assertThat(revenue.frontmatter().verified())
                 .singleElement()
-                .returns(Actor.of("human:jsmith@acme"), Verification::by)
-                .returns("2026-07-01T09:00:00Z", Verification::at)
-                .returns(OffsetDateTime.parse("2026-07-01T09:00:00Z"), Verification::parsedAt);
+                .returns(Actor.of("human:jsmith@acme"), TrustEvent::by)
+                .returns("2026-07-01T09:00:00Z", TrustEvent::at)
+                .returns(OffsetDateTime.parse("2026-07-01T09:00:00Z"), TrustEvent::parsedAt);
         assertThat(revenue.frontmatter().verified().getFirst().by()).isNotNull();
         assertThat(revenue.frontmatter().verified().getFirst().by().isHuman()).isTrue();
         assertThat(revenue.frontmatter().verified().getFirst().by().type()).isEqualTo(HUMAN);

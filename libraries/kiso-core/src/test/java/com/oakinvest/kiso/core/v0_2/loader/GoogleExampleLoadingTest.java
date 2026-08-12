@@ -5,7 +5,7 @@ import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -104,9 +104,9 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns(List.of("ga4", "ecommerce", "obfuscated", "analytics", "sample-data"), Frontmatter::tags);
                             assertThat(ga4.frontmatter().generated())
                                     .isNotNull()
-                                    .returns(Actor.of("reference_agent/gemini-3.5-flash"), Generated::by)
-                                    .returns("2026-07-10T21:14:56+00:00", Generated::at)
-                                    .returns(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"), Generated::parsedAt);
+                                    .returns(Actor.of("reference_agent/gemini-3.5-flash"), TrustEvent::by)
+                                    .returns("2026-07-10T21:14:56+00:00", TrustEvent::at)
+                                    .returns(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"), TrustEvent::parsedAt);
                             assertThat(ga4.frontmatter().generated().by().isAgent()).isTrue();
                             assertThat(ga4.frontmatter().generated().by().type()).isEqualTo(AGENT);
                             assertThat(ga4.frontmatter().sources().getFirst().hasAuthor()).isFalse();
@@ -211,9 +211,9 @@ class GoogleExampleLoadingTest extends BaseTest {
 
         assertThat(markdownFile.frontmatter().generated())
                 .isNotNull()
-                .returns(Actor.of("reference_agent/gemini-2.5-pro"), Generated::by)
-                .returns("2026-06-20T22:53:05Z", Generated::at)
-                .returns(OffsetDateTime.parse("2026-06-20T22:53:05Z"), Generated::parsedAt);
+                .returns(Actor.of("reference_agent/gemini-2.5-pro"), TrustEvent::by)
+                .returns("2026-06-20T22:53:05Z", TrustEvent::at)
+                .returns(OffsetDateTime.parse("2026-06-20T22:53:05Z"), TrustEvent::parsedAt);
         assertThat(markdownFile.timestamp()).isEqualTo(OffsetDateTime.parse("2026-06-20T22:53:05Z"));
     }
 

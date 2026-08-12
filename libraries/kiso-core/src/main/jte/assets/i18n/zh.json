@@ -30,6 +30,7 @@
     "status": "状态",
     "title": "标题",
     "trust": "信任",
+    "trustTier": "信任级别",
     "type": "类型",
     "usageCount": "使用次数",
     "usageWindowFrom": "使用窗口起始",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "概念",
-    "index": "索引"
+    "index": "索引",
+    "log": "日志"
   },
   "search": {
     "failedToLoadIndex": "无法加载搜索索引",

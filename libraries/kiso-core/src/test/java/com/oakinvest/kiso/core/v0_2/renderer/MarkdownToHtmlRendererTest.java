@@ -284,6 +284,54 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
     }
 
     @Test
+    @DisplayName("Log page")
+    void mogPage(@TempDir Path temporaryDirectory) throws IOException {
+        // What we are testing =========================================================================================
+        var resourcePath = getResourcePath(KB_ACME_V_0_2);
+        var bundle = KnowledgeBundleLoader.load(resourcePath);
+        var bundleTree = BundleTree.fromBundle(bundle.rootBundle());
+
+        // =============================================================================================================
+        // Testing log.md
+        // =============================================================================================================
+        var logPage = bundle.rootBundle().markdownFiles()
+                .stream().filter(markdownFile -> markdownFile.fileName().equals("log.md"))
+                .findFirst().orElseThrow(() -> new IllegalStateException("Missing log.md file in the bundle"));
+        var page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), logPage, bundleTree));
+
+        // Concept header ==============================================================================================
+        var header = page.selectFirst("main > section");
+        assertThat(header).isNotNull();
+        assertThat(header.select(".badge").eachText())
+                .containsExactly("Log");
+
+        // Title =======================================================================================================
+        assertThat(header.selectFirst("div.text-4xl"))
+                .isNotNull()
+                .extracting(Element::text)
+                .containsExactly("log.md");
+
+        // Content =====================================================================================================
+        // H1.
+        var content = page.selectFirst("article.kiso-content");
+        assertThat(content).isNotNull();
+        assertThat(content.select("h1")).hasSize(1);
+        assertThat(content.selectFirst("h1"))
+                .isNotNull()
+                .extracting(Element::text)
+                .containsExactly("Bundle history");
+
+        // H2
+        assertThat(content.select("h2"))
+                .satisfiesExactly(
+                        h2_1 -> assertThat(h2_1.text()).isEqualTo("2026-07-01"),
+                        h2_2 -> assertThat(h2_2.text()).isEqualTo("2026-06-30"),
+                        h2_3 -> assertThat(h2_3.text()).isEqualTo("2026-04-15"),
+                        h2_4 -> assertThat(h2_4.text()).isEqualTo("2026-02-10")
+                );
+    }
+
+    @Test
     @DisplayName("Do not display a bundle index link when index.md does not exist")
     void doNotDisplayMissingBundleIndexInNavigation(@TempDir Path temporaryDirectory) throws IOException {
         Files.writeString(temporaryDirectory.resolve("concept.md"), """

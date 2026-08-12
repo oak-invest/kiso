@@ -328,6 +328,9 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         var trustSection = page.selectFirst("[data-okf-section=trust]");
         assertThat(trustSection).isNotNull();
         assertThat(trustSection.select("h2[data-i18n=okfMetadata.trust]")).isNotEmpty();
+        assertThat(trustSection.select("[data-okf-field=trust-tier]").text()).contains("Trust tier human-reviewed");
+        assertThat(trustSection.select("[data-okf-field=trust-tier] [data-i18n]").eachAttr("data-i18n"))
+                .containsExactly("okfMetadata.trustTier");
         assertThat(trustSection.select("[data-okf-field=generated] [data-i18n]").eachAttr("data-i18n"))
                 .containsExactly("okfMetadata.generated", "okfMetadata.by", "okfMetadata.at");
         assertThat(trustSection.select("[data-okf-field=verified] [data-i18n]").eachAttr("data-i18n"))

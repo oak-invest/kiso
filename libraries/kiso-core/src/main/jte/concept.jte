@@ -31,14 +31,9 @@ pageContent = @`
                 @if(page.type() != null)
                     <span class="badge badge-secondary badge-lg">${page.type()}</span>
                 @endif
-                <span class="badge badge-outline badge-lg" data-okf-field="status">
+                <span class="badge badge-accent badge-lg" data-okf-field="status">
                     <span data-i18n="okfMetadata.status">Status</span>: ${page.status().name().toLowerCase()}
                 </span>
-                @if(page.staleAfter() != null)
-                    <span class="badge badge-outline badge-lg" data-okf-field="stale-after">
-                        <span data-i18n="okfMetadata.staleAfter">Stale after</span>: ${page.staleAfter()}
-                    </span>
-                @endif
             </div>
 
             <!-- Title ============================================================================================= -->
@@ -63,6 +58,14 @@ pageContent = @`
                 <p class="mt-4 max-w-3xl text-lg leading-8 text-base-content/70">
                     ${page.metadata().description()}
                 </p>
+            @endif
+
+            @if(page.staleAfter() != null)
+                <div class="mt-6 border-t border-base-300 pt-4 text-sm text-base-content/70"
+                     data-okf-field="stale-after">
+                    <span class="font-semibold" data-i18n="okfMetadata.staleAfter">Stale after</span>:
+                    <span>${page.staleAfter()}</span>
+                </div>
             @endif
 
         </div>
@@ -128,8 +131,8 @@ pageContent = @`
     @if(!page.sources().isEmpty() || page.usageWindow() != null)
         <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
                  data-okf-section="sources">
-            <h2 class="mb-4 text-xl font-semibold" data-i18n="okfMetadata.sources">Sources</h2>
-
+            <h2 class="text-xl font-semibold" data-i18n="okfMetadata.sources">Sources</h2>
+            <hr class="mb-4">
             @if(page.usageWindow() != null)
                 <dl class="mb-5 grid gap-3 text-sm sm:grid-cols-2" data-okf-field="usage-window">
                     @if(page.usageWindow().from() != null)
@@ -202,7 +205,13 @@ pageContent = @`
     @if(page.generated() != null || !page.verified().isEmpty())
         <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
                  data-okf-section="trust">
-            <h2 class="mb-4 text-xl font-semibold" data-i18n="okfMetadata.trust">Trust</h2>
+            <h2 class="text-xl font-semibold" data-i18n="okfMetadata.trust">Trust</h2>
+            <hr class="mb-4">
+            <div class="mb-5 text-sm" data-okf-field="trust-tier">
+                <span class="text-xs font-semibold uppercase text-base-content/50"
+                      data-i18n="okfMetadata.trustTier">Trust tier</span>
+                <span class="badge badge-outline ml-2">${page.trustTierValue()}</span>
+            </div>
             <div class="grid gap-6 md:grid-cols-2">
                 @if(page.generated() != null)
                     <div data-okf-field="generated">
@@ -253,9 +262,8 @@ pageContent = @`
     @if(page.attestedComputation())
         <section class="mt-8 rounded-box border border-base-300 bg-base-100 p-6 shadow-sm sm:p-8"
                  data-okf-section="computation">
-            <h2 class="mb-4 text-xl font-semibold" data-i18n="okfMetadata.computationContract">
-                Computation contract
-            </h2>
+            <h2 class="text-xl font-semibold" data-i18n="okfMetadata.computationContract">Computation contract</h2>
+            <hr class="mb-4">
 
             <dl class="grid gap-4 text-sm sm:grid-cols-2">
                 @if(page.runtime() != null)

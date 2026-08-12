@@ -30,6 +30,7 @@
     "status": "상태",
     "title": "제목",
     "trust": "신뢰",
+    "trustTier": "신뢰 수준",
     "type": "유형",
     "usageCount": "사용 횟수",
     "usageWindowFrom": "사용 기간 시작",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "개념",
-    "index": "색인"
+    "index": "색인",
+    "log": "로그"
   },
   "search": {
     "failedToLoadIndex": "검색 인덱스를 불러오지 못했습니다",

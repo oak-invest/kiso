@@ -7,9 +7,9 @@ import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecuto
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Verification;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.LifecycleStatus;
+import com.oakinvest.kiso.core.util.TrustLevel;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
 import org.jspecify.annotations.Nullable;
@@ -35,6 +35,7 @@ import static com.oakinvest.kiso.core.util.ConceptTypeConstants.ATTESTED_COMPUTA
  * @param usageWindow date range that frames source usage counts
  * @param generated   records how the current content was produced
  * @param verified    verification events
+ * @param trustTier   trust tier inferred from verification events
  * @param status      lifecycle status
  * @param staleAfter  absolute date after which content is stale
  * @param runtime     computation runtime
@@ -57,8 +58,9 @@ public record ConceptPage(
         @Nullable OffsetDateTime timestamp,
         List<Source> sources,
         @Nullable UsageWindow usageWindow,
-        @Nullable Generated generated,
-        List<Verification> verified,
+        @Nullable TrustEvent generated,
+        List<TrustEvent> verified,
+        TrustLevel trustTier,
         LifecycleStatus status,
         @Nullable String staleAfter,
         @Nullable String runtime,
@@ -78,6 +80,7 @@ public record ConceptPage(
         tags = Objects.requireNonNullElse(tags, List.of());
         sources = Objects.requireNonNullElse(sources, List.of());
         verified = Objects.requireNonNullElse(verified, List.of());
+        trustTier = Objects.requireNonNullElse(trustTier, TrustLevel.UNVERIFIED);
         status = Objects.requireNonNullElse(status, LifecycleStatus.STABLE);
         parameters = Objects.requireNonNullElse(parameters, List.of());
     }
@@ -88,7 +91,16 @@ public record ConceptPage(
      * @return true for Attested Computation concepts
      */
     public boolean attestedComputation() {
-        return ATTESTED_COMPUTATION.equals(type);
+        return ATTESTED_COMPUTATION.equalsIgnoreCase(type);
+    }
+
+    /**
+     * Returns the trust tier as a frontmatter-compatible display value.
+     *
+     * @return trust tier display value
+     */
+    public String trustTierValue() {
+        return trustTier.name().toLowerCase().replace('_', '-');
     }
 
 }

@@ -17,8 +17,7 @@ import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecuto
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Verification;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.LifecycleStatus;
 import com.oakinvest.kiso.core.util.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
@@ -372,12 +371,12 @@ public class KnowledgeBundleLoader {
      * @param generated generated node
      * @return generated metadata, or null
      */
-    private static Generated generated(final JsonNode generated) {
+    private static TrustEvent generated(final JsonNode generated) {
         if (generated == null || !generated.isObject()) {
             return null;
         }
 
-        return Generated.builder()
+        return TrustEvent.builder()
                 .by(actor(generated, GENERATED_BY_KEY))
                 .at(textValue(generated, GENERATED_AT_KEY))
                 .build();
@@ -389,7 +388,7 @@ public class KnowledgeBundleLoader {
      * @param verified verified node
      * @return verification metadata
      */
-    private static List<Verification> verifications(final JsonNode verified) {
+    private static List<TrustEvent> verifications(final JsonNode verified) {
         if (verified == null || verified.isNull() || verified.isMissingNode()) {
             return List.of();
         }
@@ -400,7 +399,7 @@ public class KnowledgeBundleLoader {
             return List.of();
         }
 
-        final List<Verification> values = new ArrayList<>();
+        final List<TrustEvent> values = new ArrayList<>();
         verified.forEach(verification -> values.add(verification(verification)));
         return values;
     }
@@ -411,8 +410,8 @@ public class KnowledgeBundleLoader {
      * @param verification verification node
      * @return verification metadata
      */
-    private static Verification verification(final JsonNode verification) {
-        return Verification.builder()
+    private static TrustEvent verification(final JsonNode verification) {
+        return TrustEvent.builder()
                 .by(actor(verification, GENERATED_BY_KEY))
                 .at(textValue(verification, GENERATED_AT_KEY))
                 .build();

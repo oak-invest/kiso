@@ -30,6 +30,7 @@
     "status": "Status",
     "title": "Título",
     "trust": "Confiança",
+    "trustTier": "Nível de confiança",
     "type": "Tipo",
     "usageCount": "Contagem de uso",
     "usageWindowFrom": "Janela de uso desde",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "Conceito",
-    "index": "Índice"
+    "index": "Índice",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Não foi possível carregar o índice de pesquisa",

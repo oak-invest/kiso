@@ -1,8 +1,10 @@
+@import org.apache.commons.lang3.StringUtils
+
 @param com.oakinvest.kiso.core.model.html.util.PageContext pageContext
 @param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
 <!-- Social preview ================================================================================================ -->
-@if(pageMetadata.assetBasePath() != null)
+@if(StringUtils.isNotBlank(pageContext.siteConfiguration().baseUrl()))
     <meta property="og:locale" content="${pageContext.siteConfiguration().languageTag()}">
     <meta property="og:site_name" content="${pageContext.siteConfiguration().name()}">
     <meta property="og:url" content="${pageMetadata.assetBasePath()}${pageMetadata.htmlPath()}">

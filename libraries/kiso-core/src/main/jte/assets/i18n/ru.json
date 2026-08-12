@@ -30,6 +30,7 @@
     "status": "Статус",
     "title": "Заголовок",
     "trust": "Доверие",
+    "trustTier": "Уровень доверия",
     "type": "Тип",
     "usageCount": "Количество использований",
     "usageWindowFrom": "Окно использования с",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "Концепт",
-    "index": "Индекс"
+    "index": "Индекс",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Не удалось загрузить поисковый индекс",

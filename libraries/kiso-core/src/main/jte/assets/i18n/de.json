@@ -30,6 +30,7 @@
     "status": "Status",
     "title": "Titel",
     "trust": "Vertrauen",
+    "trustTier": "Vertrauensstufe",
     "type": "Typ",
     "usageCount": "Nutzungsanzahl",
     "usageWindowFrom": "Nutzungsfenster von",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "Konzept",
-    "index": "Index"
+    "index": "Index",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Suchindex konnte nicht geladen werden",

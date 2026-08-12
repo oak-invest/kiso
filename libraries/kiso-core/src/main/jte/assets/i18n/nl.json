@@ -30,6 +30,7 @@
     "status": "Status",
     "title": "Titel",
     "trust": "Vertrouwen",
+    "trustTier": "Vertrouwensniveau",
     "type": "Type",
     "usageCount": "Gebruiksaantal",
     "usageWindowFrom": "Gebruiksvenster vanaf",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "Concept",
-    "index": "Index"
+    "index": "Index",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Zoekindex kan niet worden geladen",

@@ -30,6 +30,7 @@
     "status": "ステータス",
     "title": "タイトル",
     "trust": "信頼",
+    "trustTier": "信頼レベル",
     "type": "タイプ",
     "usageCount": "使用回数",
     "usageWindowFrom": "使用期間の開始",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "コンセプト",
-    "index": "インデックス"
+    "index": "インデックス",
+    "log": "ログ"
   },
   "search": {
     "failedToLoadIndex": "検索インデックスを読み込めませんでした",

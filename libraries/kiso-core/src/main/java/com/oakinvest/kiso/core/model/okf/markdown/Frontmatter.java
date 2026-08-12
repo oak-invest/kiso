@@ -5,8 +5,7 @@ import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Verification;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.LifecycleStatus;
 import com.oakinvest.kiso.core.util.TrustLevel;
 import lombok.Builder;
@@ -31,7 +30,7 @@ import java.util.Objects;
  * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2
  * @param sources     materials the concept derives from
  * @param usageWindow date range that frames source usage counts
- * @param generated   records how the current content was produced
+ * @param generated   event recording how the current content was produced
  * @param verified    A list of verification events
  * @param status      lifecycle status value.
  * @param staleAfter  absolute date after which content is stale
@@ -53,8 +52,8 @@ public record Frontmatter(
         @Nullable String timestamp,
         List<Source> sources,
         @Nullable UsageWindow usageWindow,
-        @Nullable Generated generated,
-        List<Verification> verified,
+        @Nullable TrustEvent generated,
+        List<TrustEvent> verified,
         LifecycleStatus status,
         @Nullable String staleAfter,
         @Nullable String runtime,
@@ -172,7 +171,7 @@ public record Frontmatter(
             return TrustLevel.UNVERIFIED;
         }
         boolean humanReviewed = verified.stream()
-                .map(Verification::by)
+                .map(TrustEvent::by)
                 .filter(Objects::nonNull)
                 .anyMatch(Actor::isHuman);
         if (humanReviewed) {

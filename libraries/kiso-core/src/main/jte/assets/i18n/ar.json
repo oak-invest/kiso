@@ -30,6 +30,7 @@
     "status": "الحالة",
     "title": "العنوان",
     "trust": "الثقة",
+    "trustTier": "مستوى الثقة",
     "type": "النوع",
     "usageCount": "عدد الاستخدامات",
     "usageWindowFrom": "نافذة الاستخدام من",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "مفهوم",
-    "index": "فهرس"
+    "index": "فهرس",
+    "log": "السجل"
   },
   "search": {
     "failedToLoadIndex": "تعذر تحميل فهرس البحث",

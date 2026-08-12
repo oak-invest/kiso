@@ -30,6 +30,7 @@
     "status": "स्थिति",
     "title": "शीर्षक",
     "trust": "विश्वास",
+    "trustTier": "विश्वास स्तर",
     "type": "प्रकार",
     "usageCount": "उपयोग संख्या",
     "usageWindowFrom": "उपयोग विंडो से",
@@ -46,7 +47,8 @@
   },
   "pageKind": {
     "concept": "संकल्पना",
-    "index": "सूची"
+    "index": "सूची",
+    "log": "लॉग"
   },
   "search": {
     "failedToLoadIndex": "खोज इंडेक्स लोड नहीं हो सका",

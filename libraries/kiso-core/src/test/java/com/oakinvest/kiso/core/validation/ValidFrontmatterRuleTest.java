@@ -3,7 +3,7 @@ package com.oakinvest.kiso.core.validation;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.Generated;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
@@ -160,7 +160,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var markdownFilePath = Path.of("concept-with-invalid-generated-at.md");
         var frontmatter = Frontmatter.builder()
                 .type("Concept")
-                .generated(Generated.builder()
+                .generated(TrustEvent.builder()
                         .by(Actor.of("reference_agent/gemini-2.5-pro"))
                         .at("20-06-2026T22:53:05Z")
                         .build())

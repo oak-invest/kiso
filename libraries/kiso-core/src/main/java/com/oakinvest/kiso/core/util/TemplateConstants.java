@@ -29,6 +29,9 @@ public class TemplateConstants {
     /** Concept template page. */
     public static final String CONCEPT_TEMPLATE_PAGE = "concept.jte";
 
+    /** Log template page. */
+    public static final String LOG_TEMPLATE_PAGE = "log.jte";
+
     /** Social preview template image. */
     public static final String SOCIAL_PREVIEW_TEMPLATE_IMAGE = "social-preview.svg.jte";
 

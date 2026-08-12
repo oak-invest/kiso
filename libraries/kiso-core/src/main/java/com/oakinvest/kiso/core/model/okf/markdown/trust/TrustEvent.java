@@ -9,22 +9,22 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 
 /**
- * Generated records how the current content was produced.
+ * Trust event recording who performed an action and when it happened.
  *
- * @param by actor that generated the content
- * @param at ISO 8601 datetime marking the content's last meaningful change
+ * @param by actor that performed the trust event
+ * @param at ISO 8601 datetime of the trust event
  */
 @Builder
 @SuppressWarnings("unused")
-public record Generated(
-        Actor by,
+public record TrustEvent(
+        @Nullable Actor by,
         @Nullable String at
 ) {
 
     /**
-     * Returns parsed generation time.
+     * Returns parsed event time.
      *
-     * @return generation time as OffsetDateTime, or null if the value is blank or not parsable
+     * @return event time as OffsetDateTime, or null if the value is blank or not parsable
      */
     public @Nullable OffsetDateTime parsedAt() {
         if (StringUtils.isBlank(at)) {
