@@ -77,38 +77,38 @@
     @if(preview.titleLines().size() > 0)
         <text x="60" y="240"
               font-family="Helvetica, Arial, sans-serif"
-              font-size="62" font-weight="700" fill="#f8fafc">
+              font-size="58" font-weight="700" fill="#f8fafc">
             ${preview.titleLines().get(0)}
         </text>
     @endif
     @if(preview.titleLines().size() > 1)
-        <text x="60" y="320"
+        <text x="60" y="316"
               font-family="Helvetica, Arial, sans-serif"
-              font-size="62" font-weight="700" fill="#f8fafc">
+              font-size="58" font-weight="700" fill="#f8fafc">
             ${preview.titleLines().get(1)}
         </text>
     @endif
 
     <!-- Gradient separator -->
-    <rect x="60" y="360" width="72" height="2" rx="1" fill="url(#accentGradient)"/>
+    <rect x="60" y="354" width="72" height="2" rx="1" fill="url(#accentGradient)"/>
 
     <!-- Description lines -->
     @if(preview.descriptionLines().size() > 0)
-        <text x="60" y="410"
+        <text x="60" y="404"
               font-family="Helvetica, Arial, sans-serif"
               font-size="27" fill="#94a3b8">
             ${preview.descriptionLines().get(0)}
         </text>
     @endif
     @if(preview.descriptionLines().size() > 1)
-        <text x="60" y="450"
+        <text x="60" y="444"
               font-family="Helvetica, Arial, sans-serif"
               font-size="27" fill="#94a3b8">
             ${preview.descriptionLines().get(1)}
         </text>
     @endif
     @if(preview.descriptionLines().size() > 2)
-        <text x="60" y="490"
+        <text x="60" y="484"
               font-family="Helvetica, Arial, sans-serif"
               font-size="27" fill="#94a3b8">
             ${preview.descriptionLines().get(2)}

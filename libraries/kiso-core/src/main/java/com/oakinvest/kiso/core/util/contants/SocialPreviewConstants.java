@@ -16,13 +16,13 @@ public class SocialPreviewConstants {
     public static final int CANVAS_HEIGHT = 630;
 
     /** Default maximum line length for title text. */
-    public static final int TITLE_MAXIMUM_LINE_LENGTH = 40;
+    public static final int TITLE_MAXIMUM_LINE_LENGTH = 30;
 
     /** Default maximum lines for title text. */
     public static final int TITLE_MAXIMUM_LINES = 2;
 
     /** Default maximum line length for description text. */
-    public static final int DESCRIPTION_MAXIMUM_LINE_LENGTH = 72;
+    public static final int DESCRIPTION_MAXIMUM_LINE_LENGTH = 60;
 
     /** Default maximum lines for description text. */
     public static final int DESCRIPTION_MAXIMUM_LINES = 3;
