@@ -10,8 +10,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * A self-contained, hierarchical collection of knowledge documents. The unit of distribution.

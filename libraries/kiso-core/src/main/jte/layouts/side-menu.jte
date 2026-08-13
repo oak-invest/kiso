@@ -1,3 +1,5 @@
+@import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX
+
 @param com.oakinvest.kiso.core.model.html.util.PageContext pageContext
 @param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
@@ -30,7 +32,7 @@
 
             <!-- All pages inside the bundle ======================================================================= -->
             @for(var page : pageContext.bundleTree().pages())
-                @if(page.kind() != com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX)
+                @if(page.kind() != INDEX)
                     <li>
                         <a class="@if(page.href().equals(pageMetadata.htmlPath()))font-semibold@endif"
                            href="${pageMetadata.assetBasePath()}${page.href()}">

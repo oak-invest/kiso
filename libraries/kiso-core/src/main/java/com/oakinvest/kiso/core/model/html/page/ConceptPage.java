@@ -8,8 +8,8 @@ import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParamet
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.LifecycleStatus;
-import com.oakinvest.kiso.core.util.TrustLevel;
+import com.oakinvest.kiso.core.util.types.LifecycleStatus;
+import com.oakinvest.kiso.core.util.types.TrustLevel;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
 import org.jspecify.annotations.Nullable;
@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.ConceptTypeConstants.ATTESTED_COMPUTATION;
+import static com.oakinvest.kiso.core.util.contants.ConceptTypeConstants.ATTESTED_COMPUTATION;
 
 /**
  * Concept page.

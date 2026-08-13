@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.util;
+package com.oakinvest.kiso.core.util.html;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;

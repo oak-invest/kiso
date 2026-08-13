@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.util;
+package com.oakinvest.kiso.core.util.types;
 
 /**
  * Actor type.

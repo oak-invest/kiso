@@ -8,7 +8,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.Locale;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.InternationalizationConstants.DEFAULT_LANGUAGE;
+import static com.oakinvest.kiso.core.util.contants.InternationalizationConstants.DEFAULT_LANGUAGE;
 
 /**
  * Site configuration.

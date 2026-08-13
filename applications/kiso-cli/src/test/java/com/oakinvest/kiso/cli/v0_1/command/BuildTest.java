@@ -16,9 +16,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
-import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
-import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.SEARCH_INDEX_JSON_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.SITEMAP_XML_FILENAME;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 

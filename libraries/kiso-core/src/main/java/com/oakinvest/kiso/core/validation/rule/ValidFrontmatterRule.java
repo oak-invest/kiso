@@ -9,11 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.OKF_VERSION_KEY;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.LOG;
-import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.OKF_VERSION_KEY;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;

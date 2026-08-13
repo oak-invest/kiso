@@ -13,9 +13,9 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;

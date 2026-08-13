@@ -13,8 +13,8 @@ import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.oakinvest.kiso.core.util.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 

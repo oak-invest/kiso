@@ -18,10 +18,10 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_1;
-import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.OKFConstants.DEFAULT_TITLE;
+import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_1;
+import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.DEFAULT_TITLE;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * Generator for the llms.txt file.

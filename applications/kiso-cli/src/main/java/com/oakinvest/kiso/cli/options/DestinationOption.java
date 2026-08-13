@@ -4,7 +4,7 @@ import picocli.CommandLine;
 
 import java.nio.file.Path;
 
-import static com.oakinvest.kiso.core.util.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
 
 /**
  * Destination directory option for commands creating files.

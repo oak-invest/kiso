@@ -7,7 +7,7 @@ import com.oakinvest.kiso.core.util.BaseTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.ROOT_BUNDLE_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("vO.1 - KnowledgeBundle Tests")

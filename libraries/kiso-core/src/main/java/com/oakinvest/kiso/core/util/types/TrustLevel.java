@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.util;
+package com.oakinvest.kiso.core.util.types;
 
 /**
  * A level derived from a concept's verified field: unverified, machine-confirmed, or human-reviewed.

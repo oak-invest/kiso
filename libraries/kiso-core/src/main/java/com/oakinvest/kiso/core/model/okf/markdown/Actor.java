@@ -1,14 +1,14 @@
 package com.oakinvest.kiso.core.model.okf.markdown;
 
-import com.oakinvest.kiso.core.util.ActorType;
+import com.oakinvest.kiso.core.util.types.ActorType;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.jspecify.annotations.Nullable;
 
-import static com.oakinvest.kiso.core.util.ActorConstants.HUMAN_PREFIX;
-import static com.oakinvest.kiso.core.util.ActorConstants.PROCESS_PREFIX;
-import static com.oakinvest.kiso.core.util.ActorConstants.PRODUCER_VERSION_SEPARATOR;
+import static com.oakinvest.kiso.core.util.contants.ActorConstants.HUMAN_PREFIX;
+import static com.oakinvest.kiso.core.util.contants.ActorConstants.PROCESS_PREFIX;
+import static com.oakinvest.kiso.core.util.contants.ActorConstants.PRODUCER_VERSION_SEPARATOR;
 
 /**
  * Identifier who or what performed an action, using the convention producer/version for agents, human:id for people,

@@ -1,3 +1,4 @@
+@import com.oakinvest.kiso.core.util.html.TagSlugifier
 @import java.time.format.DateTimeFormatter
 
 @param com.oakinvest.kiso.core.model.html.page.ConceptPage page
@@ -97,14 +98,16 @@ pageContent = @`
                 @endif
 
                 <!-- Tags ========================================================================================== -->
-                @if(page.tags() != null)
+                @if(!page.tags().isEmpty())
                     <div class="px-6 py-5 sm:px-8">
                         <div class="mb-3 text-xs font-semibold uppercase text-base-content/50"
                              data-i18n="metadata.tags">Tags
                         </div>
                         <div class="flex flex-wrap gap-2">
                             @for(var tag : page.tags())
-                                <span class="badge badge-ghost border border-base-300">${tag}</span>
+                                <a href="${page.metadata().assetBasePath()}tags/${TagSlugifier.slug(tag)}.html">
+                                    <span class="badge badge-ghost border border-base-300">${tag}</span>
+                                </a>
                             @endfor
                         </div>
                     </div>

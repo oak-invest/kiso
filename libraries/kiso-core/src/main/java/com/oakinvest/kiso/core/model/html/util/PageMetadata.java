@@ -5,8 +5,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;
 
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.PNG_EXTENSION;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.MARKDOWN_EXTENSION;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.PNG_EXTENSION;
 
 /**
  * Page metadata.
@@ -15,7 +15,7 @@ import static com.oakinvest.kiso.core.util.FileExtensionsConstants.PNG_EXTENSION
  * @param description   the description of the page
  * @param absolutePath  the absolute path of the page
  * @param htmlPath      the HTML path relative to the generated site root
- * @param assetBasePath relative absolutePath from this page to the generated site root
+ * @param assetBasePath relative base Path from this page to the generated site root
  */
 @Builder
 @SuppressWarnings("unused")

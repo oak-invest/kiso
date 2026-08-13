@@ -10,7 +10,7 @@ import lombok.experimental.UtilityClass;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
 /**
  * Generator for the search index JSON file.

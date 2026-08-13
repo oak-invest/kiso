@@ -17,9 +17,9 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.util.ActorType.AGENT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.types.ActorType.AGENT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("vO.2 - Loading google example bundle")

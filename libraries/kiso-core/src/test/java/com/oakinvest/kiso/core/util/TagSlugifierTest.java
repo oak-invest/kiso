@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.util;
 
+import com.oakinvest.kiso.core.util.html.TagSlugifier;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import org.jsoup.nodes.Element;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;

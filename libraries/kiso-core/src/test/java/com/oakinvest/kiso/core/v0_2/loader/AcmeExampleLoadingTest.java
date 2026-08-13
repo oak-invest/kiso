@@ -19,12 +19,12 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.util.ActorType.AGENT;
-import static com.oakinvest.kiso.core.util.ActorType.HUMAN;
-import static com.oakinvest.kiso.core.util.ConceptTypeConstants.ATTESTED_COMPUTATION;
-import static com.oakinvest.kiso.core.util.LifecycleStatus.STABLE;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.util.TrustLevel.HUMAN_REVIEWED;
+import static com.oakinvest.kiso.core.util.contants.ConceptTypeConstants.ATTESTED_COMPUTATION;
+import static com.oakinvest.kiso.core.util.types.ActorType.AGENT;
+import static com.oakinvest.kiso.core.util.types.ActorType.HUMAN;
+import static com.oakinvest.kiso.core.util.types.LifecycleStatus.STABLE;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.TrustLevel.HUMAN_REVIEWED;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("vO.2 - Loading acme example bundle")

@@ -6,8 +6,8 @@ import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParamet
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.LifecycleStatus;
-import com.oakinvest.kiso.core.util.TrustLevel;
+import com.oakinvest.kiso.core.util.types.LifecycleStatus;
+import com.oakinvest.kiso.core.util.types.TrustLevel;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 import org.jspecify.annotations.Nullable;

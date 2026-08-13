@@ -15,18 +15,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.PNG_EXTENSION;
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.SVG_EXTENSION;
-import static com.oakinvest.kiso.core.util.SocialPreviewConstants.CANVAS_HEIGHT;
-import static com.oakinvest.kiso.core.util.SocialPreviewConstants.CANVAS_WIDTH;
-import static com.oakinvest.kiso.core.util.SocialPreviewConstants.DESCRIPTION_MAXIMUM_LINES;
-import static com.oakinvest.kiso.core.util.SocialPreviewConstants.DESCRIPTION_MAXIMUM_LINE_LENGTH;
-import static com.oakinvest.kiso.core.util.SocialPreviewConstants.TITLE_MAXIMUM_LINES;
-import static com.oakinvest.kiso.core.util.SocialPreviewConstants.TITLE_MAXIMUM_LINE_LENGTH;
-import static com.oakinvest.kiso.core.util.TemplateConstants.MODULE_SOURCE_TEMPLATES_DIRECTORY;
-import static com.oakinvest.kiso.core.util.TemplateConstants.PRECOMPILED_SOCIAL_PREVIEW_TEMPLATE_CLASS;
-import static com.oakinvest.kiso.core.util.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
-import static com.oakinvest.kiso.core.util.TemplateConstants.SOCIAL_PREVIEW_TEMPLATE_IMAGE;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.PNG_EXTENSION;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.SVG_EXTENSION;
+import static com.oakinvest.kiso.core.util.contants.SocialPreviewConstants.CANVAS_HEIGHT;
+import static com.oakinvest.kiso.core.util.contants.SocialPreviewConstants.CANVAS_WIDTH;
+import static com.oakinvest.kiso.core.util.contants.SocialPreviewConstants.DESCRIPTION_MAXIMUM_LINES;
+import static com.oakinvest.kiso.core.util.contants.SocialPreviewConstants.DESCRIPTION_MAXIMUM_LINE_LENGTH;
+import static com.oakinvest.kiso.core.util.contants.SocialPreviewConstants.TITLE_MAXIMUM_LINES;
+import static com.oakinvest.kiso.core.util.contants.SocialPreviewConstants.TITLE_MAXIMUM_LINE_LENGTH;
+import static com.oakinvest.kiso.core.util.contants.TemplateConstants.MODULE_SOURCE_TEMPLATES_DIRECTORY;
+import static com.oakinvest.kiso.core.util.contants.TemplateConstants.PRECOMPILED_SOCIAL_PREVIEW_TEMPLATE_CLASS;
+import static com.oakinvest.kiso.core.util.contants.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
+import static com.oakinvest.kiso.core.util.contants.TemplateConstants.SOCIAL_PREVIEW_TEMPLATE_IMAGE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**

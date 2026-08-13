@@ -12,9 +12,9 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION;
-import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY;
-import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE;
-import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_FILE_NAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.CONFIGURATION_DIRECTORY;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.CONFIGURATION_FILE;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.CONFIGURATION_FILE_NAME;
 
 /**
  * Kiso-cli configuration loader.

@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.util;
+package com.oakinvest.kiso.core.util.types;
 
 import lombok.Getter;
 import org.apache.commons.lang3.Strings;

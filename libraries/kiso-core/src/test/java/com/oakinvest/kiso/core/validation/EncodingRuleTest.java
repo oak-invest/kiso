@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_ENCODING;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 import static org.assertj.core.api.Assertions.assertThat;

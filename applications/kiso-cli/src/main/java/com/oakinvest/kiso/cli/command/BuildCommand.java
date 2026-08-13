@@ -20,7 +20,7 @@ import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.core.publisher.TagPageGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
-import com.oakinvest.kiso.core.util.ThemeConstants;
+import com.oakinvest.kiso.core.util.contants.ThemeConstants;
 import com.oakinvest.kiso.core.validation.ValidationReport;
 import com.oakinvest.kiso.core.validation.ValidationRunner;
 import net.lingala.zip4j.ZipFile;
@@ -38,13 +38,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
-import static com.oakinvest.kiso.core.util.FileConstants.BUNDLE_ZIP_FILENAME;
-import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
-import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
-import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
-import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
-import static com.oakinvest.kiso.core.util.FileConstants.TAGS_DIRECTORY_NAME;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.BUNDLE_ZIP_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.CONFIGURATION_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.LLMS_TXT_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.SEARCH_INDEX_JSON_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.SITEMAP_XML_FILENAME;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * Build: Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml.

@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.model.okf.markdown;
 
-import com.oakinvest.kiso.core.util.MarkdownFileKind;
+import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.Builder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,10 +11,10 @@ import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.HTML_EXTENSION;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.HTML_EXTENSION;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * Markdown file discovered inside a knowledge bundle.
