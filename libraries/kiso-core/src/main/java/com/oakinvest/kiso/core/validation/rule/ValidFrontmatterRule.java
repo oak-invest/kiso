@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.validation.rule;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.util.contants.OKFVersion;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import org.apache.commons.lang3.StringUtils;
 
@@ -14,6 +15,7 @@ import static com.oakinvest.kiso.core.util.contants.OKFConstants.ROOT_BUNDLE_NAM
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_OKF_VERSION;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
@@ -97,6 +99,18 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                 if (markdownFile.kind().equals(INDEX)
                         && markdownFile.bundleName().equals(ROOT_BUNDLE_NAME)
                         && markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY) != null) {
+
+                    // Validate okf_version against existing OKF versions.
+                    final String okfVersion = markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY).toString();
+                    if (!OKFVersion.exists(okfVersion)) {
+                        return List.of(ValidationIssue.builder()
+                                .severity(ERROR)
+                                .code(INVALID_OKF_VERSION)
+                                .message("File " + markdownFile.relativePath() + " has invalid 'okf_version' in frontmatter:" + okfVersion)
+                                .path(markdownFile.relativePath())
+                                .build());
+                    }
+
                     return List.of();
                 }
 

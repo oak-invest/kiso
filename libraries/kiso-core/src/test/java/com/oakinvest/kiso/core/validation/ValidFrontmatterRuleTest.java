@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_OKF_VERSION;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
@@ -83,7 +84,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         Files.createDirectories(rootIndex.getParent());
         Files.writeString(rootIndex, """
                 ---
-                okf_version: "0.2"
+                okf_version: "v0.2"
                 ---
                 Example content""");
 
@@ -101,7 +102,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         Files.createDirectories(indexWithFrontmatterNotRoot.getParent());
         Files.writeString(indexWithFrontmatterNotRoot, """
                 ---
-                okf_version: "0.2"
+                okf_version: "v0.2"
                 ---
                 Example content""");
 
@@ -130,6 +131,37 @@ class ValidFrontmatterRuleTest extends BaseTest {
             assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
             assertThat(issue.message()).isEqualTo("File test2/index.md is not a concept file and should not contain frontmatter");
             assertThat(issue.path()).isEqualTo(Path.of("test2/index.md"));
+        });
+    }
+
+    @Test
+    @DisplayName("Index with a valid frontmatter but invalid version")
+    void indexWithFrontmatterButInvalidVersion(@TempDir Path temporaryDirectory) throws Exception {
+        // What we are testing =========================================================================================
+        var sourceDirectory = temporaryDirectory.resolve("bundle");
+        Files.createDirectories(sourceDirectory);
+
+        // index.md with invalid frontmatter ===========================================================================
+        var rootIndex = sourceDirectory.resolve("index.md");
+        Files.createDirectories(rootIndex.getParent());
+        Files.writeString(rootIndex, """
+                ---
+                okf_version: "v0.0"
+                ---
+                Example content""");
+
+        // We get the files from the bundle ============================================================================
+        var bundle = KnowledgeBundleLoader.load(sourceDirectory);
+        var indexRoot = bundle.markdownFiles()
+                .filter(markdownFile -> markdownFile.bundleName().equals("index"))
+                .findAny().orElseThrow(() -> new Exception("index.md not found"));
+
+        // We check the errors =========================================================================================
+        assertThat(rule.validate(bundle.rootBundle(), indexRoot)).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(ERROR);
+            assertThat(issue.code()).isEqualTo(INVALID_OKF_VERSION);
+            assertThat(issue.message()).isEqualTo("File index.md has invalid 'okf_version' in frontmatter:v0.0");
+            assertThat(issue.path()).isEqualTo(Path.of("index.md"));
         });
     }
 

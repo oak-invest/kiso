@@ -39,6 +39,9 @@ public enum ValidationCode {
     INVALID_VERIFIED_AT,
 
     /** Broken local link. */
-    BROKEN_LINK
+    BROKEN_LINK,
+
+    /** Invalid OKF version. */
+    INVALID_OKF_VERSION;
 
 }
