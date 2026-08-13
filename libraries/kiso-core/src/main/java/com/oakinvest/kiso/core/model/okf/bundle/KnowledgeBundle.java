@@ -64,4 +64,19 @@ public record KnowledgeBundle(
         return List.copyOf(tags);
     }
 
+    /**
+     * Returns all unique tag slugs used by Markdown files in this bundle.
+     *
+     * @return unique tag slugs in their first-seen order
+     */
+    public List<String> tagSlugs() {
+        Set<String> tagSlugs = new LinkedHashSet<>();
+        markdownFiles()
+                .map(MarkdownFile::frontmatter)
+                .filter(Objects::nonNull)
+                .flatMap(frontmatter -> frontmatter.tagSlugs().stream())
+                .forEach(tagSlugs::add);
+        return List.copyOf(tagSlugs);
+    }
+
 }

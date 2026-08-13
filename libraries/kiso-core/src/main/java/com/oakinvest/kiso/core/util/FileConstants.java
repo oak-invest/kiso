@@ -45,4 +45,7 @@ public final class FileConstants {
     /** Bundle zip filename when in root. */
     public static final String BUNDLE_ZIP_FILENAME = "bundle.zip";
 
+    /** Tags directory name. */
+    public static final String TAGS_DIRECTORY_NAME = "tags";
+
 }

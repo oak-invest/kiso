@@ -17,6 +17,7 @@ import com.oakinvest.kiso.core.publisher.IndexGenerator;
 import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
 import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
 import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
+import com.oakinvest.kiso.core.publisher.TagPageGenerator;
 import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
 import com.oakinvest.kiso.core.util.ThemeConstants;
@@ -42,6 +43,7 @@ import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY
 import static com.oakinvest.kiso.core.util.FileConstants.LLMS_TXT_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SEARCH_INDEX_JSON_FILENAME;
 import static com.oakinvest.kiso.core.util.FileConstants.SITEMAP_XML_FILENAME;
+import static com.oakinvest.kiso.core.util.FileConstants.TAGS_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.MarkdownFileKind.INDEX;
 
 /**
@@ -186,6 +188,21 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                             printError("Error generating " + INDEX.getFileName() + " for " + bundle.absolutePath() + ": " + e.getMessage());
                         }
                     });
+
+            // Tags pages generation ===================================================================================
+            String tagsDirectory = knowledgeBundle.rootBundle().absolutePath().resolve(TAGS_DIRECTORY_NAME).toString();
+            for (String tag : knowledgeBundle.tagSlugs()) {
+                try {
+                    FileUtils.writeStringToFile(
+                            new File(tagsDirectory, tag + ".md"),
+                            TagPageGenerator.generate(knowledgeBundle, tag),
+                            StandardCharsets.UTF_8
+                    );
+                    print("Tag page generated for tag: " + tag);
+                } catch (IOException e) {
+                    printError("Error generating tag page for tag " + tag + ": " + e.getMessage());
+                }
+            }
 
             // HTML generation =========================================================================================
             knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath(), configuration.site());

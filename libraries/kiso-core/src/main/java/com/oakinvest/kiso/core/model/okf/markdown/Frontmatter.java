@@ -1,10 +1,10 @@
 package com.oakinvest.kiso.core.model.okf.markdown;
 
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
 import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
+import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
+import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.LifecycleStatus;
 import com.oakinvest.kiso.core.util.TrustLevel;
@@ -27,6 +27,7 @@ import java.util.Objects;
  * @param description A single sentence summarizing the concept. Used by index.md generators, search snippets, and previews
  * @param resource    A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
  * @param tags        A YAML list of short strings for cross-cutting categorization
+ * @param tagSlugs    A YAML list of short strings representing the slugs of the tags
  * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2
  * @param sources     materials the concept derives from
  * @param usageWindow date range that frames source usage counts
@@ -49,6 +50,7 @@ public record Frontmatter(
         @Nullable String description,
         @Nullable String resource,
         List<String> tags,
+        List<String> tagSlugs,
         @Nullable String timestamp,
         List<Source> sources,
         @Nullable UsageWindow usageWindow,
@@ -69,6 +71,7 @@ public record Frontmatter(
      */
     public Frontmatter {
         tags = Objects.requireNonNullElse(tags, List.of());
+        tagSlugs = Objects.requireNonNullElse(tagSlugs, List.of());
         sources = Objects.requireNonNullElse(sources, List.of());
         verified = Objects.requireNonNullElse(verified, List.of());
         status = Objects.requireNonNullElse(status, LifecycleStatus.STABLE);

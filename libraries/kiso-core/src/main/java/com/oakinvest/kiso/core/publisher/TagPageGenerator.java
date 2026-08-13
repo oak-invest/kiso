@@ -27,12 +27,12 @@ public class TagPageGenerator {
      * Generate a tag page for a bundle.
      *
      * @param knowledgeBundle bundle where the pages are
-     * @param tag             tag for which the page is generated
+     * @param tagSlug         tag slug for which the page is generated
      * @return tag page content
      */
-    public static String generate(final KnowledgeBundle knowledgeBundle, final String tag) {
+    public static String generate(final KnowledgeBundle knowledgeBundle, final String tagSlug) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
-        Objects.requireNonNull(tag, "tag must not be null");
+        Objects.requireNonNull(tagSlug, "tagSlug must not be null");
 
         // Define base url =============================================================================================
         final String baseUrl;
@@ -47,14 +47,12 @@ public class TagPageGenerator {
         final Document tagPage = new Document();
         knowledgeBundle.markdownFiles()
                 .filter(MarkdownFile::frontmatterPresent)
-                .filter(markdownFile -> markdownFile.frontmatter().tags().contains(tag))
+                .filter(markdownFile -> markdownFile.frontmatter().tagSlugs().contains(tagSlug))
                 .forEach(markdownFile -> {
                     BulletList list = new BulletList();
                     list.setMarker("-");
                     list.setTight(true);
-                    list.appendChild(markdownFileListItem(
-                            baseUrl,
-                            markdownFile));
+                    list.appendChild(markdownFileListItem(baseUrl, markdownFile));
                     tagPage.appendChild(list);
                 });
 
@@ -65,7 +63,7 @@ public class TagPageGenerator {
                 title: Tag %s
                 ---
                 
-                %s""".formatted(tag, MarkdownRenderer.builder().build().render(tagPage));
+                %s""".formatted(tagSlug, MarkdownRenderer.builder().build().render(tagPage));
     }
 
     /**
@@ -95,7 +93,7 @@ public class TagPageGenerator {
     }
 
     /**
-     * Returns a Markdown path usable in llms.txt links.
+     * Returns a Markdown path usable in links.
      *
      * @param relativePath Markdown path relative to the knowledge bundle root
      * @return normalized Markdown path

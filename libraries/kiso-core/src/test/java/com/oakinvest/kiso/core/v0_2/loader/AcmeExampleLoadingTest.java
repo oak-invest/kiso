@@ -64,6 +64,7 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns("Revenue for a fiscal year", Frontmatter::title)
                 .returns("Sanctioned SQL that produces the recognized-revenue figure for a given fiscal year, per Acme's FY2026 Revenue Recognition Policy.", Frontmatter::description)
                 .returns(List.of("finance", "revenue", "attested"), Frontmatter::tags)
+                .returns(List.of("finance", "revenue", "attested"), Frontmatter::tagSlugs)
                 .returns("reference_agent/gemini-2.5-pro", Frontmatter::generatedBy)
                 .returns(OffsetDateTime.parse("2026-06-30T14:00:00Z"), Frontmatter::generatedAt)
                 .returns(null, Frontmatter::resource)

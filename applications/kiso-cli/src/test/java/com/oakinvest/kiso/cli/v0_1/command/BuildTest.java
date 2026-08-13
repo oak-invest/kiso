@@ -78,6 +78,19 @@ class BuildTest extends BaseTest {
                             "tables/index.md",
                             "tables/events_.md",
                             "tables/",
+                            "tags/",
+                            "tags/advanced-queries.md",
+                            "tags/basic-queries.md",
+                            "tags/bigquery.md",
+                            "tags/ecommerce.md",
+                            "tags/events.md",
+                            "tags/google-ads.md",
+                            "tags/google-analytics.md",
+                            "tags/join.md",
+                            "tags/metric.md",
+                            "tags/public-dataset.md",
+                            "tags/schema.md",
+                            "tags/web-analytics.md",
                             "index.md"
                     );
         }

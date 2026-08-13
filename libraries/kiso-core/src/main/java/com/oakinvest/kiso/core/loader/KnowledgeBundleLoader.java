@@ -20,6 +20,7 @@ import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.util.LifecycleStatus;
 import com.oakinvest.kiso.core.util.MarkdownFileKind;
+import com.oakinvest.kiso.core.util.TagSlugifier;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
@@ -41,10 +42,10 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.ATTESTER_KEY;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.COMPUTATION_KEY;
 import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.ATTESTER_KEY;
+import static com.oakinvest.kiso.core.util.FrontmatterConstants.COMPUTATION_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.DESCRIPTION_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.EXECUTOR_KEY;
 import static com.oakinvest.kiso.core.util.FrontmatterConstants.EXECUTOR_RECEIPT_KEY;
@@ -273,13 +274,21 @@ public class KnowledgeBundleLoader {
             return Optional.empty();
         }
 
+        // Getting json node from frontmatter content ==================================================================
         final JsonNode frontmatter = readFrontmatter(frontmatterContent);
+
+        // Treating tags ===============================================================================================
+        final List<String> tags = textList(frontmatter.get(TAGS_KEY));
+        final List<String> tagSlugs = tags.stream().map(TagSlugifier::slug).toList();
+
+        // Returning frontmatter =======================================================================================
         return Optional.of(Frontmatter.builder()
                 .type(textValue(frontmatter, TYPE_KEY))
                 .title(textValue(frontmatter, TITLE_KEY))
                 .description(textValue(frontmatter, DESCRIPTION_KEY))
                 .resource(textValue(frontmatter, RESOURCE_KEY))
-                .tags(textList(frontmatter.get(TAGS_KEY)))
+                .tags(tags)
+                .tagSlugs(tagSlugs)
                 .timestamp(textValue(frontmatter, TIMESTAMP_KEY))
                 .sources(sources(frontmatter.get(SOURCES_KEY)))
                 .usageWindow(usageWindow(frontmatter.get(USAGE_WINDOW_KEY)))

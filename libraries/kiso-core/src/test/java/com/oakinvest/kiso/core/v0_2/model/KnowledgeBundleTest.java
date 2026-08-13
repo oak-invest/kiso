@@ -70,6 +70,14 @@ public class KnowledgeBundleTest extends BaseTest {
                         "acquired-users", "frequent-actives", "cohorts", "high-actives", "active-users",
                         "inactive-users", "purchasers", "e-commerce", "sharded-tables"
                 );
+
+        // Testing tagSlugs() =========================================================================================
+        assertThat(rootBundle.tagSlugs())
+                .containsExactlyInAnyOrder(
+                        "ga4", "ecommerce", "obfuscated", "analytics", "sample-data", "metric", "audience",
+                        "acquired-users", "frequent-actives", "cohorts", "high-actives", "active-users",
+                        "inactive-users", "purchasers", "e-commerce", "sharded-tables"
+                );
     }
 
     @Test

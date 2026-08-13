@@ -152,7 +152,6 @@ public final class MarkdownToHtmlRenderer {
                         "<h2 data-i18n=\"content.subdirectories\">Subdirectories</h2>"
                 );
 
-
         // Choose and render depending on the kind =====================================================================
         StringOutput htmlOutput = new StringOutput();
         switch (markdownFile.kind()) {

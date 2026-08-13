@@ -101,7 +101,8 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns("https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce", Frontmatter::resource)
                                     .returns("GA4 Obfuscated Sample Ecommerce Dataset", Frontmatter::title)
                                     .returns("Obfuscated Google Analytics 4 dataset emulating a web ecommerce implementation of the Google Merchandise Store.", Frontmatter::description)
-                                    .returns(List.of("ga4", "ecommerce", "obfuscated", "analytics", "sample-data"), Frontmatter::tags);
+                                    .returns(List.of("ga4", "ecommerce", "obfuscated", "analytics", "sample-data"), Frontmatter::tags)
+                                    .returns(List.of("ga4", "ecommerce", "obfuscated", "analytics", "sample-data"), Frontmatter::tagSlugs);
                             assertThat(ga4.frontmatter().generated())
                                     .isNotNull()
                                     .returns(Actor.of("reference_agent/gemini-3.5-flash"), TrustEvent::by)
