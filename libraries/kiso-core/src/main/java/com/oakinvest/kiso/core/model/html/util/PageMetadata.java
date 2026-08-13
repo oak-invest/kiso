@@ -38,6 +38,19 @@ public record PageMetadata(
     }
 
     /**
+     * Returns the path to the home page (index.html) relative to the generated site root.
+     *
+     * @return the path to the home page (index.html) relative to the generated site root
+     */
+    public String homePath() {
+        if (StringUtils.isBlank(assetBasePath)) {
+            return "index.html";
+        } else {
+            return assetBasePath + "index.html";
+        }
+    }
+
+    /**
      * Returns Markdown filename.
      *
      * @return Markdown filename
