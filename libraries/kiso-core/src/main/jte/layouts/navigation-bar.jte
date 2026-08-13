@@ -5,7 +5,7 @@
     <!-- Buttons =================================================================================================== -->
     <div class="flex-none flex items-center gap-1">
         <!-- Home link ============================================================================================= -->
-        <a href="${pageMetadata.assetBasePath()}"
+        <a href="${pageMetadata.assetBasePath()}/"
            class="btn btn-square btn-ghost"
            aria-label="Home"
            data-i18n-aria-label="navigation.home">
