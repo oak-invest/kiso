@@ -4,6 +4,7 @@ import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.rule.BrokenLinkRule;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
+import com.oakinvest.kiso.core.validation.rule.TrustEventRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import lombok.experimental.UtilityClass;
 
@@ -22,7 +23,8 @@ public class ValidationRunner {
     private static final List<MarkdownFileRule> MARKDOWN_FILE_RULES = List.of(
             new EncodingRule(),
             new ValidFrontmatterRule(),
-            new BrokenLinkRule()
+            new BrokenLinkRule(),
+            new TrustEventRule()
     );
 
     /**
