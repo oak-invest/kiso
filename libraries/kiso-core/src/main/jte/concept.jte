@@ -225,7 +225,18 @@ pageContent = @`
                             @if(page.generated().by() != null)
                                 <div>
                                     <dt class="font-semibold" data-i18n="okfMetadata.by">By</dt>
-                                    <dd class="font-mono">${page.generated().by().identifier()}</dd>
+                                    <dd class="inline-flex items-center gap-1.5">
+                                        @if(page.generated().by().isHuman())
+                                            @template.components.icons.human(cssClass = "size-4 shrink-0")
+                                        @endif
+                                        @if(page.generated().by().isAgent())
+                                            @template.components.icons.agent(cssClass = "size-4 shrink-0")
+                                        @endif
+                                        @if(page.generated().by().isProcess())
+                                            @template.components.icons.process(cssClass = "size-4 shrink-0")
+                                        @endif
+                                        <span class="font-mono">${page.generated().by().identifier()}</span>
+                                    </dd>
                                 </div>
                             @endif
                             @if(page.generated().at() != null)
@@ -245,9 +256,20 @@ pageContent = @`
                         </div>
                         <ul class="mt-3 space-y-3 text-sm">
                             @for(var verification : page.verified())
-                                <li>
+                                <li class="flex flex-wrap items-center gap-x-2 gap-y-1">
                                     @if(verification.by() != null)
-                                        <span class="font-mono">${verification.by().identifier()}</span>
+                                        <span class="inline-flex items-center gap-1.5">
+                                            @if(verification.by().isHuman())
+                                                @template.components.icons.human(cssClass = "size-4 shrink-0")
+                                            @endif
+                                            @if(verification.by().isAgent())
+                                                @template.components.icons.agent(cssClass = "size-4 shrink-0")
+                                            @endif
+                                            @if(verification.by().isProcess())
+                                                @template.components.icons.process(cssClass = "size-4 shrink-0")
+                                            @endif
+                                            <span class="font-mono">${verification.by().identifier()}</span>
+                                        </span>
                                     @endif
                                     @if(verification.at() != null)
                                         <span class="text-base-content/60">${verification.at()}</span>
