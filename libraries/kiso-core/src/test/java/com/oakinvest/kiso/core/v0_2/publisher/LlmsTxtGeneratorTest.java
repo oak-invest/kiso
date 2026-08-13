@@ -76,8 +76,7 @@ class LlmsTxtGeneratorTest extends BaseTest {
         assertThat(content)
                 .contains("[index.md](https://knowledge.angara.finance/index.md)")
                 .contains("[index.md](https://knowledge.angara.finance/datasets/index.md)")
-                .contains("[Acquired Users Metric]"
-                        + "(https://knowledge.angara.finance/references/metrics/acquired_users.md)");
+                .contains("[Acquired Users Metric](https://knowledge.angara.finance/references/metrics/acquired_users.md)");
     }
 
 }

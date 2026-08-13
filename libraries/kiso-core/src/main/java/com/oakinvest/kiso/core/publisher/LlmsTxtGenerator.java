@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
 
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.contants.OKFConstants.DEFAULT_TITLE;
@@ -47,6 +48,8 @@ public class LlmsTxtGenerator {
         knowledgeBundle.bundles()
                 // Do not add a bundle with no child and no file.
                 .filter(bundle -> !bundle.isEmpty())
+                // Do not add tags.
+                .filter(bundle -> !bundle.name().equalsIgnoreCase(TAGS_DIRECTORY_NAME))
                 .forEach(bundle -> {
 
                     // Bundle name =====================================================================================

@@ -9,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
@@ -34,6 +35,7 @@ public final class SitemapXmlGenerator {
                 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
                 """);
         knowledgeBundle.bundles()
+                .filter(bundle -> !bundle.name().equalsIgnoreCase(TAGS_DIRECTORY_NAME))
                 .forEach(bundle -> bundle.markdownFiles().stream()
                         // Index first.
                         .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))

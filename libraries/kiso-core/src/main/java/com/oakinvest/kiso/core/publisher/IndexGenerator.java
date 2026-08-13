@@ -18,6 +18,7 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.util.contants.FileConstants.ASSETS_DIRECTORY;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
@@ -62,6 +63,8 @@ public class IndexGenerator {
             list.setTight(true);
 
             bundle.childBundles().stream()
+                    // Do not add tags.
+                    .filter(childBundle -> !childBundle.name().equalsIgnoreCase(TAGS_DIRECTORY_NAME))
                     // Do not take the assets directory at the root!
                     .filter(childBundle -> !Strings.CI.equals(childBundle.relativePath().toString(), ASSETS_DIRECTORY))
                     .forEach(childBundle -> list.appendChild(bundleListItem(childBundle)));
