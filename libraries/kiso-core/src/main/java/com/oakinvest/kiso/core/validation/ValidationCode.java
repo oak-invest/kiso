@@ -51,6 +51,39 @@ public enum ValidationCode {
     MISSING_SOURCE_RESOURCE,
 
     /** Invalid sources[].last_modified field in frontmatter - Not an ISO 8601 date. */
-    INVALID_SOURCE_LAST_MODIFIED
+    INVALID_SOURCE_LAST_MODIFIED,
+
+    /** Missing runtime field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_RUNTIME,
+
+    /** Missing parameters[].name field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_PARAMETER_NAME,
+
+    /** Missing parameters[].type field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_PARAMETER_TYPE,
+
+    /** Missing parameters[].required field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_PARAMETER_REQUIRED,
+
+    /** Invalid parameters[].required field in Attested Computation frontmatter. */
+    INVALID_COMPUTATION_PARAMETER_REQUIRED,
+
+    /** Invalid computation path or URI in Attested Computation frontmatter. */
+    INVALID_COMPUTATION_PATH,
+
+    /** Missing executor.resource field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_EXECUTOR_RESOURCE,
+
+    /** Missing executor.receipt field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_EXECUTOR_RECEIPT,
+
+    /** Missing attester.resource field in Attested Computation frontmatter. */
+    MISSING_COMPUTATION_ATTESTER_RESOURCE,
+
+    /** Missing computation body or frontmatter path in Attested Computation. */
+    MISSING_COMPUTATION_DEFINITION,
+
+    /** Computation is declared both in frontmatter and body. */
+    DUPLICATE_COMPUTATION_DEFINITION
 
 }
