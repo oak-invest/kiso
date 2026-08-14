@@ -18,7 +18,7 @@ import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParamet
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.html.TagSlugifier;
+import com.oakinvest.kiso.core.util.html.TagNormalizer;
 import com.oakinvest.kiso.core.util.types.LifecycleStatus;
 import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
@@ -279,7 +279,7 @@ public class KnowledgeBundleLoader {
 
         // Treating tags ===============================================================================================
         final List<String> tags = textList(frontmatter.get(TAGS_KEY));
-        final List<String> tagSlugs = tags.stream().map(TagSlugifier::slug).toList();
+        final List<String> tagSlugs = tags.stream().map(TagNormalizer::normalize).toList();
 
         // Returning frontmatter =======================================================================================
         return Optional.of(Frontmatter.builder()

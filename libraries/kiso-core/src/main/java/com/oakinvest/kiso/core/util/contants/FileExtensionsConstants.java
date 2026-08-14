@@ -7,7 +7,7 @@ import lombok.experimental.UtilityClass;
  * File extensions constants.
  */
 @UtilityClass
-@SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
+@SuppressWarnings({"checkstyle:HideUtilityClassConstructor", "unused"})
 public final class FileExtensionsConstants {
 
     /** Markdown file. */

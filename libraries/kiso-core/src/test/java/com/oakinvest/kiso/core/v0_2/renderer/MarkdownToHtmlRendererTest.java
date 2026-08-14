@@ -206,7 +206,13 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertElementText(page.selectFirst(".drawer-side a[href='../index.html']"), ROOT_BUNDLE_NAME);
         assertElementClassName(page.selectFirst(".drawer-side summary"), "menu-active");
         assertElementClassName(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"), "font-semibold");
-        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").className())
+        Element link = page.selectFirst(
+                ".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"
+        );
+        assertThat(link)
+                .isNotNull()
+                .extracting(Element::className)
+                .asString()
                 .doesNotContain("menu-active");
         assertElementText(page.selectFirst(".drawer-side a[href='../references/metrics/acquired_users.html']"), "Acquired Users Metric");
 
@@ -285,7 +291,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
 
     @Test
     @DisplayName("Log page")
-    void mogPage(@TempDir Path temporaryDirectory) throws IOException {
+    void logPage() {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_ACME_V_0_2);
         var bundle = KnowledgeBundleLoader.load(resourcePath);

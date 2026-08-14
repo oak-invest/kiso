@@ -9,8 +9,8 @@
 
 - Delete the `public` folder in the project root.
 - Run `just release_build_native` to build a native app.
-- Test the check command on Google knowledge base: `just release_run_check_kb_google`
-- Test the build command on Google knowledge base: `just release_run_build_kb_google`
+- Test the check command on Google knowledge base: `just release_run_check`
+- Test the build command on Google knowledge base: `just release_run_build`
 
 ## Test the release (online)
 

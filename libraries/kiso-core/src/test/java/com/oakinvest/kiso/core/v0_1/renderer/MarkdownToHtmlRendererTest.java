@@ -206,8 +206,12 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertElementText(page.selectFirst(".drawer-side a[href='../index.html']"), ROOT_BUNDLE_NAME);
         assertElementClassName(page.selectFirst(".drawer-side summary"), "menu-active");
         assertElementClassName(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"), "font-semibold");
-        assertThat(page.selectFirst(".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']").className())
-                .doesNotContain("menu-active");
+        Element link = page.selectFirst(
+                ".drawer-side a[href='../datasets/ga4_obfuscated_sample_ecommerce.html']"
+        );
+
+        assertThat(link).isNotNull();
+        assertThat(link.className()).doesNotContain("menu-active");
         assertElementText(page.selectFirst(".drawer-side a[href='../references/metrics/avg_pageviews.html']"), "Average Pageviews");
 
         // Concept header ==============================================================================================

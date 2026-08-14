@@ -15,7 +15,7 @@ import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 
 /**
  * Sources rule.
- * For every sources[] entry:
+ * For every sources entry:
  * - Require sources[].resource.
  * - Validate sources[].last_modified as YYYY-MM-DD when present.
  */

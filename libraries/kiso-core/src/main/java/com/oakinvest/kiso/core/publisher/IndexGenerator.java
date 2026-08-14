@@ -1,10 +1,8 @@
 package com.oakinvest.kiso.core.publisher;
 
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Document;
@@ -20,6 +18,7 @@ import java.util.Objects;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.util.markdown.MarkdownUtil.markdownFileListItem;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
 /**
@@ -104,31 +103,6 @@ public class IndexGenerator {
         Link link = new Link(bundle.simpleName() + "/" + MarkdownFileKind.INDEX.getFileName(), null);
         link.appendChild(new Text(bundle.name()));
         paragraph.appendChild(link);
-
-        listItem.appendChild(paragraph);
-        return listItem;
-    }
-
-    /**
-     * Creates a Markdown file list item.
-     *
-     * @param markdownFile Markdown file
-     * @return list item
-     */
-    private static ListItem markdownFileListItem(final MarkdownFile markdownFile) {
-        ListItem listItem = new ListItem();
-        Paragraph paragraph = new Paragraph();
-
-        // Link + filename.
-        Link link = new Link(markdownFile.fileName(), null);
-        link.appendChild(new Text(markdownFile.title()));
-        paragraph.appendChild(link);
-
-        // Description.
-        String description = markdownFile.description();
-        if (StringUtils.isNotBlank(description)) {
-            paragraph.appendChild(new Text(": " + description));
-        }
 
         listItem.appendChild(paragraph);
         return listItem;

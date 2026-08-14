@@ -3,18 +3,14 @@ package com.oakinvest.kiso.core.publisher;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Document;
-import org.commonmark.node.Link;
-import org.commonmark.node.ListItem;
-import org.commonmark.node.Paragraph;
-import org.commonmark.node.Text;
 import org.commonmark.renderer.markdown.MarkdownRenderer;
 
-import java.nio.file.Path;
 import java.util.Objects;
+
+import static com.oakinvest.kiso.core.util.markdown.MarkdownUtil.markdownFileListItem;
 
 /**
  * Generator for the tag pages of a bundle.
@@ -27,7 +23,7 @@ public class TagPageGenerator {
      * Generate a tag page for a bundle.
      *
      * @param knowledgeBundle bundle where the pages are
-     * @param tagSlug         tag slug for which the page is generated
+     * @param tagSlug         tag normalize for which the page is generated
      * @return tag page content
      */
     public static String generate(final KnowledgeBundle knowledgeBundle, final String tagSlug) {
@@ -64,42 +60,6 @@ public class TagPageGenerator {
                 ---
                 
                 %s""".formatted(tagSlug, MarkdownRenderer.builder().build().render(tagPage));
-    }
-
-    /**
-     * Creates one Markdown file list item.
-     *
-     * @param baseUrl      public base URL of the generated site
-     * @param markdownFile Markdown file
-     * @return list item
-     */
-    private static ListItem markdownFileListItem(final String baseUrl, final MarkdownFile markdownFile) {
-        ListItem listItem = new ListItem();
-        Paragraph paragraph = new Paragraph();
-
-        // Link + filename.
-        Link link = new Link(baseUrl + markdownPath(markdownFile.relativePath()), null);
-        link.appendChild(new Text(markdownFile.title()));
-        paragraph.appendChild(link);
-
-        // Description.
-        String description = markdownFile.description();
-        if (StringUtils.isNotBlank(description)) {
-            paragraph.appendChild(new Text(": " + description));
-        }
-
-        listItem.appendChild(paragraph);
-        return listItem;
-    }
-
-    /**
-     * Returns a Markdown path usable in links.
-     *
-     * @param relativePath Markdown path relative to the knowledge bundle root
-     * @return normalized Markdown path
-     */
-    private static String markdownPath(final Path relativePath) {
-        return FilenameUtils.separatorsToUnix(relativePath.toString());
     }
 
 }

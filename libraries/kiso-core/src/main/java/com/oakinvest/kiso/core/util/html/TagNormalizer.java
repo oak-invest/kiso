@@ -7,24 +7,24 @@ import java.text.Normalizer;
 import java.util.Locale;
 
 /**
- * Slugifier for tag URLs and generated tag page filenames.
+ * Utility class for generating URL-safe tags.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
-public class TagSlugifier {
+public class TagNormalizer {
 
-    /** Fallback slug when a tag does not contain URL-safe characters. */
-    private static final String DEFAULT_SLUG = "tag";
+    /** Fallback normalize when a tag does not contain URL-safe characters. */
+    private static final String DEFAULT_TAG = "tag";
 
     /**
-     * Returns a URL-safe slug for a tag.
+     * Returns a URL-safe tag.
      *
      * @param tag original tag
-     * @return URL-safe slug
+     * @return URL-safe tag
      */
-    public static String slug(final String tag) {
+    public static String normalize(final String tag) {
         if (StringUtils.isBlank(tag)) {
-            return DEFAULT_SLUG;
+            return DEFAULT_TAG;
         }
 
         String slug = Normalizer.normalize(tag, Normalizer.Form.NFD)
@@ -35,7 +35,7 @@ public class TagSlugifier {
                 .replaceAll("(^-|-$)", "");
 
         if (StringUtils.isBlank(slug)) {
-            return DEFAULT_SLUG;
+            return DEFAULT_TAG;
         }
 
         return slug;

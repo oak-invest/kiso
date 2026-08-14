@@ -45,6 +45,7 @@ class SearchIndexGeneratorTest extends BaseTest {
 
         // Testing document content ===================================================================================
         var userCount = documentWithId(documents, "references/metrics/user_count");
+        assertThat(userCount).isNotNull();
         assertThat(userCount.get("url").asText()).isEqualTo("references/metrics/user_count.html");
         assertThat(userCount.get("title").asText()).isEqualTo("User Count");
         assertThat(userCount.get("description").asText()).isEqualTo("Total number of unique users.");
@@ -54,6 +55,7 @@ class SearchIndexGeneratorTest extends BaseTest {
                 .contains("COUNT(DISTINCT user_pseudo_id)");
 
         var eventsTable = documentWithId(documents, "tables/events_");
+        assertThat(eventsTable).isNotNull();
         assertThat(eventsTable.get("url").asText()).isEqualTo("tables/events_.html");
         assertThat(eventsTable.get("title").asText()).isEqualTo("Events table (Google Analytics BigQuery Export)");
         assertThat(eventsTable.get("description").asText())

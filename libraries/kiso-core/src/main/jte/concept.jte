@@ -1,4 +1,4 @@
-@import com.oakinvest.kiso.core.util.html.TagSlugifier
+@import com.oakinvest.kiso.core.util.html.TagNormalizer
 @import java.time.format.DateTimeFormatter
 
 @param com.oakinvest.kiso.core.model.html.page.ConceptPage page
@@ -105,7 +105,7 @@ pageContent = @`
                         </div>
                         <div class="flex flex-wrap gap-2">
                             @for(var tag : page.tags())
-                                <a href="${page.metadata().assetBasePath()}tags/${TagSlugifier.slug(tag)}.html">
+                                <a href="${page.metadata().assetBasePath()}tags/${TagNormalizer.normalize(tag)}.html">
                                     <span class="badge badge-ghost border border-base-300">${tag}</span>
                                 </a>
                             @endfor

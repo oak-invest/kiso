@@ -60,20 +60,24 @@ release_build_native:
     mvn clean install -pl libraries/kiso-core -am -DskipTests
     mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
 
-release_run_check_kb_google:
+release_run_check:
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example-v0.1
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example-v0.2
+    ./applications/kiso-cli/target/kiso-cli check \
+      --source=examples/kb-acme-example-v0.2
 
-
-release_run_build_kb_google:
+release_run_build:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-google-example-v0.1 \
       --destination=public/kb-google-example-v0.1
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-google-example-v0.2 \
       --destination=public/kb-google-example-v0.2
+    ./applications/kiso-cli/target/kiso-cli build \
+      --source=examples/kb-acme-example-v0.2 \
+      --destination=public/kb-acme-example-v0.2
 
 # Release tasks ========================================================================================================
 start_release:

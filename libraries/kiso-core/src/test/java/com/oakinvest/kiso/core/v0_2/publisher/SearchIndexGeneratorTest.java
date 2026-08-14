@@ -43,6 +43,7 @@ class SearchIndexGeneratorTest extends BaseTest {
 
         // Testing document content ===================================================================================
         var userCount = documentWithId(documents, "references/metrics/acquired_users");
+        assertThat(userCount).isNotNull();
         assertThat(userCount.get("url").asText()).isEqualTo("references/metrics/acquired_users.html");
         assertThat(userCount.get("title").asText()).isEqualTo("Acquired Users Metric");
         assertThat(userCount.get("description").asText()).isEqualTo("Builds an audience of users acquired via a specific Source, Medium, and Campaign name.");
@@ -52,6 +53,7 @@ class SearchIndexGeneratorTest extends BaseTest {
                 .contains("COUNT(DISTINCT user_id) AS acquired_users_count");
 
         var eventsTable = documentWithId(documents, "tables/events_");
+        assertThat(eventsTable).isNotNull();
         assertThat(eventsTable.get("url").asText()).isEqualTo("tables/events_.html");
         assertThat(eventsTable.get("title").asText()).isEqualTo("GA4 Events Export");
         assertThat(eventsTable.get("description").asText())

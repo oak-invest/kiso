@@ -12,6 +12,7 @@ import com.oakinvest.kiso.core.util.types.LifecycleStatus;
 import com.oakinvest.kiso.core.util.types.TrustLevel;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.time.OffsetDateTime;
@@ -101,6 +102,26 @@ public record ConceptPage(
      */
     public String trustTierValue() {
         return trustTier.name().toLowerCase().replace('_', '-');
+    }
+
+    /**
+     * Returns the context of the page (and specify @NonNull).
+     *
+     * @return the context of the page
+     */
+    @Override
+    public @NonNull PageContext context() {
+        return context;
+    }
+
+    /**
+     * Returns the metadata of the page (and specify @NonNull).
+     *
+     * @return the metadata of the page
+     */
+    @Override
+    public @NonNull PageMetadata metadata() {
+        return metadata;
     }
 
 }

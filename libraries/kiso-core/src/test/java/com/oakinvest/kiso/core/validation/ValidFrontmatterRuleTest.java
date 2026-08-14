@@ -15,7 +15,6 @@ import java.nio.file.Path;
 
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_OKF_VERSION;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
@@ -217,7 +216,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var indexFile = markdownFile(indexFilePath, INDEX, frontmatter);
 
         // log.md
-        var logFilePath = Path.of(LOG.getFileName());
+        // var logFilePath = Path.of(LOG.getFileName());
         // var logFile = markdownFile(logFilePath, LOG, frontmatter);
 
         // Run validation to check an unexpected frontmatter ============================================================
@@ -227,14 +226,6 @@ class ValidFrontmatterRuleTest extends BaseTest {
             assertThat(issue.message()).isEqualTo("File index.md is not a concept file and should not contain frontmatter");
             assertThat(issue.path()).isEqualTo(indexFilePath);
         });
-
-        // Removed as log.md is now allowed to have frontmatter, as it is a concept file.
-//        assertThat(rule.validate(bundleWith(logFile), logFile)).satisfiesOnlyOnce(issue -> {
-//            assertThat(issue.severity()).isEqualTo(ERROR);
-//            assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
-//            assertThat(issue.message()).isEqualTo("File log.md is not a concept file and should not contain frontmatter");
-//            assertThat(issue.path()).isEqualTo(logFilePath);
-//        });
     }
 
 }

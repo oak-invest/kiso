@@ -108,6 +108,7 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .returns(Actor.of("reference_agent/gemini-3.5-flash"), TrustEvent::by)
                                     .returns("2026-07-10T21:14:56+00:00", TrustEvent::at)
                                     .returns(OffsetDateTime.parse("2026-07-10T21:14:56+00:00"), TrustEvent::parsedAt);
+                            assertThat(ga4.frontmatter().generated().by()).isNotNull();
                             assertThat(ga4.frontmatter().generated().by().isAgent()).isTrue();
                             assertThat(ga4.frontmatter().generated().by().type()).isEqualTo(AGENT);
                             assertThat(ga4.frontmatter().sources().getFirst().hasAuthor()).isFalse();
@@ -168,18 +169,16 @@ class GoogleExampleLoadingTest extends BaseTest {
                                     .hasSize(8)
                                     .first()
                                     .satisfies(
-                                            acquiredUsers -> {
-                                                assertThat(acquiredUsers)
-                                                        .returns("acquired_users.md", MarkdownFile::fileName)
-                                                        .returns("references/metrics/acquired_users", MarkdownFile::conceptId)
-                                                        .returns(CONCEPT, MarkdownFile::kind)
-                                                        .returns("references/metrics", MarkdownFile::bundlePath)
-                                                        .returns("metrics", MarkdownFile::bundleName)
-                                                        .returns(Path.of(resourcePath + "/references/metrics/acquired_users.md"), MarkdownFile::absolutePath)
-                                                        .returns(Path.of("references/metrics/acquired_users.md"), MarkdownFile::relativePath)
-                                                        .returns("acquired_users.html", MarkdownFile::htmlFilename)
-                                                        .returns("references/metrics/acquired_users.html", MarkdownFile::htmlFilePath);
-                                            }
+                                            acquiredUsers -> assertThat(acquiredUsers)
+                                                    .returns("acquired_users.md", MarkdownFile::fileName)
+                                                    .returns("references/metrics/acquired_users", MarkdownFile::conceptId)
+                                                    .returns(CONCEPT, MarkdownFile::kind)
+                                                    .returns("references/metrics", MarkdownFile::bundlePath)
+                                                    .returns("metrics", MarkdownFile::bundleName)
+                                                    .returns(Path.of(resourcePath + "/references/metrics/acquired_users.md"), MarkdownFile::absolutePath)
+                                                    .returns(Path.of("references/metrics/acquired_users.md"), MarkdownFile::relativePath)
+                                                    .returns("acquired_users.html", MarkdownFile::htmlFilename)
+                                                    .returns("references/metrics/acquired_users.html", MarkdownFile::htmlFilePath)
                                     );
                         }
                 );

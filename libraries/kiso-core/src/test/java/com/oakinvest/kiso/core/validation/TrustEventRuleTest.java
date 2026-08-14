@@ -37,7 +37,7 @@ public class TrustEventRuleTest extends BaseTest {
                         .at("2026-06-20T22:53:05Z")
                         .build())
                 .verified(List.of(TrustEvent.builder()
-                        .by(Actor.of("human:ahormati"))
+                        .by(Actor.of("human:straumat"))
                         .at("2026-06-25T09:00:00Z")
                         .build()))
                 .build();
@@ -134,7 +134,7 @@ public class TrustEventRuleTest extends BaseTest {
         var frontmatter = Frontmatter.builder()
                 .type("Concept")
                 .verified(List.of(TrustEvent.builder()
-                        .by(Actor.of("human:ahormati"))
+                        .by(Actor.of("human:straumat"))
                         .build()))
                 .build();
         var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
@@ -154,7 +154,7 @@ public class TrustEventRuleTest extends BaseTest {
         var frontmatter = Frontmatter.builder()
                 .type("Concept")
                 .verified(List.of(TrustEvent.builder()
-                        .by(Actor.of("human:ahormati"))
+                        .by(Actor.of("human:straumat"))
                         .at("25-06-2026T09:00:00Z")
                         .build()))
                 .build();

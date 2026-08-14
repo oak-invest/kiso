@@ -21,6 +21,7 @@
         </label>
 
         <!-- Download bundle button ===============================================================================  -->
+        <!--suppress HtmlUnknownTarget -->
         <a href="bundle.zip"
            download
            class="btn btn-square btn-ghost"

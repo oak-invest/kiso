@@ -4,6 +4,7 @@ import com.oakinvest.kiso.core.model.html.util.PageContext;
 import com.oakinvest.kiso.core.model.html.util.PageMetadata;
 import gg.jte.html.HtmlContent;
 import lombok.Builder;
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Objects;
@@ -29,6 +30,26 @@ public record IndexPage(
     public IndexPage {
         context = Objects.requireNonNullElse(context, PageContext.empty());
         metadata = Objects.requireNonNullElse(metadata, PageMetadata.empty());
+    }
+
+    /**
+     * Returns the context of the page (and specify @NonNull).
+     *
+     * @return the context of the page
+     */
+    @Override
+    public @NonNull PageContext context() {
+        return context;
+    }
+
+    /**
+     * Returns the metadata of the page (and specify @NonNull).
+     *
+     * @return the metadata of the page
+     */
+    @Override
+    public @NonNull PageMetadata metadata() {
+        return metadata;
     }
 
 }

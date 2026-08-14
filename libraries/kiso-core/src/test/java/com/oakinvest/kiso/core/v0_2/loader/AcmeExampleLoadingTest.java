@@ -80,6 +80,7 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns(Actor.of("reference_agent/gemini-2.5-pro"), TrustEvent::by)
                 .returns("2026-06-30T14:00:00Z", TrustEvent::at)
                 .returns(OffsetDateTime.parse("2026-06-30T14:00:00Z"), TrustEvent::parsedAt);
+        assertThat(revenue.frontmatter().generated().by()).isNotNull();
         assertThat(revenue.frontmatter().generated().by().isAgent()).isTrue();
         assertThat(revenue.frontmatter().generated().by().type()).isEqualTo(AGENT);
 

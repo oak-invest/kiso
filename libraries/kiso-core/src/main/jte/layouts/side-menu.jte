@@ -1,7 +1,11 @@
 @import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX
+@import java.util.Objects
 
 @param com.oakinvest.kiso.core.model.html.util.PageContext pageContext
 @param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
+
+!{var currentPageContext = Objects.requireNonNull(pageContext);}
+!{var currentPageMetadata = Objects.requireNonNull(pageMetadata);}
 
 <!-- Left tree menu ================================================================================================ -->
 <aside class="flex min-h-full w-80 max-w-[85vw] flex-col bg-base-100 p-4 text-base-content">
@@ -16,26 +20,27 @@
         <ul class="menu menu-sm w-full gap-1 p-0">
 
             <!-- Index page (if present) =========================================================================== -->
-            @if(pageContext.bundleTree().hasIndexPage())
+            @if(currentPageContext.bundleTree().hasIndexPage())
                 <li>
-                    <a class="@if(pageContext.bundleTree().indexHtmlPath().equals(pageMetadata.htmlPath()))font-semibold@endif"
-                       href="${pageMetadata.assetBasePath()}${pageContext.bundleTree().indexHtmlPath()}">
-                        <span class="kiso-navigation-menu-label">${pageContext.bundleTree().name()}</span>
+                    <a class="@if(currentPageContext.bundleTree().indexHtmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
+                       href="${currentPageMetadata.assetBasePath()}${currentPageContext.bundleTree().indexHtmlPath()}">
+                        <span class="kiso-navigation-menu-label">${currentPageContext.bundleTree().name()}</span>
                     </a>
                 </li>
             @endif
 
             <!-- All bundles ======================================================================================= -->
-            @for(var childBundle : pageContext.bundleTree().childBundles())
-                @template.layouts.side-menu-node(bundleTree = childBundle, pageMetadata = pageMetadata)
+            @for(var childBundle : currentPageContext.bundleTree().childBundles())
+                !{var childBundleTree = Objects.requireNonNull(childBundle);}
+                @template.layouts.side-menu-node(bundleTree = childBundleTree, pageMetadata = currentPageMetadata)
             @endfor
 
             <!-- All pages inside the bundle ======================================================================= -->
-            @for(var page : pageContext.bundleTree().pages())
+            @for(var page : currentPageContext.bundleTree().pages())
                 @if(page.kind() != INDEX)
                     <li>
-                        <a class="@if(page.href().equals(pageMetadata.htmlPath()))font-semibold@endif"
-                           href="${pageMetadata.assetBasePath()}${page.href()}">
+                        <a class="@if(page.href().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
+                           href="${currentPageMetadata.assetBasePath()}${page.href()}">
                             <span class="kiso-navigation-menu-label">${page.title()}</span>
                         </a>
                     </li>
