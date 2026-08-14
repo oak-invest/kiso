@@ -6,9 +6,10 @@ import com.oakinvest.kiso.core.validation.ValidationIssue;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**
  * Markdown file rule.
@@ -45,9 +46,9 @@ public interface MarkdownFileRule {
      * @param value the string to validate
      * @return true if the string is a valid ISO 8601 local date, false otherwise
      */
-    default boolean isValidISO8601Date(final String value) {
+    default boolean isValidISO8601LocalDate(final String value) {
         try {
-            LocalDate.parse(value, DateTimeFormatter.ISO_LOCAL_DATE);
+            LocalDate.parse(value, ISO_LOCAL_DATE);
             return true;
         } catch (DateTimeParseException e) {
             return false;

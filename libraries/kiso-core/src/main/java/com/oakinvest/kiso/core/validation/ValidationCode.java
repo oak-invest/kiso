@@ -45,6 +45,12 @@ public enum ValidationCode {
     INVALID_OKF_VERSION,
 
     /** Invalid log date format - Not an ISO 8601 date. */
-    INVALID_LOG_DATE_FORMAT
+    INVALID_LOG_DATE_FORMAT,
+
+    /** Missing sources[].resource field in frontmatter. */
+    MISSING_SOURCE_RESOURCE,
+
+    /** Invalid sources[].last_modified field in frontmatter - Not an ISO 8601 date. */
+    INVALID_SOURCE_LAST_MODIFIED
 
 }

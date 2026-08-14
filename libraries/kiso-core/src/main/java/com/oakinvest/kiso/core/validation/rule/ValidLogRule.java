@@ -34,7 +34,7 @@ public class ValidLogRule implements MarkdownFileRule {
             // Validate log.md date headings use the YYYY-MM-DD format =================================================
             for (String heading : extractLevelTwoHeadings(markdownFile.body())) {
                 // Validation logic for each heading
-                if (!isValidISO8601Date(StringUtils.trim(heading))) {
+                if (!isValidISO8601LocalDate(StringUtils.trim(heading))) {
                     issues.add(ValidationIssue.builder()
                             .severity(ERROR)
                             .code(INVALID_LOG_DATE_FORMAT)
