@@ -9,6 +9,7 @@ import com.oakinvest.kiso.core.validation.rule.TrustEventRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import com.oakinvest.kiso.core.validation.rule.ValidLogRule;
 import com.oakinvest.kiso.core.validation.rule.ValidSourceRule;
+import com.oakinvest.kiso.core.validation.rule.ValidUsageWindowRule;
 import lombok.experimental.UtilityClass;
 
 import java.util.LinkedList;
@@ -30,7 +31,8 @@ public class ValidationRunner {
             new TrustEventRule(),
             new ValidFrontmatterRule(),
             new ValidLogRule(),
-            new ValidSourceRule()
+            new ValidSourceRule(),
+            new ValidUsageWindowRule()
     );
 
     /**

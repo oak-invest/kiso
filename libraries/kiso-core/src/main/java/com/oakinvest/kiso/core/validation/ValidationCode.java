@@ -84,6 +84,12 @@ public enum ValidationCode {
     MISSING_COMPUTATION_DEFINITION,
 
     /** Computation is declared both in frontmatter and body. */
-    DUPLICATE_COMPUTATION_DEFINITION
+    DUPLICATE_COMPUTATION_DEFINITION,
+
+    /** Invalid usage_window.from field in frontmatter - Not an ISO 8601 date. */
+    INVALID_USAGE_WINDOW_FROM,
+
+    /** Invalid usage_window.to field in frontmatter - Not an ISO 8601 date. */
+    INVALID_USAGE_WINDOW_TO
 
 }
