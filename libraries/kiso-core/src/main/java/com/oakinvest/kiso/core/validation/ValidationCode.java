@@ -42,6 +42,9 @@ public enum ValidationCode {
     BROKEN_LINK,
 
     /** Invalid OKF version. */
-    INVALID_OKF_VERSION;
+    INVALID_OKF_VERSION,
+
+    /** Invalid log date format - Not an ISO 8601 date. */
+    INVALID_LOG_DATE_FORMAT
 
 }

@@ -36,7 +36,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
 
         // Getting all pages in the bundle =============================================================================
-        Set<Path> existingPages = bundle.flattenMarkdownFiles()
+        final Set<Path> existingPages = bundle.flattenMarkdownFiles()
                 .map(MarkdownFile::relativePath)
                 .collect(Collectors.toSet());
 
@@ -59,7 +59,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
         }
 
         // We parse the content with a visitor to get all links.
-        List<Link> links = new LinkedList<>();
+        final List<Link> links = new LinkedList<>();
         PARSER.parse(markdownFile.body()).accept(new AbstractVisitor() {
 
             @Override
@@ -87,7 +87,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
             return false;
         }
 
-        String cleanedDestination = cleanDestination(destination);
+        final String cleanedDestination = cleanDestination(destination);
         if (StringUtils.isBlank(cleanedDestination)) {
             return false;
         }
@@ -98,7 +98,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
     }
 
     private Path resolvedPath(final MarkdownFile markdownFile, final String destination) {
-        Path parentPath = markdownFile.relativePath().getParent();
+        final Path parentPath = markdownFile.relativePath().getParent();
         if (parentPath == null) {
             return Path.of(cleanDestination(destination)).normalize();
         }

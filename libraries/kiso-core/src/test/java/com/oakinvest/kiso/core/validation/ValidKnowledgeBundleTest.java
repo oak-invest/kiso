@@ -21,5 +21,15 @@ public class ValidKnowledgeBundleTest extends BaseTest {
         assertThat(ValidationRunner.runValidation(bundle).hasErrors()).isFalse();
     }
 
+    @Test
+    @DisplayName("Acme example bundle validation")
+    void acmeExamplesValidation() {
+        // What we are testing =========================================================================================
+        var resourcePath = getResourcePath(KB_ACME_V_0_2);
+        var bundle = KnowledgeBundleLoader.load(resourcePath);
+
+        // We check that Google examples don't raise any error =========================================================
+        assertThat(ValidationRunner.runValidation(bundle).hasErrors()).isFalse();
+    }
 
 }

@@ -6,8 +6,6 @@ import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class TrustEventRule implements MarkdownFileRule {
 
     @Override
     public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
-        List<ValidationIssue> issues = new LinkedList<>();
+        final List<ValidationIssue> issues = new LinkedList<>();
 
         // When generated is present:
         if (markdownFile.frontmatter().generated() != null) {
@@ -58,7 +56,7 @@ public class TrustEventRule implements MarkdownFileRule {
                         .build());
             } else {
                 // Validate generated.at as ISO 8601.
-                if (!isValidDate(markdownFile.frontmatter().generated().at())) {
+                if (!isValidISO8601OffsetDateTime(markdownFile.frontmatter().generated().at())) {
                     issues.add(ValidationIssue.builder()
                             .severity(ERROR)
                             .code(INVALID_GENERATED_AT)
@@ -90,7 +88,7 @@ public class TrustEventRule implements MarkdownFileRule {
                         .build());
             } else {
                 // Validate verified.at as ISO 8601.
-                if (!isValidDate(trustEvent.at())) {
+                if (!isValidISO8601OffsetDateTime(trustEvent.at())) {
                     issues.add(ValidationIssue.builder()
                             .severity(ERROR)
                             .code(INVALID_VERIFIED_AT)
@@ -102,21 +100,6 @@ public class TrustEventRule implements MarkdownFileRule {
         }
 
         return issues;
-    }
-
-    /**
-     * Validates if a string is a valid ISO 8601 offset date-time.
-     *
-     * @param value the string to validate
-     * @return true if the string is a valid ISO 8601 offset date-time, false otherwise
-     */
-    private boolean isValidDate(final String value) {
-        try {
-            OffsetDateTime.parse(value);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
     }
 
 }

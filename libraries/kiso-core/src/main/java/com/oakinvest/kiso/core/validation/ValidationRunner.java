@@ -6,6 +6,7 @@ import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
 import com.oakinvest.kiso.core.validation.rule.TrustEventRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
+import com.oakinvest.kiso.core.validation.rule.ValidLogRule;
 import lombok.experimental.UtilityClass;
 
 import java.util.LinkedList;
@@ -21,10 +22,11 @@ public class ValidationRunner {
 
     /** Markdown file rules. */
     private static final List<MarkdownFileRule> MARKDOWN_FILE_RULES = List.of(
-            new EncodingRule(),
-            new ValidFrontmatterRule(),
             new BrokenLinkRule(),
-            new TrustEventRule()
+            new EncodingRule(),
+            new TrustEventRule(),
+            new ValidFrontmatterRule(),
+            new ValidLogRule()
     );
 
     /**
