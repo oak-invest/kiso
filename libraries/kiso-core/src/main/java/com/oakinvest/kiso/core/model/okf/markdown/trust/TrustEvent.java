@@ -9,7 +9,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeParseException;
 
 /**
- * Trust event recording who performed an action and when it happened.
+ * Trust event recording that performed an action and when it happened.
  *
  * @param by actor that performed the trust event
  * @param at ISO 8601 datetime of the trust event

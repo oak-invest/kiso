@@ -1,4 +1,4 @@
 /**
- * Provenance fields in the frontmatter of an OKF Markdown document : "where did this come from?".
+ * Provenance fields in the frontmatter of an OKF Markdown document.
  */
 package com.oakinvest.kiso.core.model.okf.markdown.provenance;

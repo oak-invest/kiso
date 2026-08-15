@@ -97,7 +97,7 @@ public record Frontmatter(
     /**
      * Returns the actor that generated the content.
      *
-     * @return actor that generated the content, or null if not available
+     * @return actor that generated the content or null if not available
      */
     public @Nullable String generatedBy() {
         if (generated == null) {

@@ -63,10 +63,10 @@ public class FrontmatterConstants {
     /** Frontmatter key for usage window metadata. */
     public static final String USAGE_WINDOW_KEY = "usage_window";
 
-    /** Frontmatter key for usage window start metadata. */
+    /** Frontmatter key for the usage window start metadata. */
     public static final String USAGE_WINDOW_FROM_KEY = "from";
 
-    /** Frontmatter key for usage window end metadata. */
+    /** Frontmatter key for the usage window end metadata. */
     public static final String USAGE_WINDOW_TO_KEY = "to";
 
     /** Frontmatter key for verified metadata. */

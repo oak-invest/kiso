@@ -49,9 +49,9 @@ public class ValidLogRule implements MarkdownFileRule {
     }
 
     /**
-     * Extracts level two headings from the given markdown content.
+     * Extracts level two headings from the given Markdown content.
      *
-     * @param content the markdown content
+     * @param content the Markdown content
      * @return a list of level two heading texts
      */
     private List<String> extractLevelTwoHeadings(final String content) {

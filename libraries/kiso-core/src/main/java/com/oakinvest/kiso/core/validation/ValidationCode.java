@@ -38,7 +38,7 @@ public enum ValidationCode {
     /** Invalid <code>verified.at</code> field in frontmatter - Not an ISO 8601 datetime format. */
     INVALID_VERIFIED_AT,
 
-    /** Broken local link. */
+    /** Broken link. */
     BROKEN_LINK,
 
     /** Invalid OKF version. */

@@ -19,7 +19,7 @@ import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 /**
  * Markdown file discovered inside a knowledge bundle.
  * <p>
- * Example for index.md in root bundle:
+ * Example for index.md in the root bundle:
  * <pre>{@code
  * fileName: index.md
  * absolutePath /home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/index.md
@@ -45,10 +45,10 @@ import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
  * bundleName: tables
  * }</pre>
  *
- * @param fileName           file name (example: "index.md" for index.md in root bundle or "events_.md" for "tables/events_.md")
+ * @param fileName           file name (example: "index.md" for index.md in the root bundle or "events_.md" for "tables/events_.md")
  * @param kind               file kind
- * @param absolutePath       absolute path (example: "/home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/index.md" for index in root bundle or "/home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/tables/events_.md" for "tables/events_.md")
- * @param relativePath       relative path to the root bundle (example "index.md" for index.md in root bundle or "tables/events_.md" for "tables/events_.md")
+ * @param absolutePath       absolute path (example: "/home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/index.md" for index in a root bundle or "/home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/tables/events_.md" for "tables/events_.md")
+ * @param relativePath       relative path to the root bundle (example "index.md" for index.md in the root bundle or "tables/events_.md" for "tables/events_.md")
  * @param frontmatter        frontmatter metadata
  * @param frontmatterPresent whether a frontmatter block exists in the source file
  * @param body               original Markdown content without frontmatter

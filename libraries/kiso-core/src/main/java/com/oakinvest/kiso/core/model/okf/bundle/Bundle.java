@@ -32,9 +32,9 @@ import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
  * simpleName: joins
  * }</pre>
  *
- * @param name          bundle name (example: "index" for root bundle or "references/joins" for references/joins bundle)
+ * @param name          bundle name (example: "index" for a root bundle or "references/joins" for a references/joins bundle)
  * @param absolutePath  absolute path on the operating system (example: "/home/straumat/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1")
- * @param relativePath  relative path to the root bundle (example: "references/joins" for references/joins bundle, empty for root bundle)
+ * @param relativePath  relative path to the root bundle (example: "references/joins" for a references/joins bundle, empty for a root bundle)
  * @param childBundles  child bundles
  * @param markdownFiles direct Markdown files
  */
@@ -58,8 +58,8 @@ public record Bundle(
 
     /**
      * Returns the bundle name without its parent path.
-     * Bundle "root" simpleName() : returns "index"
-     * Bundle "references/joins" simpleName() : returns "joins"
+     * Bundle "root" simpleName(): returns "index"
+     * Bundle "references/joins" simpleName(): returns "joins"
      *
      * @return the bundle name without its parent path
      */

@@ -8,7 +8,7 @@
 - **Product analogy**: Kiso is positioned as Hugo for Open Knowledge Format (OKF).
 
 - **Open Knowledge Format description**: Open Knowledge Format (OKF) is a way to structure knowledge using Markdown files enriched with metadata. The goal is to keep knowledge easy for humans to write and read, while making it structured enough for software tools and AI agents to understand, validate, connect, and reuse.
-- **Open Knowledge Format (OKF) specification**:  /documentation/specs/okf_spec_version_0.1.md
+- **Open Knowledge Format (OKF) specification**: /documentation/specs/okf_spec_version_0.1.md
 
 ## Information
 

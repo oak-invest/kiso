@@ -50,7 +50,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
     /**
      * Returns all local links in a markdown file.
      *
-     * @param markdownFile markdown file
+     * @param markdownFile Markdown file
      * @return local links
      */
     private List<Link> getLocalLinks(final MarkdownFile markdownFile) {

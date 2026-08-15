@@ -10,22 +10,19 @@
     z-index: 90;
 }
 
-/*noinspection CssUnusedSymbol*/
-.kiso-search-result-title,
-.kiso-search-result-description {
+[class~="kiso-search-result-title"],
+[class~="kiso-search-result-description"] {
     display: block;
     min-width: 0;
     overflow-wrap: anywhere;
     line-height: 1.35;
 }
 
-/*noinspection CssUnusedSymbol*/
-.kiso-search-result-title {
+[class~="kiso-search-result-title"] {
     font-weight: 600;
 }
 
-/*noinspection CssUnusedSymbol*/
-.kiso-search-result-description {
+[class~="kiso-search-result-description"] {
     margin-top: 0.125rem;
     color: color-mix(in oklch, var(--color-base-content) 65%, transparent);
     font-size: 0.75rem;
