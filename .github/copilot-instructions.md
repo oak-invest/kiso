@@ -5,10 +5,11 @@
 - **Kiso short description**: Kiso is a publishing engine for Open Knowledge Format (OKF).
 - **Kiso longer description**: Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static websites for humans and AI agents.
 - **Kiso complete description**: Kiso is a publishing engine for the Open Knowledge Format (OKF). The project turns a folder of organized Markdown files into a navigable knowledge system. In the same way that Hugo turns Markdown files into a static website, Kiso aims to turn an OKF knowledge base into a structured, browsable, and usable documentation site. Kiso is also designed with AI usage in mind. Because the source remains structured Markdown, the knowledge base stays readable, versionable with Git, easy to review, and usable by AI agents. Kiso sits between two needs: simple text files for maintaining knowledge, and generated navigation for humans and tools to explore it.
+
 - **Product analogy**: Kiso is positioned as Hugo for Open Knowledge Format (OKF).
 
 - **Open Knowledge Format description**: Open Knowledge Format (OKF) is a way to structure knowledge using Markdown files enriched with metadata. The goal is to keep knowledge easy for humans to write and read, while making it structured enough for software tools and AI agents to understand, validate, connect, and reuse.
-- **Open Knowledge Format (OKF) specification**: /documentation/specs/okf_spec_version_0.1.md
+- **Open Knowledge Format (OKF) latest specification**: /documentation/specs/okf_spec_version_0.2.md
 
 ## Information
 
@@ -18,8 +19,7 @@
 ## Kiso features
 
 Kiso-cli (`/applications/kiso-cli`) is a command-line application with commands such as:
-- `format`: Cleans Markdown files (e.g., removes unnecessary empty lines).
-- `validate`: Checks that all files conform to the OKF specification.
+- `check`: Validates the Markdown files in an OKF bundle and reports formatting or structural errors.
 - `build`: Generates a static website with HTML files alongside the original Markdown files.
 
 ## Design principles
@@ -33,9 +33,7 @@ When generating code for this repository, always prioritize:
 
 Prefer explicit code to clever code.
 
-Avoid unnecessary abstraction.
-
-Avoid introducing framework-specific behavior unless it is already part of the repository design.
+Avoid unnecessary abstraction and avoid introducing framework-specific behavior unless it is already part of the repository design.
 
 ## Naming rules
 
@@ -63,20 +61,20 @@ records for new DTO-like types.
 Keep models focused and do not mix unrelated concerns into the same class.
 
 When adding fields to shared contracts:
-- ensure names are explicit
-- ensure nullability is intentional
-- preserve JSON compatibility
-- document semantics in Javadoc when the meaning is not obvious
+- Ensure names are explicit.
+- Ensure nullability is intentional.
+- Preserve JSON compatibility.
+- Document semantics in Javadoc when the meaning is not obvious.
 
 ## Validation rules
 
 Validation must be predictable and easy to reason about.
 
 Custom validation annotations and validators should:
-- have clear names
-- validate one concern
-- produce understandable error messages
-- avoid hidden side effects
+- Have clear names.
+- Validate one concern.
+- Produce understandable error messages.
+- Avoid hidden side effects.
 
 Do not create overly generic validators when a narrow validator is clearer.
 
@@ -85,18 +83,18 @@ Do not create overly generic validators when a narrow validator is clearer.
 Treat every new dependency as costly.
 
 Before adding a dependency, prefer:
-- existing repository dependencies
-- plain Java
-- small local code
+- Existing repository dependencies.
+- Plain Java.
+- Small local code.
 
 Only add a dependency if it meaningfully improves correctness or maintainability.
 
 ## Testing expectations
 When changing code in this repository:
-- add or update unit tests when behavior changes
-- cover serialization/deserialization when contracts change
-- cover validation logic when validators change
-- cover edge cases for shared utility code
+- Add or update unit tests when behavior changes.
+- Cover serialization/deserialization when contracts change.
+- Cover validation logic when validators change.
+- Cover edge cases for shared utility code.
 
 Tests should be simple, direct, and readable.
 

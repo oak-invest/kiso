@@ -28,6 +28,9 @@ run_check_v_0_2:
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="check --source=examples/kb-google-example-v0.2"
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="check --source=examples/kb-acme-example-v0.2"
 
 run_build_v_0_2:
     mvn install -pl libraries/kiso-core -am -DskipTests
@@ -37,12 +40,6 @@ run_build_v_0_2:
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
       -Dexec.args="build --source=examples/kb-acme-example-v0.2 --destination=public/kb-acme-example-v0.2"
-
-run_build_straumat:
-    mvn install -pl libraries/kiso-core -am -DskipTests
-    mvn compile -pl applications/kiso-cli exec:java \
-      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-      -Dexec.args="build --source=examples/kb-stephane-traumat --destination=public/kb-stephane-traumat"
 
 # Pre release tasks ====================================================================================================
 release_create_code_review_checklist:

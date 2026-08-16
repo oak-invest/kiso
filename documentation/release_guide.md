@@ -16,6 +16,7 @@
 - Deploy my personal knowledge base - It builds Kiso from the development branch to build the websites.
 
 ### Angara knowledge base
+
 - Test content deployed on: https://knowledge.angara.finance
 - Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html.
 - Test social preview image deployed on: https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.png
@@ -24,6 +25,7 @@
 - Test zip downloads on https://knowledge.angara.finance/entreprises/index.html
 
 ### Oak Invest knowledge base
+
 - Test content deployed on: https://www.oak-invest.com/okf/
 - Test content deployed on https://www.oak-invest.com/okf/entreprises/scub/05-expertise-tests-et-validation.html
 - Test sociale preview image deployed on: https://www.oak-invest.com/okf/entreprises/scub/05-expertise-tests-et-validation.png
@@ -63,4 +65,5 @@
   - Facebook at 19h00 – 20h30.
 
 ## Full audit
+
 If lots of changes have been made, review all files in the project and check for any issues. You can generate a checklist for the code review with the following command: `just release_create_code_review_checklist`. This will create a file called `code_review_checklist.md` in the root of the project. You can then use this file to check for any issues in the code.
