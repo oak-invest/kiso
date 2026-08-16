@@ -11,17 +11,32 @@ run:
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application
 
-run_check:
+run_check_v_0_1:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-      -Dexec.args="check --source=examples/kb-google-example"
+      -Dexec.args="check --source=examples/kb-google-example-v0.1"
 
-run_build:
+run_build_v_0_1:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-cli exec:java \
       -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
-      -Dexec.args="build --source=examples/kb-google-example --destination=public/kb-google-example"
+      -Dexec.args="build --source=examples/kb-google-example-v0.1 --destination=public/kb-google-example-v0.1"
+
+run_check_v_0_2:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="check --source=examples/kb-google-example-v0.2"
+
+run_build_v_0_2:
+    mvn install -pl libraries/kiso-core -am -DskipTests
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-google-example-v0.2 --destination=public/kb-google-example-v0.2"
+    mvn compile -pl applications/kiso-cli exec:java \
+      -Dexec.mainClass=com.oakinvest.kiso.cli.Application \
+      -Dexec.args="build --source=examples/kb-acme-example-v0.2 --destination=public/kb-acme-example-v0.2"
 
 run_build_straumat:
     mvn install -pl libraries/kiso-core -am -DskipTests
@@ -45,14 +60,24 @@ release_build_native:
     mvn clean install -pl libraries/kiso-core -am -DskipTests
     mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
 
-release_run_check_kb_google:
+release_run_check:
     ./applications/kiso-cli/target/kiso-cli check \
-      --source=examples/kb-google-example
+      --source=examples/kb-google-example-v0.1
+    ./applications/kiso-cli/target/kiso-cli check \
+      --source=examples/kb-google-example-v0.2
+    ./applications/kiso-cli/target/kiso-cli check \
+      --source=examples/kb-acme-example-v0.2
 
-release_run_build_kb_google:
+release_run_build:
     ./applications/kiso-cli/target/kiso-cli build \
-      --source=examples/kb-google-example \
-      --destination=public/kb-google-example-native
+      --source=examples/kb-google-example-v0.1 \
+      --destination=public/kb-google-example-v0.1
+    ./applications/kiso-cli/target/kiso-cli build \
+      --source=examples/kb-google-example-v0.2 \
+      --destination=public/kb-google-example-v0.2
+    ./applications/kiso-cli/target/kiso-cli build \
+      --source=examples/kb-acme-example-v0.2 \
+      --destination=public/kb-acme-example-v0.2
 
 # Release tasks ========================================================================================================
 start_release:

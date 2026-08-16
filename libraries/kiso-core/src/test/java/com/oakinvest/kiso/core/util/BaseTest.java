@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import org.jsoup.nodes.Element;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
@@ -26,11 +26,20 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 public class BaseTest {
 
-    /** Google example knowledge base. */
-    public static final String KB_GOOGLE = "kb-google-example-v0.1";
+    /** Google example knowledge base v0.1. */
+    public static final String KB_GOOGLE_V_0_1 = "kb-google-example-v0.1";
 
-    /** Google example knowledge base with configuration. */
-    public static final String KB_GOOGLE_WITH_CONFIGURATION = "kb-google-example-v0.1-with-configuration";
+    /** Google example knowledge base with configuration v0.1. */
+    public static final String KB_GOOGLE_V_0_1_WITH_CONFIGURATION = "kb-google-example-v0.1-with-configuration";
+
+    /** Google example knowledge base v0.2. */
+    public static final String KB_GOOGLE_V_0_2 = "kb-google-example-v0.2";
+
+    /** Google example knowledge base with configuration v0.2. */
+    public static final String KB_GOOGLE_V_0_2_WITH_CONFIGURATION = "kb-google-example-v0.2-with-configuration";
+
+    /** Acme example knowledge base v0.2. */
+    public static final String KB_ACME_V_0_2 = "kb-acme-example-v0.2";
 
     /**
      * Returns the document ids from search documents.

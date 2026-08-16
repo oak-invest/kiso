@@ -4,7 +4,10 @@ import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.Builder;
 
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -43,6 +46,37 @@ public record KnowledgeBundle(
      */
     public Stream<MarkdownFile> markdownFiles() {
         return rootBundle.flattenMarkdownFiles();
+    }
+
+
+    /**
+     * Returns all unique tags used by Markdown files in this bundle.
+     *
+     * @return unique tags in their first-seen order
+     */
+    public List<String> tags() {
+        Set<String> tags = new LinkedHashSet<>();
+        markdownFiles()
+                .map(MarkdownFile::frontmatter)
+                .filter(Objects::nonNull)
+                .flatMap(frontmatter -> frontmatter.tags().stream())
+                .forEach(tags::add);
+        return List.copyOf(tags);
+    }
+
+    /**
+     * Returns all unique tag slugs used by Markdown files in this bundle.
+     *
+     * @return unique tag slugs in their first-seen order
+     */
+    public List<String> tagSlugs() {
+        Set<String> tagSlugs = new LinkedHashSet<>();
+        markdownFiles()
+                .map(MarkdownFile::frontmatter)
+                .filter(Objects::nonNull)
+                .flatMap(frontmatter -> frontmatter.tagSlugs().stream())
+                .forEach(tagSlugs::add);
+        return List.copyOf(tagSlugs);
     }
 
 }

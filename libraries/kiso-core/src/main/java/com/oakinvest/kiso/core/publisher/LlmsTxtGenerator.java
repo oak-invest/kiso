@@ -1,27 +1,22 @@
 package com.oakinvest.kiso.core.publisher;
 
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Document;
 import org.commonmark.node.Heading;
-import org.commonmark.node.Link;
-import org.commonmark.node.ListItem;
-import org.commonmark.node.Paragraph;
 import org.commonmark.node.Text;
 import org.commonmark.renderer.markdown.MarkdownRenderer;
 
-import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.INDEX;
-import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_1;
-import static com.oakinvest.kiso.core.util.MarkdownConstants.HEADING_LEVEL_2;
-import static com.oakinvest.kiso.core.util.OKFConstants.DEFAULT_TITLE;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_1;
+import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.DEFAULT_TITLE;
+import static com.oakinvest.kiso.core.util.markdown.MarkdownUtil.markdownFileListItem;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * Generator for the llms.txt file.
@@ -47,6 +42,8 @@ public class LlmsTxtGenerator {
         knowledgeBundle.bundles()
                 // Do not add a bundle with no child and no file.
                 .filter(bundle -> !bundle.isEmpty())
+                // Do not add tags.
+                .filter(bundle -> !bundle.name().equalsIgnoreCase(TAGS_DIRECTORY_NAME))
                 .forEach(bundle -> {
 
                     // Bundle name =====================================================================================
@@ -83,42 +80,6 @@ public class LlmsTxtGenerator {
         heading.setLevel(level);
         heading.appendChild(new Text(text));
         return heading;
-    }
-
-    /**
-     * Creates one Markdown file list item.
-     *
-     * @param baseUrl      public base URL of the generated site
-     * @param markdownFile Markdown file
-     * @return list item
-     */
-    private static ListItem markdownFileListItem(final String baseUrl, final MarkdownFile markdownFile) {
-        ListItem listItem = new ListItem();
-        Paragraph paragraph = new Paragraph();
-
-        // Link + filename.
-        Link link = new Link(baseUrl + markdownPath(markdownFile.relativePath()), null);
-        link.appendChild(new Text(markdownFile.title()));
-        paragraph.appendChild(link);
-
-        // Description.
-        String description = markdownFile.description();
-        if (StringUtils.isNotBlank(description)) {
-            paragraph.appendChild(new Text(": " + description));
-        }
-
-        listItem.appendChild(paragraph);
-        return listItem;
-    }
-
-    /**
-     * Returns a Markdown path usable in llms.txt links.
-     *
-     * @param relativePath Markdown path relative to the knowledge bundle root
-     * @return normalized Markdown path
-     */
-    private static String markdownPath(final Path relativePath) {
-        return FilenameUtils.separatorsToUnix(relativePath.toString());
     }
 
 }

@@ -9,8 +9,8 @@
 
 - Delete the `public` folder in the project root.
 - Run `just release_build_native` to build a native app.
-- Test the check command on Google knowledge base: `just release_run_check_kb_google`
-- Test the build command on Google knowledge base: `just release_run_build_kb_google`
+- Test the check command on examples knowledge base: `just release_run_check`
+- Test the build command on examples knowledge base: `just release_run_build`
 
 ## Test the release (online)
 
@@ -34,7 +34,7 @@
 
 ## Pre-release steps
 
-- Update the projet README.md content and release number in it.
+- Update the projet README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
 - Change the release number in `applications/kiso-cli-action/action.yml`
 - Commit the changes and push them to the `development` branch.
 
@@ -48,6 +48,7 @@
 
 - Add a release note.
 - Change the release number in `.github/workflows/publish-website.yml`
+- Close the milestone at https://github.com/oak-invest/kiso/milestones
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
 - Wait to see if the website is correctly built and deployed on https://oak-invest.github.io/kiso/
 

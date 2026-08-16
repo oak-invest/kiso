@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "Wygenerowano za pomocą",
-    "lastUpdate": "Ostatnia aktualizacja"
+    "lastUpdate": "Ostatnia aktualizacja",
+    "generatedAt": "Wygenerowano",
+    "generatedBy": "Wygenerowano przez"
   },
   "metadata": {
     "resource": "Zasób",
     "tags": "Tagi"
+  },
+  "okfMetadata": {
+    "attester": "Atestator",
+    "at": "O",
+    "author": "Autor",
+    "by": "Przez",
+    "computationContract": "Kontrakt obliczenia",
+    "computationFile": "Plik obliczenia",
+    "executor": "Executor",
+    "generated": "Wygenerowano",
+    "id": "Id",
+    "lastModified": "Ostatnio zmodyfikowano",
+    "name": "Nazwa",
+    "parameters": "Parametry",
+    "receipt": "Potwierdzenie",
+    "required": "Wymagane",
+    "runtime": "Runtime",
+    "sources": "Źródła",
+    "staleAfter": "Nieaktualne po",
+    "status": "Status",
+    "title": "Tytuł",
+    "trust": "Zaufanie",
+    "trustTier": "Poziom zaufania",
+    "type": "Typ",
+    "usageCount": "Liczba użyć",
+    "usageWindowFrom": "Okno użycia od",
+    "usageWindowTo": "Okno użycia do",
+    "verified": "Zweryfikowano"
   },
   "navigation": {
     "bundleContent": "Zawartość pakietu",
     "closeNavigation": "Zamknij nawigację",
     "home": "Strona główna",
     "openNavigation": "Otwórz nawigację",
-    "downloadBundle": "Pobierz pakiet"
+    "downloadBundle": "Pobierz pakiet",
+    "backToTop": "Do góry"
   },
   "pageKind": {
     "concept": "Pojęcie",
-    "index": "Indeks"
+    "index": "Indeks",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Nie udało się załadować indeksu wyszukiwania",

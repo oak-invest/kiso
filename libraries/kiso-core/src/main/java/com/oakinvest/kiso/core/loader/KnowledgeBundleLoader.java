@@ -1,12 +1,26 @@
 package com.oakinvest.kiso.core.loader;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.okf.markdown.Actor;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
+import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
+import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
+import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
+import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
+import com.oakinvest.kiso.core.util.html.TagNormalizer;
+import com.oakinvest.kiso.core.util.types.LifecycleStatus;
+import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
@@ -19,25 +33,49 @@ import java.nio.charset.CodingErrorAction;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.util.FileConstants.CONFIGURATION_DIRECTORY_NAME;
-import static com.oakinvest.kiso.core.util.FileExtensionsConstants.MARKDOWN_EXTENSION;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.DESCRIPTION_KEY;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.FRONTMATTER_DELIMITER;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.RESOURCE_KEY;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.TAGS_KEY;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.TIMESTAMP_KEY;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.TITLE_KEY;
-import static com.oakinvest.kiso.core.util.FrontmatterConstants.TYPE_KEY;
-import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.CONFIGURATION_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.MARKDOWN_EXTENSION;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.ATTESTER_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.COMPUTATION_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.DESCRIPTION_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.EXECUTOR_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.EXECUTOR_RECEIPT_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.FRONTMATTER_DELIMITER;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.GENERATED_AT_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.GENERATED_BY_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.GENERATED_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETERS_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETER_NAME_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETER_REQUIRED_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETER_TYPE_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.RESOURCE_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.RUNTIME_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCES_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCE_AUTHOR_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCE_ID_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCE_LAST_MODIFIED_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCE_TITLE_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCE_USAGE_COUNT_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.STALE_AFTER_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.STATUS_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.TAGS_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.TIMESTAMP_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.TITLE_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.TYPE_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.USAGE_WINDOW_FROM_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.USAGE_WINDOW_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.USAGE_WINDOW_TO_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.VERIFIED_KEY;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.ROOT_BUNDLE_NAME;
 
 /**
  * Knowledge bundle loader - Load a directory and returns its corresponding {@link KnowledgeBundle}.
@@ -45,6 +83,17 @@ import static com.oakinvest.kiso.core.util.OKFConstants.ROOT_BUNDLE_NAME;
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class KnowledgeBundleLoader {
+
+    /** YAML mapper for frontmatter. */
+    private static final ObjectMapper YAML_MAPPER = JsonMapper.builder(
+                    YAMLFactory.builder()
+                            .enable(STRICT_DUPLICATE_DETECTION)
+                            .build())
+            .build();
+
+    /** Frontmatter extra fields type. */
+    private static final TypeReference<LinkedHashMap<String, Object>> EXTRA_FIELDS_TYPE = new TypeReference<>() {
+    };
 
     /**
      * Load a directory and returns its corresponding {@link KnowledgeBundle}.
@@ -220,118 +269,345 @@ public class KnowledgeBundleLoader {
      * @return frontmatter
      */
     private static Optional<Frontmatter> loadFrontmatter(final String content) {
-        if (findFrontmatterBlock(content) == null) {
+        final String frontmatterContent = frontmatterContent(content);
+        if (frontmatterContent == null) {
             return Optional.empty();
         }
-        Map<String, List<String>> data = parseFrontmatter(content);
+
+        // Getting json node from frontmatter content ==================================================================
+        final JsonNode frontmatter = readFrontmatter(frontmatterContent);
+
+        // Treating tags ===============================================================================================
+        final List<String> tags = textList(frontmatter.get(TAGS_KEY));
+        final List<String> tagSlugs = tags.stream().map(TagNormalizer::normalize).toList();
+
+        // Returning frontmatter =======================================================================================
         return Optional.of(Frontmatter.builder()
-                .type(getFrontMatterValue(data, TYPE_KEY))
-                .title(getFrontMatterValue(data, TITLE_KEY))
-                .description(getFrontMatterValue(data, DESCRIPTION_KEY))
-                .resource(getFrontMatterValue(data, RESOURCE_KEY))
-                .tags(Objects.requireNonNullElse(data.get(TAGS_KEY), List.of()))
-                .timestamp(getFrontMatterValue(data, TIMESTAMP_KEY))
-                .extraFields(Objects.requireNonNullElse(getFrontMatterExtraFields(data), new HashMap<>()))
+                .type(textValue(frontmatter, TYPE_KEY))
+                .title(textValue(frontmatter, TITLE_KEY))
+                .description(textValue(frontmatter, DESCRIPTION_KEY))
+                .resource(textValue(frontmatter, RESOURCE_KEY))
+                .tags(tags)
+                .tagSlugs(tagSlugs)
+                .timestamp(textValue(frontmatter, TIMESTAMP_KEY))
+                .sources(sources(frontmatter.get(SOURCES_KEY)))
+                .usageWindow(usageWindow(frontmatter.get(USAGE_WINDOW_KEY)))
+                .generated(generated(frontmatter.get(GENERATED_KEY)))
+                .verified(verifications(frontmatter.get(VERIFIED_KEY)))
+                .status(LifecycleStatus.from(textValue(frontmatter, STATUS_KEY)))
+                .staleAfter(textValue(frontmatter, STALE_AFTER_KEY))
+                .runtime(textValue(frontmatter, RUNTIME_KEY))
+                .parameters(parameters(frontmatter.get(PARAMETERS_KEY)))
+                .computation(textValue(frontmatter, COMPUTATION_KEY))
+                .executor(executor(frontmatter.get(EXECUTOR_KEY)))
+                .attester(attester(frontmatter.get(ATTESTER_KEY)))
+                .extraFields(extraFields(frontmatter))
                 .build());
     }
 
     /**
-     * Parses the YAML frontmatter subset used by OKF documents.
+     * Reads the YAML frontmatter content.
+     *
+     * @param frontmatterContent frontmatter content
+     * @return frontmatter tree
+     */
+    private static JsonNode readFrontmatter(final String frontmatterContent) {
+        try {
+            final JsonNode frontmatter = YAML_MAPPER.readTree(frontmatterContent);
+            if (frontmatter == null || frontmatter.isMissingNode() || !frontmatter.isObject()) {
+                return YAML_MAPPER.createObjectNode();
+            }
+            return frontmatter;
+        } catch (IOException exception) {
+            throw new KnowledgeBundleLoadingException("Unable to parse frontmatter: " + exception.getMessage(), exception);
+        }
+    }
+
+    /**
+     * Returns the frontmatter content.
      *
      * @param content Markdown content
-     * @return frontmatter data
+     * @return frontmatter content, or null
      */
-    private static Map<String, List<String>> parseFrontmatter(final String content) {
-        Map<String, List<String>> data = new LinkedHashMap<>();
-        FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
+    private static String frontmatterContent(final String content) {
+        final FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
         if (frontmatterBlock == null) {
-            return data;
+            return null;
         }
 
-        String frontmatterContent = content.substring(
+        return content.substring(
                 frontmatterBlock.contentStart(),
                 frontmatterBlock.closingDelimiterStart());
-        String currentKey = null;
-        for (String line : frontmatterContent.split("\\R")) {
-            if (StringUtils.isBlank(line)) {
-                continue;
-            }
-
-            String trimmedLine = StringUtils.trim(line);
-            if (trimmedLine.startsWith("- ") && currentKey != null) {
-                data.get(currentKey).add(cleanFrontMatterValue(trimmedLine.substring(2)));
-                continue;
-            }
-
-            if (Character.isWhitespace(line.charAt(0)) && currentKey != null && !data.get(currentKey).isEmpty()) {
-                List<String> values = data.get(currentKey);
-                values.set(0, values.getFirst() + " " + cleanFrontMatterValue(trimmedLine));
-                continue;
-            }
-
-            int separatorIndex = line.indexOf(':');
-            if (separatorIndex < 0) {
-                continue;
-            }
-
-            currentKey = StringUtils.trim(line.substring(0, separatorIndex));
-            String value = StringUtils.trim(line.substring(separatorIndex + 1));
-            List<String> values = new java.util.ArrayList<>();
-            if (StringUtils.isNotBlank(value)) {
-                if (TAGS_KEY.equals(currentKey) && isInlineList(value)) {
-                    values.addAll(parseInlineList(value));
-                } else {
-                    values.add(cleanFrontMatterValue(value));
-                }
-            }
-            data.put(currentKey, values);
-        }
-
-        return data;
     }
 
     /**
-     * Returns true when a frontmatter value is an inline YAML list.
+     * Returns source metadata.
      *
-     * @param value frontmatter value
-     * @return {@code true} for an inline list
+     * @param sources sources node
+     * @return source metadata
      */
-    private static boolean isInlineList(final String value) {
-        String trimmedValue = StringUtils.trim(value);
-        return trimmedValue.startsWith("[") && trimmedValue.endsWith("]");
-    }
-
-    /**
-     * Parses a comma-separated inline YAML list.
-     *
-     * @param value inline list
-     * @return list values
-     */
-    private static List<String> parseInlineList(final String value) {
-        String listContent = StringUtils.trim(value).substring(1, StringUtils.trim(value).length() - 1);
-        if (StringUtils.isBlank(listContent)) {
+    private static List<Source> sources(final JsonNode sources) {
+        if (sources == null || !sources.isArray()) {
             return List.of();
         }
 
-        return Stream.of(listContent.split(","))
-                .map(KnowledgeBundleLoader::cleanFrontMatterValue)
-                .toList();
+        final List<Source> values = new ArrayList<>();
+        sources.forEach(source -> values.add(source(source)));
+        return values;
     }
 
     /**
-     * Cleans a frontmatter value.
+     * Creates source metadata.
      *
-     * @param value value
-     * @return cleaned value
+     * @param source source node
+     * @return source metadata
      */
-    private static String cleanFrontMatterValue(final String value) {
-        String trimmedValue = StringUtils.trim(value);
-        if (StringUtils.length(trimmedValue) >= 2
-                && ((trimmedValue.startsWith("'") && trimmedValue.endsWith("'"))
-                || (trimmedValue.startsWith("\"") && trimmedValue.endsWith("\"")))) {
-            return trimmedValue.substring(1, trimmedValue.length() - 1);
+    private static Source source(final JsonNode source) {
+        return Source.builder()
+                .id(textValue(source, SOURCE_ID_KEY))
+                .resource(textValue(source, RESOURCE_KEY))
+                .title(textValue(source, SOURCE_TITLE_KEY))
+                .author(actor(source, SOURCE_AUTHOR_KEY))
+                .usageCount(longValue(source, SOURCE_USAGE_COUNT_KEY))
+                .lastModified(textValue(source, SOURCE_LAST_MODIFIED_KEY))
+                .usageWindow(usageWindow(source.get(USAGE_WINDOW_KEY)))
+                .build();
+    }
+
+    /**
+     * Returns generated metadata from frontmatter.
+     *
+     * @param generated generated node
+     * @return generated metadata, or null
+     */
+    private static TrustEvent generated(final JsonNode generated) {
+        if (generated == null || !generated.isObject()) {
+            return null;
         }
-        return trimmedValue;
+
+        return TrustEvent.builder()
+                .by(actor(generated, GENERATED_BY_KEY))
+                .at(textValue(generated, GENERATED_AT_KEY))
+                .build();
+    }
+
+    /**
+     * Returns verification metadata from frontmatter.
+     *
+     * @param verified verified node
+     * @return verification metadata
+     */
+    private static List<TrustEvent> verifications(final JsonNode verified) {
+        if (verified == null || verified.isNull() || verified.isMissingNode()) {
+            return List.of();
+        }
+        if (verified.isObject()) {
+            return List.of(verification(verified));
+        }
+        if (!verified.isArray()) {
+            return List.of();
+        }
+
+        final List<TrustEvent> values = new ArrayList<>();
+        verified.forEach(verification -> values.add(verification(verification)));
+        return values;
+    }
+
+    /**
+     * Creates verification metadata.
+     *
+     * @param verification verification node
+     * @return verification metadata
+     */
+    private static TrustEvent verification(final JsonNode verification) {
+        return TrustEvent.builder()
+                .by(actor(verification, GENERATED_BY_KEY))
+                .at(textValue(verification, GENERATED_AT_KEY))
+                .build();
+    }
+
+    /**
+     * Returns an actor value.
+     *
+     * @param node      node
+     * @param fieldName field name
+     * @return actor, or null
+     */
+    private static Actor actor(final JsonNode node, final String fieldName) {
+        return Actor.of(textValue(node, fieldName));
+    }
+
+    /**
+     * Creates usage window metadata.
+     *
+     * @param usageWindow usage window node
+     * @return usage window metadata, or null
+     */
+    private static UsageWindow usageWindow(final JsonNode usageWindow) {
+        if (usageWindow == null || !usageWindow.isObject()) {
+            return null;
+        }
+
+        return UsageWindow.builder()
+                .from(textValue(usageWindow, USAGE_WINDOW_FROM_KEY))
+                .to(textValue(usageWindow, USAGE_WINDOW_TO_KEY))
+                .build();
+    }
+
+    /**
+     * Returns computation parameters from frontmatter.
+     *
+     * @param parameters parameters node
+     * @return computation parameters
+     */
+    private static List<ComputationParameter> parameters(final JsonNode parameters) {
+        if (parameters == null || !parameters.isArray()) {
+            return List.of();
+        }
+
+        final List<ComputationParameter> values = new ArrayList<>();
+        parameters.forEach(parameter -> values.add(parameter(parameter)));
+        return values;
+    }
+
+    /**
+     * Creates computation parameter metadata.
+     *
+     * @param parameter parameter node
+     * @return computation parameter metadata
+     */
+    private static ComputationParameter parameter(final JsonNode parameter) {
+        return ComputationParameter.builder()
+                .name(textValue(parameter, PARAMETER_NAME_KEY))
+                .type(textValue(parameter, PARAMETER_TYPE_KEY))
+                .required(booleanValue(parameter, PARAMETER_REQUIRED_KEY))
+                .build();
+    }
+
+    /**
+     * Returns executor metadata from frontmatter.
+     *
+     * @param executor executor node
+     * @return executor metadata, or null
+     */
+    private static ComputationExecutor executor(final JsonNode executor) {
+        if (executor == null || !executor.isObject()) {
+            return null;
+        }
+
+        return ComputationExecutor.builder()
+                .resource(textValue(executor, RESOURCE_KEY))
+                .receipt(textList(executor.get(EXECUTOR_RECEIPT_KEY)))
+                .build();
+    }
+
+    /**
+     * Returns attester metadata from frontmatter.
+     *
+     * @param attester attester node
+     * @return attester metadata, or null
+     */
+    private static ComputationAttester attester(final JsonNode attester) {
+        if (attester == null || !attester.isObject()) {
+            return null;
+        }
+
+        return ComputationAttester.builder()
+                .resource(textValue(attester, RESOURCE_KEY))
+                .build();
+    }
+
+    /**
+     * Returns a text value.
+     *
+     * @param node      node
+     * @param fieldName field name
+     * @return text value, or null
+     */
+    private static String textValue(final JsonNode node, final String fieldName) {
+        if (node == null || node.get(fieldName) == null || node.get(fieldName).isNull()) {
+            return null;
+        }
+
+        return node.get(fieldName).asText();
+    }
+
+    /**
+     * Returns text values.
+     *
+     * @param node node
+     * @return text values
+     */
+    private static List<String> textList(final JsonNode node) {
+        if (node == null || node.isNull()) {
+            return List.of();
+        }
+
+        if (!node.isArray()) {
+            return List.of(node.asText());
+        }
+
+        final List<String> values = new ArrayList<>();
+        node.forEach(value -> values.add(value.asText()));
+        return values;
+    }
+
+    /**
+     * Returns a long value.
+     *
+     * @param node      node
+     * @param fieldName field name
+     * @return long value, or null
+     */
+    private static Long longValue(final JsonNode node, final String fieldName) {
+        if (node == null || node.get(fieldName) == null || node.get(fieldName).isNull()) {
+            return null;
+        }
+
+        final JsonNode value = node.get(fieldName);
+        if (value.isIntegralNumber()) {
+            return value.asLong();
+        }
+        if (StringUtils.isBlank(value.asText())) {
+            return null;
+        }
+        try {
+            return Long.parseLong(value.asText());
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns a boolean value.
+     *
+     * @param node      node
+     * @param fieldName field name
+     * @return boolean value, or null
+     */
+    private static Boolean booleanValue(final JsonNode node, final String fieldName) {
+        if (node == null || node.get(fieldName) == null || node.get(fieldName).isNull()) {
+            return null;
+        }
+
+        final JsonNode value = node.get(fieldName);
+        if (value.isBoolean()) {
+            return value.asBoolean();
+        }
+        if (StringUtils.isBlank(value.asText())) {
+            return null;
+        }
+        return Boolean.parseBoolean(value.asText());
+    }
+
+    /**
+     * Returns producer-defined fields.
+     *
+     * @param frontmatter frontmatter node
+     * @return producer-defined fields
+     */
+    private static Map<String, Object> extraFields(final JsonNode frontmatter) {
+        return YAML_MAPPER.convertValue(frontmatter, EXTRA_FIELDS_TYPE);
     }
 
     /**
@@ -341,7 +617,7 @@ public class KnowledgeBundleLoader {
      * @return Markdown content without frontmatter
      */
     private static String removeFrontmatter(final String content) {
-        FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
+        final FrontmatterBlock frontmatterBlock = findFrontmatterBlock(content);
         if (frontmatterBlock == null) {
             return content;
         }
@@ -360,26 +636,26 @@ public class KnowledgeBundleLoader {
             return null;
         }
 
-        int firstLineEnd = content.indexOf('\n');
+        final int firstLineEnd = content.indexOf('\n');
         if (firstLineEnd < 0 || isFrontmatterDelimiter(content.substring(0, firstLineEnd))) {
             return null;
         }
 
-        int closingDelimiterStart = content.indexOf("\n---", firstLineEnd);
+        final int closingDelimiterStart = content.indexOf("\n---", firstLineEnd);
         if (closingDelimiterStart < 0) {
             return null;
         }
 
-        int closingDelimiterLineEnd = content.indexOf('\n', closingDelimiterStart + 1);
+        final int closingDelimiterLineEnd = content.indexOf('\n', closingDelimiterStart + 1);
         if (closingDelimiterLineEnd < 0) {
-            String closingDelimiter = content.substring(closingDelimiterStart + 1);
+            final String closingDelimiter = content.substring(closingDelimiterStart + 1);
             if (isFrontmatterDelimiter(closingDelimiter)) {
                 return null;
             }
             return new FrontmatterBlock(firstLineEnd + 1, closingDelimiterStart, content.length());
         }
 
-        String closingDelimiter = content.substring(closingDelimiterStart + 1, closingDelimiterLineEnd);
+        final String closingDelimiter = content.substring(closingDelimiterStart + 1, closingDelimiterLineEnd);
         if (isFrontmatterDelimiter(closingDelimiter)) {
             return null;
         }
@@ -398,32 +674,6 @@ public class KnowledgeBundleLoader {
     }
 
     /**
-     * Returns front matter single value.
-     *
-     * @param data data
-     * @param key  key
-     * @return value
-     */
-    private static String getFrontMatterValue(final Map<String, List<String>> data, final String key) {
-        List<String> values = data.get(key);
-        if (values == null || values.isEmpty()) {
-            return null;
-        } else {
-            return StringUtils.normalizeSpace(values.getFirst());
-        }
-    }
-
-    /**
-     * Returns front matter extra fields.
-     *
-     * @param data front matter data
-     * @return extra fields
-     */
-    private static Map<String, Object> getFrontMatterExtraFields(final Map<String, List<String>> data) {
-        return new LinkedHashMap<>(data);
-    }
-
-    /**
      * Returns a relative absolutePath from the rootBundleDirectory directory to the given absolutePath.
      *
      * @param rootDirectory isRoot directory
@@ -436,7 +686,7 @@ public class KnowledgeBundleLoader {
 
     // UTF-8 Utils =====================================================================================================
     private static String decodeUtf8Strict(final byte[] bytes) throws CharacterCodingException {
-        CharsetDecoder decoder = StandardCharsets.UTF_8
+        final CharsetDecoder decoder = StandardCharsets.UTF_8
                 .newDecoder()
                 .onMalformedInput(CodingErrorAction.REPORT)
                 .onUnmappableCharacter(CodingErrorAction.REPORT);
@@ -445,7 +695,7 @@ public class KnowledgeBundleLoader {
     }
 
     private static String decodeUtf8ReplacingInvalidCharacters(final byte[] bytes) {
-        CharsetDecoder decoder = StandardCharsets.UTF_8
+        final CharsetDecoder decoder = StandardCharsets.UTF_8
                 .newDecoder()
                 .onMalformedInput(CodingErrorAction.REPLACE)
                 .onUnmappableCharacter(CodingErrorAction.REPLACE);

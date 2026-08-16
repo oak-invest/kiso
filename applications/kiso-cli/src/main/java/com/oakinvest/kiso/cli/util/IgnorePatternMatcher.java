@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.oakinvest.kiso.core.util.FileConstants.RECURSIVE_DIRECTORY_PATTERN;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.RECURSIVE_DIRECTORY_PATTERN;
 
 /**
  * Ignore pattern matcher.

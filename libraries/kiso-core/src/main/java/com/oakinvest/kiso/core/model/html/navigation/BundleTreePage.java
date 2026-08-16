@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.model.html.navigation;
 
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
+import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.Builder;
 
 import java.nio.file.Path;

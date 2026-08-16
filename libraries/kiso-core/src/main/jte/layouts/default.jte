@@ -1,12 +1,10 @@
-<%-- Page parameters ============================================================================================== --%>
-@param com.oakinvest.kiso.core.configuration.SiteConfiguration siteConfiguration
-@param com.oakinvest.kiso.core.configuration.ThemeConfiguration themeConfiguration
-@param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
-@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
-@param gg.jte.Content content
+@param com.oakinvest.kiso.core.model.html.util.PageContext pageContext
+@param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
+@param gg.jte.Content pageContent
 
 <!DOCTYPE html>
-<html data-theme="${themeConfiguration.effectiveName()}" lang="${siteConfiguration.languageTag()}">
+<html data-theme="${pageContext.themeConfiguration().effectiveName()}"
+      lang="${pageContext.siteConfiguration().languageTag()}">
 
 <head>
 
@@ -17,10 +15,10 @@
     <meta name="description" content="${pageMetadata.description()}">
 
     <!-- CSS, JS, favicons and social ============================================================================== -->
-    @template.layouts.head-css(assetBasePath = pageMetadata.assetBasePath())
-    @template.layouts.head-js(assetBasePath = pageMetadata.assetBasePath())
-    @template.layouts.head-favicons(assetBasePath = pageMetadata.assetBasePath())
-    @template.layouts.head-social(pageMetadata = pageMetadata, siteConfiguration = siteConfiguration)
+    @template.layouts.head-css(pageMetadata = pageMetadata)
+    @template.layouts.head-js(pageMetadata = pageMetadata)
+    @template.layouts.head-favicons(pageMetadata = pageMetadata)
+    @template.layouts.head-social(pageMetadata = pageMetadata, pageContext = pageContext)
 
     <!-- AI content ================================================================================================ -->
     <link rel="alternate" type="text/markdown" title="Markdown source" href="${pageMetadata.markdownFilename()}">
@@ -43,7 +41,7 @@ current DaisyUI theme, and displays text using the default readable text color f
     <div class="drawer-content min-h-screen">
 
         <!-- Navigation bar ======================================================================================== -->
-        @template.layouts.navigation-bar(siteConfiguration = siteConfiguration, pageMetadata = pageMetadata, bundleTree = bundleTree)
+        @template.layouts.navigation-bar(pageMetadata = pageMetadata)
 
         <!-- Content =============================================================================================== -->
         <!--
@@ -54,8 +52,16 @@ current DaisyUI theme, and displays text using the default readable text color f
                 max-w-6xl - Limit the maximum width of the container
         -->
         <main class="container mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-12">
-            ${content}
+            ${pageContent}
         </main>
+
+        <!-- Back to top =========================================================================================== -->
+        <button type="button"
+                class="kiso-back-to-top btn btn-primary btn-square fixed bottom-4 right-4 z-50 hidden shadow-lg"
+                aria-label="Back to top"
+                data-i18n-aria-label="navigation.backToTop">
+            @template.components.icons.arrowUp()
+        </button>
 
     </div>
 
@@ -69,7 +75,7 @@ current DaisyUI theme, and displays text using the default readable text color f
                class="drawer-overlay"></label>
 
         <!-- Tree menu ============================================================================================= -->
-        @template.layouts.side-menu(bundleTree = bundleTree, pageMetadata = pageMetadata)
+        @template.layouts.side-menu(pageContext = pageContext, pageMetadata = pageMetadata)
 
     </div>
 

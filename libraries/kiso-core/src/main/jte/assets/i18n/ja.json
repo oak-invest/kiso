@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "生成ツール",
-    "lastUpdate": "最終更新"
+    "lastUpdate": "最終更新",
+    "generatedAt": "生成日時",
+    "generatedBy": "生成者"
   },
   "metadata": {
     "resource": "リソース",
     "tags": "タグ"
+  },
+  "okfMetadata": {
+    "attester": "アテスター",
+    "at": "日時",
+    "author": "作成者",
+    "by": "実行者",
+    "computationContract": "計算コントラクト",
+    "computationFile": "計算ファイル",
+    "executor": "実行者",
+    "generated": "生成",
+    "id": "ID",
+    "lastModified": "最終変更",
+    "name": "名前",
+    "parameters": "パラメータ",
+    "receipt": "レシート",
+    "required": "必須",
+    "runtime": "ランタイム",
+    "sources": "ソース",
+    "staleAfter": "失効日",
+    "status": "ステータス",
+    "title": "タイトル",
+    "trust": "信頼",
+    "trustTier": "信頼レベル",
+    "type": "タイプ",
+    "usageCount": "使用回数",
+    "usageWindowFrom": "使用期間の開始",
+    "usageWindowTo": "使用期間の終了",
+    "verified": "検証済み"
   },
   "navigation": {
     "bundleContent": "バンドルの内容",
     "closeNavigation": "ナビゲーションを閉じる",
     "home": "ホーム",
     "openNavigation": "ナビゲーションを開く",
-    "downloadBundle": "バンドルをダウンロード"
+    "downloadBundle": "バンドルをダウンロード",
+    "backToTop": "上に戻る"
   },
   "pageKind": {
     "concept": "コンセプト",
-    "index": "インデックス"
+    "index": "インデックス",
+    "log": "ログ"
   },
   "search": {
     "failedToLoadIndex": "検索インデックスを読み込めませんでした",

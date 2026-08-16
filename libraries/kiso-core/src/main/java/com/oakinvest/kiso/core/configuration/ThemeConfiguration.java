@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.core.configuration;
 
+import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Locale;
@@ -10,6 +11,8 @@ import java.util.Locale;
  *
  * @param name theme name
  */
+@Builder
+@SuppressWarnings("unused")
 public record ThemeConfiguration(
         String name
 ) {

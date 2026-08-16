@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "Erstellt mit",
-    "lastUpdate": "Letzte Aktualisierung"
+    "lastUpdate": "Letzte Aktualisierung",
+    "generatedAt": "Erstellt am",
+    "generatedBy": "Erstellt von"
   },
   "metadata": {
     "resource": "Ressource",
     "tags": "Tags"
+  },
+  "okfMetadata": {
+    "attester": "Attester",
+    "at": "Am",
+    "author": "Autor",
+    "by": "Von",
+    "computationContract": "Berechnungsvertrag",
+    "computationFile": "Berechnungsdatei",
+    "executor": "Executor",
+    "generated": "Erstellt",
+    "id": "Id",
+    "lastModified": "Zuletzt geändert",
+    "name": "Name",
+    "parameters": "Parameter",
+    "receipt": "Beleg",
+    "required": "Erforderlich",
+    "runtime": "Runtime",
+    "sources": "Quellen",
+    "staleAfter": "Veraltet nach",
+    "status": "Status",
+    "title": "Titel",
+    "trust": "Vertrauen",
+    "trustTier": "Vertrauensstufe",
+    "type": "Typ",
+    "usageCount": "Nutzungsanzahl",
+    "usageWindowFrom": "Nutzungsfenster von",
+    "usageWindowTo": "Nutzungsfenster bis",
+    "verified": "Verifiziert"
   },
   "navigation": {
     "bundleContent": "Bundle-Inhalt",
     "closeNavigation": "Navigation schließen",
     "home": "Startseite",
     "openNavigation": "Navigation öffnen",
-    "downloadBundle": "Bundle herunterladen"
+    "downloadBundle": "Bundle herunterladen",
+    "backToTop": "Nach oben"
   },
   "pageKind": {
     "concept": "Konzept",
-    "index": "Index"
+    "index": "Index",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Suchindex konnte nicht geladen werden",

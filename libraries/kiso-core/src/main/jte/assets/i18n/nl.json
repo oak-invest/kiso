@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "Gegenereerd met",
-    "lastUpdate": "Laatste update"
+    "lastUpdate": "Laatste update",
+    "generatedAt": "Gegenereerd op",
+    "generatedBy": "Gegenereerd door"
   },
   "metadata": {
     "resource": "Bron",
     "tags": "Tags"
+  },
+  "okfMetadata": {
+    "attester": "Attester",
+    "at": "Op",
+    "author": "Auteur",
+    "by": "Door",
+    "computationContract": "Berekeningscontract",
+    "computationFile": "Berekeningsbestand",
+    "executor": "Executor",
+    "generated": "Gegenereerd",
+    "id": "Id",
+    "lastModified": "Laatst gewijzigd",
+    "name": "Naam",
+    "parameters": "Parameters",
+    "receipt": "Receipt",
+    "required": "Vereist",
+    "runtime": "Runtime",
+    "sources": "Bronnen",
+    "staleAfter": "Verouderd na",
+    "status": "Status",
+    "title": "Titel",
+    "trust": "Vertrouwen",
+    "trustTier": "Vertrouwensniveau",
+    "type": "Type",
+    "usageCount": "Gebruiksaantal",
+    "usageWindowFrom": "Gebruiksvenster vanaf",
+    "usageWindowTo": "Gebruiksvenster tot",
+    "verified": "Geverifieerd"
   },
   "navigation": {
     "bundleContent": "Bundle-inhoud",
     "closeNavigation": "Navigatie sluiten",
     "home": "Startpagina",
     "openNavigation": "Navigatie openen",
-    "downloadBundle": "Bundle downloaden"
+    "downloadBundle": "Bundle downloaden",
+    "backToTop": "Terug naar boven"
   },
   "pageKind": {
     "concept": "Concept",
-    "index": "Index"
+    "index": "Index",
+    "log": "Log"
   },
   "search": {
     "failedToLoadIndex": "Zoekindex kan niet worden geladen",

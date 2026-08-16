@@ -25,7 +25,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.1.7
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.0
   with:
     command: build
     source: examples/kb-google-example
@@ -34,9 +34,9 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `check` | Validates the Markdown files in an OKF bundle and reports formatting or structural errors. |
+| Command | Description                                                                                                   |
+|---------|---------------------------------------------------------------------------------------------------------------|
+| `check` | Validates the Markdown files in an OKF bundle and reports formatting or structural errors.                    |
 | `build` | Generates a static website, including the original Markdown files, HTML pages, `llms.txt`, and `sitemap.xml`. |
 
 ## CLI options
@@ -69,15 +69,15 @@ content:
     - private/**
 ```
 
-| Property | Default | Description                                                                                     |
-|----------|---------|-------------------------------------------------------------------------------------------------|
-| `site.baseUrl` | | Public base URL prepended to generated site links and sitemap entries.                          |
-| `site.name` | | Name of the site, used in the social share.                                                     |
-| `site.language` | `en` | Language used by the generated HTML pages.                                                      |
-| `site.title` | Page title | Title used for the root index page.                                                             |
-| `site.description` | Page description | Description used for the root index page.                                                       |
-| `theme.name` | `light` | [DaisyUI theme](https://daisyui.com/docs/themes/#list-of-themes) used by the generated website. |
-| `content.ignorePatterns` | `[]` | Glob patterns identifying files and directories that must not be copied or published.           |
+| Property                 | Default          | Description                                                                                     |
+|--------------------------|------------------|-------------------------------------------------------------------------------------------------|
+| `site.baseUrl`           |                  | Public base URL prepended to generated site links and sitemap entries.                          |
+| `site.name`              |                  | Name of the site, used in the social share.                                                     |
+| `site.language`          | `en`             | Language used by the generated HTML pages.                                                      |
+| `site.title`             | Page title       | Title used for the root index page.                                                             |
+| `site.description`       | Page description | Description used for the root index page.                                                       |
+| `theme.name`             | `light`          | [DaisyUI theme](https://daisyui.com/docs/themes/#list-of-themes) used by the generated website. |
+| `content.ignorePatterns` | `[]`             | Glob patterns identifying files and directories that must not be copied or published.           |
 
 Ignore patterns are evaluated against paths relative to the bundle root. For example, `README.md` excludes only the root README, while `drafts/**` excludes the contents of the `drafts` directory. The source bundle is never modified: Kiso applies these exclusions while copying files to the destination directory, before loading, validating, and publishing the resulting bundle.
 

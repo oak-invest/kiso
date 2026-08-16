@@ -25,12 +25,27 @@
     "allDeclaredMethods": true
   },
   {
+    "name": "gg.jte.generated.precompiled.JteindexGenerated$1",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
     "name": "gg.jte.generated.precompiled.JteconceptGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
   },
   {
     "name": "gg.jte.generated.precompiled.JteconceptGenerated$1",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.JtelogGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.JtelogGenerated$1",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
   },
@@ -45,12 +60,77 @@
     "allDeclaredMethods": true
   },
   {
-    "name": "gg.jte.generated.precompiled.partials.JtebundleTreeMenuGenerated",
+    "name": "gg.jte.generated.precompiled.layouts.JteheadcssGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
   },
   {
-    "name": "gg.jte.generated.precompiled.partials.JtebundleTreeMenuNodeGenerated",
+    "name": "gg.jte.generated.precompiled.layouts.JteheadfaviconsGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.layouts.JteheadjsGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.layouts.JteheadsocialGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.layouts.JtenavigationbarGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.layouts.JtesidemenuGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.layouts.JtesidemenunodeGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JteagentGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JtearrowUpGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JtedownloadGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JteglassGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JtehamburgerGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JtehomeGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JtehumanGenerated",
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "gg.jte.generated.precompiled.components.icons.JteprocessGenerated",
     "allDeclaredConstructors": true,
     "allDeclaredMethods": true
   }

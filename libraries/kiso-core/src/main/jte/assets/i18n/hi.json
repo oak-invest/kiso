@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "इसके साथ बनाया गया",
-    "lastUpdate": "अंतिम अपडेट"
+    "lastUpdate": "अंतिम अपडेट",
+    "generatedAt": "बनाया गया",
+    "generatedBy": "द्वारा बनाया गया"
   },
   "metadata": {
     "resource": "संसाधन",
     "tags": "टैग"
+  },
+  "okfMetadata": {
+    "attester": "सत्यापनकर्ता",
+    "at": "समय",
+    "author": "लेखक",
+    "by": "द्वारा",
+    "computationContract": "गणना अनुबंध",
+    "computationFile": "गणना फ़ाइल",
+    "executor": "निष्पादक",
+    "generated": "बनाया गया",
+    "id": "आईडी",
+    "lastModified": "अंतिम संशोधन",
+    "name": "नाम",
+    "parameters": "पैरामीटर",
+    "receipt": "रसीद",
+    "required": "आवश्यक",
+    "runtime": "रनटाइम",
+    "sources": "स्रोत",
+    "staleAfter": "इसके बाद पुराना",
+    "status": "स्थिति",
+    "title": "शीर्षक",
+    "trust": "विश्वास",
+    "trustTier": "विश्वास स्तर",
+    "type": "प्रकार",
+    "usageCount": "उपयोग संख्या",
+    "usageWindowFrom": "उपयोग विंडो से",
+    "usageWindowTo": "उपयोग विंडो तक",
+    "verified": "सत्यापित"
   },
   "navigation": {
     "bundleContent": "बंडल सामग्री",
     "closeNavigation": "नेविगेशन बंद करें",
     "home": "होम",
     "openNavigation": "नेविगेशन खोलें",
-    "downloadBundle": "बंडल डाउनलोड करें"
+    "downloadBundle": "बंडल डाउनलोड करें",
+    "backToTop": "शीर्ष पर वापस जाएं"
   },
   "pageKind": {
     "concept": "संकल्पना",
-    "index": "सूची"
+    "index": "सूची",
+    "log": "लॉग"
   },
   "search": {
     "failedToLoadIndex": "खोज इंडेक्स लोड नहीं हो सका",

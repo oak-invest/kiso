@@ -1,3 +1,5 @@
+/* global i18next */
+
 (() => {
     const scriptElement = document.currentScript || document.querySelector("script[src*='kiso-i18n.js']");
     const fallbackLanguage = "en";

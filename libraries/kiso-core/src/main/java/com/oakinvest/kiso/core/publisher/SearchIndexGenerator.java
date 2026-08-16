@@ -10,7 +10,8 @@ import lombok.experimental.UtilityClass;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
 /**
  * Generator for the search index JSON file.
@@ -35,6 +36,7 @@ public class SearchIndexGenerator {
         ArrayNode documents = searchIndex.putArray("documents");
 
         knowledgeBundle.markdownFiles()
+                .filter(markdownFile -> !markdownFile.bundleName().equalsIgnoreCase(TAGS_DIRECTORY_NAME))
                 .filter(markdownFile -> markdownFile.kind().equals(CONCEPT))
                 .forEach(markdownFile -> documents.add(searchDocument(markdownFile)));
 

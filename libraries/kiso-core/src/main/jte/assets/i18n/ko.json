@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "생성 도구",
-    "lastUpdate": "마지막 업데이트"
+    "lastUpdate": "마지막 업데이트",
+    "generatedAt": "생성 일시",
+    "generatedBy": "생성자"
   },
   "metadata": {
     "resource": "리소스",
     "tags": "태그"
+  },
+  "okfMetadata": {
+    "attester": "검증기",
+    "at": "시각",
+    "author": "작성자",
+    "by": "수행자",
+    "computationContract": "계산 계약",
+    "computationFile": "계산 파일",
+    "executor": "실행기",
+    "generated": "생성됨",
+    "id": "Id",
+    "lastModified": "마지막 수정",
+    "name": "이름",
+    "parameters": "매개변수",
+    "receipt": "영수증",
+    "required": "필수",
+    "runtime": "런타임",
+    "sources": "출처",
+    "staleAfter": "만료 기준일",
+    "status": "상태",
+    "title": "제목",
+    "trust": "신뢰",
+    "trustTier": "신뢰 수준",
+    "type": "유형",
+    "usageCount": "사용 횟수",
+    "usageWindowFrom": "사용 기간 시작",
+    "usageWindowTo": "사용 기간 종료",
+    "verified": "검증됨"
   },
   "navigation": {
     "bundleContent": "번들 내용",
     "closeNavigation": "내비게이션 닫기",
     "home": "홈",
     "openNavigation": "내비게이션 열기",
-    "downloadBundle": "번들 다운로드"
+    "downloadBundle": "번들 다운로드",
+    "backToTop": "맨 위로"
   },
   "pageKind": {
     "concept": "개념",
-    "index": "색인"
+    "index": "색인",
+    "log": "로그"
   },
   "search": {
     "failedToLoadIndex": "검색 인덱스를 불러오지 못했습니다",

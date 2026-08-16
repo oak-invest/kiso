@@ -1,10 +1,12 @@
-@param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
-@param com.oakinvest.kiso.core.configuration.SiteConfiguration siteConfiguration
+@import org.apache.commons.lang3.StringUtils
+
+@param com.oakinvest.kiso.core.model.html.util.PageContext pageContext
+@param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
 <!-- Social preview ================================================================================================ -->
-@if(pageMetadata.assetBasePath() != null)
-    <meta property="og:locale" content="${siteConfiguration.languageTag()}">
-    <meta property="og:site_name" content="${siteConfiguration.name()}">
+@if(StringUtils.isNotBlank(pageContext.siteConfiguration().baseUrl()))
+    <meta property="og:locale" content="${pageContext.siteConfiguration().languageTag()}">
+    <meta property="og:site_name" content="${pageContext.siteConfiguration().name()}">
     <meta property="og:url" content="${pageMetadata.assetBasePath()}${pageMetadata.htmlPath()}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="${pageMetadata.title()}">

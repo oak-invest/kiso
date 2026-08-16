@@ -1,13 +1,15 @@
 package com.oakinvest.kiso.core.model.html.navigation;
 
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * Calculated bundle tree used to build navigation menus.
@@ -76,6 +78,18 @@ public record BundleTree(
     }
 
     /**
+     * Returns an empty bundle tree.
+     *
+     * @return empty bundle tree
+     */
+    public static BundleTree empty() {
+        return BundleTree.builder()
+                .childBundles(List.of())
+                .pages(List.of())
+                .build();
+    }
+
+    /**
      * Returns true when this node is the root bundle.
      *
      * @return {@code true} for the root bundle
@@ -99,7 +113,7 @@ public record BundleTree(
      * @return {@code true} when an index page exists
      */
     public boolean hasIndexPage() {
-        return pages.stream().anyMatch(page -> page.kind() == MarkdownFileKind.INDEX);
+        return pages.stream().anyMatch(page -> page.kind() == INDEX);
     }
 
     /**
@@ -108,7 +122,7 @@ public record BundleTree(
      * @param htmlPath HTML absolutePath relative to the generated site isRoot
      * @return {@code true} when this bundle contains the absolutePath
      */
-    public boolean containsHtmlPath(final String htmlPath) {
+    public boolean containsHtmlPath(@Nullable final String htmlPath) {
         if (htmlPath == null) {
             return false;
         }

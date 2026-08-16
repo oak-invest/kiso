@@ -1,22 +1,54 @@
 {
   "footer": {
     "generatedWith": "Généré avec",
-    "lastUpdate": "Dernière mise à jour"
+    "lastUpdate": "Dernière mise à jour",
+    "generatedAt": "Généré le",
+    "generatedBy": "Généré par"
   },
   "metadata": {
     "resource": "Ressource",
     "tags": "Tags"
+  },
+  "okfMetadata": {
+    "attester": "Attesteur",
+    "at": "Le",
+    "author": "Auteur",
+    "by": "Par",
+    "computationContract": "Contrat de calcul",
+    "computationFile": "Fichier de calcul",
+    "executor": "Exécuteur",
+    "generated": "Généré",
+    "id": "Id",
+    "lastModified": "Dernière modification",
+    "name": "Nom",
+    "parameters": "Paramètres",
+    "receipt": "Reçu",
+    "required": "Requis",
+    "runtime": "Runtime",
+    "sources": "Sources",
+    "staleAfter": "Obsolète après le",
+    "status": "Statut",
+    "title": "Titre",
+    "trust": "Confiance",
+    "trustTier": "Niveau de confiance",
+    "type": "Type",
+    "usageCount": "Nombre d'utilisations",
+    "usageWindowFrom": "Fenêtre d'utilisation depuis",
+    "usageWindowTo": "Fenêtre d'utilisation jusqu'à",
+    "verified": "Vérifié"
   },
   "navigation": {
     "bundleContent": "Contenu du bundle",
     "closeNavigation": "Fermer la navigation",
     "home": "Accueil",
     "openNavigation": "Ouvrir la navigation",
-    "downloadBundle": "Télécharger le bundle"
+    "downloadBundle": "Télécharger le bundle",
+    "backToTop": "Retour en haut"
   },
   "pageKind": {
     "concept": "Concept",
-    "index": "Index"
+    "index": "Index",
+    "log": "log"
   },
   "search": {
     "failedToLoadIndex": "Impossible de charger l'index de recherche",

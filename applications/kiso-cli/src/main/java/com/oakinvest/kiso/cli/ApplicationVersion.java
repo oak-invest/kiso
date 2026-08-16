@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Class used to retrieve application version.
+ * Class used to retrieve the application version.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
@@ -27,7 +27,7 @@ public final class ApplicationVersion {
     private static final String VERSION = loadVersion();
 
     /**
-     * Returns application version.
+     * Returns the application version.
      *
      * @return the application version
      */

@@ -1,13 +1,11 @@
-@param com.oakinvest.kiso.core.configuration.SiteConfiguration siteConfiguration
-@param com.oakinvest.kiso.core.model.html.page.PageMetadata pageMetadata
-@param com.oakinvest.kiso.core.model.html.navigation.BundleTree bundleTree
+@param com.oakinvest.kiso.core.model.html.util.PageMetadata pageMetadata
 
 <div class="navbar bg-base-100 shadow-sm">
 
     <!-- Buttons =================================================================================================== -->
     <div class="flex-none flex items-center gap-1">
         <!-- Home link ============================================================================================= -->
-        <a href="${pageMetadata.assetBasePath()}"
+        <a href="${pageMetadata.homePath()}"
            class="btn btn-square btn-ghost"
            aria-label="Home"
            data-i18n-aria-label="navigation.home">
@@ -23,6 +21,7 @@
         </label>
 
         <!-- Download bundle button ===============================================================================  -->
+        <!--suppress HtmlUnknownTarget -->
         <a href="bundle.zip"
            download
            class="btn btn-square btn-ghost"
@@ -35,7 +34,7 @@
     <div class="flex-1"></div>
 
     <!-- Search engine ============================================================================================= -->
-    <div class="kiso-search flex-none"
+    <div class="kiso-search hidden flex-none md:block"
          data-search-index-url="${pageMetadata.assetBasePath()}search-index.json"
          data-search-result-base-url="${pageMetadata.assetBasePath()}">
 
@@ -51,6 +50,7 @@
                    autocomplete="off"
                    aria-label="Search"
                    data-i18n-aria-label="search.label"/>
+
         </label>
 
         <div class="kiso-search-results menu rounded-box mt-2 hidden w-80 max-w-[calc(100vw-1.5rem)] bg-base-100 p-2 shadow-lg"></div>

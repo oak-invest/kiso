@@ -1,3 +1,5 @@
+/* global MiniSearch */
+
 (() => {
     const maximumResults = 8;
 

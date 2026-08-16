@@ -1,5 +1,7 @@
 package com.oakinvest.kiso.core.configuration;
 
+import lombok.Builder;
+
 import java.util.List;
 
 /**
@@ -7,6 +9,8 @@ import java.util.List;
  *
  * @param ignorePatterns list of patterns to ignore
  */
+@Builder
+@SuppressWarnings("unused")
 public record ContentConfiguration(
         List<String> ignorePatterns
 ) {

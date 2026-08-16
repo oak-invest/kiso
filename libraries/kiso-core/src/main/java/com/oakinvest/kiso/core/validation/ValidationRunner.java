@@ -1,10 +1,15 @@
 package com.oakinvest.kiso.core.validation;
 
 import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.validation.rule.AttestedComputationRule;
 import com.oakinvest.kiso.core.validation.rule.BrokenLinkRule;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import com.oakinvest.kiso.core.validation.rule.MarkdownFileRule;
+import com.oakinvest.kiso.core.validation.rule.TrustEventRule;
 import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
+import com.oakinvest.kiso.core.validation.rule.ValidLogRule;
+import com.oakinvest.kiso.core.validation.rule.ValidSourceRule;
+import com.oakinvest.kiso.core.validation.rule.ValidUsageWindowRule;
 import lombok.experimental.UtilityClass;
 
 import java.util.LinkedList;
@@ -20,9 +25,14 @@ public class ValidationRunner {
 
     /** Markdown file rules. */
     private static final List<MarkdownFileRule> MARKDOWN_FILE_RULES = List.of(
+            new BrokenLinkRule(),
+            new AttestedComputationRule(),
             new EncodingRule(),
+            new TrustEventRule(),
             new ValidFrontmatterRule(),
-            new BrokenLinkRule()
+            new ValidLogRule(),
+            new ValidSourceRule(),
+            new ValidUsageWindowRule()
     );
 
     /**

@@ -3,13 +3,19 @@ package com.oakinvest.kiso.core.validation.rule;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.util.contants.OKFVersion;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.model.okf.markdown.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.OKF_VERSION_KEY;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.ROOT_BUNDLE_NAME;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
+import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_OKF_VERSION;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAMP;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
@@ -31,6 +37,13 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
     public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
         Objects.requireNonNull(bundle, "bundle must not be null");
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
+        // =============================================================================================================
+        // Removed the verification on log.md file: https://github.com/GoogleCloudPlatform/knowledge-catalog/issues/286
+        // For now, we accept anything on that kind of file.
+        if (markdownFile.kind().equals(LOG)) {
+            return List.of();
+        }
 
         // Only on concept files =======================================================================================
         if (markdownFile.kind().equals(CONCEPT)) {
@@ -64,11 +77,43 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                             .path(markdownFile.relativePath())
                             .build());
                 }
+
+                // If there is a frontmatter and generated.at is not ISO 8601 datetime format =========================
+                if (frontmatter.generated() != null
+                        && StringUtils.isNotBlank(frontmatter.generated().at())
+                        && frontmatter.generated().parsedAt() == null) {
+                    return List.of(ValidationIssue.builder()
+                            .severity(ERROR)
+                            .code(INVALID_TIMESTAMP)
+                            .message("File " + markdownFile.relativePath() + " has invalid 'generated.at' in frontmatter. It must be in ISO 8601 datetime format")
+                            .path(markdownFile.relativePath())
+                            .build());
+                }
             }
 
         } else {
             // Non-CONCEPT file should not contain frontmatter =========================================================
             if (markdownFile.frontmatterPresent()) {
+
+                // spec 0.2: For index.md files at root, a specific frontmatter is allowed =============================
+                if (markdownFile.kind().equals(INDEX)
+                        && markdownFile.bundleName().equals(ROOT_BUNDLE_NAME)
+                        && markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY) != null) {
+
+                    // Validate okf_version against existing OKF versions.
+                    final String okfVersion = markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY).toString();
+                    if (!OKFVersion.exists(okfVersion)) {
+                        return List.of(ValidationIssue.builder()
+                                .severity(ERROR)
+                                .code(INVALID_OKF_VERSION)
+                                .message("File " + markdownFile.relativePath() + " has invalid 'okf_version' in frontmatter:" + okfVersion)
+                                .path(markdownFile.relativePath())
+                                .build());
+                    }
+
+                    return List.of();
+                }
+
                 return List.of(ValidationIssue.builder()
                         .severity(ERROR)
                         .code(UNEXPECTED_FRONTMATTER)

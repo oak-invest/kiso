@@ -27,6 +27,6 @@ Variants:
 - `light`: white/transparent usage with dark text and blue mark
 - `dark`: dark background with white text and blue mark
 - `black`: monochrome black
-- `white`: monochrome white on dark preview background
+- `white`: monochrome white on a dark preview background
 
-Note: the `white` SVG files include a dark background so they are visible when opened directly. If you need transparent white-only assets, remove the first `<rect>` background.
+Note: the `white` SVG files include a dark background, so they are visible when opened directly. If you need transparent white-only assets, remove the first `<rect>` background.
