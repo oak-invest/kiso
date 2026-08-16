@@ -34,7 +34,7 @@
 
 ## Pre-release steps
 
-- Update the projet README.md content and release number in it.
+- Update the projet README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
 - Change the release number in `applications/kiso-cli-action/action.yml`
 - Commit the changes and push them to the `development` branch.
 

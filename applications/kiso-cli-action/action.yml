@@ -3,9 +3,9 @@ description: "Check and build an OKF knowledge bundle with Kiso"
 
 inputs:
   version:
-    description: "Kiso CLI version to use, for example v0.1.7"
+    description: "Kiso CLI version to use, for example v0.2.0"
     required: false
-    default: "v0.1.7"
+    default: "v0.2.0"
   command:
     description: "Kiso command, for example 'check' or 'build'"
     required: true
