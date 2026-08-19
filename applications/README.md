@@ -8,5 +8,8 @@ This directory contains all executable applications built from the Kiso codebase
 ## Developer setup
 
 ```bash
-sdk install java 21.0.11-graal
+sdk install java 21.0.12-graal
+sdk install maven 3.9.16
+sudo apt install -y librsvg2-bin inkscape
+cargo install resvg
 ```
