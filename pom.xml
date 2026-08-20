@@ -66,6 +66,7 @@
 
         <!-- MCP -->
         <tachyon.version>1.0.0-beta.19</tachyon.version>
+        <slf4j.version>2.0.18</slf4j.version>
 
         <!-- Boilerplate and utils -->
         <jspecify.version>1.0.1</jspecify.version>
@@ -149,6 +150,11 @@
                 <groupId>dev.tachyonmcp</groupId>
                 <artifactId>tachyon-core</artifactId>
                 <version>${tachyon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>

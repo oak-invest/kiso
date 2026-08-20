@@ -16,7 +16,7 @@
     <artifactId>kiso-mcp-server</artifactId>
     <packaging>jar</packaging>
     <name>Kiso MCP Server</name>
-    <description>Kiso MCP Server is a publishing engine for Open Knowledge Format (OKF).</description>
+    <description>Kiso MCP Server is an MCP server for exposing Open Knowledge Format (OKF) knowledge bundles to AI agents.</description>
 
     <!-- Project configuration ===================================================================================== -->
     <properties>
@@ -31,8 +31,17 @@
             <artifactId>kiso-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+        </dependency>
+        <dependency>
             <groupId>dev.tachyonmcp</groupId>
             <artifactId>tachyon-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Boilerplate and utils -->
@@ -195,7 +204,7 @@
                         <artifactId>native-maven-plugin</artifactId>
                         <version>${maven.graalvm.native.plugin.version}</version>
                         <configuration>
-                            <imageName>kiso-cli</imageName>
+                            <imageName>kiso-mcp-server</imageName>
                             <mainClass>${application.main.class}</mainClass>
                             <fallback>false</fallback>
                         </configuration>

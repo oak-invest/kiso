@@ -1,36 +1,34 @@
 package com.oakinvest.kiso.mcp.server;
 
-import dev.tachyonmcp.api.server.features.tools.ToolResult;
-import dev.tachyonmcp.core.server.TachyonServer;
+import com.oakinvest.kiso.mcp.server.command.ServeCommand;
+import picocli.CommandLine;
 
 /**
- * The main entry point for the application.
+ * Application.
  */
-@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
-public class Application {
+@CommandLine.Command(
+        name = "kiso-mcp-server",
+        mixinStandardHelpOptions = true,
+        versionProvider = ApplicationVersionProvider.class
+)
+public class Application implements Runnable {
 
-    /** Default port for the server. */
-    private static final int DEFAULT_PORT = 8080;
+    /** Serve command. */
+    @CommandLine.Mixin
+    private final ServeCommand serveCommand = new ServeCommand();
 
     /**
-     * The main entry point for the application.
+     * Main method.
      *
-     * @param args the command line arguments
+     * @param args arguments
      */
-    public static void main(final String... args) {
-        var server = TachyonServer.builder()
-                .name("weather-mcp")
-                .session(session -> session.enabled(false))
-                .withTools(tools -> tools.register(
-                        b -> b.name("get_forecast")
-                                .description("Get weather forecast")
-                                .inputSchema("""
-                                        {"type":"object","properties":{"city":{"type":"string"}},"required":["city"]}
-                                        """),
-                        (ctx, request) -> ToolResult.text("☀️ 22°C")))
-                .port(DEFAULT_PORT)
-                .build();
-        server.start();
+    public static void main(final String[] args) {
+        new CommandLine(new Application()).execute(args);
+    }
+
+    @Override
+    public final void run() {
+        serveCommand.run();
     }
 
 }

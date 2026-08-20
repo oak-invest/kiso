@@ -64,9 +64,11 @@ release_create_code_review_checklist:
       > code-review-checklist.md
 
 release_build_native:
-    # Native app is built as applications/kiso-cli/target/kiso-cli
     mvn clean install -pl libraries/kiso-core -am -DskipTests
+    # Native app is built as applications/kiso-cli/target/kiso-cli
     mvn clean native:compile -pl applications/kiso-cli -Pnative -DskipTests
+    # Native app is built as applications/kiso-mcp-server/target/kiso-mcp-server
+    mvn clean native:compile -pl applications/kiso-mcp-server -Pnative -DskipTests
 
 release_run_check:
     ./applications/kiso-cli/target/kiso-cli check \
