@@ -45,12 +45,20 @@ run_kiso_cli_build_v_0_2:
 run_kiso_mcp_server:
     mvn install -pl libraries/kiso-core -am -DskipTests
     mvn compile -pl applications/kiso-mcp-server exec:java \
-      -Dexec.mainClass=com.oakinvest.kiso.mcp.server.Application
+      -Dexec.mainClass=com.oakinvest.kiso.mcp.server.Application \
+      -Dexec.args="--source=examples/kb-acme-example-v0.2"
 
-run_kiso_mcp_server_call:
+run_kiso_mcp_server_call_search:
     curl -X POST http://localhost:8080/mcp \
         -H "Content-Type: application/json" \
-        -d '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' | jq
+        -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search","arguments":{"text":"discount_amount"}}}' \
+        | jq
+
+run_kiso_mcp_server_call_get_tool:
+    curl -X POST http://localhost:8080/mcp \
+        -H "Content-Type: application/json" \
+        -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_concept_content","arguments":{"conceptId":"computations/revenue-ytd"}}}' \
+        | jq
 
 # Pre release tasks ====================================================================================================
 release_create_code_review_checklist:

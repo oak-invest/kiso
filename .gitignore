@@ -4,6 +4,7 @@
 /dist/*
 /public/*
 /website/examples/
+.kiso/
 
 # Kiso utils ===========================================================================================================
 code-review-checklist.md
