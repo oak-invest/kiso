@@ -21,16 +21,16 @@ jobs:
         include:
           - os: ubuntu-latest
             name: linux-x64
-            artifact: kiso-cli-linux-x64
-            executable: kiso
+            cli_artifact: kiso-cli-linux-x64
+            mcp_artifact: kiso-mcp-server-linux-x64
           - os: macos-latest
             name: macos-arm64
-            artifact: kiso-cli-macos-arm64
-            executable: kiso
+            cli_artifact: kiso-cli-macos-arm64
+            mcp_artifact: kiso-mcp-server-macos-arm64
           - os: windows-latest
             name: windows-x64
-            artifact: kiso-cli-windows-x64.exe
-            executable: kiso.exe
+            cli_artifact: kiso-cli-windows-x64.exe
+            mcp_artifact: kiso-mcp-server-windows-x64.exe
 
     steps:
 
@@ -44,21 +44,29 @@ jobs:
         run: |
           just release_build_native
 
-      - name: Rename executable
+      - name: Copy executables
         shell: bash
         run: |
           mkdir -p dist
           if [ "${{ runner.os }}" = "Windows" ]; then
-            cp applications/kiso-cli/target/kiso-cli.exe dist/${{ matrix.artifact }}
+            cp applications/kiso-cli/target/kiso-cli.exe dist/${{ matrix.cli_artifact }}
+            cp applications/kiso-mcp-server/target/kiso-mcp-server.exe dist/${{ matrix.mcp_artifact }}
           else
-            cp applications/kiso-cli/target/kiso-cli dist/${{ matrix.artifact }}
-            chmod +x dist/${{ matrix.artifact }}
+            cp applications/kiso-cli/target/kiso-cli dist/${{ matrix.cli_artifact }}
+            chmod +x dist/${{ matrix.cli_artifact }}
+            cp applications/kiso-mcp-server/target/kiso-mcp-server dist/${{ matrix.mcp_artifact }}
+            chmod +x dist/${{ matrix.mcp_artifact }}
           fi
 
       - uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.artifact }}
-          path: dist/${{ matrix.artifact }}
+          name: ${{ matrix.cli_artifact }}
+          path: dist/${{ matrix.cli_artifact }}
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.mcp_artifact }}
+          path: dist/${{ matrix.mcp_artifact }}
 
   build-java:
     name: Build Java release
