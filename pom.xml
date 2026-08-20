@@ -66,6 +66,7 @@
 
         <!-- MCP -->
         <tachyon.version>1.0.0-beta.19</tachyon.version>
+        <lucene.version>10.5.1</lucene.version>
         <slf4j.version>2.0.18</slf4j.version>
 
         <!-- Boilerplate and utils -->
@@ -150,6 +151,21 @@
                 <groupId>dev.tachyonmcp</groupId>
                 <artifactId>tachyon-core</artifactId>
                 <version>${tachyon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analysis-common</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${lucene.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>

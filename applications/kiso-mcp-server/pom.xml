@@ -16,7 +16,9 @@
     <artifactId>kiso-mcp-server</artifactId>
     <packaging>jar</packaging>
     <name>Kiso MCP Server</name>
-    <description>Kiso MCP Server is an MCP server for exposing Open Knowledge Format (OKF) knowledge bundles to AI agents.</description>
+    <description>Kiso MCP Server is an MCP server for exposing Open Knowledge Format (OKF) knowledge bundles to AI
+        agents.
+    </description>
 
     <!-- Project configuration ===================================================================================== -->
     <properties>
@@ -37,6 +39,18 @@
         <dependency>
             <groupId>dev.tachyonmcp</groupId>
             <artifactId>tachyon-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analysis-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queryparser</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -91,6 +105,31 @@
                         <delimiter>@</delimiter>
                     </delimiters>
                 </configuration>
+            </plugin>
+
+            <!-- Picocli annotation processing ===================================================================== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-compile</id>
+                        <configuration>
+                            <annotationProcessorPaths>
+                                <path>
+                                    <groupId>info.picocli</groupId>
+                                    <artifactId>picocli-codegen</artifactId>
+                                    <version>${picocli.version}</version>
+                                </path>
+                                <path>
+                                    <groupId>org.projectlombok</groupId>
+                                    <artifactId>lombok</artifactId>
+                                    <version>${lombok.version}</version>
+                                </path>
+                            </annotationProcessorPaths>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Application execution ============================================================================= -->
@@ -207,6 +246,10 @@
                             <imageName>kiso-mcp-server</imageName>
                             <mainClass>${application.main.class}</mainClass>
                             <fallback>false</fallback>
+                            <buildArgs>
+                                <buildArg>--enable-native-access=ALL-UNNAMED</buildArg>
+                                <buildArg>--initialize-at-run-time=org.apache.lucene.store.PosixNativeAccess</buildArg>
+                            </buildArgs>
                         </configuration>
                         <dependencies>
                             <dependency>
