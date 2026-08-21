@@ -41,8 +41,8 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
     private final ProfileOption profileOption = new ProfileOption();
 
     /** Command specification. */
-    @CommandLine.Spec
     @SuppressWarnings("unused")
+    @CommandLine.Spec
     private CommandLine.Model.CommandSpec commandSpec;
 
     /**

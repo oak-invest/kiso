@@ -78,7 +78,7 @@ release_build_native:
     # Native app is built as applications/kiso-mcp-server/target/kiso-mcp-server
     mvn clean native:compile -pl applications/kiso-mcp-server -Pnative -DskipTests
 
-release_run_check:
+release_run_cli_check:
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example-v0.1
     ./applications/kiso-cli/target/kiso-cli check \
@@ -86,7 +86,7 @@ release_run_check:
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-acme-example-v0.2
 
-release_run_build:
+release_run_cli_build:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-google-example-v0.1 \
       --destination=public/kb-google-example-v0.1
@@ -96,6 +96,10 @@ release_run_build:
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-acme-example-v0.2 \
       --destination=public/kb-acme-example-v0.2
+
+release_run_mcp_server:
+    ./applications/kiso-mcp-server/target/kiso-mcp-server \
+      --source=examples/kb-acme-example-v0.2
 
 # Release tasks ========================================================================================================
 start_release:

@@ -18,8 +18,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -47,8 +47,8 @@ public class KnowledgeService {
     /** Default number of results. */
     private static final int DEFAULT_NUMBER_OF_RESULTS = 10;
 
-    /** Index directory. */
-    private final Path indexDirectory = Path.of(".kiso/index");
+    /** Knowledge index. */
+    private final Directory index = new ByteBuffersDirectory();
 
     /** Concept paths. */
     private final Map<String, Path> conceptPaths;
@@ -60,16 +60,13 @@ public class KnowledgeService {
      */
     public KnowledgeService(final KnowledgeBundle knowledgeBundle) {
         // Build lucence index =========================================================================================
-        try (
-                Analyzer analyzer = new StandardAnalyzer();
-                Directory directory = FSDirectory.open(indexDirectory)
-        ) {
+        try (Analyzer analyzer = new StandardAnalyzer()) {
             // Create index writer.
             final IndexWriterConfig configuration = new IndexWriterConfig(analyzer);
             configuration.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
             // Add all documents to the index
-            try (IndexWriter writer = new IndexWriter(directory, configuration)) {
+            try (IndexWriter writer = new IndexWriter(index, configuration)) {
                 knowledgeBundle.markdownFiles()
                         .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
                         .forEach(markdownFile -> addDocument(writer, markdownFile));
@@ -96,8 +93,7 @@ public class KnowledgeService {
     public List<KnowledgeSearchResult> search(final String text) {
         try (
                 Analyzer analyzer = new StandardAnalyzer();
-                Directory directory = FSDirectory.open(indexDirectory);
-                DirectoryReader reader = DirectoryReader.open(directory)
+                DirectoryReader reader = DirectoryReader.open(index)
         ) {
 
             // Index searcher and parser ===============================================================================
@@ -156,6 +152,15 @@ public class KnowledgeService {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
+    }
+
+    /**
+     * Returns the number of concepts in the knowledge bundle.
+     *
+     * @return number of concepts
+     */
+    public int getConceptCount() {
+        return conceptPaths.size();
     }
 
     /**
