@@ -247,9 +247,17 @@
                             <mainClass>${application.main.class}</mainClass>
                             <fallback>false</fallback>
                             <buildArgs>
-                                <buildArg>--enable-native-access=ALL-UNNAMED</buildArg>
-                                <buildArg>--initialize-at-run-time=org.apache.lucene.store.PosixNativeAccess</buildArg>
+                                <buildArg>--report-unsupported-elements-at-runtime</buildArg>
                             </buildArgs>
+                            <metadataRepository>
+                                <dependencies>
+                                    <dependency>
+                                        <groupId>org.apache.lucene</groupId>
+                                        <artifactId>lucene-core</artifactId>
+                                        <excluded>true</excluded>
+                                    </dependency>
+                                </dependencies>
+                            </metadataRepository>
                         </configuration>
                         <dependencies>
                             <dependency>

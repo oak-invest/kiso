@@ -65,7 +65,7 @@
         <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- MCP -->
-        <tachyon.version>1.0.0-beta.19</tachyon.version>
+        <tachyon.version>1.0.0-beta.20</tachyon.version>
         <lucene.version>10.5.1</lucene.version>
         <slf4j.version>2.0.18</slf4j.version>
 
