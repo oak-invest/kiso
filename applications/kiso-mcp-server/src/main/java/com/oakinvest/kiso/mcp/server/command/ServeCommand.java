@@ -1,20 +1,24 @@
 package com.oakinvest.kiso.mcp.server.command;
 
+import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
+import com.oakinvest.kiso.mcp.server.ApplicationVersion;
 import com.oakinvest.kiso.mcp.server.options.PortOption;
 import com.oakinvest.kiso.mcp.server.options.SourceOption;
 import com.oakinvest.kiso.mcp.server.service.KnowledgeService;
+import com.oakinvest.kiso.mcp.server.util.AbstractCommand;
 import dev.tachyonmcp.api.server.features.tools.ToolResult;
 import dev.tachyonmcp.api.server.features.tools.Tools;
 import dev.tachyonmcp.core.server.TachyonServer;
 import picocli.CommandLine;
 
+import java.io.File;
 import java.util.Map;
 
 /**
  * Starts the Kiso MCP server.
  */
-public class ServeCommand implements Runnable {
+public class ServeCommand extends AbstractCommand implements Runnable {
 
     /** Source directory. */
     @CommandLine.Mixin
@@ -23,6 +27,11 @@ public class ServeCommand implements Runnable {
     /** MCP server port. */
     @CommandLine.Mixin
     private final PortOption portOption = new PortOption();
+
+    /** Command specification. */
+    @SuppressWarnings("unused")
+    @CommandLine.Spec
+    private CommandLine.Model.CommandSpec commandSpec;
 
     /**
      * Registers the knowledge tools.
@@ -76,18 +85,42 @@ public class ServeCommand implements Runnable {
                 });
     }
 
+    /**
+     * Get the command specification.
+     *
+     * @return command specification
+     */
+    @Override
+    protected CommandLine.Model.CommandSpec commandSpec() {
+        return commandSpec;
+    }
+
     @Override
     @SuppressWarnings("resource")
     public final void run() {
-        final KnowledgeService knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(sourceOption.sourceDirectory()));
-        final TachyonServer server = TachyonServer.builder()
-                .name("kiso-mcp-server")
-                .session(session -> session.enabled(false))
-                .withTools(tools -> registerTools(tools, knowledgeService))
-                .port(portOption.port())
-                .build();
-        server.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(server::close, "kiso-mcp-server-shutdown"));
+        // Displaying information about the process ====================================================================
+        final File sourceDirectory = sourceOption.sourceDirectory().toFile();
+        print("Kiso-mcp-server " + ApplicationVersion.get() + " - Running on port " + portOption.port());
+        print("Loading knowledge bundle in " + sourceDirectory.getAbsolutePath());
+
+        try {
+            // Creating the knowledge service and loading the knowledge bundle =========================================
+            final KnowledgeService knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(sourceDirectory.toPath()));
+            print("Knowledge bundle loaded with " + knowledgeService.getConceptCount() + " concepts.");
+            blankLine();
+
+            // Starting the server =====================================================================================
+            final TachyonServer server = TachyonServer.builder()
+                    .name("kiso-mcp-server")
+                    .session(session -> session.enabled(false))
+                    .withTools(tools -> registerTools(tools, knowledgeService))
+                    .port(portOption.port())
+                    .build();
+            server.start();
+            Runtime.getRuntime().addShutdownHook(new Thread(server::close, "kiso-mcp-server-shutdown"));
+        } catch (KnowledgeBundleLoadingException exception) {
+            printError("Failed to load knowledge bundle: " + exception.getMessage());
+        }
     }
 
 }
