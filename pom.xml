@@ -70,6 +70,7 @@
         <slf4j.version>2.0.18</slf4j.version>
 
         <!-- Boilerplate and utils -->
+        <immutables.version>2.12.2</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.46</lombok.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
@@ -150,6 +151,11 @@
                 <groupId>info.picocli</groupId>
                 <artifactId>picocli-codegen</artifactId>
                 <version>${picocli.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>value-annotations</artifactId>
+                <version>${immutables.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jspecify</groupId>
