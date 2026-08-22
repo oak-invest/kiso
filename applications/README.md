@@ -13,3 +13,9 @@ sdk install maven 3.9.16
 sudo apt install -y librsvg2-bin inkscape
 cargo install resvg
 ```
+
+During native build, if you want to limit the resource usage:
+
+```bash
+export MAVEN_OPTS="-XX:ActiveProcessorCount=4 -Xmx6g" 
+```

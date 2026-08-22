@@ -80,7 +80,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                 (context, request) -> {
                     final String conceptId = request.arguments().stringOpt("conceptId").orElseThrow();
                     return knowledgeService.getConceptContent(conceptId)
-                            .<ToolResult>map(ToolResult::text)
+                            .map(ToolResult::text)
                             .orElseGet(() -> ToolResult.error("Unknown concept: " + conceptId));
                 });
     }

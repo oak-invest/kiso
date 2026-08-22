@@ -87,13 +87,20 @@ jobs:
         run: |
           just install
           mvn package -pl applications/kiso-cli -am -DskipTests
+          mvn package -pl applications/kiso-mcp-server -am -DskipTests
           mkdir -p dist
           cp applications/kiso-cli/target/kiso-cli-*-executable.jar dist/kiso-cli.jar
+          cp applications/kiso-mcp-server/target/kiso-mcp-server-*-executable.jar dist/kiso-mcp-server.jar
 
       - uses: actions/upload-artifact@v7
         with:
           name: kiso-cli.jar
           path: dist/kiso-cli.jar
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: kiso-mcp-server.jar
+          path: dist/kiso-mcp-server.jar
 
   release:
     name: Publish GitHub Release

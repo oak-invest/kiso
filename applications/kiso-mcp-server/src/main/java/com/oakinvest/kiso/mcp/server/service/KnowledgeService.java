@@ -29,6 +29,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -78,10 +79,16 @@ public class KnowledgeService {
         // Build concept paths =========================================================================================
         conceptPaths = knowledgeBundle.markdownFiles()
                 .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
-                .collect(Collectors.toUnmodifiableMap(
-                        MarkdownFile::conceptId,
-                        MarkdownFile::absolutePath
-                ));
+                .map(markdownFile -> {
+                    // We do this to avoid null concept IDs in the map, which would throw an exception.
+                    final String conceptId = markdownFile.conceptId();
+                    if (conceptId == null) {
+                        return null;
+                    }
+                    return Map.entry(conceptId, markdownFile.absolutePath());
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
     /**
@@ -173,7 +180,10 @@ public class KnowledgeService {
         final Document document = new Document();
 
         // Concept ID ==================================================================================================
-        document.add(new StringField(CONCEPT_ID, markdownFile.conceptId(), Field.Store.YES));
+        final String conceptId = markdownFile.conceptId();
+        if (conceptId != null) {
+            document.add(new StringField(CONCEPT_ID, conceptId, Field.Store.YES));
+        }
 
         // Title =======================================================================================================
         final String title = markdownFile.frontmatter().title();

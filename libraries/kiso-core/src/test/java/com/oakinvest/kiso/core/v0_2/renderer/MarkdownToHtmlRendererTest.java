@@ -241,7 +241,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .extracting(Element::text)
                 .containsExactly("Obfuscated Google Analytics 4 dataset emulating a web ecommerce implementation of the Google Merchandise Store.");
 
-        // Ressource ===================================================================================================
+        // Resource ====================================================================================================
         var resourceLink = header.selectFirst("a[href='https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce']");
         assertThat(resourceLink).isNotNull();
         assertThat(resourceLink.text()).isEqualTo("https://bigquery.googleapis.com/v2/projects/bigquery-public-data/datasets/ga4_obfuscated_sample_ecommerce");

@@ -28,14 +28,14 @@
 
 - Test content deployed on: https://www.oak-invest.com/okf/
 - Test content deployed on https://www.oak-invest.com/okf/entreprises/scub/05-expertise-tests-et-validation.html
-- Test sociale preview image deployed on: https://www.oak-invest.com/okf/entreprises/scub/05-expertise-tests-et-validation.png
+- Test social preview image deployed on: https://www.oak-invest.com/okf/entreprises/scub/05-expertise-tests-et-validation.png
 - Test llms.txt deployed on: https://www.oak-invest.com/llms.txt
 - Test llms.txt deployed on: https://www.oak-invest.com/okf/llms.txt
 - Test sitemap.xml deployed on: https://www.oak-invest.com/okf/sitemap.xml
 
 ## Pre-release steps
 
-- Update the projet README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
+- Update the project README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
 - Update the release number in `applications/kiso-cli-action/action.yml`
 - Update the release number in `website/index.html`.
 - Commit the changes and push them to the `development` branch.

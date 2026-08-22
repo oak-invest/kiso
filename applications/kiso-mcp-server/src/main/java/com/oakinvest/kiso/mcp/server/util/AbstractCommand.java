@@ -1,6 +1,5 @@
 package com.oakinvest.kiso.mcp.server.util;
 
-import com.oakinvest.kiso.core.validation.ValidationIssue;
 import picocli.CommandLine;
 
 /**
@@ -32,39 +31,12 @@ public abstract class AbstractCommand {
     }
 
     /**
-     * Print a warning message in the console.
-     *
-     * @param message warning message
-     */
-    protected void printWarning(final String message) {
-        commandSpec().commandLine().getOut().println(message);
-    }
-
-    /**
-     * Print a warning message in the console.
-     *
-     * @param issue issue
-     */
-    protected void printWarning(final ValidationIssue issue) {
-        printWarning(issue.severity() + " - " + issue.code() + " - " + issue.message());
-    }
-
-    /**
      * Print an error message in the console.
      *
      * @param message error message to print
      */
     protected void printError(final String message) {
         commandSpec().commandLine().getErr().println(message);
-    }
-
-    /**
-     * Print a validation issue in the console.
-     *
-     * @param issue issue to print
-     */
-    protected void printError(final ValidationIssue issue) {
-        printError(issue.severity() + " - " + issue.code() + " - " + issue.message());
     }
 
 }

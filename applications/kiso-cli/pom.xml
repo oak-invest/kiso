@@ -206,6 +206,7 @@
             <id>native</id>
             <build>
                 <plugins>
+                    <!--suppress MavenModelInspection -->
                     <plugin>
                         <groupId>org.graalvm.buildtools</groupId>
                         <artifactId>native-maven-plugin</artifactId>

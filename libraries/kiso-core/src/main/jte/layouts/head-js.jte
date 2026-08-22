@@ -5,7 +5,7 @@
 
 !{var build = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);}
 
-<!-- JS Librairies ================================================================================================= -->
+<!-- JS libraries ================================================================================================== -->
 <script src="${pageMetadata.assetBasePath()}assets/js/browser.js?build=${build}"></script>
 <script src="${pageMetadata.assetBasePath()}assets/js/i18next.js?build=${build}"></script>
 <script src="${pageMetadata.assetBasePath()}assets/js/minisearch.js?build=${build}"></script>
