@@ -54,7 +54,7 @@ run_kiso_mcp_server_call_search:
         -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search","arguments":{"text":"discount_amount"}}}' \
         | jq
 
-run_kiso_mcp_server_call_get_tool:
+run_kiso_mcp_server_call_get_concept_content:
     curl -X POST http://localhost:8080/mcp \
         -H "Content-Type: application/json" \
         -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_concept_content","arguments":{"conceptId":"computations/revenue-ytd"}}}' \
@@ -79,20 +79,32 @@ release_build_native:
     mvn clean native:compile -pl applications/kiso-mcp-server -Pnative -DskipTests
 
 release_run_cli_check:
+    @echo
+    @echo "=== Checking OKF v0.1 example ==="
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example-v0.1
+    @echo
+    @echo "=== Checking OKF v0.2 Google example ==="
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-google-example-v0.2
+    @echo
+    @echo "=== Checking OKF v0.2 ACME example ==="
     ./applications/kiso-cli/target/kiso-cli check \
       --source=examples/kb-acme-example-v0.2
 
 release_run_cli_build:
+    @echo
+    @echo "=== Building kb-google-example-v0.1 ==="
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-google-example-v0.1 \
       --destination=public/kb-google-example-v0.1
+    @echo
+    @echo "=== Building kb-google-example-v0.2 ==="
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-google-example-v0.2 \
       --destination=public/kb-google-example-v0.2
+    @echo
+    @echo "=== Building kb-acme-example-v0.2 ==="
     ./applications/kiso-cli/target/kiso-cli build \
       --source=examples/kb-acme-example-v0.2 \
       --destination=public/kb-acme-example-v0.2

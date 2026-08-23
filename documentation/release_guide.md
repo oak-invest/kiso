@@ -4,14 +4,14 @@
 
 - Run IntelliJ IDEA code inspection on the project.
 
-## Test the release (local)
+## Test kiso-cli (local)
 
 - Delete the `public` folder in the project root.
 - Run `just release_build_native` to build a native app.
 - Test the check command on examples knowledge base: `just release_run_cli_check`.
 - Test the build command on examples knowledge base: `just release_run_cli_build`.
 
-## Test the release (online)
+## Test kiso-cli (online)
 
 - Deploy my personal knowledge base - It builds Kiso from the development branch to build the websites.
 
@@ -20,6 +20,7 @@
 - Test content deployed on: https://knowledge.angara.finance
 - Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html.
 - Test social preview image deployed on: https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.png
+- Test tags deployed on: https://knowledge.angara.finance/tags/agriculture.html
 - Test llms.txt deployed on: https://knowledge.angara.finance/llms.txt
 - Test sitemap.xml deployed on: https://knowledge.angara.finance/sitemap.xml
 - Test zip downloads on https://knowledge.angara.finance/entreprises/index.html
@@ -33,11 +34,20 @@
 - Test llms.txt deployed on: https://www.oak-invest.com/okf/llms.txt
 - Test sitemap.xml deployed on: https://www.oak-invest.com/okf/sitemap.xml
 
+## Test kiso-mcp-server (local)
+
+- Run `just release_run_mcp_server` to start the server.
+- Run `just run_kiso_mcp_server_call_search` to test the search API.
+- Run `just run_kiso_mcp_server_call_get_concept_content` to test the get concept content API.
+- Launch ChatGPT application.
+- In Parameters/Settings/Plugins/MCP, add a new distant MCP server with the following URL: `http://localhost:8080/mcp` and `Kiso mcp server` as name.
+- Open a new chat and ask: `I added "Kiso mcp server" to the plugins, is it working?` and check the answer.
+- Ask `Using "Kiso mcp server", can you give me the SQL query to calculate revenue` and check the answer.
+
 ## Pre-release steps
 
 - Update the project README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
 - Update the release number in `applications/kiso-cli-action/action.yml`
-- Update the release number in `website/index.html`.
 - Commit the changes and push them to the `development` branch.
 
 ## Release steps
@@ -52,6 +62,7 @@
 - Change the release number in `.github/workflows/publish-website.yml`
 - Close the milestone at https://github.com/oak-invest/kiso/milestones
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
+- Update the release number in `website/index.html`.
 - Wait to see if the website is correctly built and deployed on https://oak-invest.github.io/kiso/
 
 ## Communicate
