@@ -68,7 +68,7 @@
 ## Communicate
 
 - Write an English / French announcement.
-- Close previous announcements on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell
+- Close previous announcements on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions?discussions_q=is%3Aopen+kiso
 - Post it on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell
 - Post on social media:
     - LinkedIn at 14h00 – 15h00.

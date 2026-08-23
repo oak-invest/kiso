@@ -4,20 +4,20 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <title>Kiso, a publishing engine for Open Knowledge Format (OKF).</title>
-    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
-  websites for humans and AI agents." name="description"/>
+    <meta content="Kiso turns Open Knowledge Format (OKF) bundles into static websites and makes their knowledge
+  available to AI agents through the Model Context Protocol (MCP)." name="description"/>
 
     <meta content="website" property="og:type"/>
     <meta content="Kiso, a publishing engine for Open Knowledge Format (OKF)." property="og:title"/>
-    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
-  websites for humans and AI agents." property="og:description"/>
+    <meta content="Kiso turns Open Knowledge Format (OKF) bundles into static websites and makes their knowledge
+  available to AI agents through the Model Context Protocol (MCP)." property="og:description"/>
     <meta content="assets/images/social/kiso-og.png" property="og:image"/>
     <meta content="1200" property="og:image:width"/>
     <meta content="630" property="og:image:height"/>
     <meta content="summary_large_image" name="twitter:card"/>
     <meta content="Kiso, a publishing engine for Open Knowledge Format (OKF)." name="twitter:title"/>
-    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static
-  websites for humans and AI agents." name="twitter:description"/>
+    <meta content="Kiso turns Open Knowledge Format (OKF) bundles into static websites and makes their knowledge
+  available to AI agents through the Model Context Protocol (MCP)." name="twitter:description"/>
     <meta content="assets/images/social/kiso-twitter.png" name="twitter:image"/>
 
     <link href="assets/images/logo/kiso_favicon_light_32x32.svg" rel="icon" type="image/svg+xml"/>
@@ -48,9 +48,8 @@
         </a>
         <nav class="hidden items-center gap-5 text-sm font-medium md:flex">
             <a class="link-hover" href="#okf">OKF</a>
-            <a class="link-hover" href="#check">Check command</a>
-            <a class="link-hover" href="#build">Build command</a>
-            <a class="link-hover" href="#GitHubAction">GitHub Action</a>
+            <a class="link-hover" href="#cli">Kiso CLI</a>
+            <a class="link-hover" href="#mcp">Kiso MCP Server</a>
             <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="googleGemo">Google demo</a>
             <a class="btn btn-primary btn-sm" href="examples/kb-acme-example/" target="acmeDemo">Acme demo</a>
             <a class="btn btn-outline btn-sm" href="https://github.com/oak-invest/kiso/releases" target="download">Download</a>
@@ -75,16 +74,16 @@
                     Publishing engine for Open Knowledge Format
                 </h1>
                 <p class="mt-6 max-w-3xl text-lg leading-8 text-base-content/75">
-                    Kiso is a publishing engine that turns <a
+                    Kiso provides two applications built around <a
                         href="https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
-                        target="okf">Open Knowledge Format</a> (OKF)
-                    bundles into static websites for humans and AI agents. For those who know it, Kiso is essentially
-                    the Hugo of AI-oriented knowledge bases.
+                        target="okf">Open Knowledge Format</a> (OKF) bundles. <code>kiso-cli</code> validates and
+                    publishes them as static websites, while <code>kiso-mcp-server</code> gives MCP-compatible AI
+                    applications direct access to their knowledge.
                 </p>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a class="btn btn-primary" href="examples/kb-acme-example" target="acmeDemo">View an example</a>
                     <a class="btn btn-outline" href="https://github.com/oak-invest/kiso/releases" target="download">Download
-                        CLI</a>
+                        Kiso</a>
                 </div>
             </div>
 
@@ -136,6 +135,53 @@
         </div>
     </section>
 
+    <!-- Applications ============================================================================================== -->
+    <section class="border-y border-base-300 bg-base-200">
+        <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
+            <div class="mb-8 max-w-3xl">
+                <p class="text-sm font-semibold uppercase tracking-wide text-primary">Two applications</p>
+                <h2 class="mt-3 text-3xl font-bold tracking-normal">Choose how to use your OKF bundle</h2>
+            </div>
+            <div class="grid gap-5 lg:grid-cols-2">
+                <article class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-primary">Static publishing</p>
+                    <h3 class="mt-3 text-2xl font-bold"><code>kiso-cli</code></h3>
+                    <p class="mt-4 leading-7 text-base-content/70">
+                        Check an OKF bundle, then generate a static website containing navigable HTML pages and the
+                        original Markdown files for both Humans and AI. Run it locally from the command line or automate
+                        it inside your CI with our GitHub Action.
+                    </p>
+                    <a class="btn btn-primary btn-sm mt-6" href="#cli">Discover Kiso CLI</a>
+                </article>
+                <article class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-secondary">AI access</p>
+                    <h3 class="mt-3 text-2xl font-bold"><code>kiso-mcp-server</code></h3>
+                    <p class="mt-4 leading-7 text-base-content/70">
+                        Start a Model Context Protocol server over an OKF bundle so an MCP-compatible AI can search
+                        its concepts and retrieve their Markdown content. Connect it to your AI and let it answer
+                        questions with the knowledge in the bundle.
+                    </p>
+                    <a class="btn btn-secondary btn-sm mt-6" href="#mcp">Discover Kiso MCP Server</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kiso CLI ================================================================================================== -->
+    <section class="mx-auto max-w-7xl px-5 py-12 lg:px-8" id="cli">
+        <div class="max-w-3xl">
+            <p class="text-sm font-semibold tracking-wide text-primary">Publish your OKF bundle as a
+                static website</p>
+            <h2 class="mt-3 text-4xl font-bold tracking-normal"><code>kiso-cli</code></h2>
+            <p class="mt-4 leading-8 text-base-content/70">
+                The command-line application provides two commands: <code>check</code> validates an OKF bundle and
+                <code>build</code> generates its static website. The build output keeps the original Markdown files
+                alongside the generated HTML pages (with sitemap.xml, llms.txt, search engine, download button
+                links...).
+            </p>
+        </div>
+    </section>
+
     <!-- Check command ============================================================================================= -->
     <section class="border-y border-base-300 bg-base-200" id="check">
         <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
@@ -173,7 +219,7 @@
                     <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
                         The <code class="rounded bg-base-300 px-1.5 py-0.5">build</code> command generates a static
                         website from an OKF bundle, including the original Markdown files, generated HTML pages,
-                        llms.txt, and sitemap.xml.
+                        sitemap.xml, llms.txt, search engine and download bundle links.
                     </p>
                 </div>
                 <div class="min-w-0 overflow-x-auto rounded-box border border-base-300 bg-base-100 shadow-sm">
@@ -202,8 +248,8 @@
                     <p class="text-sm font-semibold uppercase tracking-wide text-primary">GitHub Action</p>
                     <h2 class="mt-3 text-3xl font-bold tracking-normal">Use in GitHub CI</h2>
                     <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
-                        You can use Kiso in a GitHub Action to automatically build and publish your OKF bundle to GitHub
-                        Pages or any other static hosting service.
+                        You can use <code>kiso-cli</code> in a GitHub Action to automatically check, build, and publish
+                        your OKF bundle to GitHub Pages or any other static hosting service.
                     </p>
                 </div>
                 <div class="mockup-code min-w-0 max-w-full overflow-x-auto bg-neutral text-neutral-content">
@@ -241,13 +287,51 @@
         </div>
     </section>
 
+    <!-- Kiso MCP Server =========================================================================================== -->
+    <section class="border-y border-base-300 bg-base-200" id="mcp">
+        <div class="mx-auto grid max-w-7xl gap-8 px-5 py-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:px-8">
+            <div>
+                <p class="text-sm font-semibold tracking-wide text-secondary">Give AI access to your OKF throw MCP</p>
+                <h2 class="mt-3 text-4xl font-bold tracking-normal"><code>kiso-mcp-server</code></h2>
+                <p class="mt-4 max-w-2xl leading-8 text-base-content/70">
+                    This second application starts a Model Context Protocol (MCP) server over an OKF bundle. It does
+                    not generate a website: it lets an MCP-compatible AI application access the knowledge contained
+                    in the bundle directly.
+                </p>
+                <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                    <div class="border-l-4 border-primary bg-base-100 p-5">
+                        <h3 class="font-semibold">Search concepts</h3>
+                        <p class="mt-2 leading-7 text-base-content/70">Find concepts in the OKF bundle with the
+                            <code>search</code> MCP tool.</p>
+                    </div>
+                    <div class="border-l-4 border-secondary bg-base-100 p-5">
+                        <h3 class="font-semibold">Read concept content</h3>
+                        <p class="mt-2 leading-7 text-base-content/70">Retrieve a concept's Markdown content with the
+                            <code>get_concept_content</code> MCP tool.</p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="mockup-code min-w-0 max-w-full overflow-x-auto bg-neutral text-neutral-content">
+                    <pre data-prefix="$"><code>kiso-mcp-server \</code></pre>
+                    <pre data-prefix=">"><code>  --source=examples/kb-acme-example-v0.2</code></pre>
+                </div>
+                <div class="mt-4 rounded-box border border-base-300 bg-base-100 p-5 shadow-sm">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-base-content/50">MCP client</p>
+                    <p class="mt-3 leading-7 text-base-content/70">
+                        Connect the MCP-compatible AI application to the server endpoint (example:
+                        http://localhost:8080/mcp), then let it discover and call the available knowledge tools.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="bg-neutral text-neutral-content">
         <div class="mx-auto flex max-w-7xl flex-col gap-6 px-5 py-10 lg:flex-row lg:items-center lg:justify-between lg:px-8">
             <div>
-                <h2 class="text-2xl font-bold tracking-normal">Try Kiso on the Google Analytics sample knowledge
+                <h2 class="text-2xl font-bold tracking-normal">See how Kiso works with the Google sample knowledge
                     base.</h2>
-                <p class="mt-2 max-w-3xl text-neutral-content/70">The example shows how an OKF bundle
-                    becomes a navigable site for Humans and AI agents.</p>
             </div>
             <div class="flex flex-wrap gap-3">
                 <a class="btn btn-primary" href="examples/kb-google-example/" target="googleDemo">View Google
