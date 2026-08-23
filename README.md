@@ -1,7 +1,9 @@
 # Kiso
-Kiso is a publishing engine that turns [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) bundles into static websites for humans and AI agents (`llms.txt` and `sitemap.xml` included).
+
+Kiso is a publishing engine that turns [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) bundles into static websites for humans and AI agents (search engine, `llms.txt` and `sitemap.xml` included).
 
 ## Kiso cli quick start
+
 _If you need an OKF bundle to test Kiso, you can download our sample OKF bundle from the [Kiso website](https://oak-invest.github.io/kiso/download/kb-google-example.zip). Once downloaded, unzip it._
 
 Download the latest release of Kiso for your operating system from the [releases page](https://github.com/oak-invest/kiso/releases), then run:
@@ -21,11 +23,12 @@ You will find the generated static website in the `public` directory. You can op
 If you use the native Kiso binary and want Kiso to generate social network preview images, install one of the supported native SVG to PNG conversion tools: `rsvg-convert`, `inkscape`, or `resvg`.
 
 ## Kiso cli with GitHub Action
+
 You can use Kiso CLI in GitHub Action to automatically build your OKF bundles into static websites whenever you push changes to your repository. Here's an example workflow configuration:
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.0
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.1
   with:
     command: build
     source: examples/kb-google-example

@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("HttpUrlsUsage")
 @DisplayName("vO.2 - sitemap.xml generator")
 class SitemapXmlGeneratorTest extends BaseTest {
 

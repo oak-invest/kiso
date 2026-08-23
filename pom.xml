@@ -7,7 +7,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>com.oakinvest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
     <description>Publishing engine for the Open Knowledge Format</description>
@@ -37,6 +37,7 @@
     <modules>
         <module>libraries/kiso-core</module>
         <module>applications/kiso-cli</module>
+        <module>applications/kiso-mcp-server</module>
     </modules>
 
     <!-- Project configuration ===================================================================================== -->
@@ -53,7 +54,7 @@
         <jte.version>3.2.4</jte.version>
         <picocli.version>4.7.7</picocli.version>
 
-        <!-- Frontend assets -->
+        <!-- Frontend assets - Updates throw https://www.webjars.org -->
         <daisyui.webjar.version>5.7.16</daisyui.webjar.version>
         <tailwindcss.webjar.version>4.3.3</tailwindcss.webjar.version>
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
@@ -63,12 +64,20 @@
         <jsoup.version>1.23.1</jsoup.version>
         <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
+        <!-- MCP -->
+        <tachyon.version>1.0.0-beta.19</tachyon.version>
+        <lucene.version>10.5.1</lucene.version>
+        <slf4j.version>2.0.18</slf4j.version>
+
         <!-- Boilerplate and utils -->
+        <immutables.version>2.12.2</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.46</lombok.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
+
+        <jackson-bom.version>3.2.2</jackson-bom.version>
         <jackson.version>2.22.1</jackson.version>
         <batik.version>1.19</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
@@ -93,7 +102,7 @@
         <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
         <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
         <maven.exec.plugin.version>3.6.3</maven.exec.plugin.version>
-        <maven.graalvm.native.plugin.version>1.1.8</maven.graalvm.native.plugin.version>
+        <maven.graalvm.native.plugin.version>1.1.9</maven.graalvm.native.plugin.version>
         <maven.shared.utils.version>3.4.2</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
     </properties>
@@ -101,6 +110,13 @@
     <!-- Dependency versions ======================================================================================= -->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>tools.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>com.oakinvest.kiso</groupId>
                 <artifactId>kiso-core</artifactId>
@@ -137,9 +153,39 @@
                 <version>${picocli.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.immutables</groupId>
+                <artifactId>value-annotations</artifactId>
+                <version>${immutables.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.jspecify</groupId>
                 <artifactId>jspecify</artifactId>
                 <version>${jspecify.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>dev.tachyonmcp</groupId>
+                <artifactId>tachyon-core</artifactId>
+                <version>${tachyon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-core</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analysis-common</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-queryparser</artifactId>
+                <version>${lucene.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -230,7 +276,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Tests ============================================================================================== -->
+            <!-- Tests ============================================================================================= -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>

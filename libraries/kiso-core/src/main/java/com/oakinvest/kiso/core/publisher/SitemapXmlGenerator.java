@@ -16,7 +16,7 @@ import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
  * Generator for the sitemap.xml file.
  */
 @UtilityClass
-@SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
+@SuppressWarnings({"checkstyle:HideUtilityClassConstructor", "HttpUrlsUsage"})
 public final class SitemapXmlGenerator {
 
     /**

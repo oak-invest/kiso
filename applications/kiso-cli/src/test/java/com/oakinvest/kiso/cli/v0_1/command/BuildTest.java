@@ -22,6 +22,7 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.SITEMAP_XML_FI
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SuppressWarnings("HttpUrlsUsage")
 @DisplayName("vO.1 - Build command")
 class BuildTest extends BaseTest {
 
