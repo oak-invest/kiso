@@ -1,6 +1,7 @@
 package com.oakinvest.kiso.core.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
 import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
@@ -10,9 +11,11 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.IOException;
 import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.StreamSupport;
@@ -102,6 +105,26 @@ public class BaseTest {
         documentBuilderFactory.setNamespaceAware(true);
         documentBuilderFactory.setExpandEntityReferences(false);
         return documentBuilderFactory.newDocumentBuilder().parse(new InputSource(new StringReader(content)));
+    }
+
+
+    protected MarkdownFile createMarkdownFile(
+            final Path temporaryDirectory,
+            final String frontmatter
+    ) throws IOException {
+        Files.writeString(temporaryDirectory.resolve("concept.md"), """
+                ---
+                %s
+                ---
+                
+                # Concept
+                
+                """.formatted(frontmatter));
+
+        return KnowledgeBundleLoader.load(temporaryDirectory)
+                .rootBundle()
+                .markdownFiles()
+                .getFirst();
     }
 
     protected MarkdownFile markdownFile(

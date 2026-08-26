@@ -53,6 +53,9 @@ public enum ValidationCode {
     /** Invalid <code>sources[].last_modified</code> field in frontmatter - Not an ISO 8601 date. */
     INVALID_SOURCE_LAST_MODIFIED,
 
+    /** Multiple <code>sources[]</code> entries use the same identifier. */
+    DUPLICATE_SOURCE_ID,
+
     /** Missing runtime field in Attested Computation frontmatter. */
     MISSING_COMPUTATION_RUNTIME,
 
@@ -90,6 +93,15 @@ public enum ValidationCode {
     INVALID_USAGE_WINDOW_FROM,
 
     /** Invalid <code>usage_window.to</code> field in frontmatter - Not an ISO 8601 date. */
-    INVALID_USAGE_WINDOW_TO
+    INVALID_USAGE_WINDOW_TO,
+
+    /** Invalid <code>stale_after</code> field in frontmatter - Not a YYYY-MM-DD date. */
+    INVALID_STALE_AFTER,
+
+    /** Invalid life cycle status - Not one of: draft, stable, deprecated. */
+    INVALID_LIFE_CYCLE_STATUS,
+
+    /** Body footnote does not match a <code>sources[].id</code>. */
+    MISSING_SOURCE_FOR_FOOTNOTE
 
 }

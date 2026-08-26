@@ -28,13 +28,28 @@ public enum LifecycleStatus {
         if (StringUtils.isBlank(value)) {
             return STABLE;
         }
-        if (Strings.CI.equals(value, "draft")) {
+        if (Strings.CI.equals(value, DRAFT.name())) {
             return DRAFT;
         }
-        if (Strings.CI.equals(value, "deprecated")) {
+        if (Strings.CI.equals(value, DEPRECATED.name())) {
             return DEPRECATED;
         }
         return STABLE;
+    }
+
+    /**
+     * Returns true if the lifecycle status is one of the known values (draft, stable, deprecated).
+     *
+     * @param value frontmatter status value
+     * @return true if the lifecycle status is one of the known values, false otherwise
+     */
+    public static boolean exists(@Nullable final String value) {
+        if (StringUtils.isBlank(value)) {
+            return false;
+        }
+        return value.equalsIgnoreCase(DRAFT.name())
+                || value.equalsIgnoreCase(STABLE.name())
+                || value.equalsIgnoreCase(DEPRECATED.name());
     }
 
 }
