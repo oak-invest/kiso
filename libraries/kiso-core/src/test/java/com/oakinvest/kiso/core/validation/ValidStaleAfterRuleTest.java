@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidStaleAfterRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ public class ValidStaleAfterRuleTest extends BaseTest {
     void validStaleAfter(@TempDir final Path temporaryDirectory) throws IOException {
         final var markdownFile = createMarkdownFile(temporaryDirectory, "stale_after: 2026-08-26");
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -33,7 +33,7 @@ public class ValidStaleAfterRuleTest extends BaseTest {
     void missingStaleAfter(@TempDir final Path temporaryDirectory) throws IOException {
         final var markdownFile = createMarkdownFile(temporaryDirectory, "type: Concept");
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @ParameterizedTest(name = "{0} is not a valid stale after date")
@@ -41,7 +41,7 @@ public class ValidStaleAfterRuleTest extends BaseTest {
     void invalidStaleAfter(final String staleAfter, @TempDir final Path temporaryDirectory) throws IOException {
         final var markdownFile = createMarkdownFile(temporaryDirectory, "stale_after: " + staleAfter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(WARNING);
             assertThat(issue.code()).isEqualTo(INVALID_STALE_AFTER);
             assertThat(issue.message()).isEqualTo("The stale_after field is not a valid YYYY-MM-DD date");

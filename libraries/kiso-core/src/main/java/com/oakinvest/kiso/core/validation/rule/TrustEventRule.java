@@ -1,8 +1,8 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
+import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import org.apache.commons.lang3.StringUtils;
 

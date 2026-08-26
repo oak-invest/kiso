@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.mcp.server.service;
 
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;

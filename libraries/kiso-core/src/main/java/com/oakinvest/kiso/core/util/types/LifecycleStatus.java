@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Arrays;
+
 /**
  * Lifecycle status of an OKF concept.
  */
@@ -47,9 +49,7 @@ public enum LifecycleStatus {
         if (StringUtils.isBlank(value)) {
             return false;
         }
-        return value.equalsIgnoreCase(DRAFT.name())
-                || value.equalsIgnoreCase(STABLE.name())
-                || value.equalsIgnoreCase(DEPRECATED.name());
+        return Arrays.stream(values()).anyMatch(v -> v.name().equalsIgnoreCase(value.trim()));
     }
 
 }

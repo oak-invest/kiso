@@ -1,9 +1,9 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.BaseTest;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.markdown.provenance.Source;
 import com.oakinvest.kiso.core.validation.rule.DuplicateSourceIdRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class DuplicateSourceIdRuleTest extends BaseTest {
                 Source.builder().build()
         );
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class DuplicateSourceIdRuleTest extends BaseTest {
                 Source.builder().id("duplicate-source").build()
         );
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(WARNING);
             assertThat(issue.code()).isEqualTo(DUPLICATE_SOURCE_ID);
             assertThat(issue.message()).isEqualTo("Multiple sources[] entries use the same id: duplicate-source");
@@ -57,7 +57,7 @@ public class DuplicateSourceIdRuleTest extends BaseTest {
                 .type("Concept")
                 .sources(List.of(sources))
                 .build();
-        return markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        return createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
     }
 
 }

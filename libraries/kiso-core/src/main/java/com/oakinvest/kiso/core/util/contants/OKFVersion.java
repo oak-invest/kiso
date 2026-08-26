@@ -1,6 +1,10 @@
 package com.oakinvest.kiso.core.util.contants;
 
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
+
+import java.util.Arrays;
 
 /**
  * OKF version constants.
@@ -33,13 +37,12 @@ public enum OKFVersion {
      * @param version the version to check
      * @return true if the version exists, false otherwise
      */
-    public static boolean exists(final String version) {
-        for (OKFVersion okfVersion : values()) {
-            if (okfVersion.getVersion().equals(version)) {
-                return true;
-            }
+    public static boolean exists(@Nullable final String version) {
+        if (StringUtils.isBlank(version)) {
+            return false;
         }
-        return false;
+        String normalizedVersion = StringUtils.lowerCase(StringUtils.trim(version));
+        return Arrays.stream(values()).anyMatch(v -> v.getVersion().equals(version));
     }
 
 }

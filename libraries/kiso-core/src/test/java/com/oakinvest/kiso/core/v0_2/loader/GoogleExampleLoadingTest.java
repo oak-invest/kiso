@@ -1,12 +1,12 @@
 package com.oakinvest.kiso.core.v0_2.loader;
 
+import com.oakinvest.kiso.core.BaseTest;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.Actor;
-import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.markdown.Actor;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.markdown.trust.TrustEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

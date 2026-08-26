@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.BaseTest;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.rule.EncodingRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ class EncodingRuleTest extends BaseTest {
                 .absolutePath(invalidMarkdownFilePath2)
                 .relativePath(invalidMarkdownFilePath2)
                 .build();
-        var rootBundle = bundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
+        var rootBundle = createBundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
 
         // Run validation and check that the invalid file is reported ==================================================
         var rule = new EncodingRule();

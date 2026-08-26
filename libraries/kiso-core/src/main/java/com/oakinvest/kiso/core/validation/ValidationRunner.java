@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.rule.AttestedComputationRule;
 import com.oakinvest.kiso.core.validation.rule.BrokenLinkRule;
 import com.oakinvest.kiso.core.validation.rule.DuplicateSourceIdRule;

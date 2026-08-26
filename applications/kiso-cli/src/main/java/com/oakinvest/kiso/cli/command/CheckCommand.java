@@ -9,7 +9,7 @@ import com.oakinvest.kiso.cli.util.AbstractCommand;
 import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.ValidationReport;
 import com.oakinvest.kiso.core.validation.ValidationRunner;
 import org.apache.commons.io.FileUtils;

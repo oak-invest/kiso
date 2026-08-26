@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.validation;
 
+import com.oakinvest.kiso.core.BaseTest;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.util.BaseTest;
 import com.oakinvest.kiso.core.validation.rule.ValidLogRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class ValidLogRuleTest extends BaseTest {
         var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile))
+        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile))
                 .satisfiesExactly(
                         issue1 -> {
                             assertThat(issue1.code()).isEqualTo(INVALID_LOG_DATE_FORMAT);
