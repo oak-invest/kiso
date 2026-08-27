@@ -8,24 +8,26 @@ import org.jspecify.annotations.Nullable;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
  * Calculated bundle tree used to build navigation menus.
+ * Example for the bundle tree 'references/metrics':
+ * - bundleTree.Name = metrics
+ * - bundleTree.relativePath = references/metrics
  *
- * @param name          bundle name displayed in navigation
- * @param relativePath  relative path to the generated site root
- * @param indexHtmlPath generated HTML path of the bundle index page, relative to the generated site root
- * @param childBundles  direct child bundles
- * @param pages         direct Markdown pages in this bundle
+ * @param name         bundle name displayed in navigation
+ * @param relativePath relative path to the bundle directory relative to the generated site root
+ * @param childBundles direct child bundles
+ * @param pages        direct Markdown pages
  */
 @Builder
 @SuppressWarnings("unused")
 public record BundleTree(
         String name,
         Path relativePath,
-        String indexHtmlPath,
         List<BundleTree> childBundles,
         List<BundleTreePage> pages
 ) {
@@ -49,6 +51,9 @@ public record BundleTree(
                 .toList();
 
         // Bundle name in the tree =====================================================================================
+        // For a child bundle such as references/metrics, it uses the last directory name, metrics. This ensures that
+        // each child bundle is displayed with its local directory name in the navigation menu.
+        // getFileName() returns the last element of the path
         String bundleNameInTree = bundle.name();
         if (bundle.relativePath() != null && StringUtils.isNotBlank(bundle.relativePath().toString())) {
             bundleNameInTree = bundle.relativePath().getFileName().toString();
@@ -58,23 +63,9 @@ public record BundleTree(
         return BundleTree.builder()
                 .name(bundleNameInTree)
                 .relativePath(bundle.relativePath())
-                .indexHtmlPath(indexHref(bundle.relativePath()))
                 .childBundles(childBundles)
                 .pages(pages)
                 .build();
-    }
-
-    /**
-     * Returns the generated index link for a bundle.
-     *
-     * @param relativePath bundle absolutePath relative to the generated site isRoot
-     * @return HTML index link
-     */
-    private static String indexHref(final Path relativePath) {
-        if (relativePath == null || relativePath.toString().isBlank()) {
-            return "index.html";
-        }
-        return relativePath.resolve("index.html").toString().replace('\\', '/');
     }
 
     /**
@@ -113,11 +104,25 @@ public record BundleTree(
      * @return {@code true} when an index page exists
      */
     public boolean hasIndexPage() {
-        return pages.stream().anyMatch(page -> page.kind() == INDEX);
+        return indexPage().isPresent();
     }
 
     /**
-     * Returns true when this bundle contains the given HTML absolutePath.
+     * Returns the bundle index page when it exists.
+     *
+     * @return bundle index page
+     */
+    public Optional<BundleTreePage> indexPage() {
+        return pages.stream()
+                .filter(page -> page.kind() == INDEX)
+                .findFirst();
+    }
+
+    /**
+     * Checks whether an HTML page belongs to the bundle or any of its child bundles.
+     * For example, if the current page is references/metrics/active-users.html, the method returns true for both
+     * references and metrics, but false for unrelated bundles such as datasets. This allows the navigation menu to
+     * automatically open the branch containing the current page
      *
      * @param htmlPath HTML absolutePath relative to the generated site isRoot
      * @return {@code true} when this bundle contains the absolutePath
@@ -126,8 +131,7 @@ public record BundleTree(
         if (htmlPath == null) {
             return false;
         }
-        return indexHtmlPath.equals(htmlPath)
-                || pages.stream().anyMatch(page -> page.href().equals(htmlPath))
+        return pages.stream().anyMatch(page -> page.htmlPath().equals(htmlPath))
                 || childBundles.stream().anyMatch(childBundle -> childBundle.containsHtmlPath(htmlPath));
     }
 

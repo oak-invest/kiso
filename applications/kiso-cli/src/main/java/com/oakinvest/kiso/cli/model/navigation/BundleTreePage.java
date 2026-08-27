@@ -9,11 +9,15 @@ import java.util.Objects;
 
 /**
  * A direct Markdown page inside a bundle tree node.
+ * Example for the bundle tree page 'datasets/ga4_obfuscated_sample_ecommerce.md':
+ * - bundleTreePage.fileName = ga4_obfuscated_sample_ecommerce.md
+ * - bundleTreePage.relativePath = datasets/ga4_obfuscated_sample_ecommerce.md
+ * - bundleTreePage.htmlPath = datasets/ga4_obfuscated_sample_ecommerce.html
  *
  * @param title        page title displayed in navigation
  * @param fileName     Markdown file name
- * @param relativePath Markdown relative path to the generated site root
- * @param href         HTML link relative to the generated site root
+ * @param relativePath relative path to the Markdown file relative to the generated site root
+ * @param htmlPath     relative path to the generated HTML file relative to the generated site root
  * @param kind         semantic kind of the Markdown file
  */
 @Builder
@@ -22,7 +26,7 @@ public record BundleTreePage(
         String title,
         String fileName,
         Path relativePath,
-        String href,
+        String htmlPath,
         MarkdownFileKind kind
 ) {
 
@@ -38,7 +42,7 @@ public record BundleTreePage(
                 .title(markdownFile.title())
                 .fileName(markdownFile.fileName())
                 .relativePath(markdownFile.relativePath())
-                .href(markdownFile.htmlFilePath())
+                .htmlPath(markdownFile.htmlFilePath())
                 .kind(markdownFile.kind())
                 .build();
     }

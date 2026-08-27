@@ -1,8 +1,8 @@
 package com.oakinvest.kiso.cli.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.oakinvest.kiso.cli.exception.ConfigurationLoadingException;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,13 +22,6 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.CONFIGURATION_
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class ConfigurationLoader {
-
-    /** Mapper. */
-    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder(
-                    YAMLFactory.builder()
-                            .enable(STRICT_DUPLICATE_DETECTION)
-                            .build())
-            .build();
 
     /**
      * Loads Kiso-cli configuration from the given bundle path.
@@ -97,14 +90,16 @@ public class ConfigurationLoader {
 
             // If there is some content in the configuration file, we load it.
             if (StringUtils.isNotBlank(yaml)) {
-                return Optional.of(OBJECT_MAPPER.readValue(yaml, Configuration.class));
+                final JsonMapper mapper = JsonMapper.builder(YAMLFactory.builder()
+                                .enable(STRICT_DUPLICATE_DETECTION)
+                                .build())
+                        .build();
+                return Optional.of(mapper.readValue(yaml, Configuration.class));
+            } else {
+                return Optional.of(Configuration.empty());
             }
-
-            return Optional.of(Configuration.empty());
         } catch (Exception exception) {
-            throw new ConfigurationLoadingException(
-                    "Unable to load configuration file " + configurationFilePath + ": " + exception.getMessage(),
-                    exception);
+            throw new ConfigurationLoadingException("Unable to load configuration file " + configurationFilePath + ": " + exception.getMessage(), exception);
         }
     }
 

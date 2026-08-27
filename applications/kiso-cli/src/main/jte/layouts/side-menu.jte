@@ -21,9 +21,10 @@
 
             <!-- Index page (if present) =========================================================================== -->
             @if(currentPageContext.bundleTree().hasIndexPage())
+                !{var indexPage = currentPageContext.bundleTree().indexPage().orElseThrow();}
                 <li>
-                    <a class="@if(currentPageContext.bundleTree().indexHtmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
-                       href="${currentPageMetadata.assetBasePath()}${currentPageContext.bundleTree().indexHtmlPath()}">
+                    <a class="@if(indexPage.htmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
+                       href="${currentPageMetadata.assetBasePath()}${indexPage.htmlPath()}">
                         <span class="kiso-navigation-menu-label">${currentPageContext.bundleTree().name()}</span>
                     </a>
                 </li>
@@ -39,8 +40,8 @@
             @for(var page : currentPageContext.bundleTree().pages())
                 @if(page.kind() != INDEX)
                     <li>
-                        <a class="@if(page.href().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
-                           href="${currentPageMetadata.assetBasePath()}${page.href()}">
+                        <a class="@if(page.htmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
+                           href="${currentPageMetadata.assetBasePath()}${page.htmlPath()}">
                             <span class="kiso-navigation-menu-label">${page.title()}</span>
                         </a>
                     </li>

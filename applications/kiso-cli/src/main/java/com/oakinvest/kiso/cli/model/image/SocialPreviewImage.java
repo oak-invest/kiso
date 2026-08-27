@@ -24,7 +24,7 @@ public record SocialPreviewImage(
 ) {
 
     /**
-     * Constructor.
+     * Constructor with safe default values.
      */
     public SocialPreviewImage {
         titleLines = Objects.requireNonNullElse(titleLines, List.of());

@@ -68,6 +68,7 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
 
         Path temporaryDirectory = null;
         try {
+
             // Loading configuration & profile =========================================================================
             final String profile = profileOption.profile();
             final Configuration configuration = ConfigurationLoader
@@ -86,13 +87,14 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
             // Running the validation ==================================================================================
             final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(temporaryDirectory);
             final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
-
-            // Print warnings et errors.
+            // Print warnings.
             validationReport.warnings().forEach(this::printWarning);
             if (validationReport.hasErrors()) {
+                // Print errors.
                 validationReport.errors().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
             } else {
+                // No errors found.
                 print("No errors found.");
                 return CommandLine.ExitCode.OK;
             }
@@ -108,7 +110,7 @@ public class CheckCommand extends AbstractCommand implements Callable<Integer> {
                 try {
                     FileUtils.deleteDirectory(temporaryDirectory.toFile());
                 } catch (IOException e) {
-                    printError("Failed to delete temporary directory: " + e.getMessage());
+                    printWarning("Failed to delete temporary directory: " + e.getMessage());
                 }
             }
         }

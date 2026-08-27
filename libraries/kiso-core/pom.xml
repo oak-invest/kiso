@@ -82,11 +82,4 @@
         </dependency>
     </dependencies>
 
-    <!-- Build configuration ======================================================================================= -->
-    <build>
-        <plugins>
-
-        </plugins>
-    </build>
-
 </project>

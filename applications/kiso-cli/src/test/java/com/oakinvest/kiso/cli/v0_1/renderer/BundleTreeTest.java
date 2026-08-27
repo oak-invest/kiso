@@ -28,8 +28,8 @@ public class BundleTreeTest extends BaseTest {
         assertThat(bundleTree)
                 .returns(ROOT_BUNDLE_NAME, BundleTree::name)
                 .returns(Path.of(""), BundleTree::relativePath)
-                .returns("index.html", BundleTree::indexHtmlPath)
                 .returns(true, BundleTree::isRoot);
+        assertThat(bundleTree.indexPage()).map(BundleTreePage::htmlPath).hasValue("index.html");
         assertThat(bundleTree.childBundles())
                 .extracting(BundleTree::name)
                 .containsExactly("datasets", "references", "tables");
@@ -39,7 +39,7 @@ public class BundleTreeTest extends BaseTest {
                 .returns("index.md", BundleTreePage::title)
                 .returns("index.md", BundleTreePage::fileName)
                 .returns(Path.of("index.md"), BundleTreePage::relativePath)
-                .returns("index.html", BundleTreePage::href)
+                .returns("index.html", BundleTreePage::htmlPath)
                 .returns(MarkdownFileKind.INDEX, BundleTreePage::kind);
 
         // Direct child bundle =========================================================================================
@@ -47,24 +47,25 @@ public class BundleTreeTest extends BaseTest {
         assertThat(datasetsBundle)
                 .returns("datasets", BundleTree::name)
                 .returns(Path.of("datasets"), BundleTree::relativePath)
-                .returns("datasets/index.html", BundleTree::indexHtmlPath)
                 .returns(false, BundleTree::isRoot);
+        assertThat(datasetsBundle.indexPage()).map(BundleTreePage::htmlPath).hasValue("datasets/index.html");
         assertThat(datasetsBundle.pages())
-                .extracting(BundleTreePage::href)
+                .extracting(BundleTreePage::htmlPath)
                 .containsExactly("datasets/ga4_obfuscated_sample_ecommerce.html", "datasets/index.html");
+
+        System.out.println("=> " + datasetsBundle.pages().getFirst());
 
         // Nested bundle ===============================================================================================
         var referencesBundle = bundleTree.childBundles().get(1);
         assertThat(referencesBundle.childBundles())
-                .extracting(BundleTree::indexHtmlPath)
+                .extracting(bundleNode -> bundleNode.indexPage().orElseThrow().htmlPath())
                 .containsExactly("references/joins/index.html", "references/metrics/index.html");
         var metricsBundle = referencesBundle.childBundles().get(1);
         assertThat(metricsBundle)
                 .returns("metrics", BundleTree::name)
-                .returns(Path.of("references/metrics"), BundleTree::relativePath)
-                .returns("references/metrics/index.html", BundleTree::indexHtmlPath);
+                .returns(Path.of("references/metrics"), BundleTree::relativePath);
         assertThat(metricsBundle.pages())
-                .extracting(BundleTreePage::href)
+                .extracting(BundleTreePage::htmlPath)
                 .contains("references/metrics/avg_pageviews.html", "references/metrics/index.html");
     }
 

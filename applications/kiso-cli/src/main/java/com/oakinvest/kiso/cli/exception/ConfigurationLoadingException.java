@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.configuration;
+package com.oakinvest.kiso.cli.exception;
 
 /**
  * Kiso-cli configuration loading exception.
@@ -8,7 +8,7 @@ public final class ConfigurationLoadingException extends RuntimeException {
     /**
      * Constructor.
      *
-     * @param message message
+     * @param message exception message
      */
     public ConfigurationLoadingException(final String message) {
         super(message);

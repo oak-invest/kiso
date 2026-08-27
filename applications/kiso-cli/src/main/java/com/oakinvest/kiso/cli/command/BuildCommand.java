@@ -3,7 +3,7 @@ package com.oakinvest.kiso.cli.command;
 import com.oakinvest.kiso.cli.ApplicationVersion;
 import com.oakinvest.kiso.cli.configuration.Configuration;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
-import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
+import com.oakinvest.kiso.cli.exception.ConfigurationLoadingException;
 import com.oakinvest.kiso.cli.model.navigation.BundleTree;
 import com.oakinvest.kiso.cli.options.DestinationOption;
 import com.oakinvest.kiso.cli.options.ProfileOption;
@@ -47,12 +47,12 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
- * Build: Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml.
+ * Build: Generates a static website from an OKF bundle, placing HTML files alongside the original Markdown files.
  */
 @CommandLine.Command(
         name = "build",
         mixinStandardHelpOptions = true,
-        description = "Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml"
+        description = "Generates a static website from an OKF bundle, placing HTML files alongside the original Markdown files"
 )
 public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
@@ -135,13 +135,14 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         blankLine();
 
         try {
+
             // Loading configuration & profile =========================================================================
             final String profile = profileOption.profile();
             final Configuration configuration = ConfigurationLoader
                     .load(sourceDirectory.toPath(), profile)
                     .orElse(Configuration.empty());
 
-            // Copying user okf bundle files to the destination directory ==============================================
+            // Copying OKF bundle files to the destination directory ===================================================
             FileUtils.deleteDirectory(destinationDirectory);
             final IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
             final FileFilter fileFilter = file -> {
@@ -165,9 +166,9 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // Loading and checking the bundle =========================================================================
             KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
             final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
-
-            // Print warnings et errors.
+            // Print warnings.
             validationReport.warnings().forEach(this::printWarning);
+            // Print errors.
             if (validationReport.hasErrors()) {
                 validationReport.errors().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
@@ -254,7 +255,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     LlmsTxtGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
-            print("File llms.txt generated");
+            print("File " + LLMS_TXT_FILENAME + " generated");
 
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
@@ -262,7 +263,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     SitemapXmlGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
-            print("File sitemap.xml generated");
+            print("File " + SITEMAP_XML_FILENAME + " generated");
 
             // search-index.json generation ==========================================================================
             FileUtils.writeStringToFile(
@@ -270,15 +271,24 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     SearchIndexGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
-            print("File search-index.json generated");
+            print("File " + SEARCH_INDEX_JSON_FILENAME + " generated");
 
             // Theme validation ========================================================================================
-            if (!ThemeConstants.contains(configuration.theme().effectiveName())) {
-                printWarning("WARNING: Theme '" + configuration.theme().effectiveName() + "' is not a valid DaisyUI theme.");
+            final String theme = configuration.theme().effectiveName();
+            if (!ThemeConstants.contains(theme)) {
+                printWarning("WARNING: Theme '%s' is not a valid DaisyUI theme.".formatted(theme));
             }
 
             // Add HTML assets =========================================================================================
-            copyKisoAssets(destinationDirectory);
+            ClassLoader classLoader = MarkdownToHtmlRenderer.class.getClassLoader();
+            for (String assetPath : ASSET_PATHS) {
+                try (InputStream inputStream = classLoader.getResourceAsStream(assetPath)) {
+                    if (inputStream == null) {
+                        throw new IOException("Missing asset: " + assetPath);
+                    }
+                    FileUtils.copyInputStreamToFile(inputStream, new File(destinationDirectory, assetPath));
+                }
+            }
 
             // Job done ================================================================================================
             print("Done!");
@@ -293,24 +303,6 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         } catch (Exception e) {
             printError("Unexpected error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
-        }
-    }
-
-    /**
-     * Copies Kiso static assets to the generated website isRoot.
-     *
-     * @param destinationDirectory generated website isRoot
-     * @throws IOException if an asset cannot be copied
-     */
-    private void copyKisoAssets(final File destinationDirectory) throws IOException {
-        ClassLoader classLoader = MarkdownToHtmlRenderer.class.getClassLoader();
-        for (String assetPath : ASSET_PATHS) {
-            try (InputStream inputStream = classLoader.getResourceAsStream(assetPath)) {
-                if (inputStream == null) {
-                    throw new IOException("Missing asset: " + assetPath);
-                }
-                FileUtils.copyInputStreamToFile(inputStream, new File(destinationDirectory, assetPath));
-            }
         }
     }
 

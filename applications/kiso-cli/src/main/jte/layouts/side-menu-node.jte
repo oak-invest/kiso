@@ -18,9 +18,10 @@
 
             <!-- Index page (if present) =========================================================================== -->
             @if(currentBundleTree.hasIndexPage())
+                !{var indexPage = currentBundleTree.indexPage().orElseThrow();}
                 <li>
-                    <a class="@if(currentBundleTree.indexHtmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
-                       href="${currentPageMetadata.assetBasePath()}${currentBundleTree.indexHtmlPath()}">
+                    <a class="@if(indexPage.htmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
+                       href="${currentPageMetadata.assetBasePath()}${indexPage.htmlPath()}">
                         <span class="kiso-navigation-menu-label" data-i18n="pageKind.index">index</span>
                     </a>
                 </li>
@@ -36,8 +37,8 @@
             @for(var page : currentBundleTree.pages())
                 @if(page.kind() != INDEX)
                     <li>
-                        <a class="@if(page.href().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
-                           href="${currentPageMetadata.assetBasePath()}${page.href()}">
+                        <a class="@if(page.htmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"
+                           href="${currentPageMetadata.assetBasePath()}${page.htmlPath()}">
                             <span class="kiso-navigation-menu-label">${page.title()}</span>
                         </a>
                     </li>

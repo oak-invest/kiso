@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.cli.v0_2.configuration;
 
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
-import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
+import com.oakinvest.kiso.cli.exception.ConfigurationLoadingException;
 import com.oakinvest.kiso.cli.util.BaseTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
