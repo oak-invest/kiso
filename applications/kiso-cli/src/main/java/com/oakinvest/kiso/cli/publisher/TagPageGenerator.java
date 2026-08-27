@@ -56,7 +56,7 @@ public class TagPageGenerator {
         return """
                 ---
                 type: tag
-                title: Tag %s
+                title: %s
                 ---
                 
                 %s""".formatted(tagSlug, MarkdownRenderer.builder().build().render(tagPage));

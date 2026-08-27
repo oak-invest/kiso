@@ -25,7 +25,7 @@ public class TagPageGeneratorTest extends BaseTest {
                 .contains("""
                         ---
                         type: tag
-                        title: Tag finance
+                        title: finance
                         ---
                         """.stripIndent())
                 // Links.
@@ -45,7 +45,7 @@ public class TagPageGeneratorTest extends BaseTest {
                 .contains("""
                         ---
                         type: tag
-                        title: Tag finance
+                        title: finance
                         ---
                         """.stripIndent())
                 // Links.
@@ -56,8 +56,6 @@ public class TagPageGeneratorTest extends BaseTest {
                 .contains("- [Revenue](https://acme.com/knowledge-base/metrics/revenue.md): Recognized revenue for a period, per Acme's FY2026 revenue-recognition policy. Backed by an Attested Computation.")
                 .contains("- [Acme Retail — Cost Allocation \\& Margin Standard (FY2026)](https://acme.com/knowledge-base/policies/margin-standard.md): Finance policy defining COGS composition and the standard gross-margin formula. Introduced FY2026 (superseded a legacy definition that excluded fulfillment/shipping).")
                 .contains("- [Acme Retail — Revenue Recognition Policy (FY2026)](https://acme.com/knowledge-base/policies/revenue-recognition.md): Finance policy defining when a customer order is recognized as revenue. Reviewed annually.");
-
-
     }
 
 }
