@@ -1,11 +1,11 @@
-package com.oakinvest.kiso.mcp.server.options;
+package com.oakinvest.kiso.mcp.server.option;
 
 import picocli.CommandLine;
 
 import java.nio.file.Path;
 
 /**
- * Source directory option for commands serving a bundle.
+ * Defines the source directory option for commands serving a bundle.
  */
 public class SourceOption {
 

@@ -11,17 +11,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class KnowledgeServiceTest extends BaseTest {
 
     @Test
-    @DisplayName("search()")
+    @DisplayName("searchConcept()")
     public void search() {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_ACME_V_0_2);
         var knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(resourcePath));
 
         // Searching for an unknown thing should return an empty list.
-        assertThat(knowledgeService.search("ZZZ")).isEmpty();
+        assertThat(knowledgeService.searchConcept("ZZZ")).isEmpty();
 
         // Searching for a known thing should return a list of results.
-        assertThat(knowledgeService.search("discount_amount")).hasSize(2)
+        assertThat(knowledgeService.searchConcept("discount_amount")).hasSize(2)
                 .satisfiesExactly(
                         result1 -> assertThat(result1.conceptId()).isEqualTo("tables/orders"),
                         result2 -> assertThat(result2.conceptId()).isEqualTo("policies/revenue-recognition")

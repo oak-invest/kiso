@@ -14,7 +14,7 @@ public class SourceOption {
             names = {"-s", "--source"},
             defaultValue = ".",
             paramLabel = "DIRECTORY",
-            description = "Directory containing the bundle. Defaults to the current directory."
+            description = "Directory containing the bundle. Defaults to ${DEFAULT-VALUE}."
     )
     @SuppressWarnings("unused")
     private Path sourceDirectory;

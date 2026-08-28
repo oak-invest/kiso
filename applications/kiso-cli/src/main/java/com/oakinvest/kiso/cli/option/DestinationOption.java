@@ -16,7 +16,7 @@ public class DestinationOption {
             names = {"-d", "--destination"},
             defaultValue = DEFAULT_DESTINATION_DIRECTORY_NAME,
             paramLabel = "DIRECTORY",
-            description = "Directory where generated files are created. Defaults to '" + DEFAULT_DESTINATION_DIRECTORY_NAME + "' directory."
+            description = "Directory where generated files are created. Defaults to ${DEFAULT-VALUE}."
     )
     @SuppressWarnings("unused")
     private Path destinationDirectory;

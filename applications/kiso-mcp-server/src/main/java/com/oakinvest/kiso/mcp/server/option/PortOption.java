@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.mcp.server.options;
+package com.oakinvest.kiso.mcp.server.option;
 
 import picocli.CommandLine;
 

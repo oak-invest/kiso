@@ -54,13 +54,13 @@ public class MCPServerTest extends BaseTest {
     @Test
     @DisplayName("Registers knowledge tools")
     public void registerKnowledgeTools() {
-        // The server should have two tools registered: "get_concept_content" and "search" =============================
+        // The server should have two tools registered: "get_concept_content" and "searchConcept" =============================
         assertThat(server.tools().descriptors())
                 .extracting(ToolDescriptor::name)
-                .containsExactly("get_concept_content", "search");
+                .containsExactly("get_concept_content", "searchConcept");
 
-        // search() tool input schema should contain "text" property ===================================================
-        assertThat(server.tools().find("search")).isPresent()
+        // searchConcept() tool input schema should contain "text" property ===================================================
+        assertThat(server.tools().find("searchConcept")).isPresent()
                 .hasValueSatisfying(descriptor -> {
                     final var inputSchema = descriptor.inputSchema();
                     assertThat(inputSchema).isNotNull();
@@ -79,10 +79,10 @@ public class MCPServerTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Calls search() through MCP")
+    @DisplayName("Calls searchConcept() through MCP")
     public void search() throws IOException, InterruptedException {
         final var response = callTool(
-                "search",
+                "searchConcept",
                 Map.of("text", "discount_amount")
         );
 
