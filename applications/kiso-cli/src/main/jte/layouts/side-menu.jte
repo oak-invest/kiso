@@ -20,7 +20,7 @@
         <ul class="menu menu-sm w-full gap-1 p-0">
 
             <!-- Index page (if present) =========================================================================== -->
-            @if(currentPageContext.bundleTree().hasIndexPage())
+            @if(currentPageContext.bundleTree().indexPage().isPresent())
                 !{var indexPage = currentPageContext.bundleTree().indexPage().orElseThrow();}
                 <li>
                     <a class="@if(indexPage.htmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"

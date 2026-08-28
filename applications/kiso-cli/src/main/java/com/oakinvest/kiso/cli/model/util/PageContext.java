@@ -10,8 +10,8 @@ import java.util.Objects;
 /**
  * Page context.
  *
- * @param siteConfiguration  the site configuration
- * @param themeConfiguration the theme configuration
+ * @param siteConfiguration  site configuration
+ * @param themeConfiguration theme configuration
  * @param bundleTree         calculated bundle tree for navigation
  */
 @Builder

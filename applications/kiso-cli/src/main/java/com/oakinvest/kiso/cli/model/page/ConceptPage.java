@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.util.contants.ConceptTypeConstants.ATTESTED_COMPUTATION;
+import static com.oakinvest.kiso.core.util.types.LifecycleStatus.STABLE;
+import static com.oakinvest.kiso.core.util.types.TrustLevel.UNVERIFIED;
 
 /**
  * Concept page.
@@ -81,8 +83,8 @@ public record ConceptPage(
         tags = Objects.requireNonNullElse(tags, List.of());
         sources = Objects.requireNonNullElse(sources, List.of());
         verified = Objects.requireNonNullElse(verified, List.of());
-        trustTier = Objects.requireNonNullElse(trustTier, TrustLevel.UNVERIFIED);
-        status = Objects.requireNonNullElse(status, LifecycleStatus.STABLE);
+        trustTier = Objects.requireNonNullElse(trustTier, UNVERIFIED);
+        status = Objects.requireNonNullElse(status, STABLE);
         parameters = Objects.requireNonNullElse(parameters, List.of());
     }
 

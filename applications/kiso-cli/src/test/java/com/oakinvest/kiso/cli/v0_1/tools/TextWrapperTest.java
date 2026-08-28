@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.v0_2.renderer.util;
+package com.oakinvest.kiso.cli.v0_1.tools;
 
 import com.oakinvest.kiso.core.tools.TextWrapper;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DisplayName("vO.2 - TextWrapper")
+@DisplayName("vO.1 - TextWrapper")
 final class TextWrapperTest {
 
     @Nested

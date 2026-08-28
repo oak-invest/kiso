@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.v0_2.renderer.util;
+package com.oakinvest.kiso.cli.v0_1.tools;
 
 import com.oakinvest.kiso.cli.exception.SvgToPngConversionException;
 import com.oakinvest.kiso.cli.tools.SvgToPngConverter;
@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-@DisplayName("vO.2 - SvgToPngConverter")
+@DisplayName("vO.1 - SvgToPngConverter")
 final class SvgToPngConverterTest {
 
     private static final String SAMPLE_SVG = """

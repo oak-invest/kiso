@@ -17,7 +17,7 @@ import java.util.Objects;
  * @param title        page title displayed in navigation
  * @param fileName     Markdown file name
  * @param relativePath relative path to the Markdown file relative to the generated site root
- * @param htmlPath     relative path to the generated HTML file relative to the generated site root
+ * @param htmlPath     html path to the generated HTML file relative to the generated site root
  * @param kind         semantic kind of the Markdown file
  */
 @Builder

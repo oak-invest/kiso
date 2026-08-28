@@ -53,8 +53,6 @@ public class BundleTreeTest extends BaseTest {
                 .extracting(BundleTreePage::htmlPath)
                 .containsExactly("datasets/ga4_obfuscated_sample_ecommerce.html", "datasets/index.html");
 
-        System.out.println("=> " + datasetsBundle.pages().getFirst());
-
         // Nested bundle ===============================================================================================
         var referencesBundle = bundleTree.childBundles().get(1);
         assertThat(referencesBundle.childBundles())

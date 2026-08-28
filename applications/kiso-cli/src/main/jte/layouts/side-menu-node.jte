@@ -17,7 +17,7 @@
         <ul>
 
             <!-- Index page (if present) =========================================================================== -->
-            @if(currentBundleTree.hasIndexPage())
+            @if(currentBundleTree.indexPage().isPresent())
                 !{var indexPage = currentBundleTree.indexPage().orElseThrow();}
                 <li>
                     <a class="@if(indexPage.htmlPath().equals(currentPageMetadata.htmlPath()))font-semibold@endif"

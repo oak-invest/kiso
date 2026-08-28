@@ -10,12 +10,16 @@ import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.PNG_
 
 /**
  * Page metadata.
+ * Example for 'datasets/ga4_obfuscated_sample_ecommerce.md':
+ * - pageMetadata.absolutePath = '/home/../kb-google-example/datasets/ga4_obfuscated_sample_ecommerce.md'
+ * - pageMetadata.htmlPath = 'datasets/ga4_obfuscated_sample_ecommerce.html'
+ * - pageMetadata.assetBasePath = '../'
  *
  * @param title         the title of the page
  * @param description   the description of the page
  * @param absolutePath  the absolute path of the page
  * @param htmlPath      the HTML path relative to the generated site root
- * @param assetBasePath relative base Path from this page to the generated site root
+ * @param assetBasePath relative base path from this page to the generated site root
  */
 @Builder
 @SuppressWarnings("unused")
@@ -33,8 +37,7 @@ public record PageMetadata(
      * @return empty page metadata
      */
     public static PageMetadata empty() {
-        return PageMetadata.builder()
-                .build();
+        return PageMetadata.builder().build();
     }
 
     /**

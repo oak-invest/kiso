@@ -356,7 +356,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 bundle.rootBundle().markdownFiles().getFirst(),
                 bundleTree));
 
-        assertThat(bundleTree.hasIndexPage()).isFalse();
+        assertThat(bundleTree.indexPage()).isEmpty();
         assertThat(page.select(".drawer-side a[href='index.html']")).isEmpty();
         var conceptLink = page.selectFirst(".drawer-side a[href='concept.html']");
         assertThat(conceptLink).isNotNull();

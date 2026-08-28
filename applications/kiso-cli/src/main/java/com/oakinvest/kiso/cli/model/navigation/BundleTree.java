@@ -99,15 +99,6 @@ public record BundleTree(
     }
 
     /**
-     * Returns true when this bundle contains an index page.
-     *
-     * @return {@code true} when an index page exists
-     */
-    public boolean hasIndexPage() {
-        return indexPage().isPresent();
-    }
-
-    /**
      * Returns the bundle index page when it exists.
      *
      * @return bundle index page
@@ -131,7 +122,7 @@ public record BundleTree(
         if (htmlPath == null) {
             return false;
         }
-        return pages.stream().anyMatch(page -> page.htmlPath().equals(htmlPath))
+        return pages.stream().anyMatch(page -> page.htmlPath().equalsIgnoreCase(htmlPath))
                 || childBundles.stream().anyMatch(childBundle -> childBundle.containsHtmlPath(htmlPath));
     }
 
