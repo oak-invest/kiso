@@ -116,7 +116,7 @@ public record BundleTree(
      * automatically open the branch containing the current page
      *
      * @param htmlPath HTML absolutePath relative to the generated site isRoot
-     * @return {@code true} when this bundle contains the absolutePath
+     * @return {@code true} when this bundle exists the absolutePath
      */
     public boolean containsHtmlPath(@Nullable final String htmlPath) {
         if (htmlPath == null) {

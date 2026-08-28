@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.util.contants;
+package com.oakinvest.kiso.cli.util;
 
 import lombok.experimental.UtilityClass;
 
@@ -18,10 +18,7 @@ public class TemplateConstants {
     public static final String PRECOMPILED_SOCIAL_PREVIEW_TEMPLATE_CLASS = "gg.jte.generated.precompiled.JtesocialpreviewsvgGenerated";
 
     /** JTE source templates directory when tests are launched directly from the repository isRoot. */
-    public static final Path ROOT_SOURCE_TEMPLATES_DIRECTORY = Path.of("libraries/kiso-core/src/main/jte");
-
-    /** JTE source templates directory when tests are launched directly from the module directory. */
-    public static final Path MODULE_SOURCE_TEMPLATES_DIRECTORY = Path.of("src/main/jte");
+    public static final Path ROOT_SOURCE_TEMPLATES_DIRECTORY = Path.of("kiso-cli/src/main/jte");
 
     /** Index template page. */
     public static final String INDEX_TEMPLATE_PAGE = "index.jte";

@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.util;
+package com.oakinvest.kiso.cli.command;
 
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import picocli.CommandLine;

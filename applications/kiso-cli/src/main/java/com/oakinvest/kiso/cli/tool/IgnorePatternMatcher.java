@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.util;
+package com.oakinvest.kiso.cli.tool;
 
 import org.apache.commons.lang3.Strings;
 

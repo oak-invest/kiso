@@ -27,11 +27,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.CONCEPT_TEMPLATE_PAGE;
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.INDEX_TEMPLATE_PAGE;
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.LOG_TEMPLATE_PAGE;
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.PRECOMPILED_INDEX_TEMPLATE_CLASS;
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
+import static com.oakinvest.kiso.cli.util.TemplateConstants.CONCEPT_TEMPLATE_PAGE;
+import static com.oakinvest.kiso.cli.util.TemplateConstants.INDEX_TEMPLATE_PAGE;
+import static com.oakinvest.kiso.cli.util.TemplateConstants.LOG_TEMPLATE_PAGE;
+import static com.oakinvest.kiso.cli.util.TemplateConstants.PRECOMPILED_INDEX_TEMPLATE_CLASS;
+import static com.oakinvest.kiso.cli.util.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
 
 /**
  * Markdown to HTML Renderer.

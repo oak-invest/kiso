@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.util.contants;
+package com.oakinvest.kiso.cli.util;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +32,7 @@ public class ThemeConstants {
      * @param themeName theme name
      * @return true if it exists
      */
-    public static boolean contains(@Nullable final String themeName) {
+    public static boolean exists(@Nullable final String themeName) {
         if (StringUtils.isBlank(themeName)) {
             return false;
         }

@@ -189,7 +189,7 @@ public class CheckTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("WARNING - BROKEN_LINK - File index.md contains broken link: uknownContent.md")
+                .contains("WARNING - BROKEN_LINK - File index.md exists broken link: uknownContent.md")
                 .contains("Running check command")
                 .contains("No errors found.");
     }

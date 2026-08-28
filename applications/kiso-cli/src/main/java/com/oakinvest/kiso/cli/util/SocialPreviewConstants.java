@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.util.contants;
+package com.oakinvest.kiso.cli.util;
 
 import lombok.experimental.UtilityClass;
 

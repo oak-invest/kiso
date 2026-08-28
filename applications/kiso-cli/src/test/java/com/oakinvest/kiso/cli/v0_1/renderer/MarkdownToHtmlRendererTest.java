@@ -137,7 +137,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         // IL.
         assertThat(indexArticle.select("ul li")).hasSize(3);
         assertThat(indexArticle.select("ul li").getFirst().text()).contains("datasets - A sample of obfuscated Google Analytics BigQuery event export data for three months from the Google Merchandise Store is available as a public dataset in BigQuery.");
-        assertThat(indexArticle.select("ul li").get(1).text()).contains("references - This directory contains specifications for data joins and definitions for user activity and purchase metrics.");
+        assertThat(indexArticle.select("ul li").get(1).text()).contains("references - This directory exists specifications for data joins and definitions for user activity and purchase metrics.");
         assertThat(indexArticle.select("ul li").get(2).text()).contains("tables - Contains Google Analytics event export data from the ga4_obfuscated_sample_ecommerce dataset.");
 
         // Links.

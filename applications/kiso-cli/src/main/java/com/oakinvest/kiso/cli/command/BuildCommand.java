@@ -15,9 +15,8 @@ import com.oakinvest.kiso.cli.publisher.SitemapXmlGenerator;
 import com.oakinvest.kiso.cli.publisher.TagPageGenerator;
 import com.oakinvest.kiso.cli.renderer.MarkdownToHtmlRenderer;
 import com.oakinvest.kiso.cli.renderer.SocialPreviewImageGenerator;
-import com.oakinvest.kiso.cli.util.AbstractCommand;
-import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
-import com.oakinvest.kiso.cli.util.contants.ThemeConstants;
+import com.oakinvest.kiso.cli.tool.IgnorePatternMatcher;
+import com.oakinvest.kiso.cli.util.ThemeConstants;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
@@ -151,7 +150,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             };
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
-            // If a profile is specified, check if the profile contains an index file to use ===========================
+            // If a profile is specified, check if the profile exists an index file to use ===========================
             if (StringUtils.isNotBlank(profile)) {
                 final File sourceFile = sourceDirectory.toPath()
                         .resolve(CONFIGURATION_DIRECTORY_NAME)
@@ -275,7 +274,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Theme validation ========================================================================================
             final String theme = configuration.theme().effectiveName();
-            if (!ThemeConstants.contains(theme)) {
+            if (!ThemeConstants.exists(theme)) {
                 printWarning("WARNING: Theme '%s' is not a valid DaisyUI theme.".formatted(theme));
             }
 
