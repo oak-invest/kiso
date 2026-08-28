@@ -21,7 +21,6 @@ import static com.oakinvest.kiso.cli.util.contants.SocialPreviewConstants.DESCRI
 import static com.oakinvest.kiso.cli.util.contants.SocialPreviewConstants.DESCRIPTION_MAXIMUM_LINE_LENGTH;
 import static com.oakinvest.kiso.cli.util.contants.SocialPreviewConstants.TITLE_MAXIMUM_LINES;
 import static com.oakinvest.kiso.cli.util.contants.SocialPreviewConstants.TITLE_MAXIMUM_LINE_LENGTH;
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.MODULE_SOURCE_TEMPLATES_DIRECTORY;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.PRECOMPILED_SOCIAL_PREVIEW_TEMPLATE_CLASS;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.SOCIAL_PREVIEW_TEMPLATE_IMAGE;
@@ -48,15 +47,17 @@ public final class SocialPreviewImageGenerator {
      * @return JTE template engine
      */
     private static TemplateEngine createTemplateEngine() {
+        // If precompiled templates are available, use them ============================================================
         if (precompiledTemplateAvailable()) {
             return TemplateEngine.createPrecompiled(ContentType.Html);
         }
 
-        Path sourceTemplatesDirectory = sourceTemplatesDirectory();
-        if (sourceTemplatesDirectory != null) {
-            return TemplateEngine.create(new DirectoryCodeResolver(sourceTemplatesDirectory), ContentType.Html);
+        // If the source templates directory exists, use it ============================================================
+        if (Files.isDirectory(ROOT_SOURCE_TEMPLATES_DIRECTORY)) {
+            return TemplateEngine.create(new DirectoryCodeResolver(ROOT_SOURCE_TEMPLATES_DIRECTORY), ContentType.Html);
         }
 
+        // If neither precompiled templates nor source templates are available, use the default precompiled templates ==
         return TemplateEngine.createPrecompiled(ContentType.Html);
     }
 
@@ -72,21 +73,6 @@ public final class SocialPreviewImageGenerator {
         } catch (ClassNotFoundException exception) {
             return false;
         }
-    }
-
-    /**
-     * Returns the source templates directory when available.
-     *
-     * @return source templates directory, or null
-     */
-    private static Path sourceTemplatesDirectory() {
-        if (Files.isDirectory(ROOT_SOURCE_TEMPLATES_DIRECTORY)) {
-            return ROOT_SOURCE_TEMPLATES_DIRECTORY;
-        }
-        if (Files.isDirectory(MODULE_SOURCE_TEMPLATES_DIRECTORY)) {
-            return MODULE_SOURCE_TEMPLATES_DIRECTORY;
-        }
-        return null;
     }
 
     /**

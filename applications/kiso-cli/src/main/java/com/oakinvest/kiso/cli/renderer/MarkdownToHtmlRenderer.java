@@ -30,7 +30,6 @@ import java.util.List;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.CONCEPT_TEMPLATE_PAGE;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.INDEX_TEMPLATE_PAGE;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.LOG_TEMPLATE_PAGE;
-import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.MODULE_SOURCE_TEMPLATES_DIRECTORY;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.PRECOMPILED_INDEX_TEMPLATE_CLASS;
 import static com.oakinvest.kiso.cli.util.contants.TemplateConstants.ROOT_SOURCE_TEMPLATES_DIRECTORY;
 
@@ -66,15 +65,17 @@ public final class MarkdownToHtmlRenderer {
      * @return JTE template engine
      */
     private static TemplateEngine createTemplateEngine() {
+        // If precompiled templates are available, use them ============================================================
         if (precompiledTemplatesAvailable()) {
             return TemplateEngine.createPrecompiled(ContentType.Html);
         }
 
-        Path sourceTemplatesDirectory = sourceTemplatesDirectory();
-        if (sourceTemplatesDirectory != null) {
-            return TemplateEngine.create(new DirectoryCodeResolver(sourceTemplatesDirectory), ContentType.Html);
+        // If the source templates directory exists, use it ============================================================
+        if (Files.isDirectory(ROOT_SOURCE_TEMPLATES_DIRECTORY)) {
+            return TemplateEngine.create(new DirectoryCodeResolver(ROOT_SOURCE_TEMPLATES_DIRECTORY), ContentType.Html);
         }
 
+        // If neither precompiled templates nor source templates are available, use the default precompiled templates ==
         return TemplateEngine.createPrecompiled(ContentType.Html);
     }
 
@@ -90,21 +91,6 @@ public final class MarkdownToHtmlRenderer {
         } catch (ClassNotFoundException exception) {
             return false;
         }
-    }
-
-    /**
-     * Returns the source templates directory when available.
-     *
-     * @return source templates directory, or null
-     */
-    private static Path sourceTemplatesDirectory() {
-        if (Files.isDirectory(ROOT_SOURCE_TEMPLATES_DIRECTORY)) {
-            return ROOT_SOURCE_TEMPLATES_DIRECTORY;
-        }
-        if (Files.isDirectory(MODULE_SOURCE_TEMPLATES_DIRECTORY)) {
-            return MODULE_SOURCE_TEMPLATES_DIRECTORY;
-        }
-        return null;
     }
 
     /**
@@ -173,7 +159,6 @@ public final class MarkdownToHtmlRenderer {
                 TEMPLATE_ENGINE.render(LOG_TEMPLATE_PAGE, page, htmlOutput);
             }
             case INDEX -> {
-
                 // Index ===============================================================================================
                 IndexPage page = IndexPage.builder()
                         .context(PageContext.builder()
