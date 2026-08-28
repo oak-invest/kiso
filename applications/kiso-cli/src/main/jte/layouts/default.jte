@@ -21,7 +21,8 @@
     @template.layouts.head-social(pageMetadata = pageMetadata, pageContext = pageContext)
 
     <!-- AI content ================================================================================================ -->
-    <link rel="alternate" type="text/markdown" title="Markdown source" href="${pageMetadata.markdownFilename()}">
+    <link rel="alternate" type="text/markdown" title="Markdown version" href="${pageMetadata.markdownFilename()}">
+    <link rel="describedby" type="text/markdown" href="${pageMetadata.assetBasePath()}llms.txt">
 
 </head>
 

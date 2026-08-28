@@ -56,7 +56,7 @@
         <span data-i18n="footer.generatedWith">Generated with</span>
         <a class="link link-hover font-semibold"
            href="https://oak-invest.github.io/kiso"
-           target="kiso">
+           target="kiso_website">
             Kiso
         </a>
     </div>

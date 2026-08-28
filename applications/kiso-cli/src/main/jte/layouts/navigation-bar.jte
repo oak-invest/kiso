@@ -39,9 +39,7 @@
          data-search-result-base-url="${pageMetadata.assetBasePath()}">
 
         <label class="input input-bordered flex items-center gap-2">
-            @template.components.icons.glass(
-            cssClass = "h-[1em] w-[1em] opacity-50"
-            )
+            @template.components.icons.glass(cssClass = "h-[1em] w-[1em] opacity-50")
 
             <input class="kiso-search-input grow"
                    type="search"
@@ -50,9 +48,7 @@
                    autocomplete="off"
                    aria-label="Search"
                    data-i18n-aria-label="search.label"/>
-
         </label>
-
         <div class="kiso-search-results menu rounded-box mt-2 hidden w-80 max-w-[calc(100vw-1.5rem)] bg-base-100 p-2 shadow-lg"></div>
 
     </div>
