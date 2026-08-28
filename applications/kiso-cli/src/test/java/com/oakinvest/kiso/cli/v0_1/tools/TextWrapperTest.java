@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.cli.v0_1.tools;
 
-import com.oakinvest.kiso.core.tools.TextWrapper;
+import com.oakinvest.kiso.core.tool.TextWrapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

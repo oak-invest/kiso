@@ -10,7 +10,7 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
 
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.tools.MarkdownFactory.markdownFileListItem;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.markdownFileListItem;
 
 /**
  * Generator for tag page of a bundle.

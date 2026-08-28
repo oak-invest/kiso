@@ -2,8 +2,8 @@ package com.oakinvest.kiso.cli.renderer;
 
 import com.oakinvest.kiso.cli.exception.SocialPreviewGenerationException;
 import com.oakinvest.kiso.cli.model.image.SocialPreviewImage;
-import com.oakinvest.kiso.cli.tools.SvgToPngConverter;
-import com.oakinvest.kiso.core.tools.TextWrapper;
+import com.oakinvest.kiso.cli.tool.SvgToPngConverter;
+import com.oakinvest.kiso.core.tool.TextWrapper;
 import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.output.StringOutput;

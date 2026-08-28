@@ -6,7 +6,7 @@ import com.oakinvest.kiso.cli.model.page.IndexPage;
 import com.oakinvest.kiso.cli.model.page.LogPage;
 import com.oakinvest.kiso.cli.model.util.PageContext;
 import com.oakinvest.kiso.cli.model.util.PageMetadata;
-import com.oakinvest.kiso.cli.tools.HtmlCleaner;
+import com.oakinvest.kiso.cli.tool.HtmlCleaner;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;

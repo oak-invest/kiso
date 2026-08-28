@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.tools;
+package com.oakinvest.kiso.core.tool;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-@import com.oakinvest.kiso.core.tools.TagNormalizer
+@import com.oakinvest.kiso.core.tool.TagNormalizer
 @import java.time.format.DateTimeFormatter
 
 @param com.oakinvest.kiso.cli.model.page.ConceptPage page

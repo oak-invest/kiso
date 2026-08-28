@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.tools;
+package com.oakinvest.kiso.core.tool;
 
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;

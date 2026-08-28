@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.cli.v0_2.tools;
 
 import com.oakinvest.kiso.cli.exception.SvgToPngConversionException;
-import com.oakinvest.kiso.cli.tools.SvgToPngConverter;
+import com.oakinvest.kiso.cli.tool.SvgToPngConverter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

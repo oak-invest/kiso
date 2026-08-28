@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.core.tools;
+package com.oakinvest.kiso.core.tool;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;

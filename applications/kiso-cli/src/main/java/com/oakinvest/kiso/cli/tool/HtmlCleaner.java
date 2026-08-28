@@ -1,9 +1,11 @@
-package com.oakinvest.kiso.cli.tools;
+package com.oakinvest.kiso.cli.tool;
 
 import com.googlecode.htmlcompressor.compressor.HtmlCompressor;
 import lombok.experimental.UtilityClass;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+
+import static java.lang.Integer.MAX_VALUE;
 
 /**
  * HTML Cleaner.
@@ -41,7 +43,7 @@ public class HtmlCleaner {
         document.outputSettings()
                 .prettyPrint(true)
                 .indentAmount(1)
-                .maxPaddingWidth(Integer.MAX_VALUE);
+                .maxPaddingWidth(MAX_VALUE);
         return document.outerHtml();
     }
 

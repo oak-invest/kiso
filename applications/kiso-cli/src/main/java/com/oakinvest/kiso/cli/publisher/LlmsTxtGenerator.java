@@ -9,8 +9,8 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
 import java.util.Comparator;
 import java.util.Objects;
 
-import static com.oakinvest.kiso.core.tools.MarkdownFactory.heading;
-import static com.oakinvest.kiso.core.tools.MarkdownFactory.markdownFileListItem;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.heading;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.markdownFileListItem;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
 import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;

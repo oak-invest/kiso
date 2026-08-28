@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.tools;
+package com.oakinvest.kiso.cli.tool;
 
 import com.oakinvest.kiso.cli.exception.SvgToPngConversionException;
 import lombok.experimental.UtilityClass;

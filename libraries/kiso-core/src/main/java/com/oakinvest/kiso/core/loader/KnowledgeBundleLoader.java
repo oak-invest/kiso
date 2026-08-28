@@ -18,7 +18,7 @@ import com.oakinvest.kiso.core.model.markdown.computation.ComputationParameter;
 import com.oakinvest.kiso.core.model.markdown.provenance.Source;
 import com.oakinvest.kiso.core.model.markdown.provenance.UsageWindow;
 import com.oakinvest.kiso.core.model.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.tools.TagNormalizer;
+import com.oakinvest.kiso.core.tool.TagNormalizer;
 import com.oakinvest.kiso.core.util.types.LifecycleStatus;
 import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
