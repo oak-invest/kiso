@@ -73,12 +73,12 @@
         ${preview.siteName()}
     </text>
 
-    <!-- Title lines -->
-    @if(preview.titleLines().size() > 0)
+    <!-- Title lines - First line and second line are displayed -->
+    @if(!preview.titleLines().isEmpty())
         <text x="60" y="240"
               font-family="Helvetica, Arial, sans-serif"
               font-size="58" font-weight="700" fill="#f8fafc">
-            ${preview.titleLines().get(0)}
+            ${preview.titleLines().getFirst()}
         </text>
     @endif
     @if(preview.titleLines().size() > 1)
@@ -93,11 +93,11 @@
     <rect x="60" y="354" width="72" height="2" rx="1" fill="url(#accentGradient)"/>
 
     <!-- Description lines -->
-    @if(preview.descriptionLines().size() > 0)
+    @if(!preview.descriptionLines().isEmpty())
         <text x="60" y="404"
               font-family="Helvetica, Arial, sans-serif"
               font-size="27" fill="#94a3b8">
-            ${preview.descriptionLines().get(0)}
+            ${preview.descriptionLines().getFirst()}
         </text>
     @endif
     @if(preview.descriptionLines().size() > 1)
