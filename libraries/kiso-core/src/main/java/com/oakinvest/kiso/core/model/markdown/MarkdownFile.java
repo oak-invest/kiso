@@ -19,35 +19,31 @@ import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 /**
  * Markdown file discovered inside a knowledge bundle.
  * <p>
- * Example for index.md in the root bundle:
- * <pre>{@code
- * fileName: index.md
- * absolutePath /home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/index.md
- * relativePath index.md
- * conceptId: null
- * title: index.md
- * htmlFilename: index.html
- * htmlFilePath: index.html
- * bundlePath:
- * bundleName: index
- *  }</pre>
+ * Example for index.md :
+ * - markdownFile.fileName = index.md
+ * - markdownFile.absolutePath = /home/.../kb-google-example-v0.1/index.md
+ * - markdownFile.relativePath = index.md
+ * - markdownFile.conceptId = null
+ * - markdownFile.title = index.md
+ * - markdownFile.htmlFilename = index.html
+ * - markdownFile.htmlFilePath = index.html
+ * - markdownFile.bundlePath =
+ * - markdownFile.bundleName = index
  * <p>
  * Example for tables/events_.md:
- * <pre>{@code
- * fileName: events_.md
- * absolutePath /home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/tables/events_.md
- * relativePath tables/events_.md
- * conceptId: tables/events_
- * title: Events table (Google Analytics BigQuery Export)
- * htmlFilename: events_.html
- * htmlFilePath: tables/events_.html
- * bundlePath: tables
- * bundleName: tables
- * }</pre>
+ * - markdownFile.fileName = events_.md
+ * - markdownFile.absolutePath = /home/.../kb-google-example-v0.1/tables/events_.md
+ * - markdownFile.relativePath = tables/events_.md
+ * - markdownFile.conceptId = tables/events_
+ * - markdownFile.title = Events table (Google Analytics BigQuery Export)
+ * - markdownFile.htmlFilename = events_.html
+ * - markdownFile.htmlFilePath = tables/events_.html
+ * - markdownFile.bundlePath = tables
+ * - markdownFile.bundleName = tables
  *
  * @param fileName           file name (example: "index.md" for index.md in the root bundle or "events_.md" for "tables/events_.md")
  * @param kind               file kind
- * @param absolutePath       absolute path (example: "/home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/index.md" for index in a root bundle or "/home/straumat/IdeaProjects/oak-invest/kiso/libraries/kiso-core/target/test-classes/kb-google-example-v0.1/tables/events_.md" for "tables/events_.md")
+ * @param absolutePath       absolute path (example: "/home/.../kb-google-example-v0.1/index.md" for index in a root bundle or "/home/.../kb-google-example-v0.1/tables/events_.md" for "tables/events_.md")
  * @param relativePath       relative path to the root bundle (example "index.md" for index.md in the root bundle or "tables/events_.md" for "tables/events_.md")
  * @param frontmatter        frontmatter metadata
  * @param frontmatterPresent whether a frontmatter block exists in the source file
@@ -146,7 +142,7 @@ public record MarkdownFile(
                 return "Index of " + Strings.CI.replace(relativePath().toString(), "/" + INDEX.getFileName(), "");
             }
         } else {
-            // Concept file ============================================================================================
+            // Concept & log files =====================================================================================
             if (StringUtils.isNotBlank(frontmatter.description())) {
                 return frontmatter.description();
             } else {
@@ -164,6 +160,7 @@ public record MarkdownFile(
         if (frontmatter.generated() != null && frontmatter.generated().parsedAt() != null) {
             return frontmatter.generated().parsedAt();
         }
+        // V0.1 compatibility: use the timestamp field if the generated field is not present.
         return frontmatter.parsedTimestamp();
     }
 

@@ -305,6 +305,9 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
                 .findFirst().orElseThrow(() -> new IllegalStateException("Missing log.md file in the bundle"));
         var page = Jsoup.parse(MarkdownToHtmlRenderer.render(SiteConfiguration.empty(), ThemeConfiguration.empty(), logPage, bundleTree));
 
+        assertThat(page.title()).isEqualTo("Acme Retail bundle history");
+        assertThat(page.select("meta[name=description]").eachAttr("content")).isEmpty();
+
         // Concept header ==============================================================================================
         var header = page.selectFirst("main > section");
         assertThat(header).isNotNull();
@@ -315,7 +318,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(header.selectFirst("div.text-4xl"))
                 .isNotNull()
                 .extracting(Element::text)
-                .containsExactly("log.md");
+                .containsExactly("Acme Retail bundle history");
 
         // Content =====================================================================================================
         // H1.

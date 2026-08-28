@@ -175,7 +175,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Creating missing index.md files for bundles without index ===============================================
             knowledgeBundle.bundles()
-                    .filter(bundle -> !bundle.hasIndexFile())
+                    // The one with no index.md file.
+                    .filter(bundle -> bundle.getIndexFile().isEmpty())
                     .forEach(bundle -> {
                         try {
                             FileUtils.writeStringToFile(

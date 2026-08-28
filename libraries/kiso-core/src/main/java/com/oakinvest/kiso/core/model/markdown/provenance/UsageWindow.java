@@ -21,24 +21,6 @@ public record UsageWindow(
 ) {
 
     /**
-     * Returns parsed date.
-     *
-     * @param value date value
-     * @return parsed date, or null if missing or invalid
-     */
-    private static @Nullable LocalDate parsedDate(@Nullable final String value) {
-        if (StringUtils.isBlank(value)) {
-            return null;
-        }
-
-        try {
-            return LocalDate.parse(value);
-        } catch (DateTimeParseException exception) {
-            return null;
-        }
-    }
-
-    /**
      * Returns parsed start date.
      *
      * @return parsed start date, or null if missing or invalid
@@ -54,6 +36,24 @@ public record UsageWindow(
      */
     public @Nullable LocalDate parsedTo() {
         return parsedDate(to);
+    }
+
+    /**
+     * Returns parsed date.
+     *
+     * @param value date value
+     * @return parsed date, or null if missing or invalid
+     */
+    private @Nullable LocalDate parsedDate(@Nullable final String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(value);
+        } catch (DateTimeParseException exception) {
+            return null;
+        }
     }
 
 }

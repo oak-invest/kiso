@@ -147,7 +147,7 @@ public final class MarkdownToHtmlRenderer {
                                 .bundleTree(bundleTree)
                                 .build())
                         .metadata(PageMetadata.builder()
-                                .title(ObjectUtils.firstNonNull(siteConfiguration.title(), markdownFile.relativePath().toString()))
+                                .title(ObjectUtils.firstNonNull(markdownFile.title(), markdownFile.relativePath().toString()))
                                 .description(siteConfiguration.description())
                                 .absolutePath(markdownFile.absolutePath().toString())
                                 .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))

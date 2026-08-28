@@ -19,20 +19,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.oakinvest.kiso.core.util.types.LifecycleStatus.STABLE;
+import static com.oakinvest.kiso.core.util.types.TrustLevel.HUMAN_REVIEWED;
+import static com.oakinvest.kiso.core.util.types.TrustLevel.MACHINE_CONFIRMED;
+import static com.oakinvest.kiso.core.util.types.TrustLevel.UNVERIFIED;
+
 /**
  * Frontmatter associated with a Markdown file.
  *
- * @param type        A short string identifying the kind of concept. Consumers use this for routing, filtering, and presentation. Example values: BigQuery Table, BigQuery Dataset, API Endpoint, Metric, Playbook, Reference
- * @param title       Human-readable display name. If omitted, consumers MAY derive a title from the filename
- * @param description A single sentence summarizing the concept. Used by index.md generators, search snippets, and previews
- * @param resource    A URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
- * @param tags        A YAML list of short strings for cross-cutting categorization
- * @param tagSlugs    A YAML list of short strings representing the slugs of the tags
+ * @param type        a short string identifying the kind of concept. Consumers use this for routing, filtering, and presentation. Example values: BigQuery Table, BigQuery Dataset, API Endpoint, Metric, Playbook, Reference
+ * @param title       human-readable display name. If omitted, consumers MAY derive a title from the filename
+ * @param description a single sentence summarizing the concept. Used by index.md generators, search snippets, and previews
+ * @param resource    a URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
+ * @param tags        a YAML list of short strings for cross-cutting categorization
+ * @param tagSlugs    a YAML list of short strings representing the slugs of the tags
  * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2
  * @param sources     materials the concept derives from
  * @param usageWindow date range that frames source usage counts
  * @param generated   event recording how the current content was produced
- * @param verified    A list of verification events
+ * @param verified    a list of verification events
  * @param status      lifecycle status value.
  * @param staleAfter  absolute date after which content is stale
  * @param runtime     computation runtime for Attested Computation concepts
@@ -74,7 +79,7 @@ public record Frontmatter(
         tagSlugs = Objects.requireNonNullElse(tagSlugs, List.of());
         sources = Objects.requireNonNullElse(sources, List.of());
         verified = Objects.requireNonNullElse(verified, List.of());
-        status = Objects.requireNonNullElse(status, LifecycleStatus.STABLE);
+        status = Objects.requireNonNullElse(status, STABLE);
         parameters = Objects.requireNonNullElse(parameters, List.of());
         extraFields = Objects.requireNonNullElse(extraFields, Map.of());
     }
@@ -87,8 +92,10 @@ public record Frontmatter(
     public static Frontmatter empty() {
         return Frontmatter.builder()
                 .tags(List.of())
+                .tagSlugs(List.of())
                 .sources(List.of())
                 .verified(List.of())
+                .status(STABLE)
                 .parameters(List.of())
                 .extraFields(Map.of())
                 .build();
@@ -171,16 +178,16 @@ public record Frontmatter(
      */
     public TrustLevel trustTier() {
         if (verified.isEmpty()) {
-            return TrustLevel.UNVERIFIED;
+            return UNVERIFIED;
         }
         boolean humanReviewed = verified.stream()
                 .map(TrustEvent::by)
                 .filter(Objects::nonNull)
                 .anyMatch(Actor::isHuman);
         if (humanReviewed) {
-            return TrustLevel.HUMAN_REVIEWED;
+            return HUMAN_REVIEWED;
         }
-        return TrustLevel.MACHINE_CONFIRMED;
+        return MACHINE_CONFIRMED;
     }
 
 }

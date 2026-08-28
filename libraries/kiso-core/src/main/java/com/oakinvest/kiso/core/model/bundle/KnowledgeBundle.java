@@ -3,10 +3,8 @@ package com.oakinvest.kiso.core.model.bundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.Builder;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -45,13 +43,12 @@ public record KnowledgeBundle(
      * @return unique tags in their first-seen order
      */
     public List<String> tags() {
-        Set<String> tags = new LinkedHashSet<>();
-        markdownFiles()
+        return markdownFiles()
                 .map(MarkdownFile::frontmatter)
                 .filter(Objects::nonNull)
                 .flatMap(frontmatter -> frontmatter.tags().stream())
-                .forEach(tags::add);
-        return List.copyOf(tags);
+                .distinct()
+                .toList();
     }
 
     /**
@@ -60,13 +57,12 @@ public record KnowledgeBundle(
      * @return unique tag slugs in their first-seen order
      */
     public List<String> tagSlugs() {
-        Set<String> tagSlugs = new LinkedHashSet<>();
-        markdownFiles()
+        return markdownFiles()
                 .map(MarkdownFile::frontmatter)
                 .filter(Objects::nonNull)
                 .flatMap(frontmatter -> frontmatter.tagSlugs().stream())
-                .forEach(tagSlugs::add);
-        return List.copyOf(tagSlugs);
+                .distinct()
+                .toList();
     }
 
 }
