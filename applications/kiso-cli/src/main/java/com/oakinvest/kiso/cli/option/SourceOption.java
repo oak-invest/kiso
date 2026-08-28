@@ -1,11 +1,11 @@
-package com.oakinvest.kiso.cli.options;
+package com.oakinvest.kiso.cli.option;
 
 import picocli.CommandLine;
 
 import java.nio.file.Path;
 
 /**
- * Source directory option for commands reading a bundle.
+ * Defines the source directory option for bundle-related commands.
  */
 public class SourceOption {
 
@@ -14,7 +14,7 @@ public class SourceOption {
             names = {"-s", "--source"},
             defaultValue = ".",
             paramLabel = "DIRECTORY",
-            description = "Directory containing the bundle to read. Defaults to the current directory."
+            description = "Directory containing the bundle. Defaults to the current directory."
     )
     @SuppressWarnings("unused")
     private Path sourceDirectory;

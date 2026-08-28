@@ -1,4 +1,4 @@
-package com.oakinvest.kiso.cli.options;
+package com.oakinvest.kiso.cli.option;
 
 import picocli.CommandLine;
 
@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.DEFAULT_DESTINATION_DIRECTORY_NAME;
 
 /**
- * Destination directory option for commands creating files.
+ * Defines the destination directory option for commands that create files.
  */
 public class DestinationOption {
 

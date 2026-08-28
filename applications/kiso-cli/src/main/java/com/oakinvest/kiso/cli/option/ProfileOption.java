@@ -1,9 +1,9 @@
-package com.oakinvest.kiso.cli.options;
+package com.oakinvest.kiso.cli.option;
 
 import picocli.CommandLine;
 
 /**
- * Publishing profile option.
+ * Defines the profile to use.
  */
 public class ProfileOption {
 
@@ -11,7 +11,7 @@ public class ProfileOption {
     @CommandLine.Option(
             names = {"-p", "--profile"},
             paramLabel = "PROFILE",
-            description = "Publishing profile from .kiso/<profile>/configuration.yaml"
+            description = "Publishing profile: .kiso/<profile>/configuration.yaml"
     )
     @SuppressWarnings("unused")
     private String profile;
