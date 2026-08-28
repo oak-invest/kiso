@@ -33,7 +33,9 @@ public record ContentConfiguration(
      * @return empty content configuration
      */
     public static ContentConfiguration empty() {
-        return new ContentConfiguration(List.of());
+        return ContentConfiguration.builder()
+                .ignorePatterns(List.of())
+                .build();
     }
 
 }

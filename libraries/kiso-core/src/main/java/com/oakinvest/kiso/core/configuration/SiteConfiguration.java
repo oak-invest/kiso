@@ -15,9 +15,9 @@ import static com.oakinvest.kiso.core.util.contants.InternationalizationConstant
  *
  * @param baseUrl     base URL of the generated site
  * @param language    language selected (en, de...)
- * @param name        Site name
- * @param title       Index pages title
- * @param description Index pages description
+ * @param name        site name
+ * @param title       index pages title
+ * @param description index pages description
  */
 @Builder
 @SuppressWarnings("unused")
@@ -35,7 +35,9 @@ public record SiteConfiguration(
      * @return empty site configuration
      */
     public static SiteConfiguration empty() {
-        return new SiteConfiguration(null, DEFAULT_LANGUAGE, null, null, null);
+        return SiteConfiguration.builder()
+                .language(DEFAULT_LANGUAGE)
+                .build();
     }
 
     /**

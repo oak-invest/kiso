@@ -1,4 +1,4 @@
 /**
- * All existing configuration parameters.
+ * All existing configurations.
  */
 package com.oakinvest.kiso.core.configuration;

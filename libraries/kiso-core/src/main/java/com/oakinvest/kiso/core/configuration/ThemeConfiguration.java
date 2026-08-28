@@ -26,7 +26,9 @@ public record ThemeConfiguration(
      * @return empty theme configuration
      */
     public static ThemeConfiguration empty() {
-        return new ThemeConfiguration(DEFAULT_THEME);
+        return ThemeConfiguration.builder()
+                .name(DEFAULT_THEME)
+                .build();
     }
 
     /**
