@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.publisher;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
@@ -22,21 +23,23 @@ public class TagPageGenerator {
     /**
      * Generate a tag page.
      *
-     * @param knowledgeBundle knowledge bundle
-     * @param tagSlug         tag (normalized) for which the page is generated
+     * @param knowledgeBundle   knowledge bundle
+     * @param siteConfiguration site configuration
+     * @param tagSlug           tag (normalized) for which the page is generated
      * @return tag page content
      */
-    public static String generate(final KnowledgeBundle knowledgeBundle, final String tagSlug) {
+    public static String generate(final KnowledgeBundle knowledgeBundle, final SiteConfiguration siteConfiguration, final String tagSlug) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(siteConfiguration, "siteConfiguration must not be null");
         Objects.requireNonNull(tagSlug, "tagSlug must not be null");
 
         // Define base url =============================================================================================
         final String baseUrl;
-        if (StringUtils.isBlank(knowledgeBundle.siteConfiguration().normalizedBaseUrl())) {
+        if (StringUtils.isBlank(siteConfiguration.normalizedBaseUrl())) {
             // Because the tag page is generated in a subfolder, we need to go one level up to reach the root of the site.
             baseUrl = "../";
         } else {
-            baseUrl = knowledgeBundle.siteConfiguration().normalizedBaseUrl();
+            baseUrl = siteConfiguration.normalizedBaseUrl();
         }
 
         // Document creation ===========================================================================================

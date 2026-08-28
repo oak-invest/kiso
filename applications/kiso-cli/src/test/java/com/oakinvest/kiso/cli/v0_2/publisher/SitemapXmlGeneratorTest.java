@@ -21,7 +21,7 @@ class SitemapXmlGeneratorTest extends BaseTest {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_V_0_2);
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
-        var content = SitemapXmlGenerator.generate(knowledgeBundle);
+        var content = SitemapXmlGenerator.generate(knowledgeBundle, SiteConfiguration.empty());
         var document = parseXml(content);
 
         // Testing content =============================================================================================
@@ -72,8 +72,8 @@ class SitemapXmlGeneratorTest extends BaseTest {
                 "Site name",
                 "Knowledge",
                 "Description");
-        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
-        var content = SitemapXmlGenerator.generate(knowledgeBundle);
+        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
+        var content = SitemapXmlGenerator.generate(knowledgeBundle, siteConfiguration);
 
         // Testing content =============================================================================================
         assertThat(content)

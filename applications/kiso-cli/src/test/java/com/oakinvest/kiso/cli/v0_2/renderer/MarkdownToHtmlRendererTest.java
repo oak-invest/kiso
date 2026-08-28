@@ -137,7 +137,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         // IL.
         assertThat(indexArticle.select("ul li")).hasSize(3);
         assertThat(indexArticle.select("ul li").getFirst().text()).contains("datasets - Obfuscated Google Analytics 4 dataset emulating a web ecommerce implementation of the Google Merchandise Store.");
-        assertThat(indexArticle.select("ul li").get(1).text()).contains("references - This directory exists sql queries and schemas to define and build various user audience metrics based on acquisition sources, activity levels, and purchasing behavior.");
+        assertThat(indexArticle.select("ul li").get(1).text()).contains("references - This directory contains sql queries and schemas to define and build various user audience metrics based on acquisition sources, activity levels, and purchasing behavior.");
         assertThat(indexArticle.select("ul li").get(2).text()).contains("tables - Google Analytics 4 event-level daily sharded export tables containing user interaction logs.");
 
         // Links.

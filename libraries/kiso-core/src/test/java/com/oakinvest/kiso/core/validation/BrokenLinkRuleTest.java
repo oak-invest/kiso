@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class BrokenLinkRuleTest extends BaseTest {
 
     @Test
-    @DisplayName("Report broken links")
+    @DisplayName("Report a broken links")
     void reportBrokenLinks(@TempDir final Path temporaryDirectory) throws IOException {
         // Errors ======================================================================================================
         // dir1/content1.md                 --> Failed link to /uknownContent.md
@@ -73,7 +73,7 @@ public class BrokenLinkRuleTest extends BaseTest {
 
         var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
 
-        // Run validation and check that the warnings for broken links =================================================
+        // Run validation and check that the warnings for a broken links =================================================
         var rule = new BrokenLinkRule();
         var issues = bundle.bundles()
                 .flatMap(currentBundle -> currentBundle.markdownFiles()
@@ -89,13 +89,13 @@ public class BrokenLinkRuleTest extends BaseTest {
         assertThat(issues)
                 .extracting(ValidationIssue::message)
                 .containsExactlyInAnyOrder(
-                        "File content.md contains broken link: dir2/dir2subdir3/uknownContent.md",
-                        "File index.md contains broken link: ./uknownContent.md",
-                        "File index.md contains broken link: ./dir2/uknownContent.md",
-                        "File dir1/content1.md contains broken link: ../uknownContent.md",
-                        "File dir1/dir1subdir1/content11.md contains broken link: ../../dir2/uknownContent.md",
-                        "File dir1/dir1subdir2/content12.md contains broken link: ../../dir2/dir2subdir2/uknownContent.md",
-                        "File dir2/dir2subdir2/content22.md contains broken link: ../../dir2/dir2subdir3/uknownContent.md"
+                        "File content.md contains a broken link: dir2/dir2subdir3/uknownContent.md",
+                        "File index.md contains a broken link: ./uknownContent.md",
+                        "File index.md contains a broken link: ./dir2/uknownContent.md",
+                        "File dir1/content1.md contains a broken link: ../uknownContent.md",
+                        "File dir1/dir1subdir1/content11.md contains a broken link: ../../dir2/uknownContent.md",
+                        "File dir1/dir1subdir2/content12.md contains a broken link: ../../dir2/dir2subdir2/uknownContent.md",
+                        "File dir2/dir2subdir2/content22.md contains a broken link: ../../dir2/dir2subdir3/uknownContent.md"
                 );
     }
 

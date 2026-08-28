@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.model.bundle.Bundle;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
@@ -96,23 +95,12 @@ public class KnowledgeBundleLoader {
     };
 
     /**
-     * Load a directory and returns its corresponding {@link KnowledgeBundle}.
+     * Load a directory and returns its corresponding {@link KnowledgeBundle} and the website configuration.
      *
      * @param sourceDirectory source directory
      * @return knowledge bundle
      */
     public static KnowledgeBundle load(final Path sourceDirectory) {
-        return load(sourceDirectory, SiteConfiguration.empty());
-    }
-
-    /**
-     * Load a directory and returns its corresponding {@link KnowledgeBundle} and the website configuration.
-     *
-     * @param sourceDirectory   source directory
-     * @param siteConfiguration site configuration
-     * @return knowledge bundle
-     */
-    public static KnowledgeBundle load(final Path sourceDirectory, final SiteConfiguration siteConfiguration) {
         // We check that the source directory is valid =================================================================
         if (sourceDirectory == null) {
             throw new KnowledgeBundleLoadingException("Source directory is null");
@@ -131,7 +119,6 @@ public class KnowledgeBundleLoader {
         // We now return the knowledge bundle ==========================================================================
         return KnowledgeBundle.builder()
                 .rootBundle(loadBundle(rootBundleAbsolutePath, rootBundleAbsolutePath))
-                .siteConfiguration(siteConfiguration)
                 .build();
     }
 

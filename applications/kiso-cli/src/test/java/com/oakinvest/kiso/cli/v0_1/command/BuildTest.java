@@ -354,7 +354,7 @@ class BuildTest extends BaseTest {
         assertThat(exitCode).isZero();
         assertThat(error.toString()).isEmpty();
         assertThat(output.toString())
-                .contains("WARNING - BROKEN_LINK - File index.md exists broken link: uknownContent.md")
+                .contains("WARNING - BROKEN_LINK - File index.md contains a broken link: uknownContent.md")
                 .contains("Running build command")
                 .contains("Done!");
     }

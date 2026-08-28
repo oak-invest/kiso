@@ -20,7 +20,7 @@ public class TagPageGeneratorTest extends BaseTest {
 
         // Testing tag page generation for "finance" tag without base url ==============================================
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
-        assertThat(TagPageGenerator.generate(knowledgeBundle, "finance"))
+        assertThat(TagPageGenerator.generate(knowledgeBundle, SiteConfiguration.empty(), "finance"))
                 // Frontmatter.
                 .contains("""
                         ---
@@ -38,10 +38,10 @@ public class TagPageGeneratorTest extends BaseTest {
                 .contains("- [Acme Retail — Revenue Recognition Policy (FY2026)](../policies/revenue-recognition.md): Finance policy defining when a customer order is recognized as revenue. Reviewed annually.");
 
         // Testing tag page generation for "finance" tag with base url =================================================
-        knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, SiteConfiguration.builder()
+        knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
+        assertThat(TagPageGenerator.generate(knowledgeBundle, SiteConfiguration.builder()
                 .baseUrl("https://acme.com/knowledge-base/")
-                .build());
-        assertThat(TagPageGenerator.generate(knowledgeBundle, "finance"))
+                .build(), "finance"))
                 .contains("""
                         ---
                         type: tag

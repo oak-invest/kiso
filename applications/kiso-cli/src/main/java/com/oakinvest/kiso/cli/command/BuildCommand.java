@@ -195,7 +195,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                 try {
                     FileUtils.writeStringToFile(
                             new File(tagsDirectory, tag + ".md"),
-                            TagPageGenerator.generate(knowledgeBundle, tag),
+                            TagPageGenerator.generate(knowledgeBundle, configuration.site(), tag),
                             StandardCharsets.UTF_8
                     );
                     print("Tag page generated for tag: " + tag);
@@ -205,7 +205,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             }
 
             // HTML generation =========================================================================================
-            knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath(), configuration.site());
+            knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
@@ -251,7 +251,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // llms.txt generation =====================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), LLMS_TXT_FILENAME),
-                    LlmsTxtGenerator.generate(knowledgeBundle),
+                    LlmsTxtGenerator.generate(knowledgeBundle, configuration.site()),
                     StandardCharsets.UTF_8
             );
             print("File " + LLMS_TXT_FILENAME + " generated");
@@ -259,7 +259,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), SITEMAP_XML_FILENAME),
-                    SitemapXmlGenerator.generate(knowledgeBundle),
+                    SitemapXmlGenerator.generate(knowledgeBundle, configuration.site()),
                     StandardCharsets.UTF_8
             );
             print("File " + SITEMAP_XML_FILENAME + " generated");

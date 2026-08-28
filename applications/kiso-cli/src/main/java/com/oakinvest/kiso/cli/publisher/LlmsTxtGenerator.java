@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.publisher;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import lombok.experimental.UtilityClass;
 import org.commonmark.node.BulletList;
@@ -27,11 +28,13 @@ public class LlmsTxtGenerator {
     /**
      * Generate llms.txt.
      *
-     * @param knowledgeBundle knowledge bundle
+     * @param knowledgeBundle   knowledge bundle
+     * @param siteConfiguration site configuration
      * @return llms.txt content
      */
-    public static String generate(final KnowledgeBundle knowledgeBundle) {
+    public static String generate(final KnowledgeBundle knowledgeBundle, final SiteConfiguration siteConfiguration) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(siteConfiguration, "siteConfiguration must not be null");
 
         // Document creation ===========================================================================================
         final Document llmsTxt = new Document();
@@ -55,7 +58,7 @@ public class LlmsTxtGenerator {
                     bundle.markdownFiles().stream()
                             .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
                             .forEach(markdownFile -> list.appendChild(markdownFileListItem(
-                                    knowledgeBundle.siteConfiguration().normalizedBaseUrl(),
+                                    siteConfiguration.normalizedBaseUrl(),
                                     markdownFile)));
                     llmsTxt.appendChild(list);
 

@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.cli.publisher;
 
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
@@ -22,11 +23,13 @@ public final class SitemapXmlGenerator {
     /**
      * Generates sitemap.xml.
      *
-     * @param knowledgeBundle knowledge bundle
+     * @param knowledgeBundle   knowledge bundle
+     * @param siteConfiguration site configuration
      * @return sitemap.xml content
      */
-    public static String generate(final KnowledgeBundle knowledgeBundle) {
+    public static String generate(final KnowledgeBundle knowledgeBundle, final SiteConfiguration siteConfiguration) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(siteConfiguration, "siteConfiguration must not be null");
 
         // Building the sitemap ========================================================================================
         StringBuilder content = new StringBuilder();
@@ -39,7 +42,7 @@ public final class SitemapXmlGenerator {
                 .forEach(bundle -> bundle.markdownFiles().stream()
                         // Index first.
                         .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
-                        .forEach(markdownFile -> appendUrl(content, knowledgeBundle.siteConfiguration().normalizedBaseUrl(), markdownFile)));
+                        .forEach(markdownFile -> appendUrl(content, siteConfiguration.normalizedBaseUrl(), markdownFile)));
         content.append("</urlset>\n");
         return content.toString();
     }

@@ -18,7 +18,7 @@ class LlmsTxtGeneratorTest extends BaseTest {
         // What we are testing =========================================================================================
         var resourcePath = getResourcePath(KB_GOOGLE_V_0_1);
         var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
-        var content = LlmsTxtGenerator.generate(knowledgeBundle);
+        var content = LlmsTxtGenerator.generate(knowledgeBundle, SiteConfiguration.empty());
 
         // Testing structure ===========================================================================================
         assertThat(content)
@@ -70,8 +70,8 @@ class LlmsTxtGeneratorTest extends BaseTest {
                 null,
                 null,
                 null);
-        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath, siteConfiguration);
-        var content = LlmsTxtGenerator.generate(knowledgeBundle);
+        var knowledgeBundle = KnowledgeBundleLoader.load(resourcePath);
+        var content = LlmsTxtGenerator.generate(knowledgeBundle, siteConfiguration);
 
         assertThat(content)
                 .contains("[index.md](https://knowledge.angara.finance/index.md)")

@@ -1,9 +1,7 @@
 package com.oakinvest.kiso.core.v0_1.model;
 
 import com.oakinvest.kiso.core.BaseTest;
-import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -71,15 +69,6 @@ public class KnowledgeBundleTest extends BaseTest {
                         markdownFile -> assertThat(markdownFile.relativePath().toString())
                                 .isEqualTo("tables/index.md")
                 );
-    }
-
-    @Test
-    @DisplayName("Using an empty site configuration when none is provided")
-    void emptySiteConfigurationByDefault() {
-        var knowledgeBundle = KnowledgeBundle.builder().build();
-        assertThat(knowledgeBundle.siteConfiguration())
-                .isNotNull()
-                .isEqualTo(SiteConfiguration.empty());
     }
 
 }

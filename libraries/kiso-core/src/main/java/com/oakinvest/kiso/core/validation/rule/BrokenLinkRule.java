@@ -77,7 +77,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
         return ValidationIssue.builder()
                 .severity(WARNING)
                 .code(BROKEN_LINK)
-                .message("File " + markdownFile.relativePath() + " contains broken link: " + link.getDestination())
+                .message("File " + markdownFile.relativePath() + " contains a broken link: " + link.getDestination())
                 .path(markdownFile.relativePath())
                 .build();
     }
