@@ -13,17 +13,17 @@ import java.util.Objects;
 import static com.oakinvest.kiso.core.tools.MarkdownFactory.markdownFileListItem;
 
 /**
- * Generator for the tag pages of a bundle.
+ * Generator for tag page of a bundle.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class TagPageGenerator {
 
     /**
-     * Generate a tag page for a bundle.
+     * Generate a tag page.
      *
-     * @param knowledgeBundle bundle where the pages are
-     * @param tagSlug         tag normalize for which the page is generated
+     * @param knowledgeBundle knowledge bundle
+     * @param tagSlug         tag (normalized) for which the page is generated
      * @return tag page content
      */
     public static String generate(final KnowledgeBundle knowledgeBundle, final String tagSlug) {

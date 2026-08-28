@@ -4,6 +4,7 @@ import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.commonmark.node.Heading;
 import org.commonmark.node.Link;
 import org.commonmark.node.ListItem;
 import org.commonmark.node.Paragraph;
@@ -17,6 +18,20 @@ import java.nio.file.Path;
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class MarkdownFactory {
+
+    /**
+     * Creates a heading.
+     *
+     * @param level heading level
+     * @param text  heading text
+     * @return heading
+     */
+    public static Heading heading(final int level, final String text) {
+        Heading heading = new Heading();
+        heading.setLevel(level);
+        heading.appendChild(new Text(text));
+        return heading;
+    }
 
     /**
      * Creates a Markdown file list item.

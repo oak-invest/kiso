@@ -14,7 +14,7 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
 /**
- * Generator for the search index JSON file.
+ * Generator for search-index.json file.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
@@ -24,10 +24,10 @@ public class SearchIndexGenerator {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(INDENT_OUTPUT);
 
     /**
-     * Generates a search index from a knowledge bundle.
+     * Generates search-index.json.
      *
      * @param knowledgeBundle knowledge bundle
-     * @return search index JSON string
+     * @return search-index.json content
      */
     public static String generate(final KnowledgeBundle knowledgeBundle) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");

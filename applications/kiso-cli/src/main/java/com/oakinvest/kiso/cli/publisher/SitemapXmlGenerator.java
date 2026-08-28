@@ -13,14 +13,14 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
- * Generator for the sitemap.xml file.
+ * Generator for sitemap.xml file.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor", "HttpUrlsUsage"})
 public final class SitemapXmlGenerator {
 
     /**
-     * Generates sitemap.xml content for a knowledge bundle.
+     * Generates sitemap.xml.
      *
      * @param knowledgeBundle knowledge bundle
      * @return sitemap.xml content
@@ -60,7 +60,7 @@ public final class SitemapXmlGenerator {
                 .append(StringEscapeUtils.unescapeXml(markdownFile.htmlFilePath()))
                 .append("</loc>\n");
 
-        // Timestamp ===================================================================================================
+        // Timestamp (optional) ========================================================================================
         OffsetDateTime timestamp = markdownFile.timestamp();
         if (timestamp != null) {
             content.append("<lastmod>")

@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.Strings;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Document;
-import org.commonmark.node.Heading;
 import org.commonmark.node.Link;
 import org.commonmark.node.ListItem;
 import org.commonmark.node.Paragraph;
@@ -15,6 +14,7 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
 
 import java.util.Objects;
 
+import static com.oakinvest.kiso.core.tools.MarkdownFactory.heading;
 import static com.oakinvest.kiso.core.tools.MarkdownFactory.markdownFileListItem;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
@@ -22,14 +22,14 @@ import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LE
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
 /**
- * Generator for the index.md file of a bundle.
+ * Generator for index.md file.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class IndexGenerator {
 
     /**
-     * Generate an index.md file for a bundle.
+     * Generate index.md.
      *
      * @param bundle bundle
      * @return index.md content
@@ -42,7 +42,7 @@ public class IndexGenerator {
 
         // Markdown files ==============================================================================================
         if (bundle.hasContent()) {
-            llmsTxt.appendChild(heading("Content"));
+            llmsTxt.appendChild(heading(HEADING_LEVEL_2, "Content"));
 
             BulletList list = new BulletList();
             list.setMarker("-");
@@ -56,7 +56,7 @@ public class IndexGenerator {
 
         // Subdirectories ==============================================================================================
         if (!bundle.childBundles().isEmpty()) {
-            llmsTxt.appendChild(heading("Subdirectories"));
+            llmsTxt.appendChild(heading(HEADING_LEVEL_2, "Subdirectories"));
             BulletList list = new BulletList();
             list.setMarker("-");
             list.setTight(true);
@@ -74,19 +74,6 @@ public class IndexGenerator {
         return MarkdownRenderer.builder()
                 .build()
                 .render(llmsTxt);
-    }
-
-    /**
-     * Creates a heading.
-     *
-     * @param text heading text
-     * @return heading
-     */
-    private static Heading heading(final String text) {
-        Heading heading = new Heading();
-        heading.setLevel(HEADING_LEVEL_2);
-        heading.appendChild(new Text(text));
-        return heading;
     }
 
     /**
