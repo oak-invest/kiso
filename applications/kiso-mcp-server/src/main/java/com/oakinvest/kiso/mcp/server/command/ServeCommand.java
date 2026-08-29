@@ -41,8 +41,8 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     static void registerTools(final Tools tools, final KnowledgeService knowledgeService) {
         // Search tool: searches concepts in the knowledge bundle ======================================================
         tools.register(
-                // Builder for the searchConcept tool
-                builder -> builder.name("searchConcept")
+                // Builder for the search concept tool
+                builder -> builder.name("search_concepts")
                         .description("Searches concepts in the knowledge bundle.")
                         .inputSchema("""
                                 {
@@ -54,7 +54,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                                   "additionalProperties": false
                                 }
                                 """),
-                // Handler for the searchConcept tool
+                // Handler for the search concept tool
                 (context, request) -> {
                     final String text = request.arguments().stringOpt("text").orElseThrow();
                     return ToolResult.structured(Map.of("results", knowledgeService.searchConcept(text)));

@@ -54,13 +54,13 @@ public class MCPServerTest extends BaseTest {
     @Test
     @DisplayName("Registers knowledge tools")
     public void registerKnowledgeTools() {
-        // The server should have two tools registered: "get_concept_content" and "searchConcept" =============================
+        // The server should have two tools registered: "get_concept_content" and "searchConcept" ======================
         assertThat(server.tools().descriptors())
                 .extracting(ToolDescriptor::name)
-                .containsExactly("get_concept_content", "searchConcept");
+                .containsExactlyInAnyOrder("search_concepts", "get_concept_content");
 
-        // searchConcept() tool input schema should contain "text" property ===================================================
-        assertThat(server.tools().find("searchConcept")).isPresent()
+        // searchConcept() tool input schema should contain "text" property ============================================
+        assertThat(server.tools().find("search_concepts")).isPresent()
                 .hasValueSatisfying(descriptor -> {
                     final var inputSchema = descriptor.inputSchema();
                     assertThat(inputSchema).isNotNull();
@@ -79,10 +79,10 @@ public class MCPServerTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Calls searchConcept() through MCP")
-    public void search() throws IOException, InterruptedException {
+    @DisplayName("Calls search_concepts() through MCP")
+    public void searchConcepts() throws IOException, InterruptedException {
         final var response = callTool(
-                "searchConcept",
+                "search_concepts",
                 Map.of("text", "discount_amount")
         );
 
@@ -92,8 +92,8 @@ public class MCPServerTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Calls getConceptContent() through MCP for a known concept")
-    public void getKnownConceptContent() throws IOException, InterruptedException {
+    @DisplayName("Calls get_concept_content() through MCP for a known concept")
+    public void getConceptContent() throws IOException, InterruptedException {
         final var response = callTool(
                 "get_concept_content",
                 Map.of("conceptId", "computations/revenue-ytd")

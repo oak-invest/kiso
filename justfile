@@ -48,10 +48,16 @@ run_kiso_mcp_server:
       -Dexec.mainClass=com.oakinvest.kiso.mcp.server.Application \
       -Dexec.args="--source=examples/kb-acme-example-v0.2"
 
-run_kiso_mcp_server_call_search:
+run_kiso_mcp_server_list_tools:
     curl -X POST http://localhost:8080/mcp \
         -H "Content-Type: application/json" \
-        -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search","arguments":{"text":"discount_amount"}}}' \
+        -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' \
+        | jq
+
+run_kiso_mcp_server_call_search_concepts:
+    curl -X POST http://localhost:8080/mcp \
+        -H "Content-Type: application/json" \
+        -d '{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"search_concepts","arguments":{"text":"discount_amount"}}}' \
         | jq
 
 run_kiso_mcp_server_call_get_concept_content:

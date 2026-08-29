@@ -35,7 +35,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.1
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.2
   with:
     command: build
     source: examples/kb-google-example
@@ -125,7 +125,7 @@ The AI application can then search the bundle, retrieve concept content, and use
 
 | Tool                  | Description                                                    |
 |-----------------------|----------------------------------------------------------------|
-| `search`              | Searches for concepts in the OKF bundle using a text query.    |
+| `search_concepts`     | Searches for concepts in the OKF bundle using a text query.    |
 | `get_concept_content` | Returns the Markdown content of a concept from its concept ID. |
 
 ### Options

@@ -40,7 +40,7 @@
 ## Test kiso-mcp-server (local)
 
 - Run `just release_run_mcp_server` to start the server.
-- Run `just run_kiso_mcp_server_call_search` to test the search API.
+- Run `just run_kiso_mcp_server_call_search_concepts` to test the search content API.
 - Run `just run_kiso_mcp_server_call_get_concept_content` to test the get concept content API.
 - Launch ChatGPT application.
 - In Parameters/Settings/Plugins/MCP, add a new distant MCP server with the following URL: `http://localhost:8080/mcp` and `Kiso mcp server` as name.
@@ -49,9 +49,10 @@
 
 ## Pre-release steps
 
-- Update the project README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
+- Update the project README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`
 - Update the release number in `applications/kiso-cli-action/action.yml`
 - Commit the changes and push them to the `development` branch.
+- Wait to check if the CI build is successful on https://github.com/oak-invest/kiso/actions
 
 ## Release steps
 
@@ -61,8 +62,8 @@
 
 ## Post-release steps
 
-- Add a release note here:  https://github.com/oak-invest/kiso/releases.
-- Change the release number in `.github/workflows/publish-website.yml`
+- Add a release note here:  https://github.com/oak-invest/kiso/releases
+- Change the release number in `.github/workflows/publish-website.yml`.
 - Close the milestone at https://github.com/oak-invest/kiso/milestones
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
 - Update the release number in `website/index.html`.
