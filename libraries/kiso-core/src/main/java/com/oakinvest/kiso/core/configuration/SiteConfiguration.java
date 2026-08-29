@@ -30,6 +30,13 @@ public record SiteConfiguration(
 ) {
 
     /**
+     * Creates a SiteConfiguration with safe default values.
+     */
+    public SiteConfiguration {
+        language = Objects.requireNonNullElse(language, DEFAULT_LANGUAGE);
+    }
+
+    /**
      * Returns an empty site configuration.
      *
      * @return empty site configuration
@@ -49,20 +56,7 @@ public record SiteConfiguration(
         if (StringUtils.isBlank(baseUrl)) {
             return "";
         }
-        if (Strings.CI.endsWith(baseUrl, "/")) {
-            return baseUrl;
-        } else {
-            return baseUrl + "/";
-        }
-    }
-
-    /**
-     * Returns the language tag.
-     *
-     * @return language tag
-     */
-    public String languageTag() {
-        return Objects.requireNonNullElse(language, DEFAULT_LANGUAGE).toLanguageTag();
+        return Strings.CI.appendIfMissing(baseUrl, "/");
     }
 
 }

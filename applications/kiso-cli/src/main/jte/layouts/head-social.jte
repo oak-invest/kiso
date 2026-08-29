@@ -5,7 +5,7 @@
 
 <!-- Social preview ================================================================================================ -->
 @if(StringUtils.isNotBlank(pageContext.siteConfiguration().baseUrl()))
-    <meta property="og:locale" content="${pageContext.siteConfiguration().languageTag()}">
+    <meta property="og:locale" content="${pageContext.siteConfiguration().language().toLanguageTag()}">
     <meta property="og:site_name" content="${pageContext.siteConfiguration().name()}">
     <meta property="og:url" content="${pageMetadata.assetBasePath()}${pageMetadata.htmlPath()}">
     <meta property="og:type" content="website">

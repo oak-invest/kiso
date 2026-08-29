@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 <html data-theme="${pageContext.themeConfiguration().effectiveName()}"
-      lang="${pageContext.siteConfiguration().languageTag()}">
+      lang="${pageContext.siteConfiguration().language().toLanguageTag()}">
 
 <head>
 
