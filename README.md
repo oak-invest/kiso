@@ -35,7 +35,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.2
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.3
   with:
     command: build
     source: examples/kb-google-example
