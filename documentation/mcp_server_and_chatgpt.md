@@ -4,4 +4,4 @@
 
 - Parameters / Plugins / MCP tab and then Add MCP server.
 - Choose HTTP.
-- 
+- Add your server URL (e.g., http://localhost:8000).

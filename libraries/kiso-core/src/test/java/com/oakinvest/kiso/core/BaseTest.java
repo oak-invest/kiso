@@ -99,10 +99,6 @@ public class BaseTest {
                 .build();
     }
 
-    protected Bundle createBundleWith(final MarkdownFile markdownFile) {
-        return createBundleWith(List.of(markdownFile));
-    }
-
     protected Bundle createBundleWith(final List<MarkdownFile> markdownFiles) {
         return Bundle.builder()
                 .childBundles(List.of())

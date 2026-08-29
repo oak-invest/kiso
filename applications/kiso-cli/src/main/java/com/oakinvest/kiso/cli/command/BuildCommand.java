@@ -199,7 +199,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                             TagPageGenerator.generate(knowledgeBundle, configuration.site(), tag),
                             StandardCharsets.UTF_8
                     );
-                    print("Tag page generated for tag: " + tag);
+                    print("Tag page generated for " + tag);
                 } catch (IOException e) {
                     printError("Error generating tag page for tag " + tag + ": " + e.getMessage());
                 }

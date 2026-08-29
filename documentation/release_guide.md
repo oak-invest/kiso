@@ -7,9 +7,12 @@
 ## Test kiso-cli (local)
 
 - Delete the `public` folder in the project root.
-- Run `just release_build_native` to build a native app.
+- Run `just release_build_native` to build a native app (On slower PC: `export MAVEN_OPTS="-XX:ActiveProcessorCount=4 -Xmx6g"`).
 - Test the check command on examples knowledge base: `just release_run_cli_check`.
 - Test the build command on examples knowledge base: `just release_run_cli_build`.
+- Open `public/kb-google-example-v0.1` in the browser and check the content.
+- Open `public/kb-google-example-v0.2` in the browser and check the content.
+- Open `public/kb-acme-example-v0.2` in the browser and check the content.
 
 ## Test kiso-cli (online)
 

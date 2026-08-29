@@ -123,17 +123,17 @@ The AI application can then search the bundle, retrieve concept content, and use
 
 ### MCP tools
 
-| Tool                  | Description                                                        |
-|-----------------------|--------------------------------------------------------------------|
-| `search`              | Searches for concepts in the OKF bundle using a text query.         |
-| `get_concept_content` | Returns the Markdown content of a concept from its concept ID.      |
+| Tool                  | Description                                                    |
+|-----------------------|----------------------------------------------------------------|
+| `search`              | Searches for concepts in the OKF bundle using a text query.    |
+| `get_concept_content` | Returns the Markdown content of a concept from its concept ID. |
 
 ### Options
 
-| Option            | Default | Description                                                    |
-|-------------------|---------|----------------------------------------------------------------|
-| `-s`, `--source`  | `.`     | Directory containing the OKF bundle to serve.                   |
-| `-p`, `--port`    | `8080`  | Port used by the MCP server.                                    |
+| Option           | Default | Description                                   |
+|------------------|---------|-----------------------------------------------|
+| `-s`, `--source` | `.`     | Directory containing the OKF bundle to serve. |
+| `-p`, `--port`   | `8080`  | Port used by the MCP server.                  |
 
 For example, use another port with:
 
