@@ -7,7 +7,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>com.oakinvest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.3</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
     <description>Publishing engine for the Open Knowledge Format</description>
@@ -44,6 +44,7 @@
     <properties>
         <!-- Java build configuration -->
         <java.version>21</java.version>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.resources.escapeString>\</maven.resources.escapeString>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -257,7 +258,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <release>${java.version}</release>
+                    <release>${maven.compiler.release}</release>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                     <proc>full</proc>
