@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 
 import java.io.IOException;
@@ -28,8 +28,8 @@ import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 public class EncodingRule implements MarkdownFileRule {
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
-        Objects.requireNonNull(bundle, "bundle must not be null");
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
 
         // If it's a concept file.

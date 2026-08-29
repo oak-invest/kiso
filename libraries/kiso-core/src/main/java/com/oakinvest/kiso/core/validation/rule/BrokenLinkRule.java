@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.AbstractVisitor;
@@ -31,12 +31,12 @@ public class BrokenLinkRule implements MarkdownFileRule {
     private static final Pattern URI_SCHEME_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9+.-]*:.*");
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
-        Objects.requireNonNull(bundle, "bundle must not be null");
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
 
         // Getting all pages in the bundle =============================================================================
-        final Set<Path> existingPages = bundle.flattenMarkdownFiles()
+        final Set<Path> existingPages = knowledgeBundle.markdownFiles()
                 .map(MarkdownFile::relativePath)
                 .collect(Collectors.toSet());
 
@@ -77,7 +77,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
         return ValidationIssue.builder()
                 .severity(WARNING)
                 .code(BROKEN_LINK)
-                .message("File " + markdownFile.relativePath() + " contains broken link: " + link.getDestination())
+                .message("File " + markdownFile.relativePath() + " contains a broken link: " + link.getDestination())
                 .path(markdownFile.relativePath())
                 .build();
     }

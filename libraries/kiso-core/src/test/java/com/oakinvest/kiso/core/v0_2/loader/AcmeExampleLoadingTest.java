@@ -1,16 +1,16 @@
 package com.oakinvest.kiso.core.v0_2.loader;
 
+import com.oakinvest.kiso.core.BaseTest;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.okf.markdown.Actor;
-import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
-import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
-import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.model.markdown.Actor;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.markdown.computation.ComputationAttester;
+import com.oakinvest.kiso.core.model.markdown.computation.ComputationExecutor;
+import com.oakinvest.kiso.core.model.markdown.computation.ComputationParameter;
+import com.oakinvest.kiso.core.model.markdown.provenance.Source;
+import com.oakinvest.kiso.core.model.markdown.provenance.UsageWindow;
+import com.oakinvest.kiso.core.model.markdown.trust.TrustEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

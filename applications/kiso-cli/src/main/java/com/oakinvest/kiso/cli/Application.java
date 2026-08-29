@@ -5,7 +5,7 @@ import com.oakinvest.kiso.cli.command.CheckCommand;
 import picocli.CommandLine;
 
 /**
- * Application.
+ * Application kiso-cli.
  */
 @CommandLine.Command(
         name = "kiso-cli",

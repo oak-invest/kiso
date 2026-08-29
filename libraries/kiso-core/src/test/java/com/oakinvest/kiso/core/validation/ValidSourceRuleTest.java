@@ -1,8 +1,8 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.BaseTest;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.provenance.Source;
 import com.oakinvest.kiso.core.validation.rule.ValidSourceRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,9 +32,9 @@ public class ValidSourceRuleTest extends BaseTest {
                         .lastModified("2026-06-30")
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -47,9 +47,9 @@ public class ValidSourceRuleTest extends BaseTest {
                         .title("Source without resource")
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_SOURCE_RESOURCE);
             assertThat(issue.message()).isEqualTo("Missing sources[].resource field in frontmatter");
@@ -68,9 +68,9 @@ public class ValidSourceRuleTest extends BaseTest {
                         .lastModified("30-06-2026")
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_SOURCE_LAST_MODIFIED);
             assertThat(issue.message()).isEqualTo("Invalid sources[].last_modified field in frontmatter - Not an ISO 8601 date");

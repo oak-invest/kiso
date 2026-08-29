@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.mcp.server.service;
 
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -41,12 +41,12 @@ import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.TITLE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
- * Knowledge Service.
+ * Knowledge service.
  */
 public class KnowledgeService {
 
     /** Default number of results. */
-    private static final int DEFAULT_NUMBER_OF_RESULTS = 10;
+    private static final int DEFAULT_NUMBER_OF_RESULTS = 100;
 
     /** Knowledge index. */
     private final Directory index = new ByteBuffersDirectory();
@@ -60,13 +60,13 @@ public class KnowledgeService {
      * @param knowledgeBundle Knowledge bundle.
      */
     public KnowledgeService(final KnowledgeBundle knowledgeBundle) {
-        // Build lucence index =========================================================================================
+        // Build Lucene index ==========================================================================================
         try (Analyzer analyzer = new StandardAnalyzer()) {
             // Create index writer.
             final IndexWriterConfig configuration = new IndexWriterConfig(analyzer);
             configuration.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
-            // Add all documents to the index
+            // Add all concept documents to the index
             try (IndexWriter writer = new IndexWriter(index, configuration)) {
                 knowledgeBundle.markdownFiles()
                         .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
@@ -92,16 +92,19 @@ public class KnowledgeService {
     }
 
     /**
-     * Searches the knowledge index.
+     * Searches the concept in the knowledge index.
      *
-     * @param text search text
-     * @return search results
+     * @param text searchConcept text
+     * @return searchConcept results
      */
-    public List<KnowledgeSearchResult> search(final String text) {
+    public List<KnowledgeSearchResult> searchConcept(@Nullable final String text) {
         try (
                 Analyzer analyzer = new StandardAnalyzer();
                 DirectoryReader reader = DirectoryReader.open(index)
         ) {
+            if (StringUtils.isBlank(text)) {
+                return List.of();
+            }
 
             // Index searcher and parser ===============================================================================
             final IndexSearcher searcher = new IndexSearcher(reader);
@@ -111,7 +114,7 @@ public class KnowledgeService {
                     KnowledgeIndexFields.FIELDS_BOOSTS
             );
 
-            // We query ================================================================================================
+            // Querying ================================================================================================
             final Query query = parser.parse(text);
             final TopDocs topDocuments = searcher.search(query, DEFAULT_NUMBER_OF_RESULTS);
 
@@ -132,7 +135,7 @@ public class KnowledgeService {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         } catch (ParseException exception) {
-            throw new IllegalArgumentException("Invalid search query: " + text, exception);
+            throw new IllegalArgumentException("Invalid searchConcept query: " + text, exception);
         }
     }
 

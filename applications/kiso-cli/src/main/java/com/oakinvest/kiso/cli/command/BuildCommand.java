@@ -3,24 +3,23 @@ package com.oakinvest.kiso.cli.command;
 import com.oakinvest.kiso.cli.ApplicationVersion;
 import com.oakinvest.kiso.cli.configuration.Configuration;
 import com.oakinvest.kiso.cli.configuration.ConfigurationLoader;
-import com.oakinvest.kiso.cli.configuration.ConfigurationLoadingException;
-import com.oakinvest.kiso.cli.options.DestinationOption;
-import com.oakinvest.kiso.cli.options.ProfileOption;
-import com.oakinvest.kiso.cli.options.SourceOption;
-import com.oakinvest.kiso.cli.util.AbstractCommand;
-import com.oakinvest.kiso.cli.util.IgnorePatternMatcher;
+import com.oakinvest.kiso.cli.exception.ConfigurationLoadingException;
+import com.oakinvest.kiso.cli.model.navigation.BundleTree;
+import com.oakinvest.kiso.cli.option.DestinationOption;
+import com.oakinvest.kiso.cli.option.ProfileOption;
+import com.oakinvest.kiso.cli.option.SourceOption;
+import com.oakinvest.kiso.cli.publisher.IndexGenerator;
+import com.oakinvest.kiso.cli.publisher.LlmsTxtGenerator;
+import com.oakinvest.kiso.cli.publisher.SearchIndexGenerator;
+import com.oakinvest.kiso.cli.publisher.SitemapXmlGenerator;
+import com.oakinvest.kiso.cli.publisher.TagPageGenerator;
+import com.oakinvest.kiso.cli.renderer.MarkdownToHtmlRenderer;
+import com.oakinvest.kiso.cli.renderer.SocialPreviewImageGenerator;
+import com.oakinvest.kiso.cli.tool.IgnorePatternMatcher;
+import com.oakinvest.kiso.cli.util.ThemeConstants;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
-import com.oakinvest.kiso.core.model.html.navigation.BundleTree;
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.publisher.IndexGenerator;
-import com.oakinvest.kiso.core.publisher.LlmsTxtGenerator;
-import com.oakinvest.kiso.core.publisher.SearchIndexGenerator;
-import com.oakinvest.kiso.core.publisher.SitemapXmlGenerator;
-import com.oakinvest.kiso.core.publisher.TagPageGenerator;
-import com.oakinvest.kiso.core.renderer.MarkdownToHtmlRenderer;
-import com.oakinvest.kiso.core.renderer.SocialPreviewImageGenerator;
-import com.oakinvest.kiso.core.util.contants.ThemeConstants;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.validation.ValidationReport;
 import com.oakinvest.kiso.core.validation.ValidationRunner;
 import net.lingala.zip4j.ZipFile;
@@ -47,12 +46,12 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
- * Build: Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml.
+ * Build: Generates a static website from an OKF bundle, placing HTML files alongside the original Markdown files.
  */
 @CommandLine.Command(
         name = "build",
         mixinStandardHelpOptions = true,
-        description = "Generates a static website from an OKF bundle, including the original Markdown files, generated HTML pages, llms.txt, and sitemap.xml"
+        description = "Generates a static website from an OKF bundle, placing HTML files alongside the original Markdown files"
 )
 public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
@@ -135,13 +134,14 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         blankLine();
 
         try {
+
             // Loading configuration & profile =========================================================================
             final String profile = profileOption.profile();
             final Configuration configuration = ConfigurationLoader
                     .load(sourceDirectory.toPath(), profile)
                     .orElse(Configuration.empty());
 
-            // Copying user okf bundle files to the destination directory ==============================================
+            // Copying OKF bundle files to the destination directory ===================================================
             FileUtils.deleteDirectory(destinationDirectory);
             final IgnorePatternMatcher ignorePatternMatcher = new IgnorePatternMatcher(configuration.content().ignorePatterns());
             final FileFilter fileFilter = file -> {
@@ -150,7 +150,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             };
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
-            // If a profile is specified, check if the profile contains an index file to use ===========================
+            // If a profile is specified, check if the profile exists an index file to use ===========================
             if (StringUtils.isNotBlank(profile)) {
                 final File sourceFile = sourceDirectory.toPath()
                         .resolve(CONFIGURATION_DIRECTORY_NAME)
@@ -165,9 +165,9 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // Loading and checking the bundle =========================================================================
             KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
             final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
-
-            // Print warnings et errors.
+            // Print warnings.
             validationReport.warnings().forEach(this::printWarning);
+            // Print errors.
             if (validationReport.hasErrors()) {
                 validationReport.errors().forEach(this::printError);
                 return CommandLine.ExitCode.SOFTWARE;
@@ -175,7 +175,8 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Creating missing index.md files for bundles without index ===============================================
             knowledgeBundle.bundles()
-                    .filter(bundle -> !bundle.hasIndexFile())
+                    // The one with no index.md file.
+                    .filter(bundle -> bundle.getIndexFile().isEmpty())
                     .forEach(bundle -> {
                         try {
                             FileUtils.writeStringToFile(
@@ -195,17 +196,17 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                 try {
                     FileUtils.writeStringToFile(
                             new File(tagsDirectory, tag + ".md"),
-                            TagPageGenerator.generate(knowledgeBundle, tag),
+                            TagPageGenerator.generate(knowledgeBundle, configuration.site(), tag),
                             StandardCharsets.UTF_8
                     );
-                    print("Tag page generated for tag: " + tag);
+                    print("Tag page generated for " + tag);
                 } catch (IOException e) {
                     printError("Error generating tag page for tag " + tag + ": " + e.getMessage());
                 }
             }
 
             // HTML generation =========================================================================================
-            knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath(), configuration.site());
+            knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
             final BundleTree bundleTree = BundleTree.fromBundle(knowledgeBundle.rootBundle());
             knowledgeBundle.bundles()
                     .forEach(bundle -> {
@@ -251,18 +252,18 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             // llms.txt generation =====================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), LLMS_TXT_FILENAME),
-                    LlmsTxtGenerator.generate(knowledgeBundle),
+                    LlmsTxtGenerator.generate(knowledgeBundle, configuration.site()),
                     StandardCharsets.UTF_8
             );
-            print("File llms.txt generated");
+            print("File " + LLMS_TXT_FILENAME + " generated");
 
             // sitemap.xml generation ==================================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), SITEMAP_XML_FILENAME),
-                    SitemapXmlGenerator.generate(knowledgeBundle),
+                    SitemapXmlGenerator.generate(knowledgeBundle, configuration.site()),
                     StandardCharsets.UTF_8
             );
-            print("File sitemap.xml generated");
+            print("File " + SITEMAP_XML_FILENAME + " generated");
 
             // search-index.json generation ==========================================================================
             FileUtils.writeStringToFile(
@@ -270,15 +271,24 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                     SearchIndexGenerator.generate(knowledgeBundle),
                     StandardCharsets.UTF_8
             );
-            print("File search-index.json generated");
+            print("File " + SEARCH_INDEX_JSON_FILENAME + " generated");
 
             // Theme validation ========================================================================================
-            if (!ThemeConstants.contains(configuration.theme().effectiveName())) {
-                printWarning("WARNING: Theme '" + configuration.theme().effectiveName() + "' is not a valid DaisyUI theme.");
+            final String theme = configuration.theme().effectiveName();
+            if (!ThemeConstants.exists(theme)) {
+                printWarning("WARNING: Theme '%s' is not a valid DaisyUI theme.".formatted(theme));
             }
 
             // Add HTML assets =========================================================================================
-            copyKisoAssets(destinationDirectory);
+            ClassLoader classLoader = MarkdownToHtmlRenderer.class.getClassLoader();
+            for (String assetPath : ASSET_PATHS) {
+                try (InputStream inputStream = classLoader.getResourceAsStream(assetPath)) {
+                    if (inputStream == null) {
+                        throw new IOException("Missing asset: " + assetPath);
+                    }
+                    FileUtils.copyInputStreamToFile(inputStream, new File(destinationDirectory, assetPath));
+                }
+            }
 
             // Job done ================================================================================================
             print("Done!");
@@ -293,24 +303,6 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
         } catch (Exception e) {
             printError("Unexpected error: " + e.getMessage());
             return CommandLine.ExitCode.SOFTWARE;
-        }
-    }
-
-    /**
-     * Copies Kiso static assets to the generated website isRoot.
-     *
-     * @param destinationDirectory generated website isRoot
-     * @throws IOException if an asset cannot be copied
-     */
-    private void copyKisoAssets(final File destinationDirectory) throws IOException {
-        ClassLoader classLoader = MarkdownToHtmlRenderer.class.getClassLoader();
-        for (String assetPath : ASSET_PATHS) {
-            try (InputStream inputStream = classLoader.getResourceAsStream(assetPath)) {
-                if (inputStream == null) {
-                    throw new IOException("Missing asset: " + assetPath);
-                }
-                FileUtils.copyInputStreamToFile(inputStream, new File(destinationDirectory, assetPath));
-            }
         }
     }
 

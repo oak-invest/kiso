@@ -8,7 +8,7 @@ public final class KnowledgeBundleLoadingException extends RuntimeException {
     /**
      * Constructor.
      *
-     * @param message the error message
+     * @param message exception message
      */
     public KnowledgeBundleLoadingException(final String message) {
         super(message);
@@ -17,8 +17,8 @@ public final class KnowledgeBundleLoadingException extends RuntimeException {
     /**
      * Constructor.
      *
-     * @param message the error message
-     * @param cause   the underlying exception
+     * @param message exception message
+     * @param cause   exception cause
      */
     public KnowledgeBundleLoadingException(final String message, final Throwable cause) {
         super(message, cause);

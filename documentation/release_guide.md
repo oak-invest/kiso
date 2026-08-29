@@ -7,9 +7,12 @@
 ## Test kiso-cli (local)
 
 - Delete the `public` folder in the project root.
-- Run `just release_build_native` to build a native app.
+- Run `just release_build_native` to build a native app (On slower PC: `export MAVEN_OPTS="-XX:ActiveProcessorCount=4 -Xmx6g"`).
 - Test the check command on examples knowledge base: `just release_run_cli_check`.
 - Test the build command on examples knowledge base: `just release_run_cli_build`.
+- Open `public/kb-google-example-v0.1` in the browser and check the content.
+- Open `public/kb-google-example-v0.2` in the browser and check the content.
+- Open `public/kb-acme-example-v0.2` in the browser and check the content.
 
 ## Test kiso-cli (online)
 
@@ -18,7 +21,7 @@
 ### Angara knowledge base
 
 - Test content deployed on: https://knowledge.angara.finance
-- Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html.
+- Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html
 - Test social preview image deployed on: https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.png
 - Test tags deployed on: https://knowledge.angara.finance/tags/agriculture.html
 - Test llms.txt deployed on: https://knowledge.angara.finance/llms.txt
@@ -37,7 +40,7 @@
 ## Test kiso-mcp-server (local)
 
 - Run `just release_run_mcp_server` to start the server.
-- Run `just run_kiso_mcp_server_call_search` to test the search API.
+- Run `just run_kiso_mcp_server_call_search_concepts` to test the search content API.
 - Run `just run_kiso_mcp_server_call_get_concept_content` to test the get concept content API.
 - Launch ChatGPT application.
 - In Parameters/Settings/Plugins/MCP, add a new distant MCP server with the following URL: `http://localhost:8080/mcp` and `Kiso mcp server` as name.
@@ -46,9 +49,10 @@
 
 ## Pre-release steps
 
-- Update the project README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`.
+- Update the project README.md content and change the release number here: `uses: oak-invest/kiso/applications/kiso-cli-action@`
 - Update the release number in `applications/kiso-cli-action/action.yml`
 - Commit the changes and push them to the `development` branch.
+- Wait to check if the CI build is successful on https://github.com/oak-invest/kiso/actions
 
 ## Release steps
 
@@ -58,8 +62,8 @@
 
 ## Post-release steps
 
-- Add a release note here:  https://github.com/oak-invest/kiso/releases.
-- Change the release number in `.github/workflows/publish-website.yml`
+- Add a release note here:  https://github.com/oak-invest/kiso/releases
+- Change the release number in `.github/workflows/publish-website.yml`.
 - Close the milestone at https://github.com/oak-invest/kiso/milestones
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
 - Update the release number in `website/index.html`.
@@ -68,7 +72,7 @@
 ## Communicate
 
 - Write an English / French announcement.
-- Close previous announcements on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell
+- Close previous announcements on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions?discussions_q=is%3Aopen+kiso
 - Post it on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell
 - Post on social media:
     - LinkedIn at 14h00 – 15h00.

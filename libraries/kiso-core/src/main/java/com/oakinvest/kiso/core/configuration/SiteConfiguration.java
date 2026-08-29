@@ -15,9 +15,9 @@ import static com.oakinvest.kiso.core.util.contants.InternationalizationConstant
  *
  * @param baseUrl     base URL of the generated site
  * @param language    language selected (en, de...)
- * @param name        Site name
- * @param title       Index pages title
- * @param description Index pages description
+ * @param name        site name
+ * @param title       index pages title
+ * @param description index pages description
  */
 @Builder
 @SuppressWarnings("unused")
@@ -30,12 +30,21 @@ public record SiteConfiguration(
 ) {
 
     /**
+     * Constructor with safe default values.
+     */
+    public SiteConfiguration {
+        language = Objects.requireNonNullElse(language, DEFAULT_LANGUAGE);
+    }
+
+    /**
      * Returns an empty site configuration.
      *
      * @return empty site configuration
      */
     public static SiteConfiguration empty() {
-        return new SiteConfiguration(null, DEFAULT_LANGUAGE, null, null, null);
+        return SiteConfiguration.builder()
+                .language(DEFAULT_LANGUAGE)
+                .build();
     }
 
     /**
@@ -47,20 +56,7 @@ public record SiteConfiguration(
         if (StringUtils.isBlank(baseUrl)) {
             return "";
         }
-        if (Strings.CI.endsWith(baseUrl, "/")) {
-            return baseUrl;
-        } else {
-            return baseUrl + "/";
-        }
-    }
-
-    /**
-     * Returns the language tag.
-     *
-     * @return language tag
-     */
-    public String languageTag() {
-        return Objects.requireNonNullElse(language, DEFAULT_LANGUAGE).toLanguageTag();
+        return Strings.CI.appendIfMissing(baseUrl, "/");
     }
 
 }

@@ -5,20 +5,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
-import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.okf.markdown.Actor;
-import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
-import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationAttester;
-import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationExecutor;
-import com.oakinvest.kiso.core.model.okf.markdown.computation.ComputationParameter;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.Source;
-import com.oakinvest.kiso.core.model.okf.markdown.provenance.UsageWindow;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.html.TagNormalizer;
+import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.markdown.Actor;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.markdown.computation.ComputationAttester;
+import com.oakinvest.kiso.core.model.markdown.computation.ComputationExecutor;
+import com.oakinvest.kiso.core.model.markdown.computation.ComputationParameter;
+import com.oakinvest.kiso.core.model.markdown.provenance.Source;
+import com.oakinvest.kiso.core.model.markdown.provenance.UsageWindow;
+import com.oakinvest.kiso.core.model.markdown.trust.TrustEvent;
+import com.oakinvest.kiso.core.tool.TagNormalizer;
 import com.oakinvest.kiso.core.util.types.LifecycleStatus;
 import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
@@ -96,23 +95,12 @@ public class KnowledgeBundleLoader {
     };
 
     /**
-     * Load a directory and returns its corresponding {@link KnowledgeBundle}.
+     * Load a directory and returns its corresponding {@link KnowledgeBundle} and the website configuration.
      *
      * @param sourceDirectory source directory
      * @return knowledge bundle
      */
     public static KnowledgeBundle load(final Path sourceDirectory) {
-        return load(sourceDirectory, SiteConfiguration.empty());
-    }
-
-    /**
-     * Load a directory and returns its corresponding {@link KnowledgeBundle} and the website configuration.
-     *
-     * @param sourceDirectory   source directory
-     * @param siteConfiguration site configuration
-     * @return knowledge bundle
-     */
-    public static KnowledgeBundle load(final Path sourceDirectory, final SiteConfiguration siteConfiguration) {
         // We check that the source directory is valid =================================================================
         if (sourceDirectory == null) {
             throw new KnowledgeBundleLoadingException("Source directory is null");
@@ -131,7 +119,6 @@ public class KnowledgeBundleLoader {
         // We now return the knowledge bundle ==========================================================================
         return KnowledgeBundle.builder()
                 .rootBundle(loadBundle(rootBundleAbsolutePath, rootBundleAbsolutePath))
-                .siteConfiguration(siteConfiguration)
                 .build();
     }
 

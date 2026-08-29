@@ -35,6 +35,11 @@ public final class ApplicationVersion {
         return VERSION;
     }
 
+    /**
+     * Loads the application version from the version file.
+     *
+     * @return the application version, or "unknown" if the version cannot be determined
+     */
     private static String loadVersion() {
         try (InputStream inputStream = ApplicationVersion.class.getResourceAsStream(VERSION_FILE)) {
             // No file found.

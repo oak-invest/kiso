@@ -1,7 +1,7 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.okf.bundle.Bundle;
-import com.oakinvest.kiso.core.model.okf.markdown.MarkdownFile;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.AbstractVisitor;
@@ -13,8 +13,9 @@ import org.commonmark.parser.Parser;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_LOG_DATE_FORMAT;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
@@ -25,7 +26,10 @@ import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
 public class ValidLogRule implements MarkdownFileRule {
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
         final List<ValidationIssue> issues = new LinkedList<>();
 
         // We treat only log files in this rule.

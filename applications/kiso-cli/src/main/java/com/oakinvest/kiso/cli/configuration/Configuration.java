@@ -3,6 +3,7 @@ package com.oakinvest.kiso.cli.configuration;
 import com.oakinvest.kiso.core.configuration.ContentConfiguration;
 import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.configuration.ThemeConfiguration;
+import lombok.Builder;
 
 import java.util.Objects;
 
@@ -13,6 +14,8 @@ import java.util.Objects;
  * @param theme   theme configuration
  * @param content content configuration
  */
+@Builder
+@SuppressWarnings("unused")
 public record Configuration(
         SiteConfiguration site,
         ThemeConfiguration theme,
@@ -34,11 +37,11 @@ public record Configuration(
      * @return empty configuration
      */
     public static Configuration empty() {
-        return new Configuration(
-                SiteConfiguration.empty(),
-                ThemeConfiguration.empty(),
-                ContentConfiguration.empty()
-        );
+        return Configuration.builder()
+                .site(SiteConfiguration.empty())
+                .theme(ThemeConfiguration.empty())
+                .content(ContentConfiguration.empty())
+                .build();
     }
 
 }

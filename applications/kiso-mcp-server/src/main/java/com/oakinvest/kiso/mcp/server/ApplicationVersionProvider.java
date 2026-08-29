@@ -11,7 +11,7 @@ public class ApplicationVersionProvider implements CommandLine.IVersionProvider 
     @Override
     public final String[] getVersion() {
         return new String[]{
-                "Kiso %s".formatted(ApplicationVersion.get())
+                "Kiso " + ApplicationVersion.get()
         };
     }
 

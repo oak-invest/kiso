@@ -3,10 +3,9 @@ package com.oakinvest.kiso.mcp.server.command;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.mcp.server.ApplicationVersion;
-import com.oakinvest.kiso.mcp.server.options.PortOption;
-import com.oakinvest.kiso.mcp.server.options.SourceOption;
+import com.oakinvest.kiso.mcp.server.option.PortOption;
+import com.oakinvest.kiso.mcp.server.option.SourceOption;
 import com.oakinvest.kiso.mcp.server.service.KnowledgeService;
-import com.oakinvest.kiso.mcp.server.util.AbstractCommand;
 import dev.tachyonmcp.api.server.features.tools.ToolResult;
 import dev.tachyonmcp.api.server.features.tools.Tools;
 import dev.tachyonmcp.core.server.TachyonServer;
@@ -42,8 +41,8 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     static void registerTools(final Tools tools, final KnowledgeService knowledgeService) {
         // Search tool: searches concepts in the knowledge bundle ======================================================
         tools.register(
-                // Builder for the search tool
-                builder -> builder.name("search")
+                // Builder for the search concept tool
+                builder -> builder.name("search_concepts")
                         .description("Searches concepts in the knowledge bundle.")
                         .inputSchema("""
                                 {
@@ -55,10 +54,10 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                                   "additionalProperties": false
                                 }
                                 """),
-                // Handler for the search tool
+                // Handler for the search concept tool
                 (context, request) -> {
                     final String text = request.arguments().stringOpt("text").orElseThrow();
-                    return ToolResult.structured(Map.of("results", knowledgeService.search(text)));
+                    return ToolResult.structured(Map.of("results", knowledgeService.searchConcept(text)));
                 });
 
         // Get concept content tool: returns the Markdown content of a concept =========================================
@@ -112,7 +111,6 @@ public class ServeCommand extends AbstractCommand implements Runnable {
             // Starting the server =====================================================================================
             final TachyonServer server = TachyonServer.builder()
                     .name("kiso-mcp-server")
-                    .session(session -> session.enabled(false))
                     .withTools(tools -> registerTools(tools, knowledgeService))
                     .port(portOption.port())
                     .build();

@@ -1,0 +1,73 @@
+package com.oakinvest.kiso.cli.publisher;
+
+import com.oakinvest.kiso.core.configuration.SiteConfiguration;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
+import lombok.experimental.UtilityClass;
+import org.commonmark.node.BulletList;
+import org.commonmark.node.Document;
+import org.commonmark.renderer.markdown.MarkdownRenderer;
+
+import java.util.Comparator;
+import java.util.Objects;
+
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_1;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.heading;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.markdownFileListItem;
+import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.contants.OKFConstants.DEFAULT_TITLE;
+import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
+
+/**
+ * Generator for llms.txt file.
+ */
+@UtilityClass
+@SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
+public class LlmsTxtGenerator {
+
+    /**
+     * Generate llms.txt.
+     *
+     * @param knowledgeBundle   knowledge bundle
+     * @param siteConfiguration site configuration
+     * @return llms.txt content
+     */
+    public static String generate(final KnowledgeBundle knowledgeBundle, final SiteConfiguration siteConfiguration) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(siteConfiguration, "siteConfiguration must not be null");
+
+        // Document creation ===========================================================================================
+        final Document llmsTxt = new Document();
+        llmsTxt.appendChild(heading(HEADING_LEVEL_1, DEFAULT_TITLE));
+
+        // Each bundle section =========================================================================================
+        knowledgeBundle.bundles()
+                // Do not add a bundle with no child and no file.
+                .filter(bundle -> !bundle.isEmpty())
+                // Do not add tags directory.
+                .filter(bundle -> !bundle.name().equalsIgnoreCase(TAGS_DIRECTORY_NAME))
+                .forEach(bundle -> {
+
+                    // Bundle name =====================================================================================
+                    llmsTxt.appendChild(heading(HEADING_LEVEL_2, bundle.name()));
+
+                    // Pages inside the bundle =========================================================================
+                    BulletList list = new BulletList();
+                    list.setMarker("-");
+                    list.setTight(true);
+                    bundle.markdownFiles().stream()
+                            .sorted(Comparator.comparing(markdownFile -> markdownFile.kind() != INDEX))
+                            .forEach(markdownFile -> list.appendChild(markdownFileListItem(
+                                    siteConfiguration.normalizedBaseUrl(),
+                                    markdownFile)));
+                    llmsTxt.appendChild(list);
+
+                });
+
+        // Return generated file =======================================================================================
+        return MarkdownRenderer.builder()
+                .build()
+                .render(llmsTxt);
+    }
+
+}

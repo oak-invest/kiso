@@ -1,9 +1,9 @@
 package com.oakinvest.kiso.core.validation;
 
-import com.oakinvest.kiso.core.model.okf.markdown.Actor;
-import com.oakinvest.kiso.core.model.okf.markdown.Frontmatter;
-import com.oakinvest.kiso.core.model.okf.markdown.trust.TrustEvent;
-import com.oakinvest.kiso.core.util.BaseTest;
+import com.oakinvest.kiso.core.BaseTest;
+import com.oakinvest.kiso.core.model.markdown.Actor;
+import com.oakinvest.kiso.core.model.markdown.Frontmatter;
+import com.oakinvest.kiso.core.model.markdown.trust.TrustEvent;
 import com.oakinvest.kiso.core.validation.rule.TrustEventRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,9 +41,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .at("2026-06-25T09:00:00Z")
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -56,9 +56,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .at("2026-06-20T22:53:05Z")
                         .build())
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_GENERATED_BY);
             assertThat(issue.message()).isEqualTo("Missing generated.by field in frontmatter");
@@ -76,9 +76,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .by(Actor.of("reference_agent/gemini-2.5-pro"))
                         .build())
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_GENERATED_AT);
             assertThat(issue.message()).isEqualTo("Missing generated.at field in frontmatter");
@@ -97,9 +97,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .at("20-06-2026T22:53:05Z")
                         .build())
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_GENERATED_AT);
             assertThat(issue.message()).isEqualTo("Invalid generated.at field in frontmatter - Not an ISO 8601 datetime format");
@@ -117,9 +117,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .at("2026-06-25T09:00:00Z")
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_VERIFIED_BY);
             assertThat(issue.message()).isEqualTo("Missing verified.by field in frontmatter for verified event");
@@ -137,9 +137,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .by(Actor.of("human:straumat"))
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_VERIFIED_AT);
             assertThat(issue.message()).isEqualTo("Missing verified.at field in frontmatter for verified event");
@@ -158,9 +158,9 @@ public class TrustEventRuleTest extends BaseTest {
                         .at("25-06-2026T09:00:00Z")
                         .build()))
                 .build();
-        var markdownFile = markdownFile(markdownFilePath, CONCEPT, frontmatter);
+        var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(bundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_VERIFIED_AT);
             assertThat(issue.message()).isEqualTo("Invalid verified.at field in frontmatter - Not an ISO 8601 datetime format");
