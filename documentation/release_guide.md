@@ -63,10 +63,10 @@
 ## Post-release steps
 
 - Add a release note here:  https://github.com/oak-invest/kiso/releases
+- Update the release number in `website/index.html`.
 - Change the release number in `.github/workflows/publish-website.yml`.
 - Close the milestone at https://github.com/oak-invest/kiso/milestones
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1
-- Update the release number in `website/index.html`.
 - Wait to see if the website is correctly built and deployed on https://oak-invest.github.io/kiso/
 
 ## Communicate
