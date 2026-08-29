@@ -75,7 +75,7 @@ public record ConceptPage(
 ) {
 
     /**
-     * Creates a concept page with safe default values.
+     * Constructor with safe default values.
      */
     public ConceptPage {
         context = Objects.requireNonNullElse(context, PageContext.empty());

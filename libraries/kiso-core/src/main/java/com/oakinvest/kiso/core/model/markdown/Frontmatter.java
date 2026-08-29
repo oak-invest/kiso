@@ -72,7 +72,7 @@ public record Frontmatter(
 ) {
 
     /**
-     * Creates a Frontmatter with safe default values.
+     * Constructor with safe default values.
      */
     public Frontmatter {
         tags = Objects.requireNonNullElse(tags, List.of());

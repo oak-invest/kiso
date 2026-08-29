@@ -30,7 +30,7 @@ public record SiteConfiguration(
 ) {
 
     /**
-     * Creates a SiteConfiguration with safe default values.
+     * Constructor with safe default values.
      */
     public SiteConfiguration {
         language = Objects.requireNonNullElse(language, DEFAULT_LANGUAGE);

@@ -20,7 +20,7 @@ public record ComputationExecutor(
 ) {
 
     /**
-     * Creates an executor with safe default values.
+     * Constructor with safe default values.
      */
     public ComputationExecutor {
         receipt = Objects.requireNonNullElse(receipt, List.of());

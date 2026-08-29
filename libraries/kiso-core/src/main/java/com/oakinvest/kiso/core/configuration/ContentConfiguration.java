@@ -16,7 +16,7 @@ public record ContentConfiguration(
 ) {
 
     /**
-     * Constructor.
+     * Constructor with safe default values.
      */
     public ContentConfiguration {
         if (ignorePatterns == null) {

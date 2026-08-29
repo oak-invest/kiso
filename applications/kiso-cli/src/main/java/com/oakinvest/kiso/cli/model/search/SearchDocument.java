@@ -29,7 +29,7 @@ public record SearchDocument(
 ) {
 
     /**
-     * Creates a SearchDocument with safe default values.
+     * Constructor with safe default values.
      */
     public SearchDocument {
         tags = Objects.requireNonNullElse(tags, List.of());

@@ -23,7 +23,7 @@ public record PageContext(
 ) {
 
     /**
-     * Creates a page context with safe default values.
+     * Constructor with safe default values.
      */
     public PageContext {
         siteConfiguration = Objects.requireNonNullElse(siteConfiguration, SiteConfiguration.empty());

@@ -25,7 +25,7 @@ public record IndexPage(
 ) {
 
     /**
-     * Creates an index page with safe default values.
+     * Constructor with safe default values.
      */
     public IndexPage {
         context = Objects.requireNonNullElse(context, PageContext.empty());

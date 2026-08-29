@@ -25,7 +25,7 @@ public record LogPage(
 ) {
 
     /**
-     * Creates a log page with safe default values.
+     * Constructor with safe default values.
      */
     public LogPage {
         context = Objects.requireNonNullElse(context, PageContext.empty());

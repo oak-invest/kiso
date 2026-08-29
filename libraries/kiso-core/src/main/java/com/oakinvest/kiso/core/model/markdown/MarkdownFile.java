@@ -62,7 +62,7 @@ public record MarkdownFile(
 ) {
 
     /**
-     * Creates a Markdown file with safe default values.
+     * Constructor with safe default values.
      */
     public MarkdownFile {
         frontmatter = Objects.requireNonNullElse(frontmatter, Frontmatter.empty());

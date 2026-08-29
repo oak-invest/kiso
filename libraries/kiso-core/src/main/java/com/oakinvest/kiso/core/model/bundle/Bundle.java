@@ -45,7 +45,7 @@ public record Bundle(
 ) {
 
     /**
-     * Creates a bundle with safe default values.
+     * Constructor with safe default values.
      */
     public Bundle {
         childBundles = Objects.requireNonNullElse(childBundles, List.of());

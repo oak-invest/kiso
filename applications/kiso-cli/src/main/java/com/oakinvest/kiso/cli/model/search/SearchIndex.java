@@ -17,7 +17,7 @@ public record SearchIndex(
 ) {
 
     /**
-     * Creates a SearchIndex with safe default values.
+     * Constructor with safe default values.
      */
     public SearchIndex {
         documents = Objects.requireNonNullElse(documents, List.of());
