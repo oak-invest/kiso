@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.util.contants.ConceptTypeConstants.ATTESTED_COMPUTATION;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETERS_KEY;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETER_REQUIRED_KEY;
-import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_1;
 import static com.oakinvest.kiso.core.validation.ValidationCode.DUPLICATE_COMPUTATION_DEFINITION;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_COMPUTATION_PARAMETER_REQUIRED;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_COMPUTATION_PATH;

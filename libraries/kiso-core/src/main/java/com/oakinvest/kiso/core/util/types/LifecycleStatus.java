@@ -11,13 +11,13 @@ import java.util.Arrays;
  */
 public enum LifecycleStatus {
 
-    /** Not yet reviewed; possibly incomplete. */
+    /** Not yet reviewed - possibly incomplete. */
     DRAFT,
 
     /** Ready for consumption. */
     STABLE,
 
-    /** Kept for links and history; no longer current. */
+    /** Kept for links and history - no longer current. */
     DEPRECATED;
 
     /**

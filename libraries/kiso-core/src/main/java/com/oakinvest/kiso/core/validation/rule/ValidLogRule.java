@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.LOG;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_LOG_DATE_FORMAT;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;

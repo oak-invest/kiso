@@ -2,6 +2,7 @@ package com.oakinvest.kiso.core.util.types;
 
 import lombok.Getter;
 import org.apache.commons.lang3.Strings;
+import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -48,12 +49,16 @@ public enum MarkdownFileKind {
      * @param path file path
      * @return Markdown kind
      */
-    public static MarkdownFileKind from(final Path path) {
-        final String name = path.getFileName().toString();
-        return Arrays.stream(values())
-                .filter(kind -> Strings.CI.equals(kind.fileName, name))
-                .findFirst()
-                .orElse(CONCEPT);
+    public static MarkdownFileKind from(@Nullable final Path path) {
+        if (path == null) {
+            return CONCEPT;
+        } else {
+            final String name = path.getFileName().toString();
+            return Arrays.stream(values())
+                    .filter(kind -> Strings.CI.equals(kind.fileName, name))
+                    .findFirst()
+                    .orElse(CONCEPT);
+        }
     }
 
 }

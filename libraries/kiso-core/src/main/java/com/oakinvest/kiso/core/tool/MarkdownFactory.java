@@ -19,6 +19,12 @@ import java.nio.file.Path;
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class MarkdownFactory {
 
+    /** Heading level 1. */
+    public static final int HEADING_LEVEL_1 = 1;
+
+    /** Heading level 2. */
+    public static final int HEADING_LEVEL_2 = 2;
+
     /**
      * Creates a heading.
      *
@@ -56,7 +62,6 @@ public class MarkdownFactory {
     public static ListItem markdownFileListItem(
             final String baseUrl,
             final MarkdownFile markdownFile) {
-
         return createMarkdownFileListItem(
                 baseUrl + markdownPath(markdownFile.relativePath()),
                 markdownFile
@@ -73,7 +78,6 @@ public class MarkdownFactory {
     private static ListItem createMarkdownFileListItem(
             final String url,
             final MarkdownFile markdownFile) {
-
         ListItem listItem = new ListItem();
         Paragraph paragraph = new Paragraph();
 

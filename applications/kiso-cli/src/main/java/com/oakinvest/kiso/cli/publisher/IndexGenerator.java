@@ -14,11 +14,11 @@ import org.commonmark.renderer.markdown.MarkdownRenderer;
 
 import java.util.Objects;
 
+import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.tool.MarkdownFactory.heading;
 import static com.oakinvest.kiso.core.tool.MarkdownFactory.markdownFileListItem;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.ASSETS_DIRECTORY;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
-import static com.oakinvest.kiso.core.util.contants.MarkdownConstants.HEADING_LEVEL_2;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 
 /**

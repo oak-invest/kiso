@@ -2,6 +2,7 @@ package com.oakinvest.kiso.core.tool;
 
 import lombok.experimental.UtilityClass;
 import org.apache.commons.lang3.StringUtils;
+import org.jspecify.annotations.Nullable;
 
 import java.text.Normalizer;
 import java.util.Locale;
@@ -22,7 +23,7 @@ public class TagNormalizer {
      * @param tag original tag
      * @return URL-safe tag
      */
-    public static String normalize(final String tag) {
+    public static String normalize(@Nullable final String tag) {
         if (StringUtils.isBlank(tag)) {
             return DEFAULT_TAG;
         }

@@ -147,8 +147,7 @@ public final class MarkdownToHtmlRenderer {
                                 .bundleTree(bundleTree)
                                 .build())
                         .metadata(PageMetadata.builder()
-                                .title(ObjectUtils.firstNonNull(markdownFile.title(), markdownFile.relativePath().toString()))
-                                .description(siteConfiguration.description())
+                                .title(markdownFile.title())
                                 .absolutePath(markdownFile.absolutePath().toString())
                                 .assetBasePath(assetBasePath(siteConfiguration, markdownFile.relativePath()))
                                 .htmlPath(markdownFile.htmlFilePath())
@@ -221,7 +220,7 @@ public final class MarkdownToHtmlRenderer {
     }
 
     /**
-     * Returns the relative absolutePath from an HTML page to the generated site root.
+     * Returns the relative path from an HTML page to the generated site root.
      *
      * @param siteConfiguration    site configuration
      * @param markdownRelativePath Markdown absolutePath relative to the site root
