@@ -39,14 +39,14 @@ jobs:
 
       # Generate website examples ======================================================================================
       - name: Build kb-google-example with Kiso
-        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.1
+        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.2
         with:
           command: build
           source: examples/kb-google-example-v0.2
           destination: website/examples/kb-google-example
 
       - name: Build kb-acme-example with Kiso
-        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.1
+        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.2
         with:
           command: build
           source: examples/kb-acme-example-v0.2
