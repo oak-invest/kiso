@@ -4,7 +4,6 @@ import com.oakinvest.kiso.core.configuration.SiteConfiguration;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
-import org.apache.commons.lang3.StringUtils;
 import org.commonmark.node.BulletList;
 import org.commonmark.node.Document;
 import org.commonmark.renderer.markdown.MarkdownRenderer;
@@ -34,13 +33,13 @@ public class TagPageGenerator {
         Objects.requireNonNull(tagSlug, "tagSlug must not be null");
 
         // Define base url =============================================================================================
-        final String baseUrl;
-        if (StringUtils.isBlank(siteConfiguration.normalizedBaseUrl())) {
-            // Because the tag page is generated in a subfolder, we need to go one level up to reach the root of the site.
-            baseUrl = "../";
-        } else {
-            baseUrl = siteConfiguration.normalizedBaseUrl();
-        }
+        final String baseUrl = "../";
+//        if (StringUtils.isBlank(siteConfiguration.normalizedBaseUrl())) {
+//            // Because the tag page is generated in a subfolder, we need to go one level up to reach the root of the site.
+//            baseUrl = "../";
+//        } else {
+//            baseUrl = siteConfiguration.normalizedBaseUrl();
+//        }
 
         // Document creation ===========================================================================================
         final Document tagPage = new Document();

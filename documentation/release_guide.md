@@ -21,7 +21,7 @@
 ### Angara knowledge base
 
 - Test content deployed on: https://knowledge.angara.finance
-- Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html.
+- Test content deployed on https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.html
 - Test social preview image deployed on: https://knowledge.angara.finance/entreprises/scub/05-expertise-tests-et-validation.png
 - Test tags deployed on: https://knowledge.angara.finance/tags/agriculture.html
 - Test llms.txt deployed on: https://knowledge.angara.finance/llms.txt
