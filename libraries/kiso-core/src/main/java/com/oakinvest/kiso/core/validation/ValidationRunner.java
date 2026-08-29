@@ -16,7 +16,6 @@ import com.oakinvest.kiso.core.validation.rule.ValidStatusRule;
 import com.oakinvest.kiso.core.validation.rule.ValidUsageWindowRule;
 import lombok.experimental.UtilityClass;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,19 +51,11 @@ public class ValidationRunner {
     public static ValidationReport runValidation(final KnowledgeBundle knowledgeBundle) {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
 
-        final List<ValidationIssue> issues = new LinkedList<>();
-        knowledgeBundle.bundles()
-                // For each bundle =====================================================================================
-                .forEach(bundle ->
-                        bundle.markdownFiles()
-                                // For each markdown file ==============================================================
-                                .forEach(markdownFile ->
-                                        // With each markdown file rules ===============================================
-                                        MARKDOWN_FILE_RULES.forEach(markdownFileRule ->
-                                                issues.addAll(markdownFileRule.validate(knowledgeBundle.rootBundle(), markdownFile))
-                                        )
-                                )
-                );
+        final List<ValidationIssue> issues = knowledgeBundle.markdownFiles()
+                .flatMap(markdownFile -> MARKDOWN_FILE_RULES.stream()
+                        .flatMap(rule -> rule.validate(knowledgeBundle, markdownFile).stream()))
+                .toList();
+
         return ValidationReport.builder()
                 .issues(issues)
                 .build();

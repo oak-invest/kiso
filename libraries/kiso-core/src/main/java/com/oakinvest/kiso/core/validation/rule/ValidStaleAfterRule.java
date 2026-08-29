@@ -1,10 +1,11 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.STALE_AFTER_KEY;
 import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_STALE_AFTER;
@@ -16,7 +17,10 @@ import static com.oakinvest.kiso.core.validation.ValidationSeverity.WARNING;
 public class ValidStaleAfterRule implements MarkdownFileRule {
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
         if (!markdownFile.frontmatter().extraFields().containsKey(STALE_AFTER_KEY)) {
             return List.of();
         }

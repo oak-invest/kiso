@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.model.markdown.computation.ComputationParameter;
@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static com.oakinvest.kiso.core.tool.MarkdownFactory.HEADING_LEVEL_1;
@@ -54,7 +55,10 @@ public class AttestedComputationRule implements MarkdownFileRule {
     private static final Pattern INVALID_PATH_CHARACTERS = Pattern.compile("[\\p{Cntrl}\\s]");
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
         final List<ValidationIssue> issues = new LinkedList<>();
         final Frontmatter frontmatter = markdownFile.frontmatter();
 

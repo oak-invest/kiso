@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.model.markdown.provenance.Source;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -25,7 +26,10 @@ public class SourceFootnoteRule implements MarkdownFileRule {
     private static final Pattern FOOTNOTE_PATTERN = Pattern.compile("\\[\\^([^]\\r\\n]+)]");
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
         final Set<String> sourceIdentifiers = markdownFile.frontmatter().sources().stream()
                 .map(Source::id)
                 .filter(StringUtils::isNotBlank)

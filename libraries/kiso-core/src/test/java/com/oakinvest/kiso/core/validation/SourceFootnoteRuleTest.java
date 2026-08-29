@@ -32,7 +32,7 @@ class SourceFootnoteRuleTest extends BaseTest {
                 List.of(Source.builder().id("source-id").build())
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -46,7 +46,7 @@ class SourceFootnoteRuleTest extends BaseTest {
                 List.of(Source.builder().id("known").build())
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(WARNING);
             assertThat(issue.code()).isEqualTo(MISSING_SOURCE_FOR_FOOTNOTE);
             assertThat(issue.message()).isEqualTo("Footnote [^unknown] does not match any sources[].id");
@@ -59,7 +59,7 @@ class SourceFootnoteRuleTest extends BaseTest {
     void bodyWithoutFootnotes() {
         final MarkdownFile markdownFile = markdownFile("A claim without a footnote.", List.of());
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     private MarkdownFile markdownFile(final String body, final List<Source> sources) {

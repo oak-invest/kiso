@@ -46,7 +46,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 "# Definition\n\nRevenue computation.\n"
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -66,7 +66,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                         """
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -80,7 +80,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 ""
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_COMPUTATION_RUNTIME);
             assertThat(issue.message()).isEqualTo("Missing runtime field in Attested Computation frontmatter");
@@ -99,7 +99,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 ""
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile))
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile))
                 .extracting(ValidationIssue::code)
                 .containsExactlyInAnyOrder(
                         MISSING_COMPUTATION_PARAMETER_NAME,
@@ -127,7 +127,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 ""
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_COMPUTATION_PARAMETER_REQUIRED);
             assertThat(issue.message()).isEqualTo("Invalid parameters[].required field in Attested Computation frontmatter");
@@ -146,7 +146,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 ""
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_COMPUTATION_PATH);
             assertThat(issue.message()).isEqualTo("Invalid computation field in Attested Computation frontmatter");
@@ -165,7 +165,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 ""
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile))
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile))
                 .extracting(ValidationIssue::code)
                 .containsExactlyInAnyOrder(
                         MISSING_COMPUTATION_EXECUTOR_RESOURCE,
@@ -184,7 +184,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 ""
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_COMPUTATION_ATTESTER_RESOURCE);
             assertThat(issue.message()).isEqualTo("Missing attester.resource field in Attested Computation frontmatter");
@@ -203,7 +203,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                 "# Definition\n\nNo computation here.\n"
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_COMPUTATION_DEFINITION);
             assertThat(issue.message()).isEqualTo("Missing computation definition in Attested Computation");
@@ -226,7 +226,7 @@ public class AttestedComputationRuleTest extends BaseTest {
                         """
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(DUPLICATE_COMPUTATION_DEFINITION);
             assertThat(issue.message()).isEqualTo("Computation is declared both in frontmatter and body");

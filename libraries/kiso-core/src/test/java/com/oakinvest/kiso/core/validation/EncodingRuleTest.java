@@ -48,7 +48,7 @@ class EncodingRuleTest extends BaseTest {
                 .absolutePath(invalidMarkdownFilePath2)
                 .relativePath(invalidMarkdownFilePath2)
                 .build();
-        var rootBundle = createBundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
+        var rootBundle = createKnowledgeBundleWith(List.of(invalidMarkdownFile1, invalidMarkdownFile2));
 
         // Run validation and check that the invalid file is reported ==================================================
         var rule = new EncodingRule();

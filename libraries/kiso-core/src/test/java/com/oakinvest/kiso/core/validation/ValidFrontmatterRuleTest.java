@@ -36,7 +36,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, null);
 
         // Run validation to check a missing mandatory frontmatter =====================================================
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_FRONTMATTER);
             assertThat(issue.message()).isEqualTo("File concept-without-frontmatter.md is missing mandatory frontmatter");
@@ -52,7 +52,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, Frontmatter.empty());
 
         // Run validation to check a missing mandatory frontmatter type ================================================
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_FRONTMATTER_TYPE);
             assertThat(issue.message()).isEqualTo("File concept-without-type.md is missing mandatory 'type' in frontmatter");
@@ -68,7 +68,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var markdownFile = createMarkdownFile(markdownFilePath, INDEX, null);
 
         // We check that there was no error at all =====================================================================
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -118,14 +118,14 @@ class ValidFrontmatterRuleTest extends BaseTest {
                 .findAny().orElseThrow(() -> new Exception("test2/index.md not found"));
 
         // We check the errors =========================================================================================
-        assertThat(rule.validate(bundle.rootBundle(), indexRoot)).isEmpty();
-        assertThat(rule.validate(bundle.rootBundle(), index1)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(bundle, indexRoot)).isEmpty();
+        assertThat(rule.validate(bundle, index1)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
             assertThat(issue.message()).isEqualTo("File test1/index.md is not a concept file and should not contain frontmatter");
             assertThat(issue.path()).isEqualTo(Path.of("test1/index.md"));
         });
-        assertThat(rule.validate(bundle.rootBundle(), index2)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(bundle, index2)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
             assertThat(issue.message()).isEqualTo("File test2/index.md is not a concept file and should not contain frontmatter");
@@ -156,7 +156,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
                 .findAny().orElseThrow(() -> new Exception("index.md not found"));
 
         // We check the errors =========================================================================================
-        assertThat(rule.validate(bundle.rootBundle(), indexRoot)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(bundle, indexRoot)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_OKF_VERSION);
             assertThat(issue.message()).isEqualTo("File index.md has invalid 'okf_version' in frontmatter:v0.0");
@@ -176,7 +176,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
         // Run validation to check an invalid timestamp ================================================================
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_TIMESTAMP);
             assertThat(issue.message()).isEqualTo("File concept-with-invalid-timestamp.md has invalid 'timestamp' in frontmatter. It must be in ISO 8601 datetime format");
@@ -199,7 +199,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
         // Run validation to check an invalid generated.at =============================================================
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_TIMESTAMP);
             assertThat(issue.message()).isEqualTo("File concept-with-invalid-generated-at.md has invalid 'generated.at' in frontmatter. It must be in ISO 8601 datetime format");
@@ -220,7 +220,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         // var logFile = createMarkdownFile(logFilePath, LOG, frontmatter);
 
         // Run validation to check an unexpected frontmatter ============================================================
-        assertThat(rule.validate(createBundleWith(indexFile), indexFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(indexFile), indexFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(UNEXPECTED_FRONTMATTER);
             assertThat(issue.message()).isEqualTo("File index.md is not a concept file and should not contain frontmatter");

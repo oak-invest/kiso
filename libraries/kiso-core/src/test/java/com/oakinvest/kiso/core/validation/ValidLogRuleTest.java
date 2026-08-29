@@ -42,7 +42,7 @@ public class ValidLogRuleTest extends BaseTest {
         var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
         var markdownFile = bundle.rootBundle().markdownFiles().getFirst();
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile))
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile))
                 .satisfiesExactly(
                         issue1 -> {
                             assertThat(issue1.code()).isEqualTo(INVALID_LOG_DATE_FORMAT);

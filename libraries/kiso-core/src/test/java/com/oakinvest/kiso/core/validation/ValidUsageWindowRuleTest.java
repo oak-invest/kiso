@@ -33,7 +33,7 @@ public class ValidUsageWindowRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ValidUsageWindowRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_USAGE_WINDOW_FROM);
             assertThat(issue.message()).isEqualTo("Invalid usage_window.from field in frontmatter - Not an ISO 8601 date");
@@ -70,7 +70,7 @@ public class ValidUsageWindowRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_USAGE_WINDOW_TO);
             assertThat(issue.message()).isEqualTo("Invalid usage_window.to field in frontmatter - Not an ISO 8601 date");

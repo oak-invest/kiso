@@ -25,7 +25,7 @@ public class ValidStatusRuleTest extends BaseTest {
     void validLifecycleStatus(final String status, @TempDir final Path temporaryDirectory) throws IOException {
         final var markdownFile = createMarkdownFile(temporaryDirectory, "status: " + status);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -33,7 +33,7 @@ public class ValidStatusRuleTest extends BaseTest {
     void missingLifecycleStatus(@TempDir final Path temporaryDirectory) throws IOException {
         final var markdownFile = createMarkdownFile(temporaryDirectory, "type: Concept");
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ValidStatusRuleTest extends BaseTest {
     void invalidLifecycleStatus(@TempDir final Path temporaryDirectory) throws IOException {
         final var markdownFile = createMarkdownFile(temporaryDirectory, "status: invalid");
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(WARNING);
             assertThat(issue.code()).isEqualTo(INVALID_LIFE_CYCLE_STATUS);
             assertThat(issue.message()).isEqualTo("The status is not one of: draft, stable, deprecated");

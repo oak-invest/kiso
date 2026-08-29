@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.model.markdown.provenance.Source;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.oakinvest.kiso.core.validation.ValidationCode.DUPLICATE_SOURCE_ID;
@@ -20,7 +21,10 @@ import static com.oakinvest.kiso.core.validation.ValidationSeverity.WARNING;
 public class DuplicateSourceIdRule implements MarkdownFileRule {
 
     @Override
-    public final List<ValidationIssue> validate(final Bundle bundle, final MarkdownFile markdownFile) {
+    public final List<ValidationIssue> validate(final KnowledgeBundle knowledgeBundle, final MarkdownFile markdownFile) {
+        Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
+        Objects.requireNonNull(markdownFile, "markdownFile must not be null");
+
         final List<ValidationIssue> issues = new LinkedList<>();
         final Set<String> sourceIds = new HashSet<>();
         final Set<String> duplicateSourceIds = new HashSet<>();

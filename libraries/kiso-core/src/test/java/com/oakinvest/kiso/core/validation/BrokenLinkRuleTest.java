@@ -78,7 +78,7 @@ public class BrokenLinkRuleTest extends BaseTest {
         var issues = bundle.bundles()
                 .flatMap(currentBundle -> currentBundle.markdownFiles()
                         .stream()
-                        .flatMap(markdownFile -> rule.validate(bundle.rootBundle(), markdownFile).stream()))
+                        .flatMap(markdownFile -> rule.validate(bundle, markdownFile).stream()))
                 .toList();
         assertThat(issues).hasSize(7);
         assertThat(issues)

@@ -43,7 +43,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_GENERATED_BY);
             assertThat(issue.message()).isEqualTo("Missing generated.by field in frontmatter");
@@ -78,7 +78,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_GENERATED_AT);
             assertThat(issue.message()).isEqualTo("Missing generated.at field in frontmatter");
@@ -99,7 +99,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_GENERATED_AT);
             assertThat(issue.message()).isEqualTo("Invalid generated.at field in frontmatter - Not an ISO 8601 datetime format");
@@ -119,7 +119,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_VERIFIED_BY);
             assertThat(issue.message()).isEqualTo("Missing verified.by field in frontmatter for verified event");
@@ -139,7 +139,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_VERIFIED_AT);
             assertThat(issue.message()).isEqualTo("Missing verified.at field in frontmatter for verified event");
@@ -160,7 +160,7 @@ public class TrustEventRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_VERIFIED_AT);
             assertThat(issue.message()).isEqualTo("Invalid verified.at field in frontmatter - Not an ISO 8601 datetime format");

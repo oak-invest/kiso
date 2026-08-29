@@ -30,7 +30,7 @@ public class DuplicateSourceIdRuleTest extends BaseTest {
                 Source.builder().build()
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -43,7 +43,7 @@ public class DuplicateSourceIdRuleTest extends BaseTest {
                 Source.builder().id("duplicate-source").build()
         );
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(WARNING);
             assertThat(issue.code()).isEqualTo(DUPLICATE_SOURCE_ID);
             assertThat(issue.message()).isEqualTo("Multiple sources[] entries use the same id: duplicate-source");

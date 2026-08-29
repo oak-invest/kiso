@@ -2,6 +2,7 @@ package com.oakinvest.kiso.core;
 
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.Frontmatter;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
@@ -85,6 +86,16 @@ public class BaseTest {
                 .relativePath(markdownFilePath)
                 .frontmatter(frontmatter)
                 .frontmatterPresent(frontmatter != null)
+                .build();
+    }
+
+    protected KnowledgeBundle createKnowledgeBundleWith(final MarkdownFile markdownFile) {
+        return createKnowledgeBundleWith(List.of(markdownFile));
+    }
+
+    protected KnowledgeBundle createKnowledgeBundleWith(final List<MarkdownFile> markdownFiles) {
+        return KnowledgeBundle.builder()
+                .rootBundle(createBundleWith(markdownFiles))
                 .build();
     }
 

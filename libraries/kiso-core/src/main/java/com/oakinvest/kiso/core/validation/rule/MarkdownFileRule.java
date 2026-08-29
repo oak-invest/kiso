@@ -1,6 +1,6 @@
 package com.oakinvest.kiso.core.validation.rule;
 
-import com.oakinvest.kiso.core.model.bundle.Bundle;
+import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import com.oakinvest.kiso.core.validation.ValidationIssue;
 
@@ -19,11 +19,11 @@ public interface MarkdownFileRule {
     /**
      * Returns validation issues of a markdown file.
      *
-     * @param bundle       directory - Bundle
-     * @param markdownFile file - Markdown file
+     * @param knowledgeBundle knowledge bundle
+     * @param markdownFile    file - Markdown file
      * @return list of issues
      */
-    List<ValidationIssue> validate(Bundle bundle, MarkdownFile markdownFile);
+    List<ValidationIssue> validate(KnowledgeBundle knowledgeBundle, MarkdownFile markdownFile);
 
     /**
      * Checks whether the given string is a valid ISO 8601 offset date-time.

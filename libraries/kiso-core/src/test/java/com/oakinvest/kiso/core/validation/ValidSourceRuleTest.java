@@ -34,7 +34,7 @@ public class ValidSourceRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).isEmpty();
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).isEmpty();
     }
 
     @Test
@@ -49,7 +49,7 @@ public class ValidSourceRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(MISSING_SOURCE_RESOURCE);
             assertThat(issue.message()).isEqualTo("Missing sources[].resource field in frontmatter");
@@ -70,7 +70,7 @@ public class ValidSourceRuleTest extends BaseTest {
                 .build();
         var markdownFile = createMarkdownFile(markdownFilePath, CONCEPT, frontmatter);
 
-        assertThat(rule.validate(createBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
+        assertThat(rule.validate(createKnowledgeBundleWith(markdownFile), markdownFile)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_SOURCE_LAST_MODIFIED);
             assertThat(issue.message()).isEqualTo("Invalid sources[].last_modified field in frontmatter - Not an ISO 8601 date");
