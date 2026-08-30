@@ -96,7 +96,7 @@
         <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
         <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
         <maven.exec.plugin.version>3.6.3</maven.exec.plugin.version>
-        <maven.graalvm.native.plugin.version>1.1.10</maven.graalvm.native.plugin.version>
+        <maven.graalvm.native.plugin.version>1.1.11</maven.graalvm.native.plugin.version>
         <maven.shared.utils.version>3.4.2</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
     </properties>
