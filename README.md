@@ -119,7 +119,7 @@ The server loads the bundle and listens on port `8080` by default. Connect the M
 http://localhost:8080/mcp
 ```
 
-The AI application can then search the bundle, retrieve concept content, and use this knowledge as context when answering questions.
+The AI application can then search concepts, retrieve concept content, and use this knowledge as context when answering questions.
 
 ### MCP tools
 
