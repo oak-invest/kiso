@@ -3,6 +3,7 @@ package com.oakinvest.kiso.mcp.server.command;
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.mcp.server.ApplicationVersion;
+import com.oakinvest.kiso.mcp.server.option.HostOption;
 import com.oakinvest.kiso.mcp.server.option.PortOption;
 import com.oakinvest.kiso.mcp.server.option.SourceOption;
 import com.oakinvest.kiso.mcp.server.service.KnowledgeService;
@@ -22,6 +23,10 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     /** Source directory. */
     @CommandLine.Mixin
     private final SourceOption sourceOption = new SourceOption();
+
+    /** MCP server host. */
+    @CommandLine.Mixin
+    private final HostOption hostOption = new HostOption();
 
     /** MCP server port. */
     @CommandLine.Mixin
@@ -99,7 +104,8 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     public final void run() {
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
-        print("Kiso-mcp-server " + ApplicationVersion.get() + " - Running on port " + portOption.port());
+        print("Kiso-mcp-server " + ApplicationVersion.get()
+                + " - Running on " + hostOption.host() + ":" + portOption.port());
         print("Loading knowledge bundle in " + sourceDirectory.getAbsolutePath());
 
         try {
@@ -112,6 +118,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
             final TachyonServer server = TachyonServer.builder()
                     .name("kiso-mcp-server")
                     .withTools(tools -> registerTools(tools, knowledgeService))
+                    .host(hostOption.host())
                     .port(portOption.port())
                     .build();
             server.start();
