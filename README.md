@@ -35,7 +35,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.3
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.4
   with:
     command: build
     source: examples/kb-google-example
@@ -119,7 +119,7 @@ The server loads the bundle and listens on port `8080` by default. Connect the M
 http://localhost:8080/mcp
 ```
 
-The AI application can then search the bundle, retrieve concept content, and use this knowledge as context when answering questions.
+The AI application can then search concepts, retrieve concept content, and use this knowledge as context when answering questions.
 
 ### MCP tools
 
@@ -130,10 +130,11 @@ The AI application can then search the bundle, retrieve concept content, and use
 
 ### Options
 
-| Option           | Default | Description                                   |
-|------------------|---------|-----------------------------------------------|
-| `-s`, `--source` | `.`     | Directory containing the OKF bundle to serve. |
-| `-p`, `--port`   | `8080`  | Port used by the MCP server.                  |
+| Option           | Default   | Description                                   |
+|------------------|-----------|-----------------------------------------------|
+| `-s`, `--source` | `.`       | Directory containing the OKF bundle to serve. |
+| `-h`, `--host`   | `0.0.0.0` | Host used by the MCP server.                  |
+| `-p`, `--port`   | `8080`    | Port used by the MCP server.                  |
 
 For example, use another port with:
 
