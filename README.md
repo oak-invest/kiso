@@ -130,10 +130,11 @@ The AI application can then search concepts, retrieve concept content, and use t
 
 ### Options
 
-| Option           | Default | Description                                   |
-|------------------|---------|-----------------------------------------------|
-| `-s`, `--source` | `.`     | Directory containing the OKF bundle to serve. |
-| `-p`, `--port`   | `8080`  | Port used by the MCP server.                  |
+| Option           | Default   | Description                                   |
+|------------------|-----------|-----------------------------------------------|
+| `-s`, `--source` | `.`       | Directory containing the OKF bundle to serve. |
+| `-h`, `--host`   | `0.0.0.0` | Host used by the MCP server.                  |
+| `-p`, `--port`   | `8080`    | Port used by the MCP server.                  |
 
 For example, use another port with:
 
