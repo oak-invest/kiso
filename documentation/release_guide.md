@@ -11,8 +11,8 @@
 
 ### Test kiso-cli
 
-- Test the check command on examples knowledge base: `just release_run_cli_check`.
-- Test the build command on examples knowledge base: `just release_run_cli_build`.
+- Test the `check` command on examples knowledge base: `just release_run_cli_check`.
+- Test the `build` command on examples knowledge base: `just release_run_cli_build`.
 - Open `public/kb-google-example-v0.1` in the browser and check the content.
 - Open `public/kb-google-example-v0.2` in the browser and check the content.
 - Open `public/kb-acme-example-v0.2` in the browser and check the content.
@@ -20,6 +20,7 @@
 ## Test kiso-mcp-server (local)
 
 - Run `just release_run_mcp_server` to start the server.
+- Run `just run_kiso_mcp_server_list_tools` to see the methods.
 - Run `just run_kiso_mcp_server_call_search_concepts` to test the search content API.
 - Run `just run_kiso_mcp_server_call_get_concept_content` to test the get concept content API.
 
@@ -37,6 +38,7 @@
 - Test llms.txt deployed on: https://knowledge.angara.finance/llms.txt.
 - Test sitemap.xml deployed on: https://knowledge.angara.finance/sitemap.xml.
 - Test zip downloads on https://knowledge.angara.finance/entreprises/index.html.
+- Test search engine on https://knowledge.angara.finance.
 
 ### Oak Invest knowledge base
 
@@ -48,7 +50,7 @@
 - Test sitemap.xml deployed on: https://www.oak-invest.com/okf/sitemap.xml.
 
 ### ChatGPT and Kiso MCP server
-- Launch ChatGPT (Add https://mcp.angara.finance/mcp as a MCP server in ChatGPT if it's not already done).
+- Add https://mcp.angara.finance/mcp as a MCP server in ChatGPT if it's not already done.
 - Open a new chat and ask: `I have installed an MCP server named Angara in your plugins. Can you test it and tell me if it works ? Try to use it to get information about Kiso` and check the answer.
 
 ## Pre-release steps
