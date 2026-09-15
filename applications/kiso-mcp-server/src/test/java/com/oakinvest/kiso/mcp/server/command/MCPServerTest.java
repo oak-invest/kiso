@@ -33,10 +33,13 @@ public class MCPServerTest extends BaseTest {
     /** MCP server. */
     private TachyonServer server;
 
+    /** Knowledge service. */
+    private KnowledgeService knowledgeService;
+
     @BeforeEach
     public void setUp() {
         final var resourcePath = getResourcePath(KB_ACME_V_0_2);
-        final var knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(resourcePath));
+        knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(resourcePath));
         server = TachyonServer.builder()
                 .name("test-server")
                 .session(session -> session.enabled(false))
@@ -48,18 +51,22 @@ public class MCPServerTest extends BaseTest {
 
     @AfterEach
     public void tearDown() {
-        server.close();
+        try {
+            server.close();
+        } finally {
+            knowledgeService.close();
+        }
     }
 
     @Test
     @DisplayName("Registers knowledge tools")
     public void registerKnowledgeTools() {
-        // The server should have two tools registered: "get_concept_content" and "searchConcept" ======================
+        // The server should have two tools registered: "get_concept_content" and "searchConcepts" ======================
         assertThat(server.tools().descriptors())
                 .extracting(ToolDescriptor::name)
                 .containsExactlyInAnyOrder("search_concepts", "get_concept_content");
 
-        // searchConcept() tool input schema should contain "text" property ============================================
+        // searchConcepts() tool input schema should contain "text" property ============================================
         assertThat(server.tools().find("search_concepts")).isPresent()
                 .hasValueSatisfying(descriptor -> {
                     final var inputSchema = descriptor.inputSchema();

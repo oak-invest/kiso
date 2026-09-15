@@ -1,25 +1,18 @@
 package com.oakinvest.kiso.mcp.server.service;
 
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.util.IOUtils;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -28,32 +21,35 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.BODY;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.CONCEPT_ID;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.DESCRIPTION;
-import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.TAGS;
+import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.FIELDS;
+import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.FIELDS_BOOSTS;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.TITLE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Knowledge service.
  */
-public class KnowledgeService {
+public class KnowledgeService implements AutoCloseable {
 
     /** Default number of results. */
     private static final int DEFAULT_NUMBER_OF_RESULTS = 100;
 
-    /** Knowledge index. */
-    private final Directory index = new ByteBuffersDirectory();
+    /** Root bundle path. */
+    private final Path rootBundlePath;
 
-    /** Concept paths. */
-    private final Map<String, Path> conceptPaths;
+    /** Knowledge index. */
+    private final Directory index;
+
+    /** Reader shared by all searches. */
+    private final DirectoryReader reader;
+
+    /** Searcher shared by all searches. */
+    private final IndexSearcher searcher;
 
     /**
      * Constructor.
@@ -61,69 +57,45 @@ public class KnowledgeService {
      * @param knowledgeBundle Knowledge bundle.
      */
     public KnowledgeService(final KnowledgeBundle knowledgeBundle) {
-        // Build Lucene index ==========================================================================================
-        try (Analyzer analyzer = new StandardAnalyzer()) {
-            // Create index writer.
-            final IndexWriterConfig configuration = new IndexWriterConfig(analyzer);
-            configuration.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-
-            // Add all concept documents to the index
-            try (IndexWriter writer = new IndexWriter(index, configuration)) {
-                knowledgeBundle.markdownFiles()
-                        .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
-                        .forEach(markdownFile -> addDocument(writer, markdownFile));
-            }
+        rootBundlePath = knowledgeBundle.rootBundle().absolutePath();
+        index = KnowledgeIndexBuilder.build(knowledgeBundle);
+        try {
+            reader = DirectoryReader.open(index);
         } catch (IOException exception) {
+            IOUtils.closeWhileHandlingException(index);
             throw new UncheckedIOException(exception);
+        } catch (RuntimeException | Error exception) {
+            IOUtils.closeWhileHandlingException(index);
+            throw exception;
         }
-
-        // Build concept paths =========================================================================================
-        conceptPaths = knowledgeBundle.markdownFiles()
-                .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
-                .map(markdownFile -> {
-                    // We do this to avoid null concept IDs in the map, which would throw an exception.
-                    final String conceptId = markdownFile.conceptId();
-                    if (conceptId == null) {
-                        return null;
-                    }
-                    return Map.entry(conceptId, markdownFile.absolutePath());
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+        searcher = new IndexSearcher(reader);
     }
 
     /**
-     * Searches the concept in the knowledge index.
+     * Searches concepts in the knowledge index.
      *
-     * @param text searchConcept text
-     * @return searchConcept results
+     * @param text searchConcepts text
+     * @return searchConcepts results
      */
-    public List<KnowledgeSearchResult> searchConcept(@Nullable final String text) {
-        try (
-                Analyzer analyzer = new StandardAnalyzer();
-                DirectoryReader reader = DirectoryReader.open(index)
-        ) {
-            if (StringUtils.isBlank(text)) {
-                return List.of();
-            }
+    public List<KnowledgeSearchResult> searchConcepts(@Nullable final String text) {
+        if (StringUtils.isBlank(text)) {
+            return List.of();
+        }
 
-            // Index searcher and parser ===============================================================================
-            final IndexSearcher searcher = new IndexSearcher(reader);
-            final MultiFieldQueryParser parser = new MultiFieldQueryParser(
-                    KnowledgeIndexFields.FIELDS,
-                    analyzer,
-                    KnowledgeIndexFields.FIELDS_BOOSTS
-            );
+        try (Analyzer analyzer = new StandardAnalyzer()) {
 
-            // Querying ================================================================================================
-            final Query query = parser.parse(text);
-            final TopDocs topDocuments = searcher.search(query, DEFAULT_NUMBER_OF_RESULTS);
+            // Create a query parser ===================================================================================
+            final MultiFieldQueryParser parser = new MultiFieldQueryParser(FIELDS, analyzer, FIELDS_BOOSTS);
 
-            // We treat the results ====================================================================================
+            // Run the search ==========================================================================================
+            final TopDocs topDocuments = searcher.search(parser.parse(text), DEFAULT_NUMBER_OF_RESULTS);
+
+            // Treat the results =======================================================================================
             final List<KnowledgeSearchResult> results = new ArrayList<>();
             for (ScoreDoc scoreDocument : topDocuments.scoreDocs) {
                 // We retrieve the document.
                 final Document document = searcher.storedFields().document(scoreDocument.doc);
+                // And we build the result object.
                 results.add(KnowledgeSearchResult.builder()
                         .conceptId(document.get(CONCEPT_ID))
                         .title(document.get(TITLE))
@@ -136,7 +108,7 @@ public class KnowledgeService {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         } catch (ParseException exception) {
-            throw new IllegalArgumentException("Invalid searchConcept query: " + text, exception);
+            throw new IllegalArgumentException("Invalid searchConcepts query: " + text, exception);
         }
     }
 
@@ -147,18 +119,17 @@ public class KnowledgeService {
      * @return Markdown content if the concept exists
      */
     public Optional<String> getConceptContent(@Nullable final String conceptId) {
-        if (conceptId == null) {
-            return Optional.empty();
-        }
-
-        // Get the path of the concept from the map.
-        final Path path = conceptPaths.get(conceptId);
-        if (path == null) {
+        if (StringUtils.isBlank(conceptId)) {
             return Optional.empty();
         }
 
         // Get the content of the concept from the file system.
         try {
+            final Path path = rootBundlePath.resolve(conceptId + MARKDOWN_EXTENSION);
+            if (!Files.isRegularFile(path)) {
+                return Optional.empty();
+            }
+
             return Optional.of(Files.readString(path, UTF_8));
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
@@ -166,57 +137,12 @@ public class KnowledgeService {
     }
 
     /**
-     * Returns the number of concepts in the knowledge bundle.
-     *
-     * @return number of concepts
+     * Closes the reader and index after all searches have finished.
      */
-    public int getConceptCount() {
-        return conceptPaths.size();
-    }
-
-    /**
-     * Adds a document file to the index.
-     *
-     * @param writer       index writer
-     * @param markdownFile Markdown file
-     */
-    private void addDocument(final IndexWriter writer, final MarkdownFile markdownFile) {
-        final Document document = new Document();
-
-        // Concept ID ==================================================================================================
-        final String conceptId = markdownFile.conceptId();
-        if (conceptId != null) {
-            document.add(new StringField(CONCEPT_ID, conceptId, Field.Store.YES));
-        } else {
-            return; // We skip the document if the concept ID is null, as it is required for indexing.
-        }
-
-        // Title =======================================================================================================
-        final String title = markdownFile.frontmatter().title();
-        if (StringUtils.isNotBlank(title)) {
-            document.add(new TextField(TITLE, title, Field.Store.YES));
-        }
-
-        // Description =================================================================================================
-        final String description = markdownFile.frontmatter().description();
-        if (StringUtils.isNotBlank(description)) {
-            document.add(new TextField(DESCRIPTION, description, Field.Store.YES));
-        }
-
-        // Tags ========================================================================================================
-        final String tags = String.join(" ", markdownFile.frontmatter().tags());
-        if (StringUtils.isNotBlank(tags)) {
-            document.add(new TextField(TAGS, tags, Field.Store.YES));
-        }
-
-        // Body ========================================================================================================
-        final String body = markdownFile.body();
-        if (StringUtils.isNotBlank(body)) {
-            document.add(new TextField(BODY, body, Field.Store.NO));
-        }
-
+    @Override
+    public void close() {
         try {
-            writer.addDocument(document);
+            IOUtils.close(reader, index);
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }

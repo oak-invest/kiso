@@ -62,7 +62,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                 // Handler for the search concept tool
                 (context, request) -> {
                     final String text = request.arguments().stringOpt("text").orElseThrow();
-                    return ToolResult.structured(Map.of("results", knowledgeService.searchConcept(text)));
+                    return ToolResult.structured(Map.of("results", knowledgeService.searchConcepts(text)));
                 });
 
         // Get concept content tool: returns the Markdown content of a concept =========================================
@@ -100,7 +100,6 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     }
 
     @Override
-    @SuppressWarnings("resource")
     public final void run() {
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
@@ -111,18 +110,41 @@ public class ServeCommand extends AbstractCommand implements Runnable {
         try {
             // Creating the knowledge service and loading the knowledge bundle =========================================
             final KnowledgeService knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(sourceDirectory.toPath()));
-            print("Knowledge bundle loaded with " + knowledgeService.getConceptCount() + " concepts.");
-            blankLine();
+            try {
+                blankLine();
 
-            // Starting the server =====================================================================================
-            final TachyonServer server = TachyonServer.builder()
-                    .name("kiso-mcp-server")
-                    .withTools(tools -> registerTools(tools, knowledgeService))
-                    .host(hostOption.host())
-                    .port(portOption.port())
-                    .build();
-            server.start();
-            Runtime.getRuntime().addShutdownHook(new Thread(server::close, "kiso-mcp-server-shutdown"));
+                // Starting the server =================================================================================
+                final TachyonServer server = TachyonServer.builder()
+                        .name("kiso-mcp-server")
+                        .withTools(tools -> registerTools(tools, knowledgeService))
+                        .host(hostOption.host())
+                        .port(portOption.port())
+                        .build();
+                try {
+                    server.start();
+                    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                        try {
+                            server.close();
+                        } finally {
+                            knowledgeService.close();
+                        }
+                    }, "kiso-mcp-server-shutdown"));
+                } catch (RuntimeException | Error exception) {
+                    try {
+                        server.close();
+                    } catch (RuntimeException | Error closeException) {
+                        exception.addSuppressed(closeException);
+                    }
+                    throw exception;
+                }
+            } catch (RuntimeException | Error exception) {
+                try {
+                    knowledgeService.close();
+                } catch (RuntimeException closeException) {
+                    exception.addSuppressed(closeException);
+                }
+                throw exception;
+            }
         } catch (KnowledgeBundleLoadingException exception) {
             printError("Failed to load knowledge bundle: " + exception.getMessage());
         }

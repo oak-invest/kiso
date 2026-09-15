@@ -37,7 +37,7 @@ public class KnowledgeIndexFields {
     /** Field boost factors. */
     public static final Map<String, Float> FIELDS_BOOSTS = Map.of(
             TITLE, 5.0f,
-            DESCRIPTION, 2.0f,
+            DESCRIPTION, 3.0f,
             TAGS, 2.0f,
             BODY, 1.0f
     );
