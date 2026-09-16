@@ -72,10 +72,10 @@ public class KnowledgeService implements AutoCloseable {
     }
 
     /**
-     * Searches concepts in the knowledge index.
+     * Searches concepts in the knowledge bundle.
      *
-     * @param text searchConcepts text
-     * @return searchConcepts results
+     * @param text search text
+     * @return list of search results
      */
     public List<KnowledgeSearchResult> searchConcepts(@Nullable final String text) {
         if (StringUtils.isBlank(text)) {
@@ -116,7 +116,7 @@ public class KnowledgeService implements AutoCloseable {
      * Returns the Markdown content of a concept.
      *
      * @param conceptId concept identifier
-     * @return Markdown content if the concept exists
+     * @return Markdown content
      */
     public Optional<String> getConceptContent(@Nullable final String conceptId) {
         if (StringUtils.isBlank(conceptId)) {

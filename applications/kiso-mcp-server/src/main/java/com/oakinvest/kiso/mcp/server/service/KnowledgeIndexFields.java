@@ -8,10 +8,10 @@ import java.util.Map;
  * Knowledge index fields.
  */
 @UtilityClass
-@SuppressWarnings({"checkstyle:HideUtilityClassConstructor", "unused"})
+@SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public class KnowledgeIndexFields {
 
-    /** Identifier. */
+    /** Concept id - Identifier. */
     public static final String CONCEPT_ID = "conceptId";
 
     /** Title. */
@@ -34,7 +34,7 @@ public class KnowledgeIndexFields {
             BODY
     };
 
-    /** Field boost factors. */
+    /** All fields boost factors. */
     public static final Map<String, Float> FIELDS_BOOSTS = Map.of(
             TITLE, 5.0f,
             DESCRIPTION, 3.0f,

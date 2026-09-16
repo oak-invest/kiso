@@ -85,7 +85,7 @@ public final class KnowledgeIndexBuilder {
 
         // Concept ID ==================================================================================================
         final String conceptId = markdownFile.conceptId();
-        if (conceptId != null) {
+        if (StringUtils.isNotBlank(conceptId)) {
             document.add(new StringField(CONCEPT_ID, conceptId, Field.Store.YES));
         } else {
             return; // We skip the document if the concept ID is null, as it is required for indexing.
