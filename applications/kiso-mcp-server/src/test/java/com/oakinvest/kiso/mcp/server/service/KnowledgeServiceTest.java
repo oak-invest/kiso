@@ -1,6 +1,5 @@
 package com.oakinvest.kiso.mcp.server.service;
 
-import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.mcp.server.util.BaseTest;
 import org.apache.lucene.store.AlreadyClosedException;
 import org.junit.jupiter.api.AfterEach;
@@ -23,7 +22,7 @@ public class KnowledgeServiceTest extends BaseTest {
 
     @BeforeEach
     public void setUp() {
-        knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(getResourcePath(KB_ACME_V_0_2)));
+        knowledgeService = new KnowledgeService(getResourcePath(KB_ACME_V_0_2));
     }
 
     @AfterEach

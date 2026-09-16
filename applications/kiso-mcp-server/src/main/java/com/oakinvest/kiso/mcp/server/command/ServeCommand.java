@@ -1,7 +1,6 @@
 package com.oakinvest.kiso.mcp.server.command;
 
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
-import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.mcp.server.ApplicationVersion;
 import com.oakinvest.kiso.mcp.server.option.HostOption;
 import com.oakinvest.kiso.mcp.server.option.PortOption;
@@ -109,7 +108,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
 
         try {
             // Creating the knowledge service and loading the knowledge bundle =========================================
-            final KnowledgeService knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(sourceDirectory.toPath()));
+            final KnowledgeService knowledgeService = new KnowledgeService(sourceDirectory.toPath());
             try {
                 blankLine();
 

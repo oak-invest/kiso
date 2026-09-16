@@ -1,5 +1,6 @@
 package com.oakinvest.kiso.mcp.server.service;
 
+import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import lombok.experimental.UtilityClass;
@@ -10,14 +11,17 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.ByteBuffersDirectory;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.IOUtils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Path;
 
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.BODY;
@@ -27,44 +31,33 @@ import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.TAGS;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.TITLE;
 
 /**
- * Builds the Lucene index of knowledge concepts.
+ * Builds the Lucene index from the OKF bundle.
  */
 @UtilityClass
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor"})
 public final class KnowledgeIndexBuilder {
 
     /**
-     * Builds a new concept index.
-     * The caller owns the directory and is responsible for closing it.
+     * Builds a new concept index from the given root bundle path.
      *
-     * @param knowledgeBundle knowledge bundle
+     * @param rootBundlePath root bundle path
      * @return newly built index directory
      */
-    public static Directory build(final KnowledgeBundle knowledgeBundle) {
-        final Directory index = new ByteBuffersDirectory();
-        try {
-            buildIndex(knowledgeBundle, index);
-            return index;
-        } catch (RuntimeException | Error exception) {
-            IOUtils.closeWhileHandlingException(index);
-            throw exception;
-        }
-    }
+    public static KnowledgeIndex build(final Path rootBundlePath) {
+        // Load the knowledge bundle from the root bundle path =========================================================
+        final KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(rootBundlePath);
 
-    /**
-     * Builds the index for the given knowledge bundle.
-     *
-     * @param knowledgeBundle knowledge bundle
-     * @param index           index directory
-     */
-    private static void buildIndex(final KnowledgeBundle knowledgeBundle, final Directory index) {
+        // Create the index directory ==================================================================================
+        final Directory directory = new ByteBuffersDirectory();
+
+        // Creates the index for the knowledge bundle ==================================================================
         try (Analyzer analyzer = new StandardAnalyzer()) {
             // Create index writer.
             final IndexWriterConfig configuration = new IndexWriterConfig(analyzer);
             configuration.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
-            // Add all concept documents to the index
-            try (IndexWriter writer = new IndexWriter(index, configuration)) {
+            // Add all concept documents to the index.
+            try (IndexWriter writer = new IndexWriter(directory, configuration)) {
                 knowledgeBundle.markdownFiles()
                         .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
                         .forEach(markdownFile -> addDocument(writer, markdownFile));
@@ -72,6 +65,25 @@ public final class KnowledgeIndexBuilder {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }
+
+        // Creates the directory reader ================================================================================
+        DirectoryReader reader = null;
+        try {
+            reader = DirectoryReader.open(directory);
+        } catch (IOException exception) {
+            IOUtils.closeWhileHandlingException(reader, directory);
+            throw new UncheckedIOException(exception);
+        } catch (RuntimeException | Error exception) {
+            IOUtils.closeWhileHandlingException(reader, directory);
+            throw exception;
+        }
+
+        // Returns the knowledge index =================================================================================
+        return KnowledgeIndex.builder()
+                .directory(directory)
+                .reader(reader)
+                .searcher(new IndexSearcher(reader))
+                .build();
     }
 
     /**

@@ -1,17 +1,13 @@
 package com.oakinvest.kiso.mcp.server.service;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.IOUtils;
 import org.jspecify.annotations.Nullable;
 
@@ -43,32 +39,16 @@ public class KnowledgeService implements AutoCloseable {
     private final Path rootBundlePath;
 
     /** Knowledge index. */
-    private final Directory index;
-
-    /** Reader shared by all searches. */
-    private final DirectoryReader reader;
-
-    /** Searcher shared by all searches. */
-    private final IndexSearcher searcher;
+    private final KnowledgeIndex index;
 
     /**
      * Constructor.
      *
-     * @param knowledgeBundle Knowledge bundle.
+     * @param newRootBundlePath root bundle path
      */
-    public KnowledgeService(final KnowledgeBundle knowledgeBundle) {
-        rootBundlePath = knowledgeBundle.rootBundle().absolutePath();
-        index = KnowledgeIndexBuilder.build(knowledgeBundle);
-        try {
-            reader = DirectoryReader.open(index);
-        } catch (IOException exception) {
-            IOUtils.closeWhileHandlingException(index);
-            throw new UncheckedIOException(exception);
-        } catch (RuntimeException | Error exception) {
-            IOUtils.closeWhileHandlingException(index);
-            throw exception;
-        }
-        searcher = new IndexSearcher(reader);
+    public KnowledgeService(final Path newRootBundlePath) {
+        rootBundlePath = newRootBundlePath;
+        index = KnowledgeIndexBuilder.build(rootBundlePath);
     }
 
     /**
@@ -88,13 +68,13 @@ public class KnowledgeService implements AutoCloseable {
             final MultiFieldQueryParser parser = new MultiFieldQueryParser(FIELDS, analyzer, FIELDS_BOOSTS);
 
             // Run the search ==========================================================================================
-            final TopDocs topDocuments = searcher.search(parser.parse(text), DEFAULT_NUMBER_OF_RESULTS);
+            final TopDocs topDocuments = index.searcher().search(parser.parse(text.trim()), DEFAULT_NUMBER_OF_RESULTS);
 
             // Treat the results =======================================================================================
             final List<KnowledgeSearchResult> results = new ArrayList<>();
             for (ScoreDoc scoreDocument : topDocuments.scoreDocs) {
                 // We retrieve the document.
-                final Document document = searcher.storedFields().document(scoreDocument.doc);
+                final Document document = index.searcher().storedFields().document(scoreDocument.doc);
                 // And we build the result object.
                 results.add(KnowledgeSearchResult.builder()
                         .conceptId(document.get(CONCEPT_ID))
@@ -125,7 +105,7 @@ public class KnowledgeService implements AutoCloseable {
 
         // Get the content of the concept from the file system.
         try {
-            final Path path = rootBundlePath.resolve(conceptId + MARKDOWN_EXTENSION);
+            final Path path = rootBundlePath.resolve(conceptId.trim() + MARKDOWN_EXTENSION);
             if (!Files.isRegularFile(path)) {
                 return Optional.empty();
             }
@@ -142,7 +122,7 @@ public class KnowledgeService implements AutoCloseable {
     @Override
     public void close() {
         try {
-            IOUtils.close(reader, index);
+            IOUtils.close(index.reader(), index.directory());
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         }

@@ -2,7 +2,6 @@ package com.oakinvest.kiso.mcp.server.command;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
 import com.oakinvest.kiso.mcp.server.service.KnowledgeService;
 import com.oakinvest.kiso.mcp.server.util.BaseTest;
 import dev.tachyonmcp.api.server.features.tools.ToolDescriptor;
@@ -39,7 +38,7 @@ public class MCPServerTest extends BaseTest {
     @BeforeEach
     public void setUp() {
         final var resourcePath = getResourcePath(KB_ACME_V_0_2);
-        knowledgeService = new KnowledgeService(KnowledgeBundleLoader.load(resourcePath));
+        knowledgeService = new KnowledgeService(resourcePath);
         server = TachyonServer.builder()
                 .name("test-server")
                 .session(session -> session.enabled(false))
