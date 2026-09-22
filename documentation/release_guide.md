@@ -50,7 +50,7 @@
 - Test sitemap.xml deployed on: https://www.oak-invest.com/okf/sitemap.xml.
 
 ### ChatGPT and Kiso MCP server
-- Add https://mcp.angara.finance/mcp as a MCP server in ChatGPT if it's not already done.
+- Add https://mcp.angara.finance/mcp as an MCP server in ChatGPT if it's not already done.
 - Open a new chat and ask: `I have installed an MCP server named Angara in your plugins. Can you test it and tell me if it works ? Try to use it to get information about Kiso` and check the answer.
 
 ## Pre-release steps

@@ -3,6 +3,7 @@ package com.oakinvest.kiso.core.util.types;
 /**
  * Actor type.
  */
+@SuppressWarnings("unused")
 public enum ActorType {
 
     /** Human actor. */

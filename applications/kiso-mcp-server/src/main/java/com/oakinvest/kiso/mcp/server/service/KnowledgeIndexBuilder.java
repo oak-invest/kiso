@@ -67,14 +67,14 @@ public final class KnowledgeIndexBuilder {
         }
 
         // Creates the directory reader ================================================================================
-        DirectoryReader reader = null;
+        final DirectoryReader reader;
         try {
             reader = DirectoryReader.open(directory);
         } catch (IOException exception) {
-            IOUtils.closeWhileHandlingException(reader, directory);
+            IOUtils.closeWhileHandlingException(directory);
             throw new UncheckedIOException(exception);
         } catch (RuntimeException | Error exception) {
-            IOUtils.closeWhileHandlingException(reader, directory);
+            IOUtils.closeWhileHandlingException(directory);
             throw exception;
         }
 

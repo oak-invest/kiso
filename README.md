@@ -130,14 +130,23 @@ The AI application can then search concepts, retrieve concept content, and use t
 
 ### Options
 
-| Option           | Default   | Description                                   |
-|------------------|-----------|-----------------------------------------------|
-| `-s`, `--source` | `.`       | Directory containing the OKF bundle to serve. |
-| `-h`, `--host`   | `0.0.0.0` | Host used by the MCP server.                  |
-| `-p`, `--port`   | `8080`    | Port used by the MCP server.                  |
+| Option                              | Default     | Description                                                                                                        |
+|-------------------------------------|-------------|--------------------------------------------------------------------------------------------------------------------|
+| `-s`, `--source`                    | `.`         | Directory containing the OKF bundle to serve.                                                                      |
+| `-H`, `--host`                      | `127.0.0.1` | Host used by the MCP server.                                                                                       |
+| `-p`, `--port`                      | `8080`      | Port used by the MCP server.                                                                                       |
+| `--allowedHosts`, `--allowed-hosts` | None        | Additional HTTP Host authorities accepted by Tachyon's DNS-rebinding protection. Comma-separated; may be repeated. |
 
 For example, use another port with:
 
 ```bash
 ./kiso-mcp-server --source=examples/kb-acme-example-v0.2 --port=8081
 ```
+
+For access through a public hostname or Docker, pass additional allowed hosts to Tachyon:
+
+```bash
+./kiso-mcp-server --source=examples/kb-acme-example-v0.2 --host=0.0.0.0 --allowedHosts=mcp.example.com,host.docker.internal:8080
+```
+
+Use bare hostnames or `host:port` authorities, without a URL scheme or path. An entry without a port matches any port. Localhost remains allowed; omitting this option preserves Tachyon's default protection. This option does not extend the allowed `Origin` values. See [Tachyon's DNS-rebinding protection](https://tachyonmcp.dev/docs/running/configuration/#dns-rebinding-protection).

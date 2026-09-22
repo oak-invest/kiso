@@ -2,10 +2,12 @@ package com.oakinvest.kiso.mcp.server.command;
 
 import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.mcp.server.ApplicationVersion;
+import com.oakinvest.kiso.mcp.server.option.AllowedHostsOption;
 import com.oakinvest.kiso.mcp.server.option.HostOption;
 import com.oakinvest.kiso.mcp.server.option.PortOption;
 import com.oakinvest.kiso.mcp.server.option.SourceOption;
 import com.oakinvest.kiso.mcp.server.service.KnowledgeService;
+import dev.tachyonmcp.api.json.JsonSchema;
 import dev.tachyonmcp.api.server.features.tools.ToolResult;
 import dev.tachyonmcp.api.server.features.tools.Tools;
 import dev.tachyonmcp.core.server.TachyonServer;
@@ -31,6 +33,10 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     @CommandLine.Mixin
     private final PortOption portOption = new PortOption();
 
+    /** Additional allowed HTTP hosts. */
+    @CommandLine.Mixin
+    private final AllowedHostsOption allowedHostsOption = new AllowedHostsOption();
+
     /** Command specification. */
     @SuppressWarnings("unused")
     @CommandLine.Spec
@@ -48,7 +54,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                 // Builder for the search concept tool
                 builder -> builder.name("search_concepts")
                         .description("Searches concepts in the knowledge bundle.")
-                        .inputSchema("""
+                        .inputSchema(JsonSchema.parse("""
                                 {
                                   "type": "object",
                                   "properties": {
@@ -57,7 +63,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                                   "required": ["text"],
                                   "additionalProperties": false
                                 }
-                                """),
+                                """)),
                 // Handler for the search concept tool
                 (context, request) -> {
                     final String text = request.arguments().stringOpt("text").orElseThrow();
@@ -69,7 +75,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                 // Builder for the get concept content tool
                 builder -> builder.name("get_concept_content")
                         .description("Returns the Markdown content of a concept.")
-                        .inputSchema("""
+                        .inputSchema(JsonSchema.parse("""
                                 {
                                   "type": "object",
                                   "properties": {
@@ -78,7 +84,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
                                   "required": ["conceptId"],
                                   "additionalProperties": false
                                 }
-                                """),
+                                """)),
                 // Handler for the get concept content tool
                 (context, request) -> {
                     final String conceptId = request.arguments().stringOpt("conceptId").orElseThrow();
@@ -102,48 +108,39 @@ public class ServeCommand extends AbstractCommand implements Runnable {
     public final void run() {
         // Displaying information about the process ====================================================================
         final File sourceDirectory = sourceOption.sourceDirectory().toFile();
-        print("Kiso-mcp-server " + ApplicationVersion.get()
-                + " - Running on " + hostOption.host() + ":" + portOption.port());
-        print("Loading knowledge bundle in " + sourceDirectory.getAbsolutePath());
+        print("Kiso-mcp-server " + ApplicationVersion.get() + " - Running on " + hostOption.host() + ":" + portOption.port());
 
         try {
             // Creating the knowledge service and loading the knowledge bundle =========================================
             final KnowledgeService knowledgeService = new KnowledgeService(sourceDirectory.toPath());
-            try {
-                blankLine();
 
-                // Starting the server =================================================================================
-                final TachyonServer server = TachyonServer.builder()
-                        .name("kiso-mcp-server")
-                        .withTools(tools -> registerTools(tools, knowledgeService))
-                        .host(hostOption.host())
-                        .port(portOption.port())
-                        .build();
-                try {
-                    server.start();
-                    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                        try {
-                            server.close();
-                        } finally {
-                            knowledgeService.close();
-                        }
-                    }, "kiso-mcp-server-shutdown"));
-                } catch (RuntimeException | Error exception) {
+            // Starting the server =================================================================================
+            final TachyonServer server = TachyonServer.builder()
+                    .name("kiso-mcp-server")
+                    .withTools(tools -> registerTools(tools, knowledgeService))
+                    .stateless()
+                    .host(hostOption.host())
+                    .port(portOption.port())
+                    .network(network -> network.allowedHosts(allowedHostsOption.allowedHosts().toArray(String[]::new)))
+                    .build();
+            try {
+                server.start();
+                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                     try {
                         server.close();
-                    } catch (RuntimeException | Error closeException) {
-                        exception.addSuppressed(closeException);
+                    } finally {
+                        knowledgeService.close();
                     }
-                    throw exception;
-                }
+                }, "kiso-mcp-server-shutdown"));
             } catch (RuntimeException | Error exception) {
                 try {
-                    knowledgeService.close();
-                } catch (RuntimeException closeException) {
+                    server.close();
+                } catch (RuntimeException | Error closeException) {
                     exception.addSuppressed(closeException);
                 }
                 throw exception;
             }
+
         } catch (KnowledgeBundleLoadingException exception) {
             printError("Failed to load knowledge bundle: " + exception.getMessage());
         }
