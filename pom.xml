@@ -7,7 +7,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>com.oakinvest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.2.4</version>
+    <version>0.2.5</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
     <description>Publishing engine for the Open Knowledge Format</description>
@@ -55,24 +55,24 @@
         <picocli.version>4.7.7</picocli.version>
 
         <!-- Frontend assets - Updates through https://www.webjars.org -->
-        <daisyui.webjar.version>5.7.17</daisyui.webjar.version>
+        <daisyui.webjar.version>5.7.42</daisyui.webjar.version>
         <tailwindcss.webjar.version>4.3.3</tailwindcss.webjar.version>
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
-        <i18next.webjar.version>26.3.6</i18next.webjar.version>
+        <i18next.webjar.version>26.4.2</i18next.webjar.version>
 
         <!-- HTML sanitization -->
         <jsoup.version>1.23.2</jsoup.version>
         <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- MCP -->
-        <tachyon.version>1.0.0-beta.19</tachyon.version>
+        <tachyon.version>1.0.0-beta.30</tachyon.version>
         <lucene.version>10.5.1</lucene.version>
-        <slf4j.version>2.0.18</slf4j.version>
+        <slf4j.version>2.0.19</slf4j.version>
 
         <!-- Boilerplate and utils -->
         <immutables.version>2.12.2</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
-        <lombok.version>1.18.46</lombok.version>
+        <lombok.version>1.18.48</lombok.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
@@ -88,15 +88,15 @@
 
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.puppycrawl.checkstyle.version>14.0.0</maven.puppycrawl.checkstyle.version>
+        <maven.puppycrawl.checkstyle.version>14.1.0</maven.puppycrawl.checkstyle.version>
         <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
-        <maven.compiler.plugin.version>3.15.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>3.5.6</maven.surefire.plugin.version>
+        <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
         <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
-        <maven.exec.plugin.version>3.6.3</maven.exec.plugin.version>
-        <maven.graalvm.native.plugin.version>1.1.11</maven.graalvm.native.plugin.version>
+        <maven.exec.plugin.version>3.6.4</maven.exec.plugin.version>
+        <maven.graalvm.native.plugin.version>1.1.14</maven.graalvm.native.plugin.version>
         <maven.shared.utils.version>3.4.2</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
     </properties>

@@ -1,25 +1,13 @@
 package com.oakinvest.kiso.mcp.server.service;
 
-import com.oakinvest.kiso.core.model.bundle.KnowledgeBundle;
-import com.oakinvest.kiso.core.model.markdown.MarkdownFile;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.ByteBuffersDirectory;
-import org.apache.lucene.store.Directory;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
@@ -28,101 +16,102 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
-import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.BODY;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.CONCEPT_ID;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.DESCRIPTION;
+import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.FIELDS;
+import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.FIELDS_BOOSTS;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.TITLE;
+import static java.lang.System.Logger.Level.ERROR;
+import static java.lang.System.Logger.Level.INFO;
+import static java.lang.Thread.MIN_PRIORITY;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * Knowledge service.
  */
-public class KnowledgeService {
+public class KnowledgeService implements AutoCloseable {
+
+    /** Reports index lifecycle events and failures. */
+    private static final System.Logger LOGGER = System.getLogger(KnowledgeService.class.getName());
+
+    /** Refresh interval in minutes. */
+    private static final int REFRESH_INTERVAL = 10;
 
     /** Default number of results. */
     private static final int DEFAULT_NUMBER_OF_RESULTS = 100;
 
-    /** Knowledge index. */
-    private final Directory index = new ByteBuffersDirectory();
+    /** Root bundle path. */
+    private final Path rootBundlePath;
 
-    /** Concept paths. */
-    private final Map<String, Path> conceptPaths;
+    /** Protects the active index and its lifecycle. */
+    private final ReentrantReadWriteLock indexLock = new ReentrantReadWriteLock();
+
+    /** Refresh schedule. */
+    private final ScheduledExecutorService refreshScheduler;
+
+    /** Knowledge index. */
+    private KnowledgeIndex index;
+
+    /** Guarded by this service's monitor, together with refresh and shutdown. */
+    private boolean closed;
 
     /**
      * Constructor.
      *
-     * @param knowledgeBundle Knowledge bundle.
+     * @param newRootBundlePath root bundle path
      */
-    public KnowledgeService(final KnowledgeBundle knowledgeBundle) {
-        // Build Lucene index ==========================================================================================
-        try (Analyzer analyzer = new StandardAnalyzer()) {
-            // Create index writer.
-            final IndexWriterConfig configuration = new IndexWriterConfig(analyzer);
-            configuration.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
-
-            // Add all concept documents to the index
-            try (IndexWriter writer = new IndexWriter(index, configuration)) {
-                knowledgeBundle.markdownFiles()
-                        .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
-                        .forEach(markdownFile -> addDocument(writer, markdownFile));
-            }
-        } catch (IOException exception) {
-            throw new UncheckedIOException(exception);
+    public KnowledgeService(final Path newRootBundlePath) {
+        // Create index ================================================================================================
+        rootBundlePath = newRootBundlePath;
+        LOGGER.log(INFO, "Building initial knowledge index from {0}", rootBundlePath);
+        try {
+            index = KnowledgeIndexBuilder.build(rootBundlePath);
+        } catch (RuntimeException exception) {
+            LOGGER.log(ERROR, "Could not build the initial knowledge index from {0}", rootBundlePath, exception);
+            throw exception;
         }
+        LOGGER.log(INFO, "Initial knowledge index ready: {0} concepts indexed ", index.reader().numDocs());
 
-        // Build concept paths =========================================================================================
-        conceptPaths = knowledgeBundle.markdownFiles()
-                .filter(markdownFile -> CONCEPT.equals(markdownFile.kind()))
-                .map(markdownFile -> {
-                    // We do this to avoid null concept IDs in the map, which would throw an exception.
-                    final String conceptId = markdownFile.conceptId();
-                    if (conceptId == null) {
-                        return null;
-                    }
-                    return Map.entry(conceptId, markdownFile.absolutePath());
-                })
-                .filter(Objects::nonNull)
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+        // Create a scheduled executor service to refresh the index periodically.
+        refreshScheduler = Executors.newSingleThreadScheduledExecutor(
+                Thread.ofPlatform().daemon().name("knowledge-index-refresher").priority(MIN_PRIORITY).factory()
+        );
+        refreshScheduler.scheduleAtFixedRate(this::refreshIndex, REFRESH_INTERVAL, REFRESH_INTERVAL, MINUTES);
     }
 
     /**
-     * Searches the concept in the knowledge index.
+     * Searches concepts in the knowledge bundle.
      *
-     * @param text searchConcept text
-     * @return searchConcept results
+     * @param text search text
+     * @return list of search results
      */
-    public List<KnowledgeSearchResult> searchConcept(@Nullable final String text) {
-        try (
-                Analyzer analyzer = new StandardAnalyzer();
-                DirectoryReader reader = DirectoryReader.open(index)
-        ) {
-            if (StringUtils.isBlank(text)) {
-                return List.of();
-            }
+    public List<KnowledgeSearchResult> searchConcepts(@Nullable final String text) {
+        if (StringUtils.isBlank(text)) {
+            return List.of();
+        }
 
-            // Index searcher and parser ===============================================================================
-            final IndexSearcher searcher = new IndexSearcher(reader);
-            final MultiFieldQueryParser parser = new MultiFieldQueryParser(
-                    KnowledgeIndexFields.FIELDS,
-                    analyzer,
-                    KnowledgeIndexFields.FIELDS_BOOSTS
-            );
+        indexLock.readLock().lock();
+        try (Analyzer analyzer = new StandardAnalyzer()) {
 
-            // Querying ================================================================================================
-            final Query query = parser.parse(text);
-            final TopDocs topDocuments = searcher.search(query, DEFAULT_NUMBER_OF_RESULTS);
+            // Create a query parser ===================================================================================
+            final MultiFieldQueryParser parser = new MultiFieldQueryParser(FIELDS, analyzer, FIELDS_BOOSTS);
 
-            // We treat the results ====================================================================================
+            // Run the search ==========================================================================================
+            final TopDocs topDocuments = index.searcher().search(parser.parse(text.trim()), DEFAULT_NUMBER_OF_RESULTS);
+
+            // Treat the results =======================================================================================
             final List<KnowledgeSearchResult> results = new ArrayList<>();
             for (ScoreDoc scoreDocument : topDocuments.scoreDocs) {
                 // We retrieve the document.
-                final Document document = searcher.storedFields().document(scoreDocument.doc);
+                final Document document = index.searcher().storedFields().document(scoreDocument.doc);
+                // And we build the result object.
                 results.add(KnowledgeSearchResult.builder()
                         .conceptId(document.get(CONCEPT_ID))
                         .title(document.get(TITLE))
@@ -135,7 +124,9 @@ public class KnowledgeService {
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
         } catch (ParseException exception) {
-            throw new IllegalArgumentException("Invalid searchConcept query: " + text, exception);
+            throw new IllegalArgumentException("Invalid searchConcepts query: " + text, exception);
+        } finally {
+            indexLock.readLock().unlock();
         }
     }
 
@@ -143,21 +134,20 @@ public class KnowledgeService {
      * Returns the Markdown content of a concept.
      *
      * @param conceptId concept identifier
-     * @return Markdown content if the concept exists
+     * @return Markdown content
      */
     public Optional<String> getConceptContent(@Nullable final String conceptId) {
-        if (conceptId == null) {
-            return Optional.empty();
-        }
-
-        // Get the path of the concept from the map.
-        final Path path = conceptPaths.get(conceptId);
-        if (path == null) {
+        if (StringUtils.isBlank(conceptId)) {
             return Optional.empty();
         }
 
         // Get the content of the concept from the file system.
         try {
+            final Path path = rootBundlePath.resolve(conceptId.trim() + MARKDOWN_EXTENSION);
+            if (!Files.isRegularFile(path)) {
+                return Optional.empty();
+            }
+
             return Optional.of(Files.readString(path, UTF_8));
         } catch (IOException exception) {
             throw new UncheckedIOException(exception);
@@ -165,57 +155,51 @@ public class KnowledgeService {
     }
 
     /**
-     * Returns the number of concepts in the knowledge bundle.
-     *
-     * @return number of concepts
+     * Refreshes the index.
      */
-    public int getConceptCount() {
-        return conceptPaths.size();
+    private synchronized void refreshIndex() {
+        if (closed) {
+            return;
+        }
+        LOGGER.log(INFO, "Refreshing knowledge index from {0}", rootBundlePath);
+        try {
+            // We retrieve the current index and build the new one =====================================================
+            final KnowledgeIndex newIndex = KnowledgeIndexBuilder.build(rootBundlePath);
+
+            // We lock and replace the index with the new one ==========================================================
+            indexLock.writeLock().lock();
+            try {
+                final KnowledgeIndex previousIndex = index;
+                index = newIndex;
+                previousIndex.close();
+            } finally {
+                indexLock.writeLock().unlock();
+            }
+            LOGGER.log(INFO, "Initial knowledge index ready: {0} concepts indexed ", index.reader().numDocs());
+        } catch (IOException | RuntimeException exception) {
+            LOGGER.log(ERROR, "Could not refresh the knowledge index from {0}", rootBundlePath, exception);
+        }
     }
 
     /**
-     * Adds a document file to the index.
-     *
-     * @param writer       index writer
-     * @param markdownFile Markdown file
+     * Waits for any refresh and active searches before closing the index.
      */
-    private void addDocument(final IndexWriter writer, final MarkdownFile markdownFile) {
-        final Document document = new Document();
-
-        // Concept ID ==================================================================================================
-        final String conceptId = markdownFile.conceptId();
-        if (conceptId != null) {
-            document.add(new StringField(CONCEPT_ID, conceptId, Field.Store.YES));
+    @Override
+    public synchronized void close() {
+        if (closed) {
+            return;
         }
-
-        // Title =======================================================================================================
-        final String title = markdownFile.frontmatter().title();
-        if (StringUtils.isNotBlank(title)) {
-            document.add(new TextField(TITLE, title, Field.Store.YES));
-        }
-
-        // Description =================================================================================================
-        final String description = markdownFile.frontmatter().description();
-        if (StringUtils.isNotBlank(description)) {
-            document.add(new TextField(DESCRIPTION, description, Field.Store.YES));
-        }
-
-        // Tags ========================================================================================================
-        final String tags = String.join(" ", markdownFile.frontmatter().tags());
-        if (StringUtils.isNotBlank(tags)) {
-            document.add(new TextField(DESCRIPTION, tags, Field.Store.YES));
-        }
-
-        // Body ========================================================================================================
-        final String body = markdownFile.body();
-        if (StringUtils.isNotBlank(body)) {
-            document.add(new TextField(BODY, body, Field.Store.NO));
-        }
-
+        closed = true;
+        refreshScheduler.shutdownNow();
+        indexLock.writeLock().lock();
         try {
-            writer.addDocument(document);
+            index.close();
+            LOGGER.log(INFO, "Knowledge service closed ");
         } catch (IOException exception) {
+            LOGGER.log(ERROR, "Could not close the knowledge index for " + rootBundlePath, exception);
             throw new UncheckedIOException(exception);
+        } finally {
+            indexLock.writeLock().unlock();
         }
     }
 

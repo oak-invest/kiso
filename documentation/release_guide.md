@@ -26,8 +26,8 @@
 
 ## Online tests
 
-- Deploy my personal knowledge base - It builds Kiso from the development branch to build the websites and deploy the mcp server at https://mcp.angara.finance/mcp.
-- Wait for all CI to be done: https://github.com/straumat/knowledge-base/actions.
+- Deploy my personal knowledge base - It builds Kiso from the development branch to build the websites and deploy the mcp server.
+- Wait for CI to be done: https://github.com/straumat/knowledge-base/actions.
 
 ### Angara knowledge base
 
@@ -50,7 +50,7 @@
 - Test sitemap.xml deployed on: https://www.oak-invest.com/okf/sitemap.xml.
 
 ### ChatGPT and Kiso MCP server
-- Add https://mcp.angara.finance/mcp as a MCP server in ChatGPT if it's not already done.
+- Add https://mcp.angara.finance/mcp as an MCP server in ChatGPT.
 - Open a new chat and ask: `I have installed an MCP server named Angara in your plugins. Can you test it and tell me if it works ? Try to use it to get information about Kiso` and check the answer.
 
 ## Pre-release steps
@@ -73,7 +73,8 @@
 - Change the release number in `.github/workflows/publish-website.yml`.
 - Close the milestone at https://github.com/oak-invest/kiso/milestones.
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1.
-- Wait to see if the website is correctly built and deployed on https://oak-invest.github.io/kiso/.
+- Wait until the website CI script is done at https://github.com/oak-invest/kiso/actions/workflows/publish-website.yml.
+- Wait to see if the website is correctly deployed at https://oak-invest.github.io/kiso/.
 
 ## Communicate
 

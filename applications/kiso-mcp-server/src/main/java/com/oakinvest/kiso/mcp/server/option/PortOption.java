@@ -1,5 +1,7 @@
 package com.oakinvest.kiso.mcp.server.option;
 
+import lombok.Getter;
+import lombok.experimental.Accessors;
 import picocli.CommandLine;
 
 /**
@@ -8,21 +10,13 @@ import picocli.CommandLine;
 public class PortOption {
 
     /** MCP server port option. */
+    @Getter
+    @Accessors(fluent = true)
     @CommandLine.Option(
             names = {"-p", "--port"},
             defaultValue = "8080",
             description = "Port used by the MCP server. Defaults to ${DEFAULT-VALUE}."
     )
-    @SuppressWarnings("unused")
     private int port;
-
-    /**
-     * Port used by the MCP server.
-     *
-     * @return MCP server port
-     */
-    public int port() {
-        return port;
-    }
 
 }

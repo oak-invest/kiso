@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-label="Kiso logo">
   <rect width="100%" height="100%" fill="#050A12"/>
   <rect x="2.56" y="2.56" width="26.88" height="26.88" rx="5.76" fill="none" stroke="#FFFFFF" stroke-width="1.12" opacity="0.8"/>
-  <text x="16.0" y="21.76" text-anchor="middle" fill="#FFFFFF" font-family="Sora, Inter, Arial, sans-serif" font-size="24" font-weight="700">K</text>
+  <path d="M8.253906 24.589844 V7.410156 H11.722656 V15.039062 L18.730469 7.410156 H23.394531 L16.925781 14.101563 L23.746094 24.589844 H19.257812 L14.535156 16.527344 L11.722656 19.398438 V24.589844 Z" fill="#FFFFFF"/>
 </svg>

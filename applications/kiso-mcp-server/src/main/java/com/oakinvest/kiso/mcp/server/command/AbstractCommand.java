@@ -15,13 +15,6 @@ public abstract class AbstractCommand {
     protected abstract CommandLine.Model.CommandSpec commandSpec();
 
     /**
-     * Print a blank line in the console.
-     */
-    protected void blankLine() {
-        commandSpec().commandLine().getOut().println();
-    }
-
-    /**
      * Print a message in the console.
      *
      * @param message message to print
