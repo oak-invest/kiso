@@ -10,7 +10,7 @@ permissions:
 jobs:
 
   build-native:
-    name: Build ${{ matrix.name }}
+    name: Build ${{ matrix.name }} release
     runs-on: ${{ matrix.os }}
     permissions:
       contents: read
