@@ -67,7 +67,7 @@
         <!-- MCP -->
         <tachyon.version>1.0.0-beta.30</tachyon.version>
         <lucene.version>10.5.1</lucene.version>
-        <slf4j.version>2.0.19</slf4j.version>
+        <slf4j.version>2.0.20</slf4j.version>
 
         <!-- Boilerplate and utils -->
         <immutables.version>2.12.2</immutables.version>
