@@ -77,7 +77,7 @@
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
 
-        <jackson-bom.version>3.2.2</jackson-bom.version>
+        <jackson-bom.version>3.2.3</jackson-bom.version>
         <jackson.version>2.22.3</jackson.version>
         <batik.version>1.19</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
