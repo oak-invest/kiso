@@ -4,124 +4,80 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-
     <defs>
-        <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" style="stop-color:#06b6d4"/>
-            <stop offset="100%" style="stop-color:#818cf8"/>
+        <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0d9488"/>
+            <stop offset="100%" stop-color="#2563eb"/>
         </linearGradient>
-        <radialGradient id="bgGlow" cx="90%" cy="10%" r="55%">
-            <stop offset="0%" style="stop-color:#1d4ed8;stop-opacity:0.18"/>
-            <stop offset="100%" style="stop-color:#0f172a;stop-opacity:0"/>
-        </radialGradient>
     </defs>
 
-    <!-- Background -->
-    <rect width="1200" height="630" fill="#0f172a"/>
-    <rect width="1200" height="630" fill="url(#bgGlow)"/>
+    <!-- White canvas with a quiet editorial frame. -->
+    <rect width="1200" height="630" fill="#ffffff"/>
+    <rect x="24" y="24" width="1152" height="582" rx="20" fill="none" stroke="#e2e8f0"/>
+    <rect x="72" y="24" width="80" height="4" rx="2" fill="url(#accentGradient)"/>
 
-    <!-- Top accent bar -->
-    <rect width="1200" height="4" fill="url(#accentGradient)"/>
-
-    <!-- Decorative dot grid (top right) -->
-    <circle cx="890" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="930" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="970" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1010" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1050" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1090" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1130" cy="55" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="890" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="930" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="970" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1010" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1050" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1090" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1130" cy="95" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="890" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="930" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="970" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1010" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1050" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1090" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1130" cy="135" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="890" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="930" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="970" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1010" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1050" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1090" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1130" cy="175" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="890" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="930" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="970" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1010" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1050" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1090" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-    <circle cx="1130" cy="215" r="1.5" fill="#64748b" opacity="0.5"/>
-
-    <!-- Decorative circles (bottom right) -->
-    <circle cx="1160" cy="600" r="130" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.1"/>
-    <circle cx="1160" cy="600" r="200" fill="none" stroke="#818cf8" stroke-width="1" opacity="0.07"/>
-    <circle cx="1160" cy="600" r="270" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.04"/>
-
-    <!-- Site name with gradient left accent bar -->
-    <rect x="60" y="66" width="3" height="32" rx="1.5" fill="url(#accentGradient)"/>
-    <text x="78" y="88"
-          font-family="Helvetica, Arial, sans-serif"
-          font-size="18" font-weight="600" fill="#94a3b8">
+    <!-- Site identity. -->
+    <rect x="72" y="70" width="10" height="26" rx="5" fill="url(#accentGradient)"/>
+    <text x="98" y="91" font-family="Helvetica, Arial, sans-serif"
+          font-size="21" font-weight="700" fill="#334155">
         ${preview.siteName()}
     </text>
 
-    <!-- Title lines - First line and second line are displayed -->
+    <!-- Connected pages: a compact illustration of structured knowledge. -->
+    <g transform="translate(976 58)">
+        <circle cx="70" cy="55" r="64" fill="#f0fdfa"/>
+        <rect x="57" y="9" width="65" height="82" rx="10" fill="#eff6ff" stroke="#bfdbfe"
+              transform="rotate(12 89 50)"/>
+        <rect x="26" y="20" width="65" height="82" rx="10" fill="#ffffff" stroke="#99d5ce"/>
+        <rect x="39" y="36" width="25" height="6" rx="3" fill="url(#accentGradient)"/>
+        <path d="M39 55 H77 M39 65 H77 M39 75 H62" fill="none" stroke="#cbd5e1"
+              stroke-width="3" stroke-linecap="round"/>
+        <path d="M91 78 H124 V108" fill="none" stroke="#0d9488" stroke-width="2"/>
+        <circle cx="124" cy="112" r="5" fill="#0d9488"/>
+        <circle cx="11" cy="16" r="4" fill="#93c5fd"/>
+    </g>
+
+    <!-- Generous text area, clear of the illustration. -->
     @if(!preview.titleLines().isEmpty())
-        <text x="60" y="240"
-              font-family="Helvetica, Arial, sans-serif"
-              font-size="58" font-weight="700" fill="#f8fafc">
+        <text x="72" y="235" font-family="Helvetica, Arial, sans-serif"
+              font-size="58" font-weight="700" letter-spacing="-1.5" fill="#0f172a">
             ${preview.titleLines().getFirst()}
         </text>
     @endif
     @if(preview.titleLines().size() > 1)
-        <text x="60" y="316"
-              font-family="Helvetica, Arial, sans-serif"
-              font-size="58" font-weight="700" fill="#f8fafc">
+        <text x="72" y="309" font-family="Helvetica, Arial, sans-serif"
+              font-size="58" font-weight="700" letter-spacing="-1.5" fill="#0f172a">
             ${preview.titleLines().get(1)}
         </text>
     @endif
 
-    <!-- Gradient separator -->
-    <rect x="60" y="354" width="72" height="2" rx="1" fill="url(#accentGradient)"/>
+    <rect x="72" y="343" width="48" height="4" rx="2" fill="url(#accentGradient)"/>
 
-    <!-- Description lines -->
     @if(!preview.descriptionLines().isEmpty())
-        <text x="60" y="404"
-              font-family="Helvetica, Arial, sans-serif"
-              font-size="27" fill="#94a3b8">
+        <text x="72" y="391" font-family="Helvetica, Arial, sans-serif"
+              font-size="27" fill="#64748b">
             ${preview.descriptionLines().getFirst()}
         </text>
     @endif
     @if(preview.descriptionLines().size() > 1)
-        <text x="60" y="444"
-              font-family="Helvetica, Arial, sans-serif"
-              font-size="27" fill="#94a3b8">
+        <text x="72" y="431" font-family="Helvetica, Arial, sans-serif"
+              font-size="27" fill="#64748b">
             ${preview.descriptionLines().get(1)}
         </text>
     @endif
     @if(preview.descriptionLines().size() > 2)
-        <text x="60" y="484"
-              font-family="Helvetica, Arial, sans-serif"
-              font-size="27" fill="#94a3b8">
+        <text x="72" y="471" font-family="Helvetica, Arial, sans-serif"
+              font-size="27" fill="#64748b">
             ${preview.descriptionLines().get(2)}
         </text>
     @endif
 
-    <!-- URL -->
+    <!-- Footer aligned with the content column. -->
+    <path d="M72 533 H1128" fill="none" stroke="#e2e8f0"/>
     @if(preview.url() != null && !preview.url().isBlank())
-        <text x="60" y="600"
-              font-family="Helvetica, Arial, sans-serif"
-              font-size="16" fill="#475569">
+        <text x="72" y="570" font-family="Helvetica, Arial, sans-serif"
+              font-size="17" fill="#64748b">
             ${preview.url()}
         </text>
     @endif
-
 </svg>
