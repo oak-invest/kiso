@@ -48,9 +48,9 @@ public class SvgToPngConverter {
      */
     public static boolean isAvailable() {
         if (isNativeImageRuntime()) {
-            return true;
+            return findExternalTool() != null;
         }
-        return findExternalTool() != null;
+        return true;
     }
 
     /**
@@ -65,9 +65,9 @@ public class SvgToPngConverter {
      */
     public static void convert(final Path svgPath, final Path pngPath, final int width, final int height) {
         if (isNativeImageRuntime()) {
-            convertWithBatik(svgPath, pngPath, width, height);
-        } else {
             convertWithExternalTool(svgPath, pngPath, width, height);
+        } else {
+            convertWithBatik(svgPath, pngPath, width, height);
         }
     }
 
@@ -77,7 +77,7 @@ public class SvgToPngConverter {
      * @return {@code true} when running as a native image
      */
     static boolean isNativeImageRuntime() {
-        return !NATIVE_IMAGE_RUNTIME_CODE.equals(System.getProperty(NATIVE_IMAGE_CODE_PROPERTY));
+        return NATIVE_IMAGE_RUNTIME_CODE.equals(System.getProperty(NATIVE_IMAGE_CODE_PROPERTY));
     }
 
     /**
