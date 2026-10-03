@@ -31,7 +31,7 @@ runs:
         java_home="$RUNNER_TEMP/kiso-java"
         java_archive="$RUNNER_TEMP/kiso-java.tar.gz"
         mkdir -p "$java_home"
-        curl -fsSL -o "$java_archive" "https://api.adoptium.net/v3/binary/latest/21/ga/linux/x64/jre/hotspot/normal/eclipse"
+        curl -fsSL -o "$java_archive" "https://api.adoptium.net/v3/binary/latest/25/ga/linux/x64/jre/hotspot/normal/eclipse"
         tar -xzf "$java_archive" -C "$java_home" --strip-components=1
 
     - name: Download Kiso cli

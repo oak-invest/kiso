@@ -8,6 +8,9 @@ This directory contains all executable applications built from the Kiso codebase
 
 ## Developer setup
 
+Kiso requires JDK 25 to build and Java 25 or later to run the executable JARs.
+Use GraalVM for JDK 25 to build the native executables.
+
 ```bash
 sdk install java 25.3.4+1.r25-graal
 sdk install maven 3.9.16
