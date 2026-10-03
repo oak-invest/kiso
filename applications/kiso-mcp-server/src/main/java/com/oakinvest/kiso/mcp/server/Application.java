@@ -26,7 +26,7 @@ public class Application implements Runnable {
      *
      * @param args arguments
      */
-    public static void main(final String[] args) {
+    static void main(final String[] args) {
         // Hides expected Lucene warnings for GraalVM native images while preserving errors.
         Logger.getLogger("org.apache.lucene.util.HotspotVMOptions").setLevel(SEVERE);
         Logger.getLogger("org.apache.lucene.internal.vectorization.VectorizationProvider").setLevel(SEVERE);
