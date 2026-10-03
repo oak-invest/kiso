@@ -13,6 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${pageMetadata.title()}</title>
     <meta name="description" content="${pageMetadata.description()}">
+    @if(pageMetadata.canonicalUrl() != null)
+        <link rel="canonical" href="${pageMetadata.canonicalUrl()}">
+    @endif
 
     <!-- CSS, JS, favicons and social ============================================================================== -->
     @template.layouts.head-css(pageMetadata = pageMetadata)

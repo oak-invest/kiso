@@ -43,6 +43,7 @@ import static com.oakinvest.kiso.core.util.contants.FileConstants.LLMS_TXT_FILEN
 import static com.oakinvest.kiso.core.util.contants.FileConstants.SEARCH_INDEX_JSON_FILENAME;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.SITEMAP_XML_FILENAME;
 import static com.oakinvest.kiso.core.util.contants.FileConstants.TAGS_DIRECTORY_NAME;
+import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.MARKDOWN_EXTENSION;
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
 
 /**
@@ -150,7 +151,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             };
             FileUtils.copyDirectory(sourceDirectory, destinationDirectory, fileFilter);
 
-            // If a profile is specified, check if the profile exists an index file to use ===========================
+            // If a profile is specified, check if the profile exists an index file to use =============================
             if (StringUtils.isNotBlank(profile)) {
                 final File sourceFile = sourceDirectory.toPath()
                         .resolve(CONFIGURATION_DIRECTORY_NAME)
@@ -164,6 +165,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
 
             // Loading and checking the bundle =========================================================================
             KnowledgeBundle knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
+            final KnowledgeBundle finalKnowledgeBundle = knowledgeBundle;
             final ValidationReport validationReport = ValidationRunner.runValidation(knowledgeBundle);
             // Print warnings.
             validationReport.warnings().forEach(this::printWarning);
@@ -177,7 +179,9 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             knowledgeBundle.bundles()
                     // The one with no index.md file.
                     .filter(bundle -> bundle.getIndexFile().isEmpty())
+                    .parallel()
                     .forEach(bundle -> {
+
                         try {
                             FileUtils.writeStringToFile(
                                     new File(bundle.absolutePath().toString(), INDEX.getFileName()),
@@ -188,22 +192,27 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                         } catch (IOException e) {
                             printError("Error generating " + INDEX.getFileName() + " for " + bundle.absolutePath() + ": " + e.getMessage());
                         }
+
                     });
 
             // Tags pages generation ===================================================================================
             String tagsDirectory = knowledgeBundle.rootBundle().absolutePath().resolve(TAGS_DIRECTORY_NAME).toString();
-            for (String tag : knowledgeBundle.tagSlugs()) {
-                try {
-                    FileUtils.writeStringToFile(
-                            new File(tagsDirectory, tag + ".md"),
-                            TagPageGenerator.generate(knowledgeBundle, configuration.site(), tag),
-                            StandardCharsets.UTF_8
-                    );
-                    print("Tag page generated for " + tag);
-                } catch (IOException e) {
-                    printError("Error generating tag page for tag " + tag + ": " + e.getMessage());
-                }
-            }
+            knowledgeBundle.tagSlugs()
+                    .parallelStream()
+                    .forEach(tag -> {
+
+                        try {
+                            FileUtils.writeStringToFile(
+                                    new File(tagsDirectory, tag + MARKDOWN_EXTENSION),
+                                    TagPageGenerator.generate(finalKnowledgeBundle, configuration.site(), tag),
+                                    StandardCharsets.UTF_8
+                            );
+                            print("Tag page generated for " + tag);
+                        } catch (IOException e) {
+                            printError("Error generating tag page for tag " + tag + ": " + e.getMessage());
+                        }
+
+                    });
 
             // HTML generation =========================================================================================
             knowledgeBundle = KnowledgeBundleLoader.load(destinationDirectory.toPath());
@@ -219,33 +228,35 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                         }
 
                         // We generate the HTML version of every Markdown file in the bundle ===========================
-                        bundle.markdownFiles().forEach(markdownFile -> {
-                            try {
-                                FileUtils.writeStringToFile(
-                                        new File(bundle.absolutePath().toString(), markdownFile.htmlFilename()),
-                                        MarkdownToHtmlRenderer.render(configuration.site(), configuration.theme(), markdownFile, bundleTree),
-                                        StandardCharsets.UTF_8
-                                );
-                                print("HTML Generated for " + markdownFile.relativePath());
-                            } catch (IOException e) {
-                                printError("Error generating HTML for " + markdownFile.absolutePath() + ": " + e.getMessage());
-                            }
+                        bundle.markdownFiles()
+                                .parallelStream()
+                                .forEach(markdownFile -> {
+                                    try {
+                                        FileUtils.writeStringToFile(
+                                                new File(bundle.absolutePath().toString(), markdownFile.htmlFilename()),
+                                                MarkdownToHtmlRenderer.render(configuration.site(), configuration.theme(), markdownFile, bundleTree),
+                                                StandardCharsets.UTF_8
+                                        );
+                                        print("HTML Generated for " + markdownFile.relativePath());
+                                    } catch (IOException e) {
+                                        printError("Error generating HTML for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                                    }
 
-                            // We also generate the social preview images for every Markdown file ======================
-                            if (StringUtils.isNotBlank(configuration.site().baseUrl())) {
-                                try {
-                                    SocialPreviewImageGenerator.generate(
-                                            configuration.site().title(),
-                                            markdownFile.title(),
-                                            markdownFile.description(),
-                                            configuration.site().normalizedBaseUrl() + markdownFile.htmlFilePath(),
-                                            bundle.absolutePath(),
-                                            FilenameUtils.removeExtension(markdownFile.htmlFilename()));
-                                } catch (Exception e) {
-                                    printError("Error generating social preview image for " + markdownFile.absolutePath() + ": " + e.getMessage());
-                                }
-                            }
-                        });
+                                    // We also generate the social preview images for every Markdown file ==============
+                                    if (StringUtils.isNotBlank(configuration.site().baseUrl())) {
+                                        try {
+                                            SocialPreviewImageGenerator.generate(
+                                                    configuration.site().title(),
+                                                    markdownFile.title(),
+                                                    markdownFile.description(),
+                                                    configuration.site().normalizedBaseUrl() + markdownFile.htmlFilePath(),
+                                                    bundle.absolutePath(),
+                                                    FilenameUtils.removeExtension(markdownFile.htmlFilename()));
+                                        } catch (Exception e) {
+                                            printError("Error generating social preview image for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                                        }
+                                    }
+                                });
 
                     });
 
@@ -265,7 +276,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
             );
             print("File " + SITEMAP_XML_FILENAME + " generated");
 
-            // search-index.json generation ==========================================================================
+            // search-index.json generation ============================================================================
             FileUtils.writeStringToFile(
                     new File(knowledgeBundle.rootBundle().absolutePath().toString(), SEARCH_INDEX_JSON_FILENAME),
                     SearchIndexGenerator.generate(knowledgeBundle),

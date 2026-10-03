@@ -55,6 +55,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(html.attr("data-theme")).isEqualTo("light");
 
         assertThat(page.title()).isEqualTo("index.md");
+        assertThat(page.select("link[rel=canonical]")).isEmpty();
         assertThat(page.select("link[rel=stylesheet]").eachAttr("href"))
                 .allMatch(href -> href.contains("?build="))
                 .extracting(href -> href.substring(0, href.indexOf('?')))

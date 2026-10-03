@@ -41,6 +41,19 @@ public record PageMetadata(
     }
 
     /**
+     * Returns the absolute HTTP(S) page URL, using the same path as social metadata.
+     *
+     * @return canonical URL, or null when the base URL is missing, relative or invalid
+     */
+    public @Nullable String canonicalUrl() {
+        if (StringUtils.isAnyBlank(assetBasePath, htmlPath)) {
+            return null;
+        } else {
+            return assetBasePath + htmlPath;
+        }
+    }
+
+    /**
      * Returns the path to the home page (index.html) relative to the generated site root.
      *
      * @return the path to the home page (index.html) relative to the generated site root

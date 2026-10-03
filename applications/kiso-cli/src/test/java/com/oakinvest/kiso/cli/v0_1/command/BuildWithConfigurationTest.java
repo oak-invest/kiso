@@ -55,6 +55,7 @@ class BuildWithConfigurationTest extends BaseTest {
 
         // Checking that configuration is applied to the generated HTML files ==========================================
         assertThat(Files.readString(destinationDirectory.resolve("index.html"), UTF_8))
+                .contains("<link rel=\"canonical\" href=\"https://knowledge.angara.finance/index.html\">")
                 .contains("data-theme=\"corporate\"")
                 .contains("href=\"https://knowledge.angara.finance/assets/css/application.css?build=")
                 .contains("href=\"https://knowledge.angara.finance/datasets/index.html\"")
@@ -84,6 +85,7 @@ class BuildWithConfigurationTest extends BaseTest {
         assertThat(Files.readString(destinationDirectory.resolve("references/metrics/event_count.html"), UTF_8))
                 .contains("<meta property=\"og:locale\" content=\"fr\">")
                 .contains("<meta property=\"og:site_name\" content=\"Knowledge Base\">")
+                .contains("<link rel=\"canonical\" href=\"https://knowledge.angara.finance/references/metrics/event_count.html\">")
                 .contains("<meta property=\"og:url\" content=\"https://knowledge.angara.finance/references/metrics/event_count.html\">")
                 .contains("<meta property=\"og:type\" content=\"website\">")
                 .contains("<meta property=\"og:title\" content=\"Event Count\">")

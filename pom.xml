@@ -7,7 +7,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>com.oakinvest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.2.5</version>
+    <version>0.2.6</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
     <description>Publishing engine for the Open Knowledge Format</description>
@@ -43,7 +43,7 @@
     <!-- Project configuration ===================================================================================== -->
     <properties>
         <!-- Java build configuration -->
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven.resources.escapeString>\</maven.resources.escapeString>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -65,20 +65,20 @@
         <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- MCP -->
-        <tachyon.version>1.0.0-beta.30</tachyon.version>
+        <tachyon.version>1.0.0</tachyon.version>
         <lucene.version>10.5.1</lucene.version>
-        <slf4j.version>2.0.19</slf4j.version>
+        <slf4j.version>2.0.20</slf4j.version>
 
         <!-- Boilerplate and utils -->
         <immutables.version>2.12.2</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.48</lombok.version>
-        <commons-lang3.version>3.20.0</commons-lang3.version>
+        <commons-lang3.version>3.21.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
 
-        <jackson-bom.version>3.2.2</jackson-bom.version>
-        <jackson.version>2.22.2</jackson.version>
+        <jackson-bom.version>3.2.3</jackson-bom.version>
+        <jackson.version>2.22.3</jackson.version>
         <batik.version>1.19</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
 
@@ -88,7 +88,7 @@
 
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.puppycrawl.checkstyle.version>14.1.0</maven.puppycrawl.checkstyle.version>
+        <maven.puppycrawl.checkstyle.version>14.3.0</maven.puppycrawl.checkstyle.version>
         <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
@@ -97,7 +97,7 @@
         <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
         <maven.exec.plugin.version>3.6.4</maven.exec.plugin.version>
         <maven.graalvm.native.plugin.version>1.1.14</maven.graalvm.native.plugin.version>
-        <maven.shared.utils.version>3.4.2</maven.shared.utils.version>
+        <maven.shared.utils.version>3.5.0</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
     </properties>
 

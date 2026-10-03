@@ -7,6 +7,8 @@ Kiso provides two applications built around [Open Knowledge Format](https://gith
 
 The OKF bundle remains the single source of truth for both applications.
 
+The executable JARs require Java 25 or later. Native executables do not require a Java installation.
+
 ## Kiso CLI
 
 ### Quick start
@@ -35,7 +37,7 @@ You can use Kiso CLI in GitHub Action to automatically build your OKF bundles in
 
 ```yaml
 - name: Build with Kiso
-  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.5
+  uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.6
   with:
     command: build
     source: examples/kb-google-example
