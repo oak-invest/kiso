@@ -94,7 +94,28 @@
             }
         });
 
-        input.addEventListener("keydown", event => {
+        container.addEventListener("keydown", event => {
+            if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+                const links = Array.from(resultsElement.querySelectorAll(".kiso-search-result"));
+                if (resultsElement.classList.contains("hidden") || links.length === 0) {
+                    return;
+                }
+                const currentIndex = links.indexOf(document.activeElement);
+                if (document.activeElement !== input && currentIndex === -1) {
+                    return;
+                }
+                event.preventDefault();
+                let nextIndex = currentIndex + 1;
+                if (event.key === "ArrowUp") {
+                    nextIndex = currentIndex - 1;
+                }
+                if (nextIndex < 0) {
+                    nextIndex = links.length - 1;
+                } else if (nextIndex >= links.length) {
+                    nextIndex = 0;
+                }
+                links[nextIndex].focus();
+            }
             if (event.key === "Escape") {
                 input.value = "";
                 clearResults(resultsElement);
@@ -102,6 +123,8 @@
                 if (button) {
                     button.setAttribute("aria-expanded", "false");
                     button.focus();
+                } else {
+                    input.focus();
                 }
             }
         });

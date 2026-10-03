@@ -3,6 +3,12 @@
     position: relative;
 }
 
+.kiso-search-result:focus-visible {
+    background: var(--color-base-200);
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
 .kiso-search-results {
     position: absolute;
     right: 0;
