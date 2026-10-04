@@ -4,17 +4,17 @@ updates:
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "20:30"
+      interval: "cron"
+      # First Sunday of each month at 20:30.
+      cronjob: "30 20 * * sun#1"
       timezone: "Europe/Paris"
     target-branch: development
 
   - package-ecosystem: maven
     directory: "/"
     schedule:
-      interval: "weekly"
-      day: "sunday"
-      time: "20:30"
+      interval: "cron"
+      # First Sunday of each month at 20:30.
+      cronjob: "30 20 * * sun#1"
       timezone: "Europe/Paris"
     target-branch: development
