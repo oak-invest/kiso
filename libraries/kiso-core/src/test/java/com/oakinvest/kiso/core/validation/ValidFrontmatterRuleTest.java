@@ -9,6 +9,8 @@ import com.oakinvest.kiso.core.validation.rule.ValidFrontmatterRule;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,7 +22,9 @@ import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAM
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
 import static com.oakinvest.kiso.core.validation.ValidationCode.UNEXPECTED_FRONTMATTER;
+import static com.oakinvest.kiso.core.validation.ValidationCode.UNKNOWN_OKF_VERSION;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
+import static com.oakinvest.kiso.core.validation.ValidationSeverity.WARNING;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Valid frontmatter rule")
@@ -83,7 +87,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         Files.createDirectories(rootIndex.getParent());
         Files.writeString(rootIndex, """
                 ---
-                okf_version: "v0.2"
+                okf_version: "0.2"
                 ---
                 Example content""");
 
@@ -101,7 +105,7 @@ class ValidFrontmatterRuleTest extends BaseTest {
         Files.createDirectories(indexWithFrontmatterNotRoot.getParent());
         Files.writeString(indexWithFrontmatterNotRoot, """
                 ---
-                okf_version: "v0.2"
+                okf_version: "0.2"
                 ---
                 Example content""");
 
@@ -133,9 +137,10 @@ class ValidFrontmatterRuleTest extends BaseTest {
         });
     }
 
-    @Test
-    @DisplayName("Index with a valid frontmatter but invalid version")
-    void indexWithFrontmatterButInvalidVersion(@TempDir Path temporaryDirectory) throws Exception {
+    @ParameterizedTest
+    @ValueSource(strings = {"v0.2", "bonjour", "0", "0.2.1", "-1.0", ""})
+    @DisplayName("Index with an invalid version format")
+    void indexWithFrontmatterButInvalidVersion(String version, @TempDir Path temporaryDirectory) throws Exception {
         // What we are testing =========================================================================================
         var sourceDirectory = temporaryDirectory.resolve("bundle");
         Files.createDirectories(sourceDirectory);
@@ -145,9 +150,9 @@ class ValidFrontmatterRuleTest extends BaseTest {
         Files.createDirectories(rootIndex.getParent());
         Files.writeString(rootIndex, """
                 ---
-                okf_version: "v0.0"
+                okf_version: "%s"
                 ---
-                Example content""");
+                Example content""".formatted(version));
 
         // We get the files from the bundle ============================================================================
         var bundle = KnowledgeBundleLoader.load(sourceDirectory);
@@ -159,9 +164,34 @@ class ValidFrontmatterRuleTest extends BaseTest {
         assertThat(rule.validate(bundle, indexRoot)).satisfiesOnlyOnce(issue -> {
             assertThat(issue.severity()).isEqualTo(ERROR);
             assertThat(issue.code()).isEqualTo(INVALID_OKF_VERSION);
-            assertThat(issue.message()).isEqualTo("File index.md has invalid 'okf_version' in frontmatter:v0.0");
+            assertThat(issue.message()).isEqualTo("File index.md has invalid 'okf_version' in frontmatter: " + version
+                    + ". Expected major.minor format (for example, 0.2)");
             assertThat(issue.path()).isEqualTo(Path.of("index.md"));
         });
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"0.3", "1.0", "0.0"})
+    @DisplayName("Unknown versions produce a non-blocking warning")
+    void indexWithUnknownVersion(String version, @TempDir Path temporaryDirectory) throws Exception {
+        Files.writeString(temporaryDirectory.resolve("index.md"), """
+                ---
+                okf_version: "%s"
+                ---
+                Example content
+                """.formatted(version));
+        var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
+        var rootIndex = bundle.markdownFiles().findFirst().orElseThrow();
+
+        var issues = rule.validate(bundle, rootIndex);
+
+        assertThat(issues).satisfiesOnlyOnce(issue -> {
+            assertThat(issue.severity()).isEqualTo(WARNING);
+            assertThat(issue.code()).isEqualTo(UNKNOWN_OKF_VERSION);
+            assertThat(issue.message()).isEqualTo("File index.md declares unknown 'okf_version': " + version + ".");
+            assertThat(issue.path()).isEqualTo(Path.of("index.md"));
+        });
+        assertThat(new ValidationReport(issues).hasErrors()).isFalse();
     }
 
     @Test

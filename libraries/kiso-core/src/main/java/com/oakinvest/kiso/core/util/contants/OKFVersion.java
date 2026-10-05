@@ -13,10 +13,10 @@ import java.util.Arrays;
 public enum OKFVersion {
 
     /** Version 0.1. */
-    V0_1("v0.1"),
+    V0_1("0.1"),
 
     /** Version 0.2. */
-    V0_2("v0.2");
+    V0_2("0.2");
 
     /** The version string. */
     @Getter
@@ -41,8 +41,20 @@ public enum OKFVersion {
         if (StringUtils.isBlank(version)) {
             return false;
         }
-        String normalizedVersion = StringUtils.lowerCase(StringUtils.trim(version));
-        return Arrays.stream(values()).anyMatch(v -> v.getVersion().equals(version));
+        return Arrays.stream(values()).anyMatch(value -> value.getVersion().equals(StringUtils.trim(version)));
+    }
+
+    /**
+     * Checks the major.minor format independently of known versions, ignoring surrounding whitespace.
+     *
+     * @param version the version to check
+     * @return true if the version contains two non-negative integers separated by a dot
+     */
+    public static boolean isValidFormat(@Nullable final String version) {
+        if (StringUtils.isBlank(version)) {
+            return false;
+        }
+        return StringUtils.trim(version).matches("[0-9]+\\.[0-9]+");
     }
 
 }
