@@ -43,16 +43,18 @@ public class TagPageGenerator {
 
         // Document creation ===========================================================================================
         final Document tagPage = new Document();
+        BulletList list = new BulletList();
+        list.setMarker("-");
+        list.setTight(true);
+
         knowledgeBundle.markdownFiles()
                 .filter(MarkdownFile::frontmatterPresent)
                 .filter(markdownFile -> markdownFile.frontmatter().tagSlugs().contains(tagSlug))
-                .forEach(markdownFile -> {
-                    BulletList list = new BulletList();
-                    list.setMarker("-");
-                    list.setTight(true);
-                    list.appendChild(markdownFileListItem(baseUrl, markdownFile));
-                    tagPage.appendChild(list);
-                });
+                .forEach(markdownFile ->
+                        list.appendChild(markdownFileListItem(baseUrl, markdownFile))
+                );
+
+        tagPage.appendChild(list);
 
         // Return frontmatter and document content =====================================================================
         return """
