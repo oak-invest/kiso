@@ -339,7 +339,7 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         assertThat(trustSection.select("[data-okf-field=generated] [data-i18n]").eachAttr("data-i18n"))
                 .containsExactly("okfMetadata.generated", "okfMetadata.by", "okfMetadata.at");
         assertThat(trustSection.select("[data-okf-field=verified] [data-i18n]").eachAttr("data-i18n"))
-                .containsExactly("okfMetadata.verified");
+                .containsExactly("okfMetadata.verified", "okfMetadata.by", "okfMetadata.at");
         assertThat(trustSection.select("[data-okf-field=generated]").text())
                 .contains("reference_agent/gemini-2.5-pro")
                 .contains("2026-06-30T14:00:00Z");
