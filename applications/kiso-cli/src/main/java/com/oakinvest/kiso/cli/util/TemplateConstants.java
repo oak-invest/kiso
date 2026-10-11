@@ -15,7 +15,7 @@ public class TemplateConstants {
     public static final String PRECOMPILED_INDEX_TEMPLATE_CLASS = "gg.jte.generated.precompiled.JteindexGenerated";
 
     /** JTE precompiled social preview template class. */
-    public static final String PRECOMPILED_SOCIAL_PREVIEW_TEMPLATE_CLASS = "gg.jte.generated.precompiled.JtesocialpreviewsvgGenerated";
+    public static final String PRECOMPILED_SOCIAL_PREVIEW_TEMPLATE_CLASS = "gg.jte.generated.precompiled.components.social.JtesocialpreviewsvgGenerated";
 
     /** JTE source templates directory when tests are launched directly from the repository isRoot. */
     public static final Path ROOT_SOURCE_TEMPLATES_DIRECTORY = Path.of("kiso-cli/src/main/jte");
