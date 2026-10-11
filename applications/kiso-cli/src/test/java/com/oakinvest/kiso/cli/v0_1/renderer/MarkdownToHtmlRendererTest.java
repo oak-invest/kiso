@@ -313,16 +313,15 @@ public class MarkdownToHtmlRendererTest extends BaseTest {
         var sourcesSection = page.selectFirst("[data-okf-section=sources]");
         assertThat(sourcesSection).isNotNull();
         assertThat(sourcesSection.select("h2[data-i18n=okfMetadata.sources]")).isNotEmpty();
-        assertThat(sourcesSection.select("th[data-i18n]").eachAttr("data-i18n"))
-                .containsExactly(
-                        "okfMetadata.id",
-                        "metadata.resource",
-                        "okfMetadata.title",
-                        "okfMetadata.author",
-                        "okfMetadata.usageCount",
-                        "okfMetadata.lastModified"
-                );
-        assertThat(sourcesSection.select("tbody tr")).hasSize(2);
+        assertThat(sourcesSection.select("table")).isEmpty();
+        assertThat(sourcesSection.select("ul > li")).hasSize(2);
+        assertThat(sourcesSection.selectFirst("li#revenue-policy a").attr("href"))
+                .isEqualTo("policies/revenue-recognition.md");
+        assertThat(sourcesSection.selectFirst("li#revenue-policy a").text())
+                .isEqualTo("Revenue Recognition Policy (FY2026)");
+        assertThat(sourcesSection.select("[data-i18n=okfMetadata.author]")).hasSize(2);
+        assertThat(sourcesSection.select("[data-i18n=okfMetadata.usageCount]")).isEmpty();
+        assertThat(sourcesSection.select("[data-i18n=okfMetadata.lastModified]")).hasSize(2);
         assertThat(sourcesSection.text()).contains("revenue-policy");
         assertThat(sourcesSection.text()).contains("policies/revenue-recognition.md");
         assertThat(sourcesSection.text()).contains("Revenue Recognition Policy (FY2026)");
