@@ -34,12 +34,6 @@ public class TagPageGenerator {
 
         // Define base url =============================================================================================
         final String baseUrl = "../";
-//        if (StringUtils.isBlank(siteConfiguration.normalizedBaseUrl())) {
-//            // Because the tag page is generated in a subfolder, we need to go one level up to reach the root of the site.
-//            baseUrl = "../";
-//        } else {
-//            baseUrl = siteConfiguration.normalizedBaseUrl();
-//        }
 
         // Document creation ===========================================================================================
         final Document tagPage = new Document();
@@ -61,9 +55,12 @@ public class TagPageGenerator {
                 ---
                 type: tag
                 title: %s
+                description: %s
                 ---
                 
-                %s""".formatted(tagSlug, MarkdownRenderer.builder().build().render(tagPage));
+                %s""".formatted(tagSlug,
+                tagSlug + " tag",
+                MarkdownRenderer.builder().build().render(tagPage));
     }
 
 }

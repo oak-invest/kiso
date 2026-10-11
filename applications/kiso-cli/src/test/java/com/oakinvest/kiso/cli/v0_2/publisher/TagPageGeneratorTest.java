@@ -26,6 +26,7 @@ public class TagPageGeneratorTest extends BaseTest {
                         ---
                         type: tag
                         title: finance
+                        description: finance tag
                         ---
                         """.stripIndent())
                 // Links.
@@ -46,6 +47,7 @@ public class TagPageGeneratorTest extends BaseTest {
                         ---
                         type: tag
                         title: finance
+                        description: finance tag
                         ---
                         """.stripIndent())
                 // Links.
