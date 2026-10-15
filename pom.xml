@@ -70,7 +70,7 @@
         <slf4j.version>2.0.20</slf4j.version>
 
         <!-- Boilerplate and utils -->
-        <immutables.version>2.12.2</immutables.version>
+        <immutables.version>2.12.3</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.48</lombok.version>
         <commons-lang3.version>3.21.0</commons-lang3.version>
