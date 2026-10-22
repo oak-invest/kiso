@@ -62,11 +62,13 @@ jobs:
         with:
           name: ${{ matrix.cli_artifact }}
           path: dist/${{ matrix.cli_artifact }}
+          retention-days: 1
 
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.mcp_artifact }}
           path: dist/${{ matrix.mcp_artifact }}
+          retention-days: 1
 
   build-java:
     name: Build Java release
@@ -96,11 +98,13 @@ jobs:
         with:
           name: kiso-cli.jar
           path: dist/kiso-cli.jar
+          retention-days: 1
 
       - uses: actions/upload-artifact@v7
         with:
           name: kiso-mcp-server.jar
           path: dist/kiso-mcp-server.jar
+          retention-days: 1
 
   release:
     name: Publish GitHub Release
