@@ -50,7 +50,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Main libraries -->
-        <commonmark.version>0.30.0</commonmark.version>
+        <commonmark.version>0.30.1</commonmark.version>
         <jte.version>3.2.4</jte.version>
         <picocli.version>4.7.7</picocli.version>
 
@@ -70,7 +70,7 @@
         <slf4j.version>2.0.20</slf4j.version>
 
         <!-- Boilerplate and utils -->
-        <immutables.version>2.12.2</immutables.version>
+        <immutables.version>2.12.3</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.48</lombok.version>
         <commons-lang3.version>3.21.0</commons-lang3.version>
