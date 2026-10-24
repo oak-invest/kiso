@@ -38,6 +38,11 @@
             <groupId>gg.jte</groupId>
             <artifactId>jte</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- Boilerplate and utils -->
         <dependency>
