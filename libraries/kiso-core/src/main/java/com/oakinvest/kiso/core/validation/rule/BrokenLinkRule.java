@@ -8,13 +8,12 @@ import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.Link;
 import org.commonmark.parser.Parser;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static com.oakinvest.kiso.core.validation.ValidationCode.BROKEN_LINK;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.WARNING;
@@ -35,14 +34,11 @@ public class BrokenLinkRule implements MarkdownFileRule {
         Objects.requireNonNull(knowledgeBundle, "knowledgeBundle must not be null");
         Objects.requireNonNull(markdownFile, "markdownFile must not be null");
 
-        // Getting all pages in the bundle =============================================================================
-        final Set<Path> existingPages = knowledgeBundle.markdownFiles()
-                .map(MarkdownFile::relativePath)
-                .collect(Collectors.toSet());
+        final Path rootPath = knowledgeBundle.rootBundle().absolutePath().toAbsolutePath().normalize();
 
         // Getting all the links inside the markdown content ===========================================================
         return getLocalLinks(markdownFile).stream()
-                .filter(link -> !existingPages.contains(resolvedPath(markdownFile, link.getDestination())))
+                .filter(link -> !targetExists(rootPath, markdownFile, link.getDestination()))
                 .map(link -> brokenLinkIssue(markdownFile, link))
                 .toList();
     }
@@ -64,7 +60,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
 
             @Override
             public void visit(final Link link) {
-                if (isLocalPageLink(link.getDestination())) {
+                if (isLocalLink(link.getDestination())) {
                     links.add(link);
                 }
                 visitChildren(link);
@@ -82,7 +78,7 @@ public class BrokenLinkRule implements MarkdownFileRule {
                 .build();
     }
 
-    private boolean isLocalPageLink(final String destination) {
+    private boolean isLocalLink(final String destination) {
         if (StringUtils.isBlank(destination)) {
             return false;
         }
@@ -97,12 +93,16 @@ public class BrokenLinkRule implements MarkdownFileRule {
                 && !URI_SCHEME_PATTERN.matcher(cleanedDestination).matches();
     }
 
-    private Path resolvedPath(final MarkdownFile markdownFile, final String destination) {
-        final Path parentPath = markdownFile.relativePath().getParent();
-        if (parentPath == null) {
-            return Path.of(cleanDestination(destination)).normalize();
+    private boolean targetExists(final Path rootPath, final MarkdownFile markdownFile, final String destination) {
+        final String cleanedDestination = cleanDestination(destination);
+        final Path targetPath;
+        if (cleanedDestination.startsWith("/")) {
+            targetPath = rootPath.resolve(cleanedDestination.substring(1)).normalize();
+        } else {
+            final Path parentPath = rootPath.resolve(markdownFile.relativePath()).getParent();
+            targetPath = parentPath.resolve(cleanedDestination).normalize();
         }
-        return parentPath.resolve(cleanDestination(destination)).normalize();
+        return targetPath.startsWith(rootPath) && Files.isRegularFile(targetPath);
     }
 
     private String cleanDestination(final String destination) {
