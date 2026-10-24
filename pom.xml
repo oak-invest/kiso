@@ -79,7 +79,7 @@
 
         <jackson-bom.version>3.2.4</jackson-bom.version>
         <jackson.version>2.22.4</jackson.version>
-        <batik.version>1.19</batik.version>
+        <batik.version>1.20</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
 
         <!-- Test dependencies -->
