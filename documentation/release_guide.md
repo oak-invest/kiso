@@ -4,6 +4,10 @@
 
 - Run IntelliJ IDEA code inspection on the project.
 
+## Update libraries
+- Go to https://www.webjars.org and update "Frontend assets" libraries in pom.xml
+- Go to https://github.com/oak-invest/kiso/network/updates and run dependency updates.
+
 ## Local tests
 
 - Delete the `public` folder in the project root.
