@@ -77,8 +77,8 @@
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
 
-        <jackson-bom.version>3.2.4</jackson-bom.version>
-        <jackson.version>2.22.4</jackson.version>
+        <jackson3-bom.version>3.2.4</jackson3-bom.version>
+        <jackson2-bom.version>2.22.4</jackson2-bom.version>
         <batik.version>1.20</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
 
@@ -107,7 +107,14 @@
             <dependency>
                 <groupId>tools.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>${jackson-bom.version}</version>
+                <version>${jackson3-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson2-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -200,16 +207,6 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <version>${commons-text.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
