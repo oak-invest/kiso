@@ -22,6 +22,8 @@ import org.apache.lucene.util.IOUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.BODY;
@@ -116,10 +118,11 @@ public final class KnowledgeIndexBuilder {
         }
 
         // Tags ========================================================================================================
-        final String tags = String.join(" ", markdownFile.frontmatter().tags());
-        if (StringUtils.isNotBlank(tags)) {
-            document.add(new TextField(TAGS, tags, Field.Store.NO));
-        }
+        final String tags = Stream.concat(
+                        markdownFile.frontmatter().tags().stream(),
+                        markdownFile.frontmatter().tagSlugs().stream())
+                .collect(Collectors.joining(" "));
+        document.add(new TextField(TAGS, tags, Field.Store.NO));
 
         // Body ========================================================================================================
         final String body = markdownFile.body();

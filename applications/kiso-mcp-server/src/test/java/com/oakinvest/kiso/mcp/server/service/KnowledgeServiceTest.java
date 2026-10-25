@@ -197,6 +197,9 @@ public class KnowledgeServiceTest extends BaseTest {
                         result1 -> assertThat(result1.conceptId()).isEqualTo("tables/orders"),
                         result2 -> assertThat(result2.conceptId()).isEqualTo("policies/revenue-recognition")
                 );
+
+        // Search by tags.
+        assertThat(knowledgeService.searchConcepts("headline-metric")).hasSize(4);
     }
 
     @Test
