@@ -133,6 +133,7 @@ public class ServeCommand extends AbstractCommand implements Runnable {
             try {
                 server.close();
             } catch (RuntimeException | Error closeException) {
+                printError("Error while closing the server: " + closeException.getMessage());
                 exception.addSuppressed(closeException);
             }
             throw exception;

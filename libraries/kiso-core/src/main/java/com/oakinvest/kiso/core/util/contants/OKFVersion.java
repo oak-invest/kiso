@@ -45,7 +45,7 @@ public enum OKFVersion {
     }
 
     /**
-     * Checks the major.minor format independently of known versions, ignoring surrounding whitespace.
+     * Checks the major/minor format independently of known versions, ignoring surrounding whitespace.
      *
      * @param version the version to check
      * @return true if the version contains two non-negative integers separated by a dot
