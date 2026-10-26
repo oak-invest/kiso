@@ -22,8 +22,6 @@ import org.apache.lucene.util.IOUtils;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Path;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.CONCEPT;
 import static com.oakinvest.kiso.mcp.server.service.KnowledgeIndexFields.BODY;
@@ -102,7 +100,7 @@ public final class KnowledgeIndexBuilder {
         if (StringUtils.isNotBlank(conceptId)) {
             document.add(new StringField(CONCEPT_ID, conceptId, Field.Store.YES));
         } else {
-            return; // We skip the document if the concept ID is null, as it is required for indexing.
+            return; // Skip the document if the concept ID is null, empty, or whitespace-only.
         }
 
         // Title =======================================================================================================
@@ -118,10 +116,7 @@ public final class KnowledgeIndexBuilder {
         }
 
         // Tags ========================================================================================================
-        final String tags = Stream.concat(
-                        markdownFile.frontmatter().tags().stream(),
-                        markdownFile.frontmatter().tagSlugs().stream())
-                .collect(Collectors.joining(" "));
+        final String tags = String.join(" ", markdownFile.frontmatter().getAllTags());
         document.add(new TextField(TAGS, tags, Field.Store.NO));
 
         // Body ========================================================================================================

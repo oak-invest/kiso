@@ -18,6 +18,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 import static com.oakinvest.kiso.core.util.types.LifecycleStatus.STABLE;
 import static com.oakinvest.kiso.core.util.types.TrustLevel.HUMAN_REVIEWED;
@@ -99,6 +100,17 @@ public record Frontmatter(
                 .parameters(List.of())
                 .extraFields(Map.of())
                 .build();
+    }
+
+    /**
+     * Returns all tags, including tag slugs.
+     *
+     * @return list of all tags
+     */
+    public List<String> getAllTags() {
+        return Stream.concat(tags.stream(), tagSlugs.stream())
+                .distinct()
+                .toList();
     }
 
     /**
