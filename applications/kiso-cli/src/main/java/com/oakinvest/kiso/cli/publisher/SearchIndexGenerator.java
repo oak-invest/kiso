@@ -61,7 +61,7 @@ public class SearchIndexGenerator {
         document.put("description", markdownFile.frontmatter().description());
         document.put("body", markdownFile.body());
         ArrayNode tags = document.putArray("tags");
-        markdownFile.frontmatter().tags().forEach(tags::add);
+        markdownFile.frontmatter().getAllTags().forEach(tags::add);
         return document;
     }
 
