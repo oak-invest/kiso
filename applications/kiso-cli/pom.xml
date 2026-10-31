@@ -21,6 +21,7 @@
     <!-- Project configuration ===================================================================================== -->
     <properties>
         <application.main.class>com.oakinvest.kiso.cli.Application</application.main.class>
+        <maven.deploy.skip>true</maven.deploy.skip>
     </properties>
 
     <!-- Dependencies ============================================================================================== -->

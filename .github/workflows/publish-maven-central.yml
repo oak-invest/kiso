@@ -1,0 +1,49 @@
+name: Publish kiso-core to Maven Central
+
+on:
+  push:
+    tags: [ '*' ]
+
+permissions:
+  contents: read
+
+jobs:
+
+  publish-maven-central:
+    name: Publish kiso-core to Maven Central
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Retrieve the sources
+        uses: actions/checkout@v7
+
+      - name: Set up environment
+        uses: ./.github/actions/setup
+
+      - name: Import GPG key
+        run: echo "$MAVEN_GPG_PRIVATE_KEY" | gpg --import
+        env:
+          MAVEN_GPG_PRIVATE_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+
+      - name: Configure Maven settings
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings>
+            <servers>
+              <server>
+                <id>central</id>
+                <username>${env.CENTRAL_USERNAME}</username>
+                <password>${env.CENTRAL_PASSWORD}</password>
+              </server>
+            </servers>
+          </settings>
+          EOF
+
+      - name: Publish to Maven Central
+        run: mvn deploy -Prelease -DskipTests
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}

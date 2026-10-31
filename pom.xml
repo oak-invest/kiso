@@ -33,6 +33,15 @@
         <url>https://github.com/oak-invest/kiso/issues</url>
     </issueManagement>
 
+    <!-- Developers ================================================================================================ -->
+    <developers>
+        <developer>
+            <id>oak-invest</id>
+            <name>Oak Invest</name>
+            <url>https://github.com/oak-invest</url>
+        </developer>
+    </developers>
+
     <!-- Modules =================================================================================================== -->
     <modules>
         <module>libraries/kiso-core</module>
@@ -99,6 +108,10 @@
         <maven.graalvm.native.plugin.version>1.1.17</maven.graalvm.native.plugin.version>
         <maven.shared.utils.version>3.5.0</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
+        <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
+        <maven.javadoc.plugin.version>3.11.2</maven.javadoc.plugin.version>
+        <maven.gpg.plugin.version>3.2.4</maven.gpg.plugin.version>
+        <central.publishing.maven.plugin.version>0.6.0</central.publishing.maven.plugin.version>
     </properties>
 
     <!-- Dependency versions ======================================================================================= -->
@@ -327,5 +340,52 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Release profile =========================================================================================== -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+
+                    <!-- GPG signing =============================================================================== -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </plugin>
+
+                    <!-- Maven Central publishing ================================================================== -->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central.publishing.maven.plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
