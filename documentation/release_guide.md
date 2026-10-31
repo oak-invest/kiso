@@ -66,27 +66,6 @@
 
 ## Release steps
 
-### Maven Central publication
-
-The `deploy-maven-central.yml` workflow publishes `kiso-core` and its parent POM.
-Pushes to `development` and `feature/**` publish snapshots; pushes to any tag publish releases.
-It can also be started manually on those branches or on a tag.
-It runs the core tests and requires a version ending in `-SNAPSHOT` for branches
-and a non-snapshot version for tags. The Maven version must be updated before creating a release tag.
-
-Configure these GitHub Actions repository secrets:
-
-- `CENTRAL_USERNAME`: the Sonatype Central token username.
-- `CENTRAL_PASSWORD`: the Sonatype Central token password.
-- `GPG_PRIVATE_KEY`: the ASCII-armored private key matching the release profile's `gpg.keyname`.
-- `GPG_PASSPHRASE`: the private key passphrase.
-
-The standalone workflow uses `actions/setup-java` with Temurin 25 to configure Maven credentials
-and import the signing key. The release profile signs the artifacts before publication.
-
-Snapshot publishing must be enabled for the `com.oak-invest.kiso` namespace in Sonatype Central.
-Artifacts are published to `https://central.sonatype.com/repository/maven-snapshots/`.
-
 ### GitHub release
 
 - Run `just start_release`.

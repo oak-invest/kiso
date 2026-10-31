@@ -20,6 +20,17 @@
         </license>
     </licenses>
 
+    <developers>
+        <developer>
+            <id>straumat</id>
+            <name>Stéphane Traumat</name>
+            <email>stephane.traumat@oak-invest.com</email>
+            <url>https://github.com/straumat</url>
+            <organization>Oak Invest</organization>
+            <organizationUrl>https://www.oak-invest.com</organizationUrl>
+        </developer>
+    </developers>
+
     <!-- Source Code Management ==================================================================================== -->
     <scm>
         <url>https://github.com/oak-invest/kiso</url>
@@ -332,6 +343,59 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Profiles ================================================================================================== -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <gpg.keyname>606698063264059EB9641EA54A952DBBE296CC51</gpg.keyname>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>${maven.deploy-plugin.version}</version>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-release</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Prevent `gpg` from using pinentry programs -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${maven.central-publishing-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <!-- Distribution management ==================================================================================== -->
     <distributionManagement>
