@@ -1,0 +1,62 @@
+name: Deploy Maven Central
+
+on:
+  push:
+    branches:
+      - development
+      - 'feature/**'
+    tags: [ '*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-maven-central-${{ github.ref_type }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy kiso-core
+    if: github.ref_type == 'tag' || github.ref == 'refs/heads/development' || startsWith(github.ref, 'refs/heads/feature/')
+    runs-on: ubuntu-latest
+    env:
+      CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+      CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+    steps:
+
+      - name: Retrieve the sources
+        uses: actions/checkout@v7
+
+      - name: Java Setup
+        uses: actions/setup-java@v4.7.1
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Check deployment version
+        run: |
+          version=$(mvn -q -N help:evaluate -Dexpression=project.version -DforceStdout -Dstyle.color=never)
+          if [[ -z "$version" ]]; then
+            echo "::error::Could not determine the Maven project version."
+            exit 1
+          fi
+          if [[ "$GITHUB_REF_TYPE" == "tag" ]]; then
+            if [[ "$version" == *-SNAPSHOT ]]; then
+              echo "::error::Tags require a release version, got '$version'."
+              exit 1
+            fi
+          elif [[ "$version" != *-SNAPSHOT ]]; then
+            echo "::error::Branches require a SNAPSHOT version, got '$version'."
+            exit 1
+          fi
+
+      - name: Build, test and deploy
+        run: |
+          mvn -B -Prelease clean deploy -pl libraries/kiso-core -am
