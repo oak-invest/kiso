@@ -1,4 +1,4 @@
-name: Publish website
+name: Deploy website
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - development
     paths:
       - "website/**"
-      - ".github/workflows/publish-website.yml"
+      - ".github/workflows/deploy-website.yml"
 
 permissions:
   contents: read
@@ -39,14 +39,14 @@ jobs:
 
       # Generate website examples ======================================================================================
       - name: Build kb-google-example with Kiso
-        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.6
+        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.7
         with:
           command: build
           source: examples/kb-google-example-v0.2
           destination: website/examples/kb-google-example
 
       - name: Build kb-acme-example with Kiso
-        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.6
+        uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.7
         with:
           command: build
           source: examples/kb-acme-example-v0.2
