@@ -7,7 +7,7 @@
     <!-- Project information ======================================================================================= -->
     <groupId>com.oak-invest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.2.7-SNAPSHOT</version>
+    <version>0.2.7</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
     <description>Publishing engine and MCP server for Open Knowledge Format (OKF)</description>
