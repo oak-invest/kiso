@@ -6,9 +6,9 @@
 
     <!-- Parent ==================================================================================================== -->
     <parent>
-        <groupId>com.oakinvest.kiso</groupId>
+        <groupId>com.oak-invest.kiso</groupId>
         <artifactId>kiso</artifactId>
-        <version>0.2.6</version>
+        <version>0.2.7</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -29,7 +29,7 @@
     <dependencies>
         <!-- Main libraries -->
         <dependency>
-            <groupId>com.oakinvest.kiso</groupId>
+            <groupId>com.oak-invest.kiso</groupId>
             <artifactId>kiso-core</artifactId>
         </dependency>
         <dependency>

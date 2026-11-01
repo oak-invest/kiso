@@ -20,7 +20,9 @@ import static com.oakinvest.kiso.core.validation.ValidationCode.INVALID_TIMESTAM
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER;
 import static com.oakinvest.kiso.core.validation.ValidationCode.MISSING_FRONTMATTER_TYPE;
 import static com.oakinvest.kiso.core.validation.ValidationCode.UNEXPECTED_FRONTMATTER;
+import static com.oakinvest.kiso.core.validation.ValidationCode.UNKNOWN_OKF_VERSION;
 import static com.oakinvest.kiso.core.validation.ValidationSeverity.ERROR;
+import static com.oakinvest.kiso.core.validation.ValidationSeverity.WARNING;
 
 /**
  * Valid frontmatter rule.
@@ -100,13 +102,24 @@ public class ValidFrontmatterRule implements MarkdownFileRule {
                         && markdownFile.bundleName().equals(ROOT_BUNDLE_NAME)
                         && markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY) != null) {
 
-                    // Validate okf_version against existing OKF versions.
+                    // Unknown versions remain consumable as recommended by the specification.
                     final String okfVersion = markdownFile.frontmatter().extraFields().get(OKF_VERSION_KEY).toString();
-                    if (!OKFVersion.exists(okfVersion)) {
+                    if (!OKFVersion.isValidFormat(okfVersion)) {
                         return List.of(ValidationIssue.builder()
                                 .severity(ERROR)
                                 .code(INVALID_OKF_VERSION)
-                                .message("File " + markdownFile.relativePath() + " has invalid 'okf_version' in frontmatter:" + okfVersion)
+                                .message("File " + markdownFile.relativePath() + " has invalid 'okf_version' in frontmatter: " + okfVersion
+                                        + ". Expected major.minor format (for example, 0.2)")
+                                .path(markdownFile.relativePath())
+                                .build());
+                    }
+
+                    // If the version is valid but unknown, we issue a warning to inform the user.
+                    if (!OKFVersion.exists(okfVersion)) {
+                        return List.of(ValidationIssue.builder()
+                                .severity(WARNING)
+                                .code(UNKNOWN_OKF_VERSION)
+                                .message("File " + markdownFile.relativePath() + " declares unknown 'okf_version': " + okfVersion + ".")
                                 .path(markdownFile.relativePath())
                                 .build());
                     }

@@ -10,17 +10,17 @@
                   data-i18n="okfMetadata.trustTier">Trust tier</span>
             <span class="badge badge-outline ml-2">${page.trustTierValue()}</span>
         </div>
-        <div class="grid gap-6 md:grid-cols-2">
+        <div class="space-y-6">
             @if(page.generated() != null)
                 <div data-okf-field="generated">
                     <div class="text-xs font-semibold uppercase text-base-content/50"
                          data-i18n="okfMetadata.generated">Generated
                     </div>
-                    <dl class="mt-3 space-y-2 text-sm">
+                    <dl class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
                         @if(page.generated().by() != null)
-                            <div>
-                                <dt class="font-semibold" data-i18n="okfMetadata.by">By</dt>
-                                <dd class="inline-flex items-center gap-1.5">
+                            <div class="flex min-w-0 max-w-full items-center gap-1.5">
+                                <dt class="shrink-0 font-semibold" data-i18n="okfMetadata.by">By</dt>
+                                <dd class="inline-flex min-w-0 max-w-full items-center gap-1.5">
                                     @if(page.generated().by().isHuman())
                                         @template.components.icons.human(cssClass = "size-4 shrink-0")
                                     @endif
@@ -30,14 +30,14 @@
                                     @if(page.generated().by().isProcess())
                                         @template.components.icons.process(cssClass = "size-4 shrink-0")
                                     @endif
-                                    <span class="font-mono">${page.generated().by().identifier()}</span>
+                                    <span class="min-w-0 font-mono [overflow-wrap:anywhere]">${page.generated().by().identifier()}</span>
                                 </dd>
                             </div>
                         @endif
                         @if(page.generated().at() != null)
-                            <div>
-                                <dt class="font-semibold" data-i18n="okfMetadata.at">At</dt>
-                                <dd>${page.generated().at()}</dd>
+                            <div class="flex min-w-0 max-w-full items-center gap-1.5">
+                                <dt class="shrink-0 font-semibold" data-i18n="okfMetadata.at">At</dt>
+                                <dd class="min-w-0 text-base-content/60 [overflow-wrap:anywhere]">${page.generated().at()}</dd>
                             </div>
                         @endif
                     </dl>
@@ -51,24 +51,32 @@
                     </div>
                     <ul class="mt-3 space-y-3 text-sm">
                         @for(var verification : page.verified())
-                            <li class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                @if(verification.by() != null)
-                                    <span class="inline-flex items-center gap-1.5">
-                                        @if(verification.by().isHuman())
-                                            @template.components.icons.human(cssClass = "size-4 shrink-0")
-                                        @endif
-                                        @if(verification.by().isAgent())
-                                            @template.components.icons.agent(cssClass = "size-4 shrink-0")
-                                        @endif
-                                        @if(verification.by().isProcess())
-                                            @template.components.icons.process(cssClass = "size-4 shrink-0")
-                                        @endif
-                                        <span class="font-mono">${verification.by().identifier()}</span>
-                                    </span>
-                                @endif
-                                @if(verification.at() != null)
-                                    <span class="text-base-content/60">${verification.at()}</span>
-                                @endif
+                            <li>
+                                <dl class="flex flex-wrap items-center gap-x-3 gap-y-1">
+                                    @if(verification.by() != null)
+                                        <div class="flex min-w-0 max-w-full items-center gap-1.5">
+                                            <dt class="shrink-0 font-semibold" data-i18n="okfMetadata.by">By</dt>
+                                            <dd class="inline-flex min-w-0 max-w-full items-center gap-1.5">
+                                                @if(verification.by().isHuman())
+                                                    @template.components.icons.human(cssClass = "size-4 shrink-0")
+                                                @endif
+                                                @if(verification.by().isAgent())
+                                                    @template.components.icons.agent(cssClass = "size-4 shrink-0")
+                                                @endif
+                                                @if(verification.by().isProcess())
+                                                    @template.components.icons.process(cssClass = "size-4 shrink-0")
+                                                @endif
+                                                <span class="min-w-0 font-mono [overflow-wrap:anywhere]">${verification.by().identifier()}</span>
+                                            </dd>
+                                        </div>
+                                    @endif
+                                    @if(verification.at() != null)
+                                        <div class="flex min-w-0 max-w-full items-center gap-1.5">
+                                            <dt class="shrink-0 font-semibold" data-i18n="okfMetadata.at">At</dt>
+                                            <dd class="min-w-0 text-base-content/60 [overflow-wrap:anywhere]">${verification.at()}</dd>
+                                        </div>
+                                    @endif
+                                </dl>
                             </li>
                         @endfor
                     </ul>

@@ -6,9 +6,9 @@
 
     <!-- Parent ==================================================================================================== -->
     <parent>
-        <groupId>com.oakinvest.kiso</groupId>
+        <groupId>com.oak-invest.kiso</groupId>
         <artifactId>kiso</artifactId>
-        <version>0.2.6</version>
+        <version>0.2.7</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -81,5 +81,43 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven.source.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven.javadoc.plugin.version}</version>
+                <configuration>
+                    <detectOfflineLinks>false</detectOfflineLinks>
+                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+                    <failOnError>false</failOnError>
+                    <quiet>true</quiet>
+                    <additionalOptions>-Xdoclint:none</additionalOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

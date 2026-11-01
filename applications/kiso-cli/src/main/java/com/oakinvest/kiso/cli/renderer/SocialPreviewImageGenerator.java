@@ -121,7 +121,7 @@ public final class SocialPreviewImageGenerator {
             Files.writeString(svgPath, svgOutput.toString().stripLeading(), UTF_8);
         } catch (Exception exception) {
             throw new SocialPreviewGenerationException(
-                    "Failed to generate SVG file: " + svgPath,
+                    "Failed to generate SVG file: " + svgPath + ": " + exception.getMessage(),
                     exception
             );
         }

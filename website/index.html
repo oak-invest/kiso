@@ -70,7 +70,7 @@
                     Open Knowledge Format
                 </div>
                 <h1 class="text-4xl font-bold leading-tight tracking-normal sm:text-5xl lg:text-6xl">
-                    Publishing engine for Open Knowledge Format
+                    Publishing engine and MCP server for OKF
                 </h1>
                 <p class="mt-6 max-w-3xl text-lg leading-8 text-base-content/75">
                     Kiso provides two applications built around <a
@@ -100,7 +100,7 @@
                     The generated directory can be opened locally or published on any HTTP server.<br>
                     <br>
                     The result with the Google examples can be seen <a class="link link-primary"
-                                                                       href="examples/kb-google-example/"
+                                                                       href="examples/kb-acme-example/"
                                                                        target="demo">here</a>.
                 </p>
             </aside>
@@ -226,7 +226,7 @@
                 </div>
                 <div class="mockup-code min-w-0 max-w-full overflow-x-auto bg-neutral text-neutral-content">
                     <pre><code> - name: Build with Kiso
-   uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.5
+   uses: oak-invest/kiso/applications/kiso-cli-action@v0.2.6
    with:
     command: build
     source: examples/kb-google-example

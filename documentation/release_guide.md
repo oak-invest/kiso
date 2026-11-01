@@ -4,6 +4,10 @@
 
 - Run IntelliJ IDEA code inspection on the project.
 
+## Update libraries
+- Go to https://www.webjars.org and update "Frontend assets" libraries in pom.xml
+- Go to https://github.com/oak-invest/kiso/network/updates and run dependency updates.
+
 ## Local tests
 
 - Delete the `public` folder in the project root.
@@ -62,6 +66,8 @@
 
 ## Release steps
 
+### GitHub release
+
 - Run `just start_release`.
 - Run `just finish_release`.
 - Wait for the release to appear here: https://github.com/oak-invest/kiso/releases.
@@ -71,6 +77,7 @@
 - Add a release note here:  https://github.com/oak-invest/kiso/releases.
 - Update the release number in `website/index.html`.
 - Change the release number in `.github/workflows/publish-website.yml`.
+- Push the changes
 - Close the milestone at https://github.com/oak-invest/kiso/milestones.
 - Update the project board at https://github.com/orgs/oak-invest/projects/1/views/1.
 - Wait until the website CI script is done at https://github.com/oak-invest/kiso/actions/workflows/publish-website.yml.
@@ -79,8 +86,8 @@
 ## Communicate
 
 - Write an English / French announcement.
-- Close previous announcements on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions?discussions_q=is%3Aopen+kiso.
-- Post it on https://github.com/GoogleCloudPlatform/knowledge-catalog/discussions/new?category=show-and-tell.
+- Close previous announcements on https://github.com/GoogleCloudPlatform/open-knowledge-format/discussions?discussions_q=is%3Aopen+kiso.
+- Post it on https://github.com/GoogleCloudPlatform/open-knowledge-format/discussions/new?category=show-and-tell.
 - Post on social media:
     - LinkedIn at 14h00 – 15h00.
     - Twitter at 12h15 – 13h15 or 18h00 – 19h00.

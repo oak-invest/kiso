@@ -253,7 +253,7 @@ public class BuildCommand extends AbstractCommand implements Callable<Integer> {
                                                     bundle.absolutePath(),
                                                     FilenameUtils.removeExtension(markdownFile.htmlFilename()));
                                         } catch (Exception e) {
-                                            printError("Error generating social preview image for " + markdownFile.absolutePath() + ": " + e.getMessage());
+                                            printError("Error generating social preview image: " + e.getMessage());
                                         }
                                     }
                                 });

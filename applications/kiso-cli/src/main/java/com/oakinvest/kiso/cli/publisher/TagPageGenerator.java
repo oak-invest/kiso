@@ -34,34 +34,33 @@ public class TagPageGenerator {
 
         // Define base url =============================================================================================
         final String baseUrl = "../";
-//        if (StringUtils.isBlank(siteConfiguration.normalizedBaseUrl())) {
-//            // Because the tag page is generated in a subfolder, we need to go one level up to reach the root of the site.
-//            baseUrl = "../";
-//        } else {
-//            baseUrl = siteConfiguration.normalizedBaseUrl();
-//        }
 
         // Document creation ===========================================================================================
         final Document tagPage = new Document();
+        BulletList list = new BulletList();
+        list.setMarker("-");
+        list.setTight(true);
+
         knowledgeBundle.markdownFiles()
                 .filter(MarkdownFile::frontmatterPresent)
                 .filter(markdownFile -> markdownFile.frontmatter().tagSlugs().contains(tagSlug))
-                .forEach(markdownFile -> {
-                    BulletList list = new BulletList();
-                    list.setMarker("-");
-                    list.setTight(true);
-                    list.appendChild(markdownFileListItem(baseUrl, markdownFile));
-                    tagPage.appendChild(list);
-                });
+                .forEach(markdownFile ->
+                        list.appendChild(markdownFileListItem(baseUrl, markdownFile))
+                );
+
+        tagPage.appendChild(list);
 
         // Return frontmatter and document content =====================================================================
         return """
                 ---
                 type: tag
                 title: %s
+                description: %s
                 ---
                 
-                %s""".formatted(tagSlug, MarkdownRenderer.builder().build().render(tagPage));
+                %s""".formatted(tagSlug,
+                tagSlug + " tag",
+                MarkdownRenderer.builder().build().render(tagPage));
     }
 
 }

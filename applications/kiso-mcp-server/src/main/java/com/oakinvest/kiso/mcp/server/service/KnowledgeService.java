@@ -175,7 +175,7 @@ public class KnowledgeService implements AutoCloseable {
             } finally {
                 indexLock.writeLock().unlock();
             }
-            LOGGER.log(INFO, "Initial knowledge index ready: {0} concepts indexed ", index.reader().numDocs());
+            LOGGER.log(INFO, "Initial knowledge index ready: {0} concepts indexed", index.reader().numDocs());
         } catch (IOException | RuntimeException exception) {
             LOGGER.log(ERROR, "Could not refresh the knowledge index from {0}", rootBundlePath, exception);
         }
@@ -194,7 +194,7 @@ public class KnowledgeService implements AutoCloseable {
         indexLock.writeLock().lock();
         try {
             index.close();
-            LOGGER.log(INFO, "Knowledge service closed ");
+            LOGGER.log(INFO, "Knowledge service closed");
         } catch (IOException exception) {
             LOGGER.log(ERROR, "Could not close the knowledge index for " + rootBundlePath, exception);
             throw new UncheckedIOException(exception);

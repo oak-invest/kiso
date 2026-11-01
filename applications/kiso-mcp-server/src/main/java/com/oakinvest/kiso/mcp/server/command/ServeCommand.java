@@ -1,6 +1,5 @@
 package com.oakinvest.kiso.mcp.server.command;
 
-import com.oakinvest.kiso.core.exception.KnowledgeBundleLoadingException;
 import com.oakinvest.kiso.mcp.server.ApplicationVersion;
 import com.oakinvest.kiso.mcp.server.option.AllowedHostsOption;
 import com.oakinvest.kiso.mcp.server.option.HostOption;
@@ -13,7 +12,6 @@ import dev.tachyonmcp.api.server.features.tools.Tools;
 import dev.tachyonmcp.core.server.TachyonServer;
 import picocli.CommandLine;
 
-import java.io.File;
 import java.util.Map;
 
 /**
@@ -106,43 +104,39 @@ public class ServeCommand extends AbstractCommand implements Runnable {
 
     @Override
     public final void run() {
-        // Displaying information about the process ====================================================================
-        final File sourceDirectory = sourceOption.sourceDirectory().toFile();
-        print("Kiso-mcp-server " + ApplicationVersion.get() + " - Running on " + hostOption.host() + ":" + portOption.port());
+        // Creating the knowledge service and loading the knowledge bundle =============================================
+        final KnowledgeService knowledgeService = new KnowledgeService(sourceOption.sourceDirectory());
 
+        // Starting the MCP server =====================================================================================
+        final TachyonServer server = TachyonServer.builder()
+                .name("kiso-mcp-server")
+                .withTools(tools -> registerTools(tools, knowledgeService))
+                .stateless()
+                .host(hostOption.host())
+                .port(portOption.port())
+                .network(network -> network.allowedHosts(allowedHostsOption.allowedHosts().toArray(String[]::new)))
+                .build();
         try {
-            // Creating the knowledge service and loading the knowledge bundle =========================================
-            final KnowledgeService knowledgeService = new KnowledgeService(sourceDirectory.toPath());
+            // Starting the server and printing the version and host/port information.
+            server.start();
+            print("Kiso-mcp-server " + ApplicationVersion.get() + " running on " + hostOption.host() + ":" + portOption.port());
 
-            // Starting the server =================================================================================
-            final TachyonServer server = TachyonServer.builder()
-                    .name("kiso-mcp-server")
-                    .withTools(tools -> registerTools(tools, knowledgeService))
-                    .stateless()
-                    .host(hostOption.host())
-                    .port(portOption.port())
-                    .network(network -> network.allowedHosts(allowedHostsOption.allowedHosts().toArray(String[]::new)))
-                    .build();
-            try {
-                server.start();
-                Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                    try {
-                        server.close();
-                    } finally {
-                        knowledgeService.close();
-                    }
-                }, "kiso-mcp-server-shutdown"));
-            } catch (RuntimeException | Error exception) {
+            // Managing server shutdown.
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 try {
                     server.close();
-                } catch (RuntimeException | Error closeException) {
-                    exception.addSuppressed(closeException);
+                } finally {
+                    knowledgeService.close();
                 }
-                throw exception;
+            }, "kiso-mcp-server-shutdown"));
+        } catch (RuntimeException | Error exception) {
+            try {
+                server.close();
+            } catch (RuntimeException | Error closeException) {
+                printError("Error while closing the server: " + closeException.getMessage());
+                exception.addSuppressed(closeException);
             }
-
-        } catch (KnowledgeBundleLoadingException exception) {
-            printError("Failed to load knowledge bundle: " + exception.getMessage());
+            throw exception;
         }
     }
 

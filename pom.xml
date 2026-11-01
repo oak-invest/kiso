@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Project information ======================================================================================= -->
-    <groupId>com.oakinvest.kiso</groupId>
+    <groupId>com.oak-invest.kiso</groupId>
     <artifactId>kiso</artifactId>
-    <version>0.2.6</version>
+    <version>0.2.7</version>
     <packaging>pom</packaging>
     <name>Kiso</name>
-    <description>Publishing engine for the Open Knowledge Format</description>
+    <description>Publishing engine and MCP server for Open Knowledge Format (OKF)</description>
     <url>https://github.com/oak-invest/kiso</url>
     <licenses>
         <license>
@@ -19,6 +19,17 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <id>straumat</id>
+            <name>Stéphane Traumat</name>
+            <email>stephane.traumat@oak-invest.com</email>
+            <url>https://github.com/straumat</url>
+            <organization>Oak Invest</organization>
+            <organizationUrl>https://www.oak-invest.com</organizationUrl>
+        </developer>
+    </developers>
 
     <!-- Source Code Management ==================================================================================== -->
     <scm>
@@ -50,36 +61,36 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Main libraries -->
-        <commonmark.version>0.30.0</commonmark.version>
+        <commonmark.version>0.30.1</commonmark.version>
         <jte.version>3.2.4</jte.version>
         <picocli.version>4.7.7</picocli.version>
 
         <!-- Frontend assets - Updates through https://www.webjars.org -->
-        <daisyui.webjar.version>5.7.42</daisyui.webjar.version>
+        <daisyui.webjar.version>5.7.50</daisyui.webjar.version>
         <tailwindcss.webjar.version>4.3.3</tailwindcss.webjar.version>
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
-        <i18next.webjar.version>26.4.2</i18next.webjar.version>
+        <i18next.webjar.version>26.5.10</i18next.webjar.version>
 
         <!-- HTML sanitization -->
         <jsoup.version>1.23.2</jsoup.version>
         <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- MCP -->
-        <tachyon.version>1.0.0</tachyon.version>
-        <lucene.version>10.5.1</lucene.version>
+        <tachyon.version>1.0.1</tachyon.version>
+        <lucene.version>10.5.2</lucene.version>
         <slf4j.version>2.0.20</slf4j.version>
 
         <!-- Boilerplate and utils -->
-        <immutables.version>2.12.2</immutables.version>
+        <immutables.version>2.12.3</immutables.version>
         <jspecify.version>1.0.1</jspecify.version>
         <lombok.version>1.18.48</lombok.version>
         <commons-lang3.version>3.21.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
 
-        <jackson-bom.version>3.2.3</jackson-bom.version>
-        <jackson.version>2.22.3</jackson.version>
-        <batik.version>1.19</batik.version>
+        <jackson3-bom.version>3.2.4</jackson3-bom.version>
+        <jackson2-bom.version>2.22.4</jackson2-bom.version>
+        <batik.version>1.20</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
 
         <!-- Test dependencies -->
@@ -93,12 +104,17 @@
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
         <maven.compiler.plugin.version>3.16.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>3.6.0</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>3.6.1</maven.surefire.plugin.version>
         <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
         <maven.exec.plugin.version>3.6.4</maven.exec.plugin.version>
-        <maven.graalvm.native.plugin.version>1.1.14</maven.graalvm.native.plugin.version>
+        <maven.graalvm.native.plugin.version>1.1.17</maven.graalvm.native.plugin.version>
         <maven.shared.utils.version>3.5.0</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
+        <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
+        <maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+        <maven.deploy-plugin.version>3.2.0</maven.deploy-plugin.version>
+        <maven.gpg-plugin.version>3.2.8</maven.gpg-plugin.version>
+        <maven.central-publishing-maven-plugin.version>0.12.0</maven.central-publishing-maven-plugin.version>
     </properties>
 
     <!-- Dependency versions ======================================================================================= -->
@@ -107,12 +123,19 @@
             <dependency>
                 <groupId>tools.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>${jackson-bom.version}</version>
+                <version>${jackson3-bom.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
             <dependency>
-                <groupId>com.oakinvest.kiso</groupId>
+                <groupId>com.fasterxml.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson2-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.oak-invest.kiso</groupId>
                 <artifactId>kiso-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
@@ -202,16 +225,6 @@
                 <version>${commons-text.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.dataformat</groupId>
-                <artifactId>jackson-dataformat-yaml</artifactId>
-                <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>
                 <artifactId>batik-all</artifactId>
                 <version>${batik.version}</version>
@@ -270,6 +283,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <!-- Image rendering tests must also work without a display server. -->
+                        <java.awt.headless>true</java.awt.headless>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
 
             <!-- Checkstyle ======================================================================================== -->
@@ -324,5 +343,70 @@
             </plugin>
         </plugins>
     </build>
+
+    <!-- Profiles ================================================================================================== -->
+    <profiles>
+        <profile>
+            <id>release</id>
+            <properties>
+                <gpg.keyname>606698063264059EB9641EA54A952DBBE296CC51</gpg.keyname>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>${maven.deploy-plugin.version}</version>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${maven.gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-release</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- Prevent `gpg` from using pinentry programs -->
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                    </gpgArguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${maven.central-publishing-maven-plugin.version}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <!-- Distribution management ==================================================================================== -->
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <url>https://central.sonatype.com/</url>
+        </repository>
+        <snapshotRepository>
+            <id>central</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

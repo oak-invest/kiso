@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static com.oakinvest.kiso.core.validation.ValidationCode.BROKEN_LINK;
@@ -16,6 +17,74 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Broken link rule")
 public class BrokenLinkRuleTest extends BaseTest {
+
+    @Test
+    @DisplayName("Accept existing bundle-root and relative links to concepts and artifacts")
+    void acceptExistingLocalFiles(@TempDir final Path temporaryDirectory) throws IOException {
+        createMarkdownFile(temporaryDirectory, "index.md", "");
+        createMarkdownFile(temporaryDirectory, "overview.md", """
+                [Bundle-root concept](/notes/detail.md)
+                [Relative concept](notes/detail.md)
+                [Relative JSON artifact](references/snapshot.json)
+                [Bundle-root JSON artifact](/references/snapshot.json)
+                [Actually missing concept](notes/missing.md)
+                """);
+        createMarkdownFile(temporaryDirectory, "notes/detail.md", """
+                [Root concept](/overview.md#overview)
+                [Relative concept](../overview.md?view=full#overview)
+                [Root artifact](/references/snapshot.json?download=true#example)
+                [Relative artifact](../references/./snapshot.json)
+                [Normalized concept](/notes/../overview.md)
+                [Web](https://example.com/missing.md)
+                [Protocol-relative](//example.com/missing.json)
+                [Email](mailto:hello@example.com)
+                [Anchor](#detail)
+                [Query](?view=full)
+                """);
+        Files.createDirectories(temporaryDirectory.resolve("references"));
+        Files.writeString(temporaryDirectory.resolve("references/snapshot.json"), "{\"example\": true}");
+
+        var bundle = KnowledgeBundleLoader.load(temporaryDirectory);
+        var rule = new BrokenLinkRule();
+        var issues = bundle.markdownFiles()
+                .flatMap(markdownFile -> rule.validate(bundle, markdownFile).stream())
+                .toList();
+
+        assertThat(issues).singleElement().satisfies(issue -> {
+            assertThat(issue.code()).isEqualTo(BROKEN_LINK);
+            assertThat(issue.severity()).isEqualTo(WARNING);
+            assertThat(issue.message()).isEqualTo("File overview.md contains a broken link: notes/missing.md");
+        });
+    }
+
+    @Test
+    @DisplayName("Report missing files and paths outside the bundle")
+    void reportMissingAndOutsideFiles(@TempDir final Path temporaryDirectory) throws IOException {
+        Path rootDirectory = Files.createDirectory(temporaryDirectory.resolve("bundle"));
+        Files.writeString(temporaryDirectory.resolve("outside.json"), "{}");
+        createMarkdownFile(rootDirectory, "index.md", "");
+        createMarkdownFile(rootDirectory, "notes/detail.md", """
+                [Missing root concept](/missing.md)
+                [Missing relative artifact](../missing.json)
+                [Missing root artifact](/missing.json)
+                [Outside relative artifact](../../outside.json)
+                [Outside root artifact](/../outside.json)
+                """);
+
+        var bundle = KnowledgeBundleLoader.load(rootDirectory);
+        var rule = new BrokenLinkRule();
+        var issues = bundle.markdownFiles()
+                .flatMap(markdownFile -> rule.validate(bundle, markdownFile).stream())
+                .toList();
+
+        assertThat(issues).extracting(ValidationIssue::message).containsExactly(
+                "File notes/detail.md contains a broken link: /missing.md",
+                "File notes/detail.md contains a broken link: ../missing.json",
+                "File notes/detail.md contains a broken link: /missing.json",
+                "File notes/detail.md contains a broken link: ../../outside.json",
+                "File notes/detail.md contains a broken link: /../outside.json"
+        );
+    }
 
     @Test
     @DisplayName("Report a broken links")
