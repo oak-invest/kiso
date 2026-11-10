@@ -39,7 +39,7 @@ import static com.oakinvest.kiso.core.util.types.TrustLevel.UNVERIFIED;
  * @param usageWindow date range that frames source usage counts
  * @param generated   event recording how the current content was produced
  * @param verified    a list of verification events
- * @param status      lifecycle status value.
+ * @param status      lifecycle status value
  * @param staleAfter  absolute date after which content is stale
  * @param runtime     computation runtime for Attested Computation concepts
  * @param parameters  typed, named holes the agent may fill for an Attested Computation

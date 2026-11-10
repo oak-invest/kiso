@@ -3,20 +3,20 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
-    <title>Kiso, a publishing engine and MCP server for Open Knowledge Format (OKF).</title>
-    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static websites for humans and AI agents. We also provide an MCP Server."
+    <title>Kiso - Publishing engine, MCP server and Java library for OKF</title>
+    <meta content="Publish Open Knowledge Format (OKF) bundles as static websites, connect AI through MCP, and load and validate bundles with the Kiso Java library."
           name="description"/>
 
     <meta content="website" property="og:type"/>
-    <meta content="Kiso, a publishing engine and MCP server for Open Knowledge Format (OKF)." property="og:title"/>
-    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static websites for humans and AI agents. We also provide an MCP Server."
+    <meta content="Kiso - Publishing engine, MCP server and Java library for OKF" property="og:title"/>
+    <meta content="Publish Open Knowledge Format (OKF) bundles as static websites, connect AI through MCP, and load and validate bundles with the Kiso Java library."
           property="og:description"/>
     <meta content="assets/images/social/kiso-og.png" property="og:image"/>
     <meta content="1200" property="og:image:width"/>
     <meta content="630" property="og:image:height"/>
     <meta content="summary_large_image" name="twitter:card"/>
-    <meta content="Kiso, a publishing engine and MCP server for Open Knowledge Format (OKF)." name="twitter:title"/>
-    <meta content="Kiso is a publishing engine that turns Open Knowledge Format (OKF) bundles into static websites for humans and AI agents. We also provide an MCP Server."
+    <meta content="Kiso - Publishing engine, MCP server and Java library for OKF" name="twitter:title"/>
+    <meta content="Publish Open Knowledge Format (OKF) bundles as static websites, connect AI through MCP, and load and validate bundles with the Kiso Java library."
           name="twitter:description"/>
     <meta content="assets/images/social/kiso-twitter.png" name="twitter:image"/>
 
@@ -46,14 +46,16 @@
             <img alt="Kiso" class="h-12 w-auto self-start sm:h-16"
                  src="assets/images/logo/kiso_logo_horizontal_light.svg"/>
         </a>
-        <nav class="hidden items-center gap-5 text-sm font-medium md:flex">
+        <nav class="hidden items-center gap-4 text-sm font-medium xl:flex">
             <a class="link-hover" href="#cli">Kiso CLI</a>
             <a class="link-hover" href="#mcp">Kiso MCP Server</a>
+            <a class="link-hover" href="#java-library">Java library</a>
             <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="googleGemo">Google demo</a>
             <a class="btn btn-primary btn-sm" href="examples/kb-acme-example/" target="acmeDemo">Acme demo</a>
             <a class="btn btn-outline btn-sm" href="https://github.com/oak-invest/kiso/releases" target="download">Download</a>
         </nav>
-        <div class="grid grid-cols-2 gap-2 sm:flex md:hidden">
+        <div class="grid grid-cols-2 gap-2 sm:flex xl:hidden">
+            <a class="btn btn-outline btn-sm" href="#java-library">Java library</a>
             <a class="btn btn-primary btn-sm" href="examples/kb-google-example/" target="googleGemo">Google demo</a>
             <a class="btn btn-outline btn-sm" href="https://github.com/oak-invest/kiso/releases" target="download">Download</a>
         </div>
@@ -73,11 +75,12 @@
                     Publishing engine and MCP server for OKF
                 </h1>
                 <p class="mt-6 max-w-3xl text-lg leading-8 text-base-content/75">
-                    Kiso provides two applications built around <a
+                    Kiso provides two applications and a Java library built around <a
                         href="https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md"
                         target="okf">Open Knowledge Format</a> (OKF) bundles. <code>kiso-cli</code> validates and
                     publishes them as static websites, while <code>kiso-mcp-server</code> gives MCP-compatible AI
-                    applications direct access to their knowledge.
+                    applications direct access to their knowledge. Use <code>kiso-core</code> to load and validate
+                    OKF bundles in your own Java application.
                 </p>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <a class="btn btn-primary" href="examples/kb-acme-example" target="acmeDemo">View an example</a>
@@ -111,10 +114,10 @@
     <section class="border-y border-base-300 bg-base-200">
         <div class="mx-auto max-w-7xl px-5 py-12 lg:px-8">
             <div class="mb-8 max-w-3xl">
-                <p class="text-sm font-semibold uppercase tracking-wide text-primary">Two applications</p>
+                <p class="text-sm font-semibold uppercase tracking-wide text-primary">Three ways to use Kiso</p>
                 <h2 class="mt-3 text-3xl font-bold tracking-normal">Choose how to use your OKF bundle</h2>
             </div>
-            <div class="grid gap-5 lg:grid-cols-2">
+            <div class="grid gap-5 lg:grid-cols-3">
                 <article class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
                     <p class="text-sm font-semibold uppercase tracking-wide text-primary">Static publishing</p>
                     <h3 class="mt-3 text-2xl font-bold"><code>kiso-cli</code></h3>
@@ -134,6 +137,15 @@
                         questions with the knowledge in the bundle.
                     </p>
                     <a class="btn btn-secondary btn-sm mt-6" href="#mcp">Discover Kiso MCP Server</a>
+                </article>
+                <article class="rounded-box border border-base-300 bg-base-100 p-6 shadow-sm">
+                    <p class="text-sm font-semibold uppercase tracking-wide text-primary">Java integration</p>
+                    <h3 class="mt-3 text-2xl font-bold"><code>kiso-core</code></h3>
+                    <p class="mt-4 leading-7 text-base-content/70">
+                        Load OKF bundles, read their Markdown content and metadata, and validate them directly in
+                        your Java application. Add the library from Maven Central to get started.
+                    </p>
+                    <a class="btn btn-primary btn-sm mt-6" href="#java-library">Discover the Java library</a>
                 </article>
             </div>
         </div>
@@ -295,6 +307,24 @@
                         http://localhost:8080/mcp), then let it discover and call the available knowledge tools.
                     </p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Java library ============================================================================================== -->
+    <section class="mx-auto max-w-7xl px-5 py-12 lg:px-8" id="java-library">
+        <div class="max-w-3xl">
+            <p class="text-sm font-semibold tracking-wide text-primary">Use OKF in your Java application</p>
+            <h2 class="mt-3 text-4xl font-bold tracking-normal"><code>kiso-core</code></h2>
+            <p class="mt-4 leading-8 text-base-content/70">
+                Load OKF bundles, access their Markdown content and metadata, and run validation from your own
+                Java code. The library is available on Maven Central and requires <strong>Java 25 or later</strong>.
+            </p>
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a class="btn btn-primary btn-sm"
+                   href="https://central.sonatype.com/artifact/com.oak-invest.kiso/kiso-core">Maven Central</a>
+                <a class="btn btn-outline btn-sm"
+                   href="https://javadoc.io/doc/com.oak-invest.kiso/kiso-core">Javadoc</a>
             </div>
         </div>
     </section>

@@ -1,11 +1,14 @@
 # Kiso
 
-Kiso provides two applications built around [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) (OKF) bundles:
+[![Maven Central](https://img.shields.io/maven-central/v/com.oak-invest.kiso/kiso-core)](https://central.sonatype.com/artifact/com.oak-invest.kiso/kiso-core)
+
+Kiso provides two applications and a Java library built around [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) (OKF) bundles:
 
 - **`kiso-cli`** validates an OKF bundle and publishes it as a static website containing generated HTML pages and the original Markdown files. It can be run from the command line or through GitHub Actions.
 - **`kiso-mcp-server`** starts a Model Context Protocol (MCP) server that lets an MCP-compatible AI application access the knowledge contained in an OKF bundle.
+- **[`kiso-core`](#java-library)** loads and validates OKF bundles directly in Java applications. It is available on Maven Central.
 
-The OKF bundle remains the single source of truth for both applications.
+The OKF bundle remains the single source of truth across all three uses.
 
 The executable JARs require Java 25 or later. Native executables do not require a Java installation.
 
@@ -152,3 +155,46 @@ For access through a public hostname or Docker, pass additional allowed hosts to
 ```
 
 Use bare hostnames or `host:port` authorities, without a URL scheme or path. An entry without a port matches any port. Localhost remains allowed; omitting this option preserves Tachyon's default protection. This option does not extend the allowed `Origin` values. See [Tachyon's DNS-rebinding protection](https://tachyonmcp.dev/docs/running/configuration/#dns-rebinding-protection).
+
+## Java library
+
+Use `kiso-core` to load OKF bundles, read their Markdown content and metadata, and validate them in your Java application. The library requires **Java 25 or later**.
+
+### Maven dependency
+
+Add this dependency to your `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.oak-invest.kiso</groupId>
+    <artifactId>kiso-core</artifactId>
+    <version>0.2.7</version>
+</dependency>
+```
+
+Find published versions on [Maven Central](https://central.sonatype.com/artifact/com.oak-invest.kiso/kiso-core) and API documentation in the [Javadoc](https://javadoc.io/doc/com.oak-invest.kiso/kiso-core).
+
+### Load and validate a bundle
+
+The example below uses the [sample OKF bundle](https://oak-invest.github.io/kiso/download/kb-google-example.zip), extracted to `examples/kb-google-example`:
+
+```java
+import com.oakinvest.kiso.core.loader.KnowledgeBundleLoader;
+import com.oakinvest.kiso.core.validation.ValidationRunner;
+
+import java.nio.file.Path;
+
+public class ValidateBundle {
+    public static void main(String[] args) {
+        var bundle = KnowledgeBundleLoader.load(Path.of("examples/kb-google-example"));
+        var report = ValidationRunner.runValidation(bundle);
+
+        report.issues().forEach(System.out::println);
+        if (report.hasErrors()) {
+            throw new IllegalStateException("The OKF bundle contains validation errors.");
+        }
+    }
+}
+```
+
+Loading and validation leave the source files unchanged. The report contains errors and warnings; `hasErrors()` lets your application reject invalid bundles while handling warnings separately.
