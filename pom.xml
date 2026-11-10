@@ -61,23 +61,23 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Main libraries -->
-        <commonmark.version>0.31.0</commonmark.version>
-        <jte.version>3.2.4</jte.version>
+        <commonmark.version>0.32.0</commonmark.version>
+        <jte.version>3.2.5</jte.version>
         <picocli.version>4.7.7</picocli.version>
 
         <!-- Frontend assets - Updates through https://www.webjars.org -->
         <daisyui.webjar.version>5.7.50</daisyui.webjar.version>
-        <tailwindcss.webjar.version>4.3.3</tailwindcss.webjar.version>
+        <tailwindcss.webjar.version>4.3.4</tailwindcss.webjar.version>
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
         <i18next.webjar.version>26.5.10</i18next.webjar.version>
 
         <!-- HTML sanitization -->
-        <jsoup.version>1.23.2</jsoup.version>
+        <jsoup.version>1.24.1</jsoup.version>
         <htmlcompressor.version>2.4.1</htmlcompressor.version>
 
         <!-- MCP -->
         <tachyon.version>1.0.1</tachyon.version>
-        <lucene.version>10.5.2</lucene.version>
+        <lucene.version>10.6.0</lucene.version>
         <slf4j.version>2.0.20</slf4j.version>
 
         <!-- Boilerplate and utils -->
@@ -99,7 +99,7 @@
 
         <!-- Maven -->
         <maven.checkstyle.plugin.version>3.6.0</maven.checkstyle.plugin.version>
-        <maven.puppycrawl.checkstyle.version>14.3.0</maven.puppycrawl.checkstyle.version>
+        <maven.puppycrawl.checkstyle.version>14.4.0</maven.puppycrawl.checkstyle.version>
         <maven.resources.plugin.version>3.5.0</maven.resources.plugin.version>
         <maven.dependency.plugin.version>3.11.0</maven.dependency.plugin.version>
         <maven.antrun.plugin.version>3.2.0</maven.antrun.plugin.version>
@@ -107,7 +107,7 @@
         <maven.surefire.plugin.version>3.6.1</maven.surefire.plugin.version>
         <maven.shade.plugin.version>3.6.2</maven.shade.plugin.version>
         <maven.exec.plugin.version>3.6.4</maven.exec.plugin.version>
-        <maven.graalvm.native.plugin.version>1.1.17</maven.graalvm.native.plugin.version>
+        <maven.graalvm.native.plugin.version>1.1.18</maven.graalvm.native.plugin.version>
         <maven.shared.utils.version>3.5.0</maven.shared.utils.version>
         <maven.gitflow-maven-plugin.version>1.21.0</maven.gitflow-maven-plugin.version>
         <maven.source.plugin.version>3.4.0</maven.source.plugin.version>
