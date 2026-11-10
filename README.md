@@ -4,8 +4,8 @@
 
 Kiso provides two applications and a Java library built around [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md) (OKF) bundles:
 
-- **`kiso-cli`** validates an OKF bundle and publishes it as a static website containing generated HTML pages and the original Markdown files. It can be run from the command line or through GitHub Actions.
-- **`kiso-mcp-server`** starts a Model Context Protocol (MCP) server that lets an MCP-compatible AI application access the knowledge contained in an OKF bundle.
+- **[`kiso-cli`](#kiso-cli)** validates an OKF bundle and publishes it as a static website containing generated HTML pages and the original Markdown files. It can be run from the command line or through GitHub Actions.
+- **[`kiso-mcp-server`](#kiso-mcp-server)** starts a Model Context Protocol (MCP) server that lets an MCP-compatible AI application access the knowledge contained in an OKF bundle.
 - **[`kiso-core`](#java-library)** loads and validates OKF bundles directly in Java applications. It is available on Maven Central.
 
 The OKF bundle remains the single source of truth across all three uses.
