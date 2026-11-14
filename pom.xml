@@ -69,7 +69,7 @@
         <daisyui.webjar.version>5.7.50</daisyui.webjar.version>
         <tailwindcss.webjar.version>4.3.4</tailwindcss.webjar.version>
         <minisearch.webjar.version>7.2.0</minisearch.webjar.version>
-        <i18next.webjar.version>26.5.10</i18next.webjar.version>
+        <i18next.webjar.version>27.0.1</i18next.webjar.version>
 
         <!-- HTML sanitization -->
         <jsoup.version>1.24.1</jsoup.version>
