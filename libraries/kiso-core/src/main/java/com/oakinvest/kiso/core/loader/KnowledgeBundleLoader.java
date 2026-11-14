@@ -58,6 +58,7 @@ import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMET
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETER_REQUIRED_KEY;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.PARAMETER_TYPE_KEY;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.RESOURCE_KEY;
+import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.ROLES_KEY;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.RUNTIME_KEY;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCES_KEY;
 import static com.oakinvest.kiso.core.util.contants.FrontmatterConstants.SOURCE_AUTHOR_KEY;
@@ -279,6 +280,7 @@ public class KnowledgeBundleLoader {
                 .resource(textValue(frontmatter, RESOURCE_KEY))
                 .tags(tags)
                 .tagSlugs(tagSlugs)
+                .roles(textList(frontmatter.get(ROLES_KEY)))
                 .timestamp(textValue(frontmatter, TIMESTAMP_KEY))
                 .sources(sources(frontmatter.get(SOURCES_KEY)))
                 .usageWindow(usageWindow(frontmatter.get(USAGE_WINDOW_KEY)))

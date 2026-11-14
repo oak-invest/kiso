@@ -2,13 +2,14 @@
 type: Attested Computation
 title: Revenue for a fiscal year
 description: Sanctioned SQL that produces the recognized-revenue figure for a given fiscal year, per Acme's FY2026 Revenue Recognition Policy.
-tags: [finance, revenue, attested]
+tags: [ finance, revenue, attested ]
+roles: [ data_engineer, data_analyst, finance_analyst ]
 runtime: bigquery
 parameters:
   - { name: year, type: integer, required: true }
 executor:
   resource: skills/run-on-bq.md
-  receipt: [job_id, executed_sql, result]
+  receipt: [ job_id, executed_sql, result ]
 attester:
   resource: attesters/sql_equality.py
 generated: { by: reference_agent/gemini-2.5-pro, at: 2026-06-30T14:00:00Z }
@@ -32,20 +33,21 @@ sources:
 # Computation
 
 ```sql
-SELECT
-  SUM(
-    CASE
-      WHEN o.currency = 'USD' THEN o.net_amount
-      ELSE o.net_amount * fx.rate_to_usd
-    END
-  ) AS revenue_usd
+SELECT SUM(
+               CASE
+                   WHEN o.currency = 'USD' THEN o.net_amount
+                   ELSE o.net_amount * fx.rate_to_usd
+                   END
+       ) AS revenue_usd
 FROM `acme.sales.orders` AS o
-LEFT JOIN `acme.finance.fx_daily_rates` AS fx
-  ON fx.currency = o.currency
-  AND fx.rate_date = DATE(o.order_ts)
+         LEFT JOIN `acme.finance.fx_daily_rates` AS fx
+                   ON fx.currency = o.currency
+                       AND fx.rate_date = DATE (o.order_ts)
 WHERE o.order_status = 'delivered'
-  AND DATE_DIFF(CURRENT_DATE(), DATE(o.order_ts), DAY) >= 30
-  AND EXTRACT(YEAR FROM o.order_ts) = @year
+  AND DATE_DIFF(CURRENT_DATE ()
+    , DATE (o.order_ts)
+    , DAY) >= 30
+  AND EXTRACT (YEAR FROM o.order_ts) = @year
 ```
 
 This computation implements the four rules of the FY2026 Revenue Recognition Policy: [^revenue-policy]

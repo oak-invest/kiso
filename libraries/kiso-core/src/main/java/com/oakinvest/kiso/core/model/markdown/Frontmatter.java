@@ -34,6 +34,7 @@ import static com.oakinvest.kiso.core.util.types.TrustLevel.UNVERIFIED;
  * @param resource    a URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
  * @param tags        a YAML list of short strings for cross-cutting categorization
  * @param tagSlugs    a YAML list of short strings representing the slugs of the tags
+ * @param roles       a YAML list of roles, empty when omitted
  * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2
  * @param sources     materials the concept derives from
  * @param usageWindow date range that frames source usage counts
@@ -57,6 +58,7 @@ public record Frontmatter(
         @Nullable String resource,
         List<String> tags,
         List<String> tagSlugs,
+        List<String> roles,
         @Nullable String timestamp,
         List<Source> sources,
         @Nullable UsageWindow usageWindow,
@@ -78,6 +80,7 @@ public record Frontmatter(
     public Frontmatter {
         tags = Objects.requireNonNullElse(tags, List.of());
         tagSlugs = Objects.requireNonNullElse(tagSlugs, List.of());
+        roles = Objects.requireNonNullElse(roles, List.of());
         sources = Objects.requireNonNullElse(sources, List.of());
         verified = Objects.requireNonNullElse(verified, List.of());
         status = Objects.requireNonNullElse(status, STABLE);
@@ -94,6 +97,7 @@ public record Frontmatter(
         return Frontmatter.builder()
                 .tags(List.of())
                 .tagSlugs(List.of())
+                .roles(List.of())
                 .sources(List.of())
                 .verified(List.of())
                 .status(STABLE)

@@ -30,6 +30,9 @@ public class FrontmatterConstants {
     /** Frontmatter key for tags. */
     public static final String TAGS_KEY = "tags";
 
+    /** Frontmatter key for roles. */
+    public static final String ROLES_KEY = "roles";
+
     /** Frontmatter key for timestamp. */
     public static final String TIMESTAMP_KEY = "timestamp";
 

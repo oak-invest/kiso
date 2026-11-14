@@ -57,13 +57,14 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns(OffsetDateTime.parse("2026-06-30T14:00Z"), MarkdownFile::timestamp)
                 .returns("revenue-ytd.html", MarkdownFile::htmlFilename)
                 .returns("computations/revenue-ytd.html", MarkdownFile::htmlFilePath)
-                .returns("935c3c8fc6ac1c9f424b333765c3b4d4cb3257353c817e27a46f90481e1ef456", MarkdownFile::contentChecksum);
+                .returns("8566d7c1b1bc99bdf2576991a7feda1973a31eee06e015c2d2ec9e91aa3aede1", MarkdownFile::contentChecksum);
 
         // Frontmatter.
         assertThat(revenue.frontmatter()).isNotNull()
                 .returns(ATTESTED_COMPUTATION, Frontmatter::type)
                 .returns("Revenue for a fiscal year", Frontmatter::title)
                 .returns("Sanctioned SQL that produces the recognized-revenue figure for a given fiscal year, per Acme's FY2026 Revenue Recognition Policy.", Frontmatter::description)
+                .returns(List.of("data_engineer", "data_analyst", "finance_analyst"), Frontmatter::roles)
                 .returns(List.of("finance", "revenue", "attested"), Frontmatter::tags)
                 .returns(List.of("finance", "revenue", "attested"), Frontmatter::tagSlugs)
                 .returns("reference_agent/gemini-2.5-pro", Frontmatter::generatedBy)
