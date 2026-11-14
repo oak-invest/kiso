@@ -89,7 +89,7 @@
         <commons-text.version>1.15.0</commons-text.version>
         <commons-codec.version>1.23.0</commons-codec.version>
 
-        <jackson3-bom.version>3.2.4</jackson3-bom.version>
+        <jackson3-bom.version>3.3.0</jackson3-bom.version>
         <jackson2-bom.version>2.22.4</jackson2-bom.version>
         <batik.version>1.20</batik.version>
         <zip4j.version>2.11.6</zip4j.version>
