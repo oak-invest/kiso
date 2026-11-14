@@ -48,6 +48,7 @@ import static com.oakinvest.kiso.core.util.types.MarkdownFileKind.INDEX;
  * @param frontmatter        frontmatter metadata
  * @param frontmatterPresent whether a frontmatter block exists in the source file
  * @param body               original Markdown content without frontmatter
+ * @param contentChecksum    SHA-256 checksum of the complete Markdown file, including frontmatter
  */
 @Builder
 @SuppressWarnings("unused")
@@ -58,7 +59,8 @@ public record MarkdownFile(
         Path relativePath,
         Frontmatter frontmatter,
         boolean frontmatterPresent,
-        @Nullable String body
+        @Nullable String body,
+        String contentChecksum
 ) {
 
     /**

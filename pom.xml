@@ -87,6 +87,7 @@
         <commons-lang3.version>3.21.0</commons-lang3.version>
         <commons-io.version>2.22.0</commons-io.version>
         <commons-text.version>1.15.0</commons-text.version>
+        <commons-codec.version>1.23.0</commons-codec.version>
 
         <jackson3-bom.version>3.2.4</jackson3-bom.version>
         <jackson2-bom.version>2.22.4</jackson2-bom.version>
@@ -95,6 +96,7 @@
 
         <!-- Test dependencies -->
         <junit-jupiter.version>6.1.3</junit-jupiter.version>
+        <awaitility.version>4.3.0</awaitility.version>
         <assertj.version>3.27.7</assertj.version>
 
         <!-- Maven -->
@@ -223,6 +225,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-text</artifactId>
                 <version>${commons-text.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.xmlgraphics</groupId>

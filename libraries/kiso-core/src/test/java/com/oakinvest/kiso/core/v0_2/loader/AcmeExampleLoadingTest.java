@@ -56,7 +56,8 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns("Sanctioned SQL that produces the recognized-revenue figure for a given fiscal year, per Acme's FY2026 Revenue Recognition Policy.", MarkdownFile::description)
                 .returns(OffsetDateTime.parse("2026-06-30T14:00Z"), MarkdownFile::timestamp)
                 .returns("revenue-ytd.html", MarkdownFile::htmlFilename)
-                .returns("computations/revenue-ytd.html", MarkdownFile::htmlFilePath);
+                .returns("computations/revenue-ytd.html", MarkdownFile::htmlFilePath)
+                .returns("935c3c8fc6ac1c9f424b333765c3b4d4cb3257353c817e27a46f90481e1ef456", MarkdownFile::contentChecksum);
 
         // Frontmatter.
         assertThat(revenue.frontmatter()).isNotNull()

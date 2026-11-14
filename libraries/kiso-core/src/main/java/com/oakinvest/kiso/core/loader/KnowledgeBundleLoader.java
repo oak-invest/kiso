@@ -21,6 +21,7 @@ import com.oakinvest.kiso.core.tool.TagNormalizer;
 import com.oakinvest.kiso.core.util.types.LifecycleStatus;
 import com.oakinvest.kiso.core.util.types.MarkdownFileKind;
 import lombok.experimental.UtilityClass;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
 
@@ -228,6 +229,7 @@ public class KnowledgeBundleLoader {
                     .frontmatter(frontmatter.orElseGet(Frontmatter::empty))
                     .frontmatterPresent(frontmatter.isPresent())
                     .body(removeFrontmatter(content))
+                    .contentChecksum(DigestUtils.sha256Hex(content))
                     .build();
 
         } catch (CharacterCodingException exception) {
@@ -241,6 +243,7 @@ public class KnowledgeBundleLoader {
                     .frontmatter(Frontmatter.empty())
                     .frontmatterPresent(true)
                     .body(content)
+                    .contentChecksum(DigestUtils.sha256Hex(content))
                     .build();
         } catch (IOException exception) {
             throw new KnowledgeBundleLoadingException("Unable to read Markdown file: " + normalizedFile, exception);
