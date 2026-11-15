@@ -58,6 +58,9 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns("revenue-ytd.html", MarkdownFile::htmlFilename)
                 .returns("computations/revenue-ytd.html", MarkdownFile::htmlFilePath)
                 .returns("8566d7c1b1bc99bdf2576991a7feda1973a31eee06e015c2d2ec9e91aa3aede1", MarkdownFile::contentChecksum);
+        assertThat(revenue.content()).isNotNull()
+                .contains("title: Revenue for a fiscal year")
+                .containsIgnoringCase("This computation implements the four rules of the FY2026 Revenue Recognition Policy: [^revenue-policy]");
 
         // Frontmatter.
         assertThat(revenue.frontmatter()).isNotNull()

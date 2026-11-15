@@ -34,7 +34,7 @@ import static com.oakinvest.kiso.core.util.types.TrustLevel.UNVERIFIED;
  * @param resource    a URI that uniquely identifies the underlying asset the concept describes. Absent for concepts that describe abstract ideas rather than physical resources
  * @param tags        a YAML list of short strings for cross-cutting categorization
  * @param tagSlugs    a YAML list of short strings representing the slugs of the tags
- * @param roles       a YAML list of roles, empty when omitted
+ * @param roles       a YAML list of roles, empty when omitted (KISO SPECIFIC)
  * @param timestamp   ISO 8601 datetime of the last meaningful change - DEPRECATED SINCE v0.2
  * @param sources     materials the concept derives from
  * @param usageWindow date range that frames source usage counts

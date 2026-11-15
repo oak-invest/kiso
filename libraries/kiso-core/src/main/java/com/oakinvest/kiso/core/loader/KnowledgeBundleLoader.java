@@ -230,6 +230,7 @@ public class KnowledgeBundleLoader {
                     .frontmatter(frontmatter.orElseGet(Frontmatter::empty))
                     .frontmatterPresent(frontmatter.isPresent())
                     .body(removeFrontmatter(content))
+                    .content(content)
                     .contentChecksum(DigestUtils.sha256Hex(content))
                     .build();
 
@@ -244,6 +245,7 @@ public class KnowledgeBundleLoader {
                     .frontmatter(Frontmatter.empty())
                     .frontmatterPresent(true)
                     .body(content)
+                    .content(content)
                     .contentChecksum(DigestUtils.sha256Hex(content))
                     .build();
         } catch (IOException exception) {
