@@ -39,6 +39,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.core.StreamReadFeature.STRICT_DUPLICATE_DETECTION;
@@ -282,7 +283,7 @@ public class KnowledgeBundleLoader {
                 .resource(textValue(frontmatter, RESOURCE_KEY))
                 .tags(tags)
                 .tagSlugs(tagSlugs)
-                .roles(textList(frontmatter.get(ROLES_KEY)))
+                .roles(normalizedTextList(frontmatter.get(ROLES_KEY)))
                 .timestamp(textValue(frontmatter, TIMESTAMP_KEY))
                 .sources(sources(frontmatter.get(SOURCES_KEY)))
                 .usageWindow(usageWindow(frontmatter.get(USAGE_WINDOW_KEY)))
@@ -541,9 +542,33 @@ public class KnowledgeBundleLoader {
             return List.of(node.asText());
         }
 
-        final List<String> values = new ArrayList<>();
-        node.forEach(value -> values.add(value.asText()));
-        return values;
+        return node.valueStream()
+                .map(JsonNode::asText)
+                .collect(Collectors.toList());
+    }
+
+
+    /**
+     * Returns normalized text values.
+     *
+     * @param node node
+     * @return normalized text values
+     */
+    private static List<String> normalizedTextList(final JsonNode node) {
+        if (node == null || node.isNull()) {
+            return List.of();
+        }
+
+        if (!node.isArray()) {
+            return List.of(node.asText());
+        }
+
+        return node.valueStream()
+                .map(JsonNode::asText)
+                .map(StringUtils::strip)
+                .filter(StringUtils::isNotBlank)
+                .map(StringUtils::lowerCase)
+                .collect(Collectors.toList());
     }
 
     /**

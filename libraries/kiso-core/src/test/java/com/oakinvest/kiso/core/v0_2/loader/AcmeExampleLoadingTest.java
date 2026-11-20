@@ -57,7 +57,7 @@ public class AcmeExampleLoadingTest extends BaseTest {
                 .returns(OffsetDateTime.parse("2026-06-30T14:00Z"), MarkdownFile::timestamp)
                 .returns("revenue-ytd.html", MarkdownFile::htmlFilename)
                 .returns("computations/revenue-ytd.html", MarkdownFile::htmlFilePath)
-                .returns("8566d7c1b1bc99bdf2576991a7feda1973a31eee06e015c2d2ec9e91aa3aede1", MarkdownFile::contentChecksum);
+                .returns("52a7c5c830a4daf45ae168f46bd364fc4891dd8c2f59316b6a6f757e19ee0d94", MarkdownFile::contentChecksum);
         assertThat(revenue.content()).isNotNull()
                 .contains("title: Revenue for a fiscal year")
                 .containsIgnoringCase("This computation implements the four rules of the FY2026 Revenue Recognition Policy: [^revenue-policy]");

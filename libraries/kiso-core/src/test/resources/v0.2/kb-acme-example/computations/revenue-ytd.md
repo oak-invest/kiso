@@ -3,7 +3,7 @@ type: Attested Computation
 title: Revenue for a fiscal year
 description: Sanctioned SQL that produces the recognized-revenue figure for a given fiscal year, per Acme's FY2026 Revenue Recognition Policy.
 tags: [ finance, revenue, attested ]
-roles: [ data_engineer, data_analyst, finance_analyst ]
+roles: [ data_Engineer, data_analyst, finance_analyst ]
 runtime: bigquery
 parameters:
   - { name: year, type: integer, required: true }

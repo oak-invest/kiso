@@ -9,6 +9,8 @@ import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import static com.oakinvest.kiso.core.util.contants.FileExtensionsConstants.HTML_EXTENSION;
@@ -70,6 +72,35 @@ public record MarkdownFile(
      */
     public MarkdownFile {
         frontmatter = Objects.requireNonNullElse(frontmatter, Frontmatter.empty());
+    }
+
+    /**
+     * Checks whether the frontmatter contains the given role after stripping surrounding
+     * whitespace and converting it to lowercase using {@link Locale#ROOT}.
+     *
+     * @param role role to check, or null
+     * @return true if the role is present; false for null or blank roles
+     */
+    public boolean hasRole(final @Nullable String role) {
+        if (StringUtils.isBlank(role)) {
+            return false;
+        }
+        final String normalizedRole = StringUtils.lowerCase(role.trim());
+        return frontmatter.roles().contains(normalizedRole);
+    }
+
+    /**
+     * Checks whether any requested role is present in the frontmatter.
+     * Each requested role is normalized by {@link #hasRole(String)}.
+     *
+     * @param roles roles to check, or null
+     * @return true if any role is present; false for a null or empty list, or no matching role
+     */
+    public boolean hasAllRoles(final @Nullable List<String> roles) {
+        if (roles == null || roles.isEmpty()) {
+            return false;
+        }
+        return roles.stream().anyMatch(this::hasRole);
     }
 
     /**
